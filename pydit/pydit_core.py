@@ -105,6 +105,7 @@ this module is the main library
     def load(self, file_name, source="auto"):
         """ load a file with extra features and assuming some standardisation
         """
+        obj = None
         if source == "input":
             if os.path.isfile(self.input_path + file_name):
                 full_name = self.input_path + file_name
@@ -114,10 +115,16 @@ this module is the main library
         if source == "temp":
             if os.path.isfile(self.temp_path + file_name):
                 full_name = self.temp_path + file_name
-
-
-
-
+        if source == "auto":
+            if os.path.isfile(self.temp_path + file_name):
+                full_name = self.temp_path + file_name
+            elif os.path.isfile(self.temp_path + file_name):
+                full_name = self.input_path + file_name
+            elif os.path.isfile(self.output_path + file_name):
+                full_name = self.input_path + file_name
+            else:
+                print("No file found in any of the possible sources")
+                return obj
 
         if ".pickle" in full_name:
             try:
@@ -143,10 +150,8 @@ this module is the main library
                 print(full_name)
             except Exception as e:
                 print(e)
-
-        print(datetime.now())
         if isinstance(obj, pd.DataFrame):
-            print(obj.shape)
+            print("Shape:", obj.shape)
             print(list(obj.columns))
         else:
             try:
