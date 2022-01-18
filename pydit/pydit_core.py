@@ -3,6 +3,7 @@ from datetime import datetime
 import re
 import pickle
 import os
+import numpy as np
 import pandas as pd
 
 
@@ -30,6 +31,17 @@ this module is the main library
 
     def _hello(self):
         print("Hello World")
+
+    def _dataframe_to_code(df):
+        """ utility function to convert a dataframe to a piece of code
+        that one can include in a test script or tutorial. May need extra tweaks
+        or imports , e.g. from pandas import Timestamp to deal with dates, etc.
+        """
+        data = np.array2string(df.to_numpy(), separator=", ")
+        data = data.replace(" nan", " float('nan')")
+        data = data.replace(" NaT", " pd.NaT")
+        cols = df.columns.tolist()
+        return f"""df = pd.DataFrame({data}, columns={cols})"""
 
     def _deduplicate_list(self, list_to_deduplicate):
         "Deduplicates a list"
