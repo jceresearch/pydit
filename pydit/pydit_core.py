@@ -3,8 +3,10 @@ from datetime import datetime
 import re
 import pickle
 import os
+from zlib import DEFLATED
 import numpy as np
 import pandas as pd
+from pandas.api.types import is_datetime64_any_dtype as is_datetime
 
 
 class Tools(object):
@@ -32,7 +34,7 @@ this module is the main library
     def _hello(self):
         print("Hello World")
 
-    def _dataframe_to_code(df):
+    def _dataframe_to_code(self, df):
         """ utility function to convert a dataframe to a piece of code
         that one can include in a test script or tutorial. May need extra tweaks
         or imports , e.g. from pandas import Timestamp to deal with dates, etc.
@@ -173,9 +175,68 @@ this module is the main library
         print(datetime.now())
         return obj
 
+    def check_dataframe(self, df):
+        """[summary]
+
+        Args:
+            df ([type]): [description]
+
+        Returns:
+            [type]: [description]
+        """
+
+        # df=in_df.copy() # if we needed to do transformations create a copy
+
+        if isinstance(df, pd.DataFrame):
+            dtypes = df.dtypes.to_dict()
+        else:
+            return
+
+        col_metrics = []
+        for col, typ in dtypes.items():
+            metrics = {}
+            metrics["column"] = col
+            metrics["dtype"] = typ
+            metrics["records"] = len(df[col])
+            metrics["count_unique"] = len(set(df[pd.notna(df[col])][col]))
+            metrics["nans"] = len(df[pd.isnull(df[col])])
+            if metrics["count_unique"] < 5:
+                value_counts_series = df[col].value_counts(dropna=False)
+                metrics["value_counts"] = value_counts_series.to_dict()
+            else:
+                metrics["value_counts"] = []
+            if "float" in str(typ):
+                print("float")
+                metrics["max"] = max(df[col])
+                metrics["min"] = min(df[col])
+                metrics["sum"] = sum(df[col])
+                metrics["sum_abs"] = sum(abs(df[col]))
+                # TODO: possibly add hist/sparkline data to further add to the profiling
+            elif "int" in str(typ):
+                metrics["max"] = max(df[col])
+                metrics["min"] = min(df[col])
+                metrics["sum"] = sum(df[col])
+                metrics["sum_abs"] = sum(abs(df[col]))
+            elif is_datetime(df[col]):
+                metrics["max"] = max(df[col])
+                metrics["min"] = min(df[col])
+            elif typ == "object":
+                values = df[pd.notna(df[col])][col]
+                numeric_chars = values.str.replace(
+                    r"[^0-9^-^.]+", "", regex=True
+                )  # TODO: refactor this regex, currently very simplistic works only for clean id sequences, e.g. double dots
+                numeric_chars_no_blank = numeric_chars[numeric_chars.str.len() > 0]
+                numeric = pd.to_numeric(numeric_chars_no_blank, errors="coerce")
+                if len(numeric) > 0:
+                    metrics["max"] = max(numeric)
+                    metrics["min"] = min(numeric)
+                metrics["empty_strings"] = len(df[df[col].eq("")])
+            col_metrics.append(metrics)
+        return pd.DataFrame(col_metrics)
+
 
 def main():
-    """ main routine currently not used for anything"""
+    """ main routine, currently not used """
 
 
 if __name__ == "__main__":
