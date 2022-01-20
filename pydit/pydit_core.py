@@ -1,5 +1,5 @@
 """ core library of convenience tools"""
-from datetime import datetime
+from datetime import datetime, timedelta
 import re
 import pickle
 import os
@@ -233,6 +233,67 @@ this module is the main library
                 metrics["empty_strings"] = len(df[df[col].eq("")])
             col_metrics.append(metrics)
         return pd.DataFrame(col_metrics)
+
+    def check_sequence(self, df):
+        """ to check the numerical sequence of a series including dates
+        and numbers within an text ID """
+        dtypes = df.dtypes.to_dict()
+        for col, typ in dtypes.items():
+            print(col, typ)
+            if "int" in str(typ):
+                unique = set([i for i in set(df[pd.notna(df[col])][col])])
+                fullrng = range(min(unique), max(unique) + 1)
+                if unique.issubset(fullrng):
+                    print("Full sequence")
+                else:
+                    diff = unique.difference(fullrng)
+                    print("Missing in sequence: ", list(diff)[0:10])
+            elif is_datetime(df[col]):
+                unique = set([i.date() for i in set(df[pd.notna(df[col])][col])])
+                fullrng = set(
+                    pd.date_range(
+                        min(unique), max(unique) - timedelta(days=1), freq="d"
+                    ).to_list()
+                )
+                if unique.issubset(fullrng):
+                    print("Full sequence")
+                else:
+                    diff = unique.difference(fullrng)
+                    print(
+                        len(diff),
+                        " missing in sequence, first ",
+                        min(len(diff), 10),
+                        ":",
+                        list(diff)[0:10],
+                    )
+            elif typ == "object":
+                values = df[pd.notna(df[col])][col]
+                numeric_chars = values.str.replace(r"[^0-9^-^.]+", "", regex=True)
+                numeric_chars_no_blank = numeric_chars[numeric_chars.str.len() > 0]
+                numeric = pd.to_numeric(
+                    numeric_chars_no_blank, errors="coerce", downcast="integer"
+                )
+                if pd.api.types.is_float_dtype(numeric):
+                    # we have floats so it wont likely be a sequence
+                    print("Contains floats, no sequence to check")
+                else:
+                    unique = set(numeric)
+                    print(list(unique))
+                    if unique:
+
+                        fullrng = set(range(min(unique), max(unique)))
+                        if unique.issubset(fullrng):
+                            print("Full sequence")
+                        else:
+                            diff = unique.difference(fullrng)
+                            print(
+                                len(diff),
+                                " missing in sequence, fist 10:",
+                                list(diff)[0:10],
+                            )
+                    else:
+                        print("No sequence to check")
+        return
 
 
 def main():
