@@ -31,8 +31,16 @@ this module is the main library
         else:
             self.intput_path = input_path
 
-    def _hello(self):
-        print("Hello World")
+    def version(self):
+        """ version information"""
+        return "V.01"
+
+    def about(self):
+        """ About information"""
+        about_text = "Pydit - Tools for internal auditors\n \
+        Version: 1.01\n \
+        Released:Jan 2022 "
+        return about_text
 
     def _dataframe_to_code(self, df):
         """ utility function to convert a dataframe to a piece of code
@@ -62,6 +70,24 @@ this module is the main library
             else:
                 newlist[i] = str(el)
         return newlist
+
+    def _save_to_excel(self, df, file_name, sheet_name=None):
+        """ Internal routine to save a dataframe to excel with sensible options"""
+        file_name = file_name.replace(r"\.xlsx*", "", regex=True)
+        if self.output_path[-1] == "/" or self.output_path[-1] == "\\":
+            separator = ""
+        else:
+            separator = "\\"
+
+        full_file_name = self.output_path + separator + file_name + ".xlsx"
+        if not sheet_name:
+            sheet_name = file_name[:15]
+        try:
+            df.to_excel(full_file_name, sheet_name=sheet_name, index=False)
+        except Exception as e:
+            print(e)
+            return None
+        return full_file_name
 
     def clean_columns_names(self, df):
         """ Cleanup the column names of a Pandas dataframe
@@ -175,6 +201,78 @@ this module is the main library
         print(datetime.now())
         return obj
 
+    def save(self, obj, filename, bool_also_pickle=False):
+        """Save the dataframe in excel, pickle or csv with some extra audit trails
+        as well as choosing the destination based on size
+
+        Args:
+            obj ([type]): [description]
+            filename ([type]): [description]
+            bool_also_pickle (bool, optional): [description]. Defaults to False.
+        """
+
+        flag = False
+        flag_to_csv_instead = False
+        start_time = datetime.now()
+        stem_name = re.sub("\.[a-zA-Z0-9_]{2,}$", "", filename)
+        if isinstance(obj, pd.DataFrame) or isinstance(obj, pd.Series):
+            if ".xlsx" in filename:
+                if obj.shape[0] < 300000:
+                    print("Saving to an excel file:", output_path + filename)
+                    obj.to_excel(
+                        output_path + filename,
+                        index=False,
+                        sheet_name=stem_name,
+                        freeze_panes=(1, 0),
+                    )
+                    flag = True
+                else:
+                    flag_to_csv_instead = True
+                    print("Too big for excel!")
+                if bool_also_pickle:
+                    print(
+                        "Saving also to a pickle file:",
+                        temp_path + stem_name + ".pickle",
+                    )
+                    obj.to_pickle(temp_path + stem_name + ".pickle")
+            if ".csv" in filename or flag_to_csv_instead == True:
+                print("Saving to csv:", temp_path + stem_name + ".csv")
+                obj.to_csv(
+                    temp_path + filename,
+                    index=False,
+                    quotechar='"',
+                    quoting=csv.QUOTE_ALL,
+                )
+                flag = True
+            if ".pickle" in filename or bool_also_pickle == True:
+                print("Saving to pickle format in: ", temp_path + filename)
+                obj.to_pickle(temp_path + stem_name + ".pickle")
+                flag = True
+            if flag:
+                print("(rows, columns) :", obj.shape)
+                print("Saved columns:", list(obj.columns))
+                print(
+                    "Finished:",
+                    f"{datetime.now():%Y-%m-%d %H:%M:%S}",
+                    " - ",
+                    round((datetime.now() - start_time).total_seconds() / 60.0, 2),
+                    " mins",
+                )
+            else:
+                print("Name not recognised, nothing saved")
+        else:
+            if ".pickle" in filename:
+                with open(temp_path + filename, "wb") as handle:
+                    pickle.dump(obj, handle, protocol=pickle.HIGHEST_PROTOCOL)
+                    print(
+                        "Saved pickle to " + filename,
+                        round((handle.tell() / 1024) / 1024, 1),
+                        " MB",
+                    )
+                    print(datetime.now())
+            else:
+                print("Nothing saved, format not recognised")
+
     def check_dataframe(self, df):
         """[summary]
 
@@ -233,6 +331,67 @@ this module is the main library
                 metrics["empty_strings"] = len(df[df[col].eq("")])
             col_metrics.append(metrics)
         return pd.DataFrame(col_metrics)
+
+    def check_duplicates(
+        self, df, columns=None, keep="first", ascending=None, output_file=None
+    ):
+        """
+        Bundles duplicate analysis, common steps like checking duplicates
+        showing the total numbers, showing the actual duplicates, exporting
+        to excel the offending duplicates
+        Args:
+            df (DataFrame): pandas dataframe
+            columns (str, list or int, optional): column(s) to check, if more
+            than one column is provided the check is combined duplicates, exactly as pandas duplicated().
+            keep ('first','last' or False, optional): Argument for pandas df.duplicated() method.
+            Defaults to 'first'.
+            ascending (True, False or None, optional): Argument for pandas df.value_counts() Defaults to None.
+
+        Returns:
+            DataFrame or None: Returns the DataFrame with the duplicates.
+            If no duplicates, returns None.
+        """
+        if not isinstance(df, pd.DataFrame):
+            return
+        if isinstance(columns, str):
+            cols = [columns]
+        if isinstance(cols, int):
+            cols = [df.columns[columns]]
+        if not columns:
+            fields = "entire record"
+            cols = list(df.columns)
+        else:
+            fields = ",".join(cols)
+
+        df_duplicates = df[df.duplicated(subset=cols, keep=keep)]
+
+        print(
+            "Duplicates in",
+            fields,
+            "(keep=",
+            keep,
+            "):",
+            len(df_duplicates),
+            " of population: ",
+            len(df),
+        )
+        if len(df_duplicates) == 0:
+            return None
+        else:
+            if ascending is True:
+                print("Ascending")
+                df_ret = df_duplicates.sort_values(cols, ascending=True)
+            elif ascending is False:
+                print("Descending")
+                df_ret = df_duplicates.sort_values(cols, ascending=False)
+            else:
+                print("No sort")
+                df_ret = df_duplicates
+
+        if output_file:
+            self._save_to_excel(df_ret, output_file)
+
+        return df_ret
 
     def check_sequence(self, df):
         """ to check the numerical sequence of a series including dates
