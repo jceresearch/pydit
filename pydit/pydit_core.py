@@ -1,12 +1,17 @@
 """ core library of convenience tools"""
+
 from datetime import datetime, timedelta
 import re
 import pickle
 import os
-from zlib import DEFLATED
+import logging
+from pathlib import Path
+import csv
 import numpy as np
 import pandas as pd
 from pandas.api.types import is_datetime64_any_dtype as is_datetime
+
+logger = logging.getLogger(__name__)
 
 
 class Tools(object):
@@ -18,6 +23,8 @@ this module is the main library
 """
 
     def __init__(self, temp_path="", output_path="", input_path=""):
+        """ initialise configuration"""
+        # TODO: #14 check that the folders exist, see to that this check is done every time it is updated
         if temp_path == "":
             self.temp_path = "."
         else:
@@ -29,7 +36,9 @@ this module is the main library
         if input_path == "":
             self.input_path = "."
         else:
-            self.intput_path = input_path
+            self.input_path = input_path
+
+        self.MAX_ROWS_TO_EXCEL = 200000
 
     def version(self):
         """ version information"""
@@ -41,6 +50,17 @@ this module is the main library
         Version: 1.01\n \
         Released:Jan 2022 "
         return about_text
+
+    def config(self):
+        """returns current configuration"""
+        conf = {
+            "temp_path": self.temp_path,
+            "output_path": self.output_path,
+            "input_path": self.input_path,
+            "max_rows_to_excel": self.MAX_ROWS_TO_EXCEL,
+        }
+        logger.info("\n" + "\n".join("{}\t{}".format(k, v) for k, v in conf.items()))
+        return conf
 
     def _dataframe_to_code(self, df):
         """ utility function to convert a dataframe to a piece of code
@@ -71,21 +91,78 @@ this module is the main library
                 newlist[i] = str(el)
         return newlist
 
-    def _save_to_excel(self, df, file_name, sheet_name=None):
+    def _stem_name(self, file_name):
+        """ find the core name of a provided string with a filename and lowers case"""
+        p = Path(file_name)
+        s = str.lower(p.stem)
+        return s
+
+    def _save_to_excel(self, obj, file_name, sheet_name=None):
         """ Internal routine to save a dataframe to excel with sensible options"""
-        file_name = file_name.replace(r"\.xlsx*", "", regex=True)
+        stem_name = self._stem_name(file_name)
+
         if self.output_path[-1] == "/" or self.output_path[-1] == "\\":
             separator = ""
         else:
             separator = "\\"
 
-        full_file_name = self.output_path + separator + file_name + ".xlsx"
+        full_file_name = self.output_path + separator + stem_name + ".xlsx"
         if not sheet_name:
-            sheet_name = file_name[:15]
+            sheet_name = file_name
+        sheet_name = sheet_name[:30]  # truncating to meet Excel max tab lenght
         try:
-            df.to_excel(full_file_name, sheet_name=sheet_name, index=False)
-        except Exception as e:
-            print(e)
+            obj.to_excel(
+                full_file_name, sheet_name=sheet_name, index=False, freeze_panes=(1, 0)
+            )
+
+        except Exception:
+            logger.exception("Failed to save to Excel file")
+            return None
+
+        return full_file_name
+
+    def _save_to_csv(self, df, file_name):
+        """ Internal routine to save a dataframe to a csv with sensible options"""
+        stem_name = self._stem_name(file_name)
+
+        if self.output_path[-1] == "/" or self.output_path[-1] == "\\":
+            separator = ""
+        else:
+            separator = "\\"
+            logger.warning(
+                "Output path does not end in backslash, add it in the config for stability"
+            )
+
+        full_file_name = self.temp_path + separator + stem_name + ".csv"
+        try:
+            df.to_csv(
+                full_file_name, index=False, quotechar='"', quoting=csv.QUOTE_ALL,
+            )
+        except Exception:
+            logger.exception("Failed to save to csv file")
+            return None
+        return full_file_name
+
+    def _save_to_pickle(self, obj, file_name):
+        """ Internal routine to save a dataframe to a pickle with sensible options"""
+        stem_name = self._stem_name(file_name)
+
+        if self.output_path[-1] == "/" or self.output_path[-1] == "\\":
+            separator = ""
+        else:
+            separator = "\\"
+
+        full_file_name = self.temp_path + separator + stem_name + ".pickle"
+        try:
+            with open(full_file_name, "wb") as handle:
+                pickle.dump(obj, handle, protocol=pickle.HIGHEST_PROTOCOL)
+                print(
+                    "Saved pickle to " + full_file_name,
+                    round((handle.tell() / 1024) / 1024, 1),
+                    " MB",
+                )
+        except Exception:
+            logger.exception("Failed to save to a pickle file")
             return None
         return full_file_name
 
@@ -163,7 +240,7 @@ this module is the main library
             elif os.path.isfile(self.output_path + file_name):
                 full_name = self.input_path + file_name
             else:
-                print("No file found in any of the possible sources")
+                logger.error("No file found in any of the possible sources")
                 return obj
 
         if ".pickle" in full_name:
@@ -197,7 +274,7 @@ this module is the main library
             try:
                 print(len(obj))
             except Exception:
-                pass
+                logger.debug("Object doesnt have len()")
         print(datetime.now())
         return obj
 
@@ -210,68 +287,54 @@ this module is the main library
             filename ([type]): [description]
             bool_also_pickle (bool, optional): [description]. Defaults to False.
         """
+        if filename is False:
+            return
 
         flag = False
         flag_to_csv_instead = False
+        filename = str.lower(str.strip(filename))
         start_time = datetime.now()
-        stem_name = re.sub("\.[a-zA-Z0-9_]{2,}$", "", filename)
+        stem_name = self._stem_name(filename)
+
         if isinstance(obj, pd.DataFrame) or isinstance(obj, pd.Series):
             if ".xlsx" in filename:
-                if obj.shape[0] < 300000:
-                    print("Saving to an excel file:", output_path + filename)
-                    obj.to_excel(
-                        output_path + filename,
-                        index=False,
-                        sheet_name=stem_name,
-                        freeze_panes=(1, 0),
-                    )
-                    flag = True
+                if obj.shape[0] < self.MAX_ROWS_TO_EXCEL:
+                    logger.debug("Saving to an excel file")
+                    output = self._save_to_excel(obj, stem_name)
+                    if output:
+                        logger.info("Saved to %s", output)
+                        flag = True
+
                 else:
                     flag_to_csv_instead = True
-                    print("Too big for excel!")
-                if bool_also_pickle:
-                    print(
-                        "Saving also to a pickle file:",
-                        temp_path + stem_name + ".pickle",
-                    )
-                    obj.to_pickle(temp_path + stem_name + ".pickle")
-            if ".csv" in filename or flag_to_csv_instead == True:
-                print("Saving to csv:", temp_path + stem_name + ".csv")
-                obj.to_csv(
-                    temp_path + filename,
-                    index=False,
-                    quotechar='"',
-                    quoting=csv.QUOTE_ALL,
-                )
+                    logger.warning("Too big for excel, saving to csv instead")
+            if ".csv" in filename or flag_to_csv_instead:
+                logger.debug("Saving to csv")
+                output = self._save_to_csv(obj, stem_name)
+                if output:
+                    print("Saved to ", output)
+                    flag = True
+        if ".pickle" in filename or bool_also_pickle:
+            logger.debug("Saving to pickle format")
+            output = self._save_to_pickle(obj, stem_name)
+            if output:
+                logger.info("Saved to %s", output)
                 flag = True
-            if ".pickle" in filename or bool_also_pickle == True:
-                print("Saving to pickle format in: ", temp_path + filename)
-                obj.to_pickle(temp_path + stem_name + ".pickle")
-                flag = True
-            if flag:
-                print("(rows, columns) :", obj.shape)
+        if flag:
+            try:
+                # TODO #15 Look into pretty outputs for logging lists/tuples
+                print("Shape :", obj.shape)
                 print("Saved columns:", list(obj.columns))
-                print(
-                    "Finished:",
-                    f"{datetime.now():%Y-%m-%d %H:%M:%S}",
-                    " - ",
-                    round((datetime.now() - start_time).total_seconds() / 60.0, 2),
-                    " mins",
-                )
-            else:
-                print("Name not recognised, nothing saved")
+            except Exception:
+                pass  # should be when the object doesnt support shape or columns
+            logger.info(
+                "Finished in %s mins",
+                str(round((datetime.now() - start_time).total_seconds() / 60.0, 2)),
+            )
         else:
-            if ".pickle" in filename:
-                with open(temp_path + filename, "wb") as handle:
-                    pickle.dump(obj, handle, protocol=pickle.HIGHEST_PROTOCOL)
-                    print(
-                        "Saved pickle to " + filename,
-                        round((handle.tell() / 1024) / 1024, 1),
-                        " MB",
-                    )
-                    print(datetime.now())
-            else:
-                print("Nothing saved, format not recognised")
+            logger.error("Errors found when saving")
+
+        return flag
 
     def check_dataframe(self, df):
         """[summary]
@@ -304,7 +367,6 @@ this module is the main library
             else:
                 metrics["value_counts"] = []
             if "float" in str(typ):
-                print("float")
                 metrics["max"] = max(df[col])
                 metrics["min"] = min(df[col])
                 metrics["sum"] = sum(df[col])
@@ -341,11 +403,12 @@ this module is the main library
         to excel the offending duplicates
         Args:
             df (DataFrame): pandas dataframe
-            columns (str, list or int, optional): column(s) to check, if more
-            than one column is provided the check is combined duplicates, exactly as pandas duplicated().
+            columns (str, list or int, optional): column(s) to check, if multiple columns provided 
+            the check is combined duplicates, exactly as pandas duplicated().
             keep ('first','last' or False, optional): Argument for pandas df.duplicated() method.
             Defaults to 'first'.
-            ascending (True, False or None, optional): Argument for pandas df.value_counts() Defaults to None.
+            ascending (True, False or None, optional): Argument for DataFrame.value_counts() 
+            Defaults to None.
 
         Returns:
             DataFrame or None: Returns the DataFrame with the duplicates.
@@ -456,7 +519,7 @@ this module is the main library
 
 
 def main():
-    """ main routine, currently not used """
+    """ main routine"""
 
 
 if __name__ == "__main__":
