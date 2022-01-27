@@ -371,12 +371,14 @@ this module is the main library
                 metrics["min"] = min(df[col])
                 metrics["sum"] = sum(df[col])
                 metrics["sum_abs"] = sum(abs(df[col]))
+                metrics["std"] = df[col].std()
                 # TODO: possibly add hist/sparkline data to further add to the profiling
             elif "int" in str(typ):
                 metrics["max"] = max(df[col])
                 metrics["min"] = min(df[col])
                 metrics["sum"] = sum(df[col])
                 metrics["sum_abs"] = sum(abs(df[col]))
+                metrics["std"] = df[col].std()
             elif is_datetime(df[col]):
                 metrics["max"] = max(df[col])
                 metrics["min"] = min(df[col])
@@ -516,6 +518,39 @@ this module is the main library
                     else:
                         print("No sequence to check")
         return
+
+    def clean_cols(self, in_df, date_fillna="latest"):
+        """Cleanup the actual values of the dataframe with sensible
+        nulls handling.
+
+        Args:
+            in_df ([type]): Input DataFrame
+            date_fillna ('latest','first' or datetime, optional):
+            What to put in NaT values, takes the first, last or a specified
+            date to fill the gaps.
+            Defaults to "latest".
+
+        Returns:
+            DataFrame: Returns copy of the original dataframe with modifications
+            Beware if the dataframe is large you may have memory issues.
+        """
+
+        df = in_df.copy()
+        dtypes = df.dtypes.to_dict()
+        for col, typ in dtypes.items():
+            if ("int" in str(typ)) or ("float" in str(typ)):
+                df[col].fillna(0, inplace=True)
+            elif is_datetime(df[col]):
+                if date_fillna == "latest":
+                    val = max(df[col])
+                elif date_fillna == "first":
+                    val = min(df[col])
+                elif isinstance(date_fillna, datetime):
+                    val = date_fillna
+                df[col].fillna(val, inplace=True)
+            elif typ == "object":
+                df[col].fillna("", inplace=True)
+        return df
 
 
 def main():
