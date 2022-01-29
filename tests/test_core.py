@@ -1,4 +1,6 @@
-"""test suite"""
+"""test suite for the core pydit module"""
+
+import os, sys
 import unittest
 import pandas as pd
 import numpy as np
@@ -6,6 +8,7 @@ from datetime import datetime, date, timedelta
 from pandas import Timestamp
 
 
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from pydit import pydit_core
 
 
