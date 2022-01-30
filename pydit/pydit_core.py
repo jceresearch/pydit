@@ -336,7 +336,7 @@ this module is the main library
 
         return flag
 
-    def check_dataframe(self, df):
+    def profile_dataframe(self, df):
         """[summary]
 
         Args:
