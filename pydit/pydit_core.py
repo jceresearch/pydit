@@ -461,6 +461,7 @@ this module is the main library
     def check_sequence(self, df):
         """ to check the numerical sequence of a series including dates
         and numbers within an text ID """
+        #TODO: develop good tests and check the fullrng.issubset(unique) approach is correct
         dtypes = df.dtypes.to_dict()
         for col, typ in dtypes.items():
             print(col, typ)
