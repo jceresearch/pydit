@@ -467,10 +467,10 @@ this module is the main library
             if "int" in str(typ):
                 unique = set([i for i in set(df[pd.notna(df[col])][col])])
                 fullrng = range(min(unique), max(unique) + 1)
-                if unique.issubset(fullrng):
+                if fullrng.issubset(unique):
                     print("Full sequence")
                 else:
-                    diff = unique.difference(fullrng)
+                    diff = fullrng.difference(unique)
                     print("Missing in sequence: ", list(diff)[0:10])
             elif is_datetime(df[col]):
                 unique = set([i.date() for i in set(df[pd.notna(df[col])][col])])
@@ -479,10 +479,10 @@ this module is the main library
                         min(unique), max(unique) - timedelta(days=1), freq="d"
                     ).to_list()
                 )
-                if unique.issubset(fullrng):
+                if fullrng.issubset(unique):
                     print("Full sequence")
                 else:
-                    diff = unique.difference(fullrng)
+                    diff = fullrng.difference(unique)
                     print(
                         len(diff),
                         " missing in sequence, first ",
@@ -506,10 +506,10 @@ this module is the main library
                     if unique:
 
                         fullrng = set(range(min(unique), max(unique)))
-                        if unique.issubset(fullrng):
+                        if fullrng.issubset(unique):
                             print("Full sequence")
                         else:
-                            diff = unique.difference(fullrng)
+                            diff = fullrng.difference(unique)
                             print(
                                 len(diff),
                                 " missing in sequence, fist 10:",
