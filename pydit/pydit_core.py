@@ -5,7 +5,7 @@ import re
 import pickle
 import os
 import logging
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 import csv
 import numpy as np
 import pandas as pd
@@ -23,28 +23,71 @@ needs, which focuses on simplicity and generating audit trails of everyghing
 this module is the main library
 """
 
-    def __init__(self, temp_path="", output_path="", input_path=""):
+    def __init__(
+        self, temp_path="", output_path="", input_path="", max_rows_to_excel=200000
+    ):
         """ initialise configuration"""
         # TODO: #14 check that the folders exist, see to that this check is done every time it is updated
-        if temp_path == "":
-            self.temp_path = "."
-        else:
-            self.temp_path = temp_path
-        if output_path == "":
-            self.output_path = "."
-        else:
-            self.output_path = output_path
-        if input_path == "":
-            self.input_path = "."
-        else:
-            self.input_path = input_path
+        self.temp_path = temp_path
+        self.output_path = output_path
+        self.input_path = input_path
+        self.max_rows_to_excel = max_rows_to_excel
 
-        self.MAX_ROWS_TO_EXCEL = 200000
+    @property
+    def max_rows_to_excel(self):
+        return self._MAX_ROWS_TO_EXCEL
 
+    @max_rows_to_excel.setter
+    def max_rows_to_excel(self, n):
+        if n > 999999 or n < 0:
+            raise Exception("Rows number must be positive and less than 1,000,000")
+        self._MAX_ROWS_TO_EXCEL = n
+
+    @property
+    def temp_path(self):
+        return self._temp_path
+
+    @temp_path.setter
+    def temp_path(self, path):
+        if not path:
+            path = "./"
+        else:
+            if not path[-1] == "/":
+                path = path + "/"
+        self._temp_path = path
+
+    @property
+    def input_path(self):
+        return self._input_path
+
+    @input_path.setter
+    def input_path(self, path):
+        if not path:
+            path = "./"
+        else:
+            if not path[-1] == "/":
+                path = path + "/"
+        self._input_path = path
+
+    @property
+    def output_path(self):
+        return self._output_path
+
+    @output_path.setter
+    def output_path(self, path):
+        if not path:
+            path = "./"
+        else:
+            if not path[-1] == "/":
+                path = path + "/"
+        self._output_path = path
+
+    @property
     def version(self):
         """ version information"""
         return "V.01"
 
+    @property
     def about(self):
         """ About information"""
         about_text = "Pydit - Tools for internal auditors\n \
@@ -58,7 +101,7 @@ this module is the main library
             "temp_path": self.temp_path,
             "output_path": self.output_path,
             "input_path": self.input_path,
-            "max_rows_to_excel": self.MAX_ROWS_TO_EXCEL,
+            "max_rows_to_excel": self.max_rows_to_excel,
         }
         logger.info("\n" + "\n".join("{}\t{}".format(k, v) for k, v in conf.items()))
         return conf
@@ -94,7 +137,10 @@ this module is the main library
 
     def _stem_name(self, file_name):
         """ find the core name of a provided string with a filename and lowers case"""
-        p = Path(file_name)
+        try:
+            p = PureWindowsPath(file_name)
+        except:
+            p = Path(file_name)
         s = str.lower(p.stem)
         return s
 
@@ -398,7 +444,7 @@ this module is the main library
         return pd.DataFrame(col_metrics)
 
     def check_duplicates(
-        self, df, columns=None, keep="first", ascending=None, output_file=None
+        self, df, columns=[], keep="first", ascending=None, output_file=None
     ):
         """
         Bundles duplicate analysis, common steps like checking duplicates
@@ -417,18 +463,23 @@ this module is the main library
             DataFrame or None: Returns the DataFrame with the duplicates.
             If no duplicates, returns None.
         """
-        if not isinstance(df, pd.DataFrame):
-            return
-        if isinstance(columns, str):
-            cols = [columns]
-        if isinstance(cols, int):
-            cols = [df.columns[columns]]
-        if not columns:
-            fields = "entire record"
-            cols = list(df.columns)
-        else:
-            fields = ",".join(cols)
 
+        if not isinstance(df, pd.DataFrame):
+            logging.error(
+                "Expecting a dataframe, a single column dataframe is a Series and not yet supported"
+            )
+            # TODO: #17 Add support for Series in the duplicate check
+            return
+        if not isinstance(columns, list):
+            logging.error("Expecting a list, even a list of one element")
+            return
+        else:
+            if len(columns) == 0:
+                cols = df.columns
+            else:
+                cols = columns
+
+        fields = ",".join(cols)
         df_duplicates = df[df.duplicated(subset=cols, keep=keep)]
 
         print(
