@@ -13,6 +13,7 @@ from pandas.api.types import is_datetime64_any_dtype as is_datetime
 from pandas.api.types import is_string_dtype, is_numeric_dtype
 from pandas import Series, DataFrame
 
+
 logger = logging.getLogger(__name__)
 
 
@@ -34,6 +35,19 @@ this module is the main library
         self.input_path = input_path
         self.max_rows_to_excel = max_rows_to_excel
 
+    def _fix_path(self, path=None):
+        if not path:
+            res = "./"
+        else:
+            if not (path[-1] == "/" or path[-1] == "\\"):
+                res = path + "/"
+            else:
+                res = path
+            if not Path(res).is_dir():
+                logging.error("Path %s does not exist, setting to current dir", res)
+                res = "./"
+        return res
+
     @property
     def max_rows_to_excel(self):
         """Maximum number of rows to save to Excel, past that CSV or Pickle"""
@@ -53,38 +67,28 @@ this module is the main library
 
     @temp_path.setter
     def temp_path(self, path):
-        if not path:
-            path = "./"
-        else:
-            if not path[-1] == "/":
-                path = path + "/"
-        self._temp_path = path
+        """ Where we validate the temp_path property"""
+        self._temp_path = self._fix_path(path)
 
     @property
     def input_path(self):
+        """ input_path property"""
         return self._input_path
 
     @input_path.setter
     def input_path(self, path):
-        if not path:
-            path = "./"
-        else:
-            if not path[-1] == "/":
-                path = path + "/"
-        self._input_path = path
+        """ Where we validate the input_path property"""
+        self._input_path = self._fix_path(path)
 
     @property
     def output_path(self):
+        """ Output path property"""
         return self._output_path
 
     @output_path.setter
     def output_path(self, path):
-        if not path:
-            path = "./"
-        else:
-            if not path[-1] == "/":
-                path = path + "/"
-        self._output_path = path
+        """ where we validate the output_path property"""
+        self._output_path = self._fix_path(path)
 
     @property
     def version(self):
@@ -432,6 +436,7 @@ this module is the main library
                 metrics["sum"] = sum(df[col])
                 metrics["sum_abs"] = sum(abs(df[col]))
                 metrics["std"] = df[col].std()
+                metrics["zeroes"] = np.count_nonzero(df[col] == 0)
                 # TODO: possibly add hist/sparkline data to further add to the profiling
             elif "int" in str(typ):
                 metrics["max"] = max(df[col])
@@ -439,6 +444,7 @@ this module is the main library
                 metrics["sum"] = sum(df[col])
                 metrics["sum_abs"] = sum(abs(df[col]))
                 metrics["std"] = df[col].std()
+                metrics["zeroes"] = np.count_nonzero(df[col] == 0)
             elif is_datetime(df[col]):
                 metrics["max"] = max(df[col])
                 metrics["min"] = min(df[col])
@@ -452,7 +458,7 @@ this module is the main library
                 if len(numeric) > 0:
                     metrics["max"] = max(numeric)
                     metrics["min"] = min(numeric)
-                metrics["empty_strings"] = len(df[df[col].eq("")])
+                metrics["empty_strings"] = len(df[df[col].str.strip().eq("")])
             col_metrics.append(metrics)
         return pd.DataFrame(col_metrics)
 
@@ -495,7 +501,7 @@ this module is the main library
                 df[c + "_blanks"] = pd.isna(df[c])
             total_results.append(df[c + "_blanks"].sum())
         new_cols = [c + "_blanks" for c in cols]
-        df["has_blanks"] = np.any(df[new_cols])
+        df["has_blanks"] = np.any(df[new_cols], axis=1)
 
         print("Total blanks found in each columns:", total_results)
         if output_file:
