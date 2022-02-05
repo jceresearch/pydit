@@ -2,6 +2,8 @@
 import os
 import sys
 
+import numpy as np
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from pydit import pydit_core
 
@@ -43,3 +45,22 @@ def test_check_sequence():
     assert tools.check_sequence([1, 15]) == [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
     assert tools.check_sequence(pd.Series([1, 2, 3, 5])) == [4]
     assert tools.check_sequence("1 2 3 4 5") == None
+
+
+def test_check_blanks():
+    """ testing the blanks checker"""
+    d = {
+        "col1": [1, 2, 3, 4, 5],
+        "col2": ["Value 1", "Value 2", "", " ", "Value 5"],
+        "col3": [np.nan, 2.0, 0.0, 4.0, 5.1],
+        "col4": [np.nan, 2, 0, 4, 5],
+        "col5": [np.nan, "    ", "  \t", "   \n", "Value 5"],
+    }
+    df = pd.DataFrame(data=d)
+    totals = tools.check_blanks(df, totals_only=True)
+    assert totals[0] == 0
+    assert totals[1] == 2
+    assert totals[2] == 2
+    assert totals[3] == 2
+    assert totals[4] == 4
+

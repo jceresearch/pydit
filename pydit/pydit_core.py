@@ -10,6 +10,7 @@ import csv
 import numpy as np
 import pandas as pd
 from pandas.api.types import is_datetime64_any_dtype as is_datetime
+from pandas.api.types import is_string_dtype, is_numeric_dtype
 from pandas import Series, DataFrame
 
 logger = logging.getLogger(__name__)
@@ -35,16 +36,19 @@ this module is the main library
 
     @property
     def max_rows_to_excel(self):
+        """Maximum number of rows to save to Excel, past that CSV or Pickle"""
         return self._MAX_ROWS_TO_EXCEL
 
     @max_rows_to_excel.setter
     def max_rows_to_excel(self, n):
+        """ Setter for max_rows_to_excel"""
         if n > 999999 or n < 0:
             raise Exception("Rows number must be positive and less than 1,000,000")
         self._MAX_ROWS_TO_EXCEL = n
 
     @property
     def temp_path(self):
+        """'Where do we save the temp files, typically for large files, local cache"""
         return self._temp_path
 
     @temp_path.setter
@@ -267,8 +271,17 @@ this module is the main library
         return r
 
     def load(self, file_name, source="auto"):
-        """ load a file with extra features and assuming some standardisation
+        """Load a xlsx, csv or pickle file into a DataFrame with extra features and sensible parameters
+        Assumes it is perfectly tabular and fields are in row one, assumes spreadsheets has one sheet.
+        This is meant to be used for highly standard files, typically intermediate files we control
+        Args:
+            file_name (String): the core (stem) file name and externsion 
+            source (str, optional): temp, input, output, auto, Defaults to "auto".
+            Auto will look for the file in temp_path, then input_path, then output_path
+        Returns:
+            DataFrame with the file loaded
         """
+
         obj = None
         if source == "input":
             if os.path.isfile(self.input_path + file_name):
@@ -282,10 +295,10 @@ this module is the main library
         if source == "auto":
             if os.path.isfile(self.temp_path + file_name):
                 full_name = self.temp_path + file_name
-            elif os.path.isfile(self.temp_path + file_name):
+            elif os.path.isfile(self.input_path + file_name):
                 full_name = self.input_path + file_name
             elif os.path.isfile(self.output_path + file_name):
-                full_name = self.input_path + file_name
+                full_name = self.output_path + file_name
             else:
                 logger.error("No file found in any of the possible sources")
                 return obj
@@ -345,7 +358,7 @@ this module is the main library
 
         if isinstance(obj, pd.DataFrame) or isinstance(obj, pd.Series):
             if ".xlsx" in filename:
-                if obj.shape[0] < self.MAX_ROWS_TO_EXCEL:
+                if obj.shape[0] < self._MAX_ROWS_TO_EXCEL:
                     logger.debug("Saving to an excel file")
                     output = self._save_to_excel(obj, stem_name)
                     if output:
@@ -443,8 +456,57 @@ this module is the main library
             col_metrics.append(metrics)
         return pd.DataFrame(col_metrics)
 
+    def check_blanks(
+        self,
+        df_in,
+        columns=None,
+        zeroes=True,
+        null_strings_and_spaces=True,
+        output_file=None,
+        totals_only=False,
+    ):
+        """ Reports on blanks in the Dataframe and optionally saves to an excel file  """
+
+        if not isinstance(df_in, pd.DataFrame):
+            logging.error(
+                "Expecting a dataframe, a single column dataframe is a Series and not yet supported"
+            )
+            return
+        df = df_in.copy()
+        if columns and isinstance(columns, list):
+            cols = columns
+        elif not columns:
+            cols = df.columns
+        else:
+            logging.error("Expecting a list, even a list of one element")
+            return
+
+        fields = ",".join(cols)
+        logging.info("Checking for blanks in %s", fields)
+        total_results = []
+        for c in cols:
+            if is_numeric_dtype(df[c]) and zeroes:
+                df[c + "_blanks"] = (pd.isna(df[c])) | (df[c] == 0)
+            elif is_string_dtype(df[c]) and null_strings_and_spaces:
+                logging.debug("Checking for spaces and nullstring too in %s", c)
+                df[c + "_blanks"] = (pd.isna(df[c])) | (df[c].str.strip() == "")
+            else:
+                logging.debug("Checking just for NaN or NaT in %s", c)
+                df[c + "_blanks"] = pd.isna(df[c])
+            total_results.append(df[c + "_blanks"].sum())
+        new_cols = [c + "_blanks" for c in cols]
+        df["has_blanks"] = np.any(df[new_cols])
+
+        print("Total blanks found in each columns:", total_results)
+        if output_file:
+            self.save(df, output_file)
+        if totals_only:
+            return total_results
+
+        return df
+
     def check_duplicates(
-        self, df, columns=[], keep="first", ascending=None, output_file=None
+        self, df, columns=None, keep="first", ascending=None, output_file=None
     ):
         """
         Bundles duplicate analysis, common steps like checking duplicates
@@ -474,7 +536,7 @@ this module is the main library
             logging.error("Expecting a list, even a list of one element")
             return
         else:
-            if len(columns) == 0:
+            if not columns:
                 cols = df.columns
             else:
                 cols = columns
