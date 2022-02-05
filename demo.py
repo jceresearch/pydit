@@ -7,7 +7,16 @@ logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S",
     format="%(asctime)s %(levelname)s %(name)s %(message)s",
     level=logging.DEBUG,
+    handlers=[
+
+        RotatingFileHandler("audit.log", maxBytes=50000, backupCount=5),
+
+        logging.StreamHandler(),
+
+    ]   
 )
+
+
 logging.info("Started")
 tools = pydit_core.Tools()
 tools.input_path = "./demo_data/"
