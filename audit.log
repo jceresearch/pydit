@@ -102,3 +102,10 @@ FileNotFoundError: [Errno 2] No such file or directory: './output/test.xlsx'
 2022-02-05 20:05:22 DEBUG pydit.pydit_core Saving to an excel file
 2022-02-05 20:05:22 INFO pydit.pydit_core Saved to ./output/test.xlsx
 2022-02-05 20:05:22 INFO pydit.pydit_core Finished in 0.0 mins
+2022-02-06 07:36:22 INFO root Started
+2022-02-06 07:36:47 INFO root Started
+2022-02-06 07:36:47 DEBUG root Adding a trailing / to path
+2022-02-06 07:36:47 DEBUG root Adding a trailing / to path
+2022-02-06 07:36:47 DEBUG pydit.file_tools Saving to an excel file
+2022-02-06 07:36:47 INFO pydit.file_tools Saved to ./output/test.xlsx
+2022-02-06 07:36:47 INFO pydit.file_tools Finished in 0.0 mins

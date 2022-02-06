@@ -1,14 +1,13 @@
-""" test of convenience functions"""
+""" test of base functions"""
 import os
 import sys
-from datetime import Timestamp
 
 import numpy as np
+import pandas as pd
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from pydit import file_tools
+from pydit import base_tools
 
-import pandas as pd
 
 # import numpy as np
 # from datetime import datetime, date, timedelta
@@ -20,16 +19,11 @@ logging.basicConfig(
     format="%(asctime)s %(levelname)s %(message)s",
     level=logging.DEBUG,
 )
+
+
 logging.info("Started")
 
-tools = file_tools.FileTools()
-
-
-def test_init():
-    """ testing the initiatlisation and setup"""
-    assert tools.input_path == "./"
-    tools.input_path = "./input"
-    assert tools.input_path == "./input/"
+tools = base_tools.BaseTools()
 
 
 def test_deduplicate_list():
@@ -37,13 +31,6 @@ def test_deduplicate_list():
     assert tools._deduplicate_list(["A", "B", "B"]) == ["A", "B", "B_2"]
     assert tools._deduplicate_list([]) == []
     assert tools._deduplicate_list([1, 2, 2]) == ["1", "2", "2_2"]
-
-
-def test_stem_name():
-    """ test the internal function to find the stemp of a filename"""
-    assert tools._stem_name("Test.xlsx") == "test"
-    assert tools._stem_name(r"c:\test\test.xlsx") == "test"
-    assert tools._stem_name(r".\Test.xls") == "test"
 
 
 def test_clean_string():
