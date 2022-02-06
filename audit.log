@@ -1,0 +1,104 @@
+2022-02-05 19:28:37 INFO root Started
+2022-02-05 19:28:37 ERROR root Path ./input/ does not exist, setting to current dir
+2022-02-05 19:28:51 INFO root Started
+2022-02-05 19:28:51 ERROR root Path ./input/ does not exist, setting to current dir
+2022-02-05 19:32:02 INFO root Started
+2022-02-05 19:32:02 DEBUG root Adding a trailing / to path
+2022-02-05 19:32:02 ERROR root Path ./input/ does not exist, setting to current dir
+2022-02-05 19:33:11 INFO root Started
+2022-02-05 19:33:11 DEBUG root Adding a trailing / to path
+2022-02-05 19:33:11 ERROR root Path ./input/ does not exist, setting to current dir
+2022-02-05 19:33:16 INFO root Started
+2022-02-05 19:33:16 DEBUG root Adding a trailing / to path
+2022-02-05 19:33:16 ERROR root Path ./input/ does not exist, setting to current dir
+2022-02-05 19:33:45 INFO root Started
+2022-02-05 19:33:45 DEBUG root Adding a trailing / to path
+2022-02-05 19:33:45 ERROR root Path ./input/ does not exist, setting to current dir
+2022-02-05 19:39:01 INFO root Started
+2022-02-05 19:39:01 DEBUG root Adding a trailing / to path
+2022-02-05 19:39:01 ERROR root Path ./input/ does not exist, setting to current dir
+2022-02-05 19:41:16 INFO root Started
+2022-02-05 19:41:16 DEBUG root Adding a trailing / to path
+2022-02-05 19:42:27 INFO root Started
+2022-02-05 19:42:27 DEBUG root Adding a trailing / to path
+2022-02-05 19:43:11 INFO root Started
+2022-02-05 19:43:11 DEBUG root Adding a trailing / to path
+2022-02-05 19:44:14 INFO root Started
+2022-02-05 19:44:14 DEBUG root Adding a trailing / to path
+2022-02-05 19:44:21 INFO root Started
+2022-02-05 19:44:21 DEBUG root Adding a trailing / to path
+2022-02-05 19:44:38 INFO root Started
+2022-02-05 19:46:35 INFO root Started
+2022-02-05 19:47:12 INFO root Started
+2022-02-05 19:50:10 INFO root Started
+2022-02-05 19:50:10 DEBUG root Adding a trailing / to path
+2022-02-05 19:50:11 ERROR root Path ./input/ does not exist, setting to current dir
+2022-02-05 19:50:51 INFO root Started
+2022-02-05 19:50:51 DEBUG root Adding a trailing / to path
+2022-02-05 19:50:51 ERROR root Path ./input/ does not exist, setting to current dir
+2022-02-05 19:50:57 INFO root Started
+2022-02-05 19:50:57 DEBUG root Adding a trailing / to path
+2022-02-05 19:50:57 ERROR root Path ./input/ does not exist, setting to current dir
+2022-02-05 19:51:58 INFO root Started
+2022-02-05 19:51:58 DEBUG root Adding a trailing / to path
+2022-02-05 19:51:58 DEBUG root Current directory is .
+2022-02-05 19:51:58 ERROR root Path ./input/ does not exist, setting to current dir
+2022-02-05 19:53:08 INFO root Started
+2022-02-05 19:53:08 DEBUG root Adding a trailing / to path
+2022-02-05 19:57:09 INFO root Started
+2022-02-05 19:57:09 DEBUG root Adding a trailing / to path
+2022-02-05 19:58:47 INFO root Started
+2022-02-05 19:58:47 DEBUG root Adding a trailing / to path
+2022-02-05 19:58:47 DEBUG root Setting path to ./output/
+2022-02-05 19:59:28 INFO root Started
+2022-02-05 19:59:28 DEBUG root Adding a trailing / to path
+2022-02-05 19:59:28 DEBUG root Setting path to ./output/
+2022-02-05 19:59:28 DEBUG pydit.pydit_core Saving to an excel file
+2022-02-05 19:59:28 ERROR pydit.pydit_core Failed to save to Excel file
+Traceback (most recent call last):
+  File "/Users/juanespasandin/github/pydit/pydit/pydit_core.py", line 169, in _save_to_excel
+    full_file_name, sheet_name=sheet_name, index=False, freeze_panes=(1, 0)
+  File "/Users/juanespasandin/opt/anaconda3/lib/python3.7/site-packages/pandas/core/generic.py", line 2291, in to_excel
+    storage_options=storage_options,
+  File "/Users/juanespasandin/opt/anaconda3/lib/python3.7/site-packages/pandas/io/formats/excel.py", line 835, in write
+    writer, engine=engine, storage_options=storage_options
+  File "/Users/juanespasandin/opt/anaconda3/lib/python3.7/site-packages/pandas/io/excel/_xlsxwriter.py", line 199, in __init__
+    engine_kwargs=engine_kwargs,
+  File "/Users/juanespasandin/opt/anaconda3/lib/python3.7/site-packages/pandas/io/excel/_base.py", line 926, in __init__
+    path, mode, storage_options=storage_options, is_text=False
+  File "/Users/juanespasandin/opt/anaconda3/lib/python3.7/site-packages/pandas/io/common.py", line 711, in get_handle
+    handle = open(handle, ioargs.mode)
+FileNotFoundError: [Errno 2] No such file or directory: './output/test.xlsx'
+2022-02-05 19:59:28 ERROR pydit.pydit_core Errors found when saving
+2022-02-05 20:02:19 INFO root Started
+2022-02-05 20:02:19 DEBUG root Adding a trailing / to path
+2022-02-05 20:02:19 DEBUG root Setting path to ./output/
+2022-02-05 20:02:19 DEBUG pydit.pydit_core Saving to an excel file
+2022-02-05 20:02:19 ERROR pydit.pydit_core Failed to save to Excel file
+Traceback (most recent call last):
+  File "/Users/juanespasandin/github/pydit/pydit/pydit_core.py", line 169, in _save_to_excel
+    full_file_name, sheet_name=sheet_name, index=False, freeze_panes=(1, 0)
+  File "/Users/juanespasandin/opt/anaconda3/lib/python3.7/site-packages/pandas/core/generic.py", line 2291, in to_excel
+    storage_options=storage_options,
+  File "/Users/juanespasandin/opt/anaconda3/lib/python3.7/site-packages/pandas/io/formats/excel.py", line 835, in write
+    writer, engine=engine, storage_options=storage_options
+  File "/Users/juanespasandin/opt/anaconda3/lib/python3.7/site-packages/pandas/io/excel/_xlsxwriter.py", line 199, in __init__
+    engine_kwargs=engine_kwargs,
+  File "/Users/juanespasandin/opt/anaconda3/lib/python3.7/site-packages/pandas/io/excel/_base.py", line 926, in __init__
+    path, mode, storage_options=storage_options, is_text=False
+  File "/Users/juanespasandin/opt/anaconda3/lib/python3.7/site-packages/pandas/io/common.py", line 711, in get_handle
+    handle = open(handle, ioargs.mode)
+FileNotFoundError: [Errno 2] No such file or directory: './output/test.xlsx'
+2022-02-05 20:02:19 ERROR pydit.pydit_core Errors found when saving
+2022-02-05 20:03:58 INFO root Started
+2022-02-05 20:03:58 DEBUG root Adding a trailing / to path
+2022-02-05 20:03:58 DEBUG root Setting path to ./output/
+2022-02-05 20:03:58 DEBUG pydit.pydit_core Saving to an excel file
+2022-02-05 20:03:58 INFO pydit.pydit_core Saved to ./output/test.xlsx
+2022-02-05 20:03:58 INFO pydit.pydit_core Finished in 0.0 mins
+2022-02-05 20:05:22 INFO root Started
+2022-02-05 20:05:22 DEBUG root Adding a trailing / to path
+2022-02-05 20:05:22 DEBUG root Adding a trailing / to path
+2022-02-05 20:05:22 DEBUG pydit.pydit_core Saving to an excel file
+2022-02-05 20:05:22 INFO pydit.pydit_core Saved to ./output/test.xlsx
+2022-02-05 20:05:22 INFO pydit.pydit_core Finished in 0.0 mins

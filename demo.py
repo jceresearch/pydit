@@ -1,24 +1,23 @@
-from pydit import pydit_core
+from pydit import file_tools
 import pandas as pd
 from pandas import Timestamp
 import logging
+from logging.handlers import RotatingFileHandler
+
 
 logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S",
     format="%(asctime)s %(levelname)s %(name)s %(message)s",
     level=logging.DEBUG,
     handlers=[
-
         RotatingFileHandler("audit.log", maxBytes=50000, backupCount=5),
-
         logging.StreamHandler(),
-
-    ]   
+    ],
 )
 
 
 logging.info("Started")
-tools = pydit_core.Tools()
+tools = file_tools.Tools()
 tools.input_path = "./demo_data/"
 tools.output_path = "./demo_data"
 tools.temp_path = "./demo_data"

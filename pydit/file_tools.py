@@ -17,7 +17,7 @@ from pandas import Series, DataFrame
 logger = logging.getLogger(__name__)
 
 
-class Tools(object):
+class FileTools(object):
     """
     Main class to hold parameters and core functions
     PYDIT a toolset for processing data specifically targetting internal audit
@@ -40,12 +40,11 @@ this module is the main library
             res = "./"
         else:
             if not (path[-1] == "/" or path[-1] == "\\"):
+                logging.debug("Adding a trailing / to path")
                 res = path + "/"
             else:
                 res = path
-            if not Path(res).is_dir():
-                logging.error("Path %s does not exist, setting to current dir", res)
-                res = "./"
+                logging.debug("Setting path to %s", path)
         return res
 
     @property
@@ -147,7 +146,7 @@ this module is the main library
         """ find the core name of a provided string with a filename and lowers case"""
         try:
             p = PureWindowsPath(file_name)
-        except:
+        except Exception:
             p = Path(file_name)
         s = str.lower(p.stem)
         return s
