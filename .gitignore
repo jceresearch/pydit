@@ -1,5 +1,6 @@
 /.ipynb_checkpoints/*
 /__pycache__
+/tests/__pycache__
 /pydit/__pycache__
 /to delete/
 audit.log
