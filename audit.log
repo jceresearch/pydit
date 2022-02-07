@@ -109,3 +109,174 @@ FileNotFoundError: [Errno 2] No such file or directory: './output/test.xlsx'
 2022-02-06 07:36:47 DEBUG pydit.file_tools Saving to an excel file
 2022-02-06 07:36:47 INFO pydit.file_tools Saved to ./output/test.xlsx
 2022-02-06 07:36:47 INFO pydit.file_tools Finished in 0.0 mins
+2022-02-06 19:20:15 INFO root Started
+2022-02-06 19:20:48 INFO root Started
+2022-02-06 19:20:48 DEBUG root Folder ./ found alright
+2022-02-06 19:20:48 DEBUG root Folder ./ found alright
+2022-02-06 19:20:48 DEBUG root Folder ./ found alright
+2022-02-06 19:20:48 DEBUG root Setting path to ./demo_data/
+2022-02-06 19:20:48 DEBUG root Folder ./demo_data/ found alright
+2022-02-06 19:20:48 DEBUG root Adding a trailing / to path
+2022-02-06 19:20:48 DEBUG root Folder ./demo_data/ found alright
+2022-02-06 19:20:48 DEBUG root Adding a trailing / to path
+2022-02-06 19:20:48 DEBUG root Folder ./demo_data/ found alright
+2022-02-06 19:24:44 INFO root Started
+2022-02-06 19:24:44 DEBUG root Folder ./ found alright
+2022-02-06 19:24:44 DEBUG root Folder ./ found alright
+2022-02-06 19:24:44 DEBUG root Folder ./ found alright
+2022-02-06 19:24:44 DEBUG root Setting path to ./demo_data/
+2022-02-06 19:24:44 DEBUG root Folder ./demo_data/ found alright
+2022-02-06 19:24:44 DEBUG root Adding a trailing / to path
+2022-02-06 19:24:44 DEBUG root Folder ./demo_data/ found alright
+2022-02-06 19:24:44 DEBUG root Adding a trailing / to path
+2022-02-06 19:24:44 DEBUG root Folder ./demo_data/ found alright
+2022-02-06 19:25:00 INFO root Started
+2022-02-06 19:25:00 DEBUG root Folder ./ found alright
+2022-02-06 19:25:00 DEBUG root Folder ./ found alright
+2022-02-06 19:25:00 DEBUG root Folder ./ found alright
+2022-02-06 19:25:00 DEBUG root Setting path to ./demo_data/
+2022-02-06 19:25:00 DEBUG root Folder ./demo_data/ found alright
+2022-02-06 19:25:00 DEBUG root Adding a trailing / to path
+2022-02-06 19:25:00 DEBUG root Folder ./demo_data/ found alright
+2022-02-06 19:25:00 DEBUG root Adding a trailing / to path
+2022-02-06 19:25:00 DEBUG root Folder ./demo_data/ found alright
+2022-02-06 19:25:16 INFO root Started
+2022-02-06 19:25:16 DEBUG root Folder ./ found alright
+2022-02-06 19:25:16 DEBUG root Folder ./ found alright
+2022-02-06 19:25:16 DEBUG root Folder ./ found alright
+2022-02-06 19:25:16 DEBUG root Setting path to ./demo_data/
+2022-02-06 19:25:16 DEBUG root Folder ./demo_data/ found alright
+2022-02-06 19:25:16 DEBUG root Adding a trailing / to path
+2022-02-06 19:25:16 DEBUG root Folder ./demo_data/ found alright
+2022-02-06 19:25:16 DEBUG root Adding a trailing / to path
+2022-02-06 19:25:16 DEBUG root Folder ./demo_data/ found alright
+2022-02-06 19:26:25 INFO root Started
+2022-02-06 19:26:25 DEBUG root Folder ./ found alright
+2022-02-06 19:26:25 DEBUG root Folder ./ found alright
+2022-02-06 19:26:25 DEBUG root Folder ./ found alright
+2022-02-06 19:26:25 DEBUG root Setting path to ./demo_data/
+2022-02-06 19:26:25 DEBUG root Folder ./demo_data/ found alright
+2022-02-06 19:26:25 DEBUG root Adding a trailing / to path
+2022-02-06 19:26:25 DEBUG root Folder ./demo_data/ found alright
+2022-02-06 19:26:25 DEBUG root Adding a trailing / to path
+2022-02-06 19:26:25 DEBUG root Folder ./demo_data/ found alright
+2022-02-06 19:27:31 INFO root Started
+2022-02-06 19:27:31 DEBUG root Folder ./ found alright
+2022-02-06 19:27:31 DEBUG root Folder ./ found alright
+2022-02-06 19:27:31 DEBUG root Folder ./ found alright
+2022-02-06 19:27:31 DEBUG root Setting path to ./demo_data/
+2022-02-06 19:27:31 DEBUG root Folder ./demo_data/ found alright
+2022-02-06 19:27:31 DEBUG root Adding a trailing / to path
+2022-02-06 19:27:31 DEBUG root Folder ./demo_data/ found alright
+2022-02-06 19:27:31 DEBUG root Adding a trailing / to path
+2022-02-06 19:27:31 DEBUG root Folder ./demo_data/ found alright
+2022-02-07 06:23:12 INFO root Started
+2022-02-07 06:23:12 DEBUG root Folder ./ found alright
+2022-02-07 06:23:12 DEBUG root Folder ./ found alright
+2022-02-07 06:23:12 DEBUG root Folder ./ found alright
+2022-02-07 06:23:12 DEBUG root Setting path to ./demo_data/
+2022-02-07 06:23:12 DEBUG root Folder ./demo_data/ found alright
+2022-02-07 06:23:12 DEBUG root Adding a trailing / to path
+2022-02-07 06:23:12 DEBUG root Folder ./demo_data/ found alright
+2022-02-07 06:23:12 DEBUG root Adding a trailing / to path
+2022-02-07 06:23:12 DEBUG root Folder ./demo_data/ found alright
+2022-02-07 06:23:44 INFO root Started
+2022-02-07 06:23:44 DEBUG root Folder ./ found alright
+2022-02-07 06:23:44 DEBUG root Folder ./ found alright
+2022-02-07 06:23:44 DEBUG root Folder ./ found alright
+2022-02-07 06:23:44 DEBUG root Setting path to ./demo_data/
+2022-02-07 06:23:44 DEBUG root Folder ./demo_data/ found alright
+2022-02-07 06:23:44 DEBUG root Adding a trailing / to path
+2022-02-07 06:23:44 DEBUG root Folder ./demo_data/ found alright
+2022-02-07 06:23:44 DEBUG root Adding a trailing / to path
+2022-02-07 06:23:44 DEBUG root Folder ./demo_data/ found alright
+2022-02-07 06:24:18 INFO root Started
+2022-02-07 06:24:18 DEBUG root Folder ./ found alright
+2022-02-07 06:24:18 DEBUG root Folder ./ found alright
+2022-02-07 06:24:18 DEBUG root Folder ./ found alright
+2022-02-07 06:24:18 DEBUG root Setting path to ./demo_data/
+2022-02-07 06:24:18 DEBUG root Folder ./demo_data/ found alright
+2022-02-07 06:24:18 DEBUG root Adding a trailing / to path
+2022-02-07 06:24:18 DEBUG root Folder ./demo_data/ found alright
+2022-02-07 06:24:18 DEBUG root Adding a trailing / to path
+2022-02-07 06:24:18 DEBUG root Folder ./demo_data/ found alright
+2022-02-07 06:25:36 INFO root Started
+2022-02-07 06:25:36 DEBUG root Folder ./ found alright
+2022-02-07 06:25:36 DEBUG root Folder ./ found alright
+2022-02-07 06:25:36 DEBUG root Folder ./ found alright
+2022-02-07 06:25:36 DEBUG root Setting path to ./demo_data/
+2022-02-07 06:25:36 DEBUG root Folder ./demo_data/ found alright
+2022-02-07 06:25:36 DEBUG root Adding a trailing / to path
+2022-02-07 06:25:36 DEBUG root Folder ./demo_data/ found alright
+2022-02-07 06:25:36 DEBUG root Adding a trailing / to path
+2022-02-07 06:25:36 DEBUG root Folder ./demo_data/ found alright
+2022-02-07 06:26:36 INFO root Started
+2022-02-07 06:26:36 DEBUG root Folder ./ found alright
+2022-02-07 06:26:36 DEBUG root Folder ./ found alright
+2022-02-07 06:26:36 DEBUG root Folder ./ found alright
+2022-02-07 06:26:36 DEBUG root Setting path to ./demo_data/
+2022-02-07 06:26:36 DEBUG root Folder ./demo_data/ found alright
+2022-02-07 06:26:36 DEBUG root Adding a trailing / to path
+2022-02-07 06:26:36 DEBUG root Folder ./demo_data/ found alright
+2022-02-07 06:26:36 DEBUG root Adding a trailing / to path
+2022-02-07 06:26:36 DEBUG root Folder ./demo_data/ found alright
+2022-02-07 06:30:50 INFO root Started
+2022-02-07 06:30:50 DEBUG root Folder ./ found alright
+2022-02-07 06:30:50 DEBUG root Folder ./ found alright
+2022-02-07 06:30:50 DEBUG root Folder ./ found alright
+2022-02-07 06:30:50 DEBUG root Setting path to ./demo_data/
+2022-02-07 06:30:50 DEBUG root Folder ./demo_data/ found alright
+2022-02-07 06:30:50 DEBUG root Adding a trailing / to path
+2022-02-07 06:30:50 DEBUG root Folder ./demo_data/ found alright
+2022-02-07 06:30:50 DEBUG root Adding a trailing / to path
+2022-02-07 06:30:50 DEBUG root Folder ./demo_data/ found alright
+2022-02-07 06:31:07 INFO root Started
+2022-02-07 06:31:07 DEBUG root Folder ./ found alright
+2022-02-07 06:31:07 DEBUG root Folder ./ found alright
+2022-02-07 06:31:07 DEBUG root Folder ./ found alright
+2022-02-07 06:31:07 DEBUG root Setting path to ./demo_data/
+2022-02-07 06:31:07 DEBUG root Folder ./demo_data/ found alright
+2022-02-07 06:31:07 DEBUG root Adding a trailing / to path
+2022-02-07 06:31:07 DEBUG root Folder ./demo_data/ found alright
+2022-02-07 06:31:07 DEBUG root Adding a trailing / to path
+2022-02-07 06:31:07 DEBUG root Folder ./demo_data/ found alright
+2022-02-07 06:33:26 INFO root Started
+2022-02-07 06:33:26 DEBUG root Folder ./ found alright
+2022-02-07 06:33:26 DEBUG root Folder ./ found alright
+2022-02-07 06:33:26 DEBUG root Folder ./ found alright
+2022-02-07 06:33:26 DEBUG root Setting path to ./demo_data/
+2022-02-07 06:33:26 DEBUG root Folder ./demo_data/ found alright
+2022-02-07 06:33:26 DEBUG root Adding a trailing / to path
+2022-02-07 06:33:26 DEBUG root Folder ./demo_data/ found alright
+2022-02-07 06:33:26 DEBUG root Adding a trailing / to path
+2022-02-07 06:33:26 DEBUG root Folder ./demo_data/ found alright
+2022-02-07 06:44:40 INFO root Started
+2022-02-07 06:44:40 DEBUG root Folder ./ found alright
+2022-02-07 06:44:40 DEBUG root Folder ./ found alright
+2022-02-07 06:44:40 DEBUG root Folder ./ found alright
+2022-02-07 06:44:40 DEBUG root Setting path to ./demo_data/
+2022-02-07 06:44:40 DEBUG root Folder ./demo_data/ found alright
+2022-02-07 06:44:40 DEBUG root Adding a trailing / to path
+2022-02-07 06:44:40 DEBUG root Folder ./demo_data/ found alright
+2022-02-07 06:44:40 DEBUG root Adding a trailing / to path
+2022-02-07 06:44:40 DEBUG root Folder ./demo_data/ found alright
+2022-02-07 06:45:59 INFO root Started
+2022-02-07 06:45:59 DEBUG root Folder ./ found alright
+2022-02-07 06:45:59 DEBUG root Folder ./ found alright
+2022-02-07 06:45:59 DEBUG root Folder ./ found alright
+2022-02-07 06:45:59 DEBUG root Setting path to ./demo_data/
+2022-02-07 06:45:59 DEBUG root Folder ./demo_data/ found alright
+2022-02-07 06:45:59 DEBUG root Adding a trailing / to path
+2022-02-07 06:45:59 DEBUG root Folder ./demo_data/ found alright
+2022-02-07 06:45:59 DEBUG root Adding a trailing / to path
+2022-02-07 06:45:59 DEBUG root Folder ./demo_data/ found alright
+2022-02-07 06:55:43 INFO root Started
+2022-02-07 06:55:43 DEBUG root Folder ./ found alright
+2022-02-07 06:55:43 DEBUG root Folder ./ found alright
+2022-02-07 06:55:43 DEBUG root Folder ./ found alright
+2022-02-07 06:55:43 DEBUG root Setting path to ./demo_data/
+2022-02-07 06:55:43 DEBUG root Folder ./demo_data/ found alright
+2022-02-07 06:55:43 DEBUG root Adding a trailing / to path
+2022-02-07 06:55:43 DEBUG root Folder ./demo_data/ found alright
+2022-02-07 06:55:43 DEBUG root Adding a trailing / to path
+2022-02-07 06:55:43 DEBUG root Folder ./demo_data/ found alright

@@ -1,9 +1,12 @@
-from pydit import file_tools
-import pandas as pd
-from pandas import Timestamp
+"""' Demo of the use of these libraries"""
 import logging
 from logging.handlers import RotatingFileHandler
 
+
+import pandas as pd
+from pandas import Timestamp
+
+from pydit import file_tools
 
 logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S",
@@ -17,12 +20,13 @@ logging.basicConfig(
 
 
 logging.info("Started")
-tools = file_tools.Tools()
+
+
+tools = file_tools.FileTools()
 tools.input_path = "./demo_data/"
 tools.output_path = "./demo_data"
 tools.temp_path = "./demo_data"
 tools.max_rows_to_excel = 10000
-conf = tools.config()
 
 df = pd.DataFrame(
     [
@@ -46,6 +50,19 @@ df = pd.DataFrame(
     ],
     columns=["id", "ref", "date_trans", "status", "amount", "notes"],
 )
-res = tools.check_duplicates(df, ["ref"], keep=False)
-print(res)
+
+
+from pydit import profiling_tools
+
+tools_profile = profiling_tools.ProfilingTools()
+
+col1 = range(1, 100)
+col2 = [1] * 30 + [2] * 50 + [3] * 20
+col3 = [1] * 10 + [2] * 90
+
+
+df = pd.DataFrame(zip(col1, col2, col3), columns=["col1", "col2", "col3"])
+print(tools_profile.add_percentile(df, "col1", ["col2", "col3"]))
+
+print(tools_profile.add_percentile(df, "col1"))
 
