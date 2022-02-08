@@ -9,7 +9,8 @@ import pandas as pd
 import numpy as np
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from pydit import file_tools, profiling_tools
+import pydit
+
 
 os.chdir(Path(__file__).resolve().parent)
 
@@ -25,8 +26,7 @@ logging.basicConfig(
 
 
 logging.info("Started")
-tools = file_tools.FileTools()
-profile = profiling_tools.ProfilingTools()
+tools = pydit.common.CommonTools()
 
 tools.input_path = "./input"
 tools.output_path = "./output"
@@ -42,6 +42,6 @@ df = pd.DataFrame(data=d)
 # tools.save(df, "test.xlsx")
 # print(tools.output_path)
 
-
-print(profile.profile_dataframe(df))
 tools.print_red("Alert")
+
+print(pydit.profiling.profile_dataframe(df))
