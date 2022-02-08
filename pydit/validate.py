@@ -166,7 +166,18 @@ def check_sequence(obj_in, col=""):
 def check_blanks(
     df_in, columns=None, zeroes=True, null_strings_and_spaces=True, totals_only=False,
 ):
-    """ Reports on blanks in the Dataframe and optionally saves to an excel file  """
+    """ Reports on blanks in the Dataframe and optionally saves to an excel file 
+
+    Args:
+        df_in ([type]): [description]
+        columns ([type], optional): [description]. Defaults to None.
+        zeroes (bool, optional): [description]. Defaults to True.
+        null_strings_and_spaces (bool, optional): [description]. Defaults to True.
+        totals_only (bool, optional): [description]. Defaults to False.
+
+    Returns:
+        [type]: [description]
+    """
 
     if not isinstance(df_in, pd.DataFrame):
         logging.error(
