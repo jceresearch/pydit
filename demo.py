@@ -6,7 +6,7 @@ from logging.handlers import RotatingFileHandler
 import pandas as pd
 from pandas import Timestamp
 
-from pydit import file_tools
+from pydit import common
 
 logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S",
@@ -22,7 +22,7 @@ logging.basicConfig(
 logging.info("Started")
 
 
-tools = file_tools.FileTools()
+tools = common.CommonTools()
 tools.input_path = "./demo_data/"
 tools.output_path = "./demo_data"
 tools.temp_path = "./demo_data"
@@ -52,9 +52,7 @@ df = pd.DataFrame(
 )
 
 
-from pydit import profiling_tools
-
-tools_profile = profiling_tools.ProfilingTools()
+from pydit import profiling
 
 col1 = range(1, 100)
 col2 = [1] * 30 + [2] * 50 + [3] * 20
@@ -62,7 +60,7 @@ col3 = [1] * 10 + [2] * 90
 
 
 df = pd.DataFrame(zip(col1, col2, col3), columns=["col1", "col2", "col3"])
-print(tools_profile.add_percentile(df, "col1", ["col2", "col3"]))
+print(profiling.add_percentile(df, "col1", ["col2", "col3"]))
 
-print(tools_profile.add_percentile(df, "col1"))
+print(profiling.add_percentile(df, "col1"))
 

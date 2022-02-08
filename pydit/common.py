@@ -1,25 +1,106 @@
-""" core library of convenience tools"""
+""" Base class with underlying convenience functions"""
 
+import logging
+import re
 from datetime import datetime
 import pickle
 import os
-import logging
 from pathlib import Path, PureWindowsPath
 import csv
-import pandas as pd
 
-from .base_tools import BaseTools
+import pandas as pd
+import numpy as np
 
 logger = logging.getLogger(__name__)
 
 
-class FileTools(BaseTools):
-    """
-    Main class to hold parameters and core functions
-    PYDIT a toolset for processing data specifically targetting internal audit
-needs, which focuses on simplicity and generating audit trails of everyghing
-this module is the main library
-"""
+class CommonTools(object):
+    """ base class with the common functions that all tools may need to use"""
+
+    def print_red(self, *args):
+        """ print ansi codes to make the printout red"""
+        print("\x1b[31m" + " ".join([str(x) for x in args]) + "\x1b[0m")
+
+    def print_green(self, *args):
+        """ print ansi codes to make the printout green"""
+        print("\x1b[32m" + " ".join([str(x) for x in args]) + "\x1b[0m")
+
+    def _deduplicate_list(self, list_to_deduplicate):
+        "Deduplicates a list"
+        if not list_to_deduplicate:
+            return []
+        newlist = list_to_deduplicate.copy()
+        for i, el in enumerate(list_to_deduplicate):
+            dupes = list_to_deduplicate.count(el)
+            if dupes > 1:
+                for j in range(dupes):
+                    pos = [i for i, n in enumerate(list_to_deduplicate) if n == el][j]
+                    if j == 0:
+                        newlist[pos] = str(el)
+                    else:
+                        newlist[pos] = str(el) + "_" + str(j + 1)
+            else:
+                newlist[i] = str(el)
+        return newlist
+
+    @property
+    def version(self):
+        """ version information"""
+        return "V.01"
+
+    @property
+    def about(self):
+        """ About information"""
+        about_text = "Pydit - Tools for internal auditors\n \
+        Version: 1.01\n \
+        Released:Jan 2022 "
+        return about_text
+
+    def _dataframe_to_code(self, df):
+        """ utility function to convert a dataframe to a piece of code
+        that one can include in a test script or tutorial. May need extra tweaks
+        or imports , e.g. from pandas import Timestamp to deal with dates, etc.
+        """
+        data = np.array2string(df.to_numpy(), separator=", ")
+        data = data.replace(" nan", " float('nan')")
+        data = data.replace(" NaT", " pd.NaT")
+        cols = df.columns.tolist()
+        return f"""df = pd.DataFrame({data}, columns={cols})"""
+
+    def clean_string(self, t, keep_dot=False, space_to_underscore=True, case="lower"):
+        """Sanitising text:
+        - Keeps only [a-zA-Z0-9]
+        - Optional to retain dot
+        - Spaces to underscore
+        - Removes multiple spaces , trims
+        - Optional to lowercase
+        The purpose is just for easier typing, exporting, saving to filenames.
+        Args:
+            t (string]): string with the text to sanitise
+            keep_dot (bool, optional): Keep the dot or not. Defaults to False.
+            space_to_underscore (bool, optional): False to keep spaces. Defaults to True.
+            case= "lower" (default), "upper" or "keep"(unchanged)
+        Returns:
+            string: cleanup string
+        """
+        r = ""
+        if case == "lower":
+            r = str.lower(str(t))
+        elif case == "upper":
+            str.upper(str(t))
+        elif case == "keep":
+            r = str(t)
+        if t:
+            if keep_dot is True:
+                r = re.sub(r"[^a-zA-Z0-9.]", " ", r)
+            else:
+                r = re.sub(r"[^a-zA-Z0-9]", " ", r)
+            r = r.strip()
+            if space_to_underscore is True:
+                r = re.sub(" +", "_", r)
+            else:
+                r = re.sub(" +", " ", r)
+        return r
 
     def __init__(
         self, temp_path="", output_path="", input_path="", max_rows_to_excel=200000
@@ -296,11 +377,3 @@ this module is the main library
             logger.error("Errors found when saving")
 
         return flag
-
-
-def main():
-    """ main routine"""
-
-
-if __name__ == "__main__":
-    main()

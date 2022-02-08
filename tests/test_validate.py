@@ -6,13 +6,12 @@ import logging
 
 import numpy as np
 import pandas as pd
-from pandas import Timestamp
 
 # import numpy as np
 # from datetime import datetime, date, timedelta
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from pydit import validation_tools
+from pydit import validate
 
 
 logging.basicConfig(
@@ -21,8 +20,6 @@ logging.basicConfig(
     level=logging.DEBUG,
 )
 logging.info("Started")
-
-tools = validation_tools.ValidationTools()
 
 
 def test_check_sequence():
@@ -33,14 +30,28 @@ def test_check_sequence():
         "col3": [1, 2, 3, 4, 5],
     }
     df = pd.DataFrame(data=d)
-    assert tools.check_sequence(df, "col1") == [4]
-    assert tools.check_sequence(df, "col2") == []
-    assert tools.check_sequence(df, "col3") == []
-    assert tools.check_sequence([1, 2, 3, 4, 5]) == []
-    assert tools.check_sequence([1, 2, 4, 5]) == [3]
-    assert tools.check_sequence([1, 15]) == [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
-    assert tools.check_sequence(pd.Series([1, 2, 3, 5])) == [4]
-    assert tools.check_sequence("1 2 3 4 5") == None
+    assert validate.check_sequence(df, "col1") == [4]
+    assert validate.check_sequence(df, "col2") == []
+    assert validate.check_sequence(df, "col3") == []
+    assert validate.check_sequence([1, 2, 3, 4, 5]) == []
+    assert validate.check_sequence([1, 2, 4, 5]) == [3]
+    assert validate.check_sequence([1, 15]) == [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+    ]
+    assert validate.check_sequence(pd.Series([1, 2, 3, 5])) == [4]
+    assert validate.check_sequence("1 2 3 4 5") == None
 
 
 def test_check_blanks():
@@ -53,17 +64,16 @@ def test_check_blanks():
         "col5": [np.nan, "    ", "  \t", "   \n", "Value 5"],
     }
     df = pd.DataFrame(data=d)
-    totals = tools.check_blanks(df, totals_only=True)
+    totals = validate.check_blanks(df, totals_only=True)
     assert totals[0] == 0
     assert totals[1] == 2
     assert totals[2] == 2
     assert totals[3] == 2
     assert totals[4] == 4
-    dfx = tools.check_blanks(df)
+    dfx = validate.check_blanks(df)
     d = dfx.to_dict()
     assert d["has_blanks"][0] is True
     assert d["has_blanks"][1] is True
     assert d["has_blanks"][2] is True
     assert d["has_blanks"][3] is True
     assert d["has_blanks"][4] is False
-

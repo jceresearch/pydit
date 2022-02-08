@@ -3,7 +3,6 @@ import os
 import sys
 import logging
 
-import numpy as np
 import pandas as pd
 
 
@@ -13,7 +12,7 @@ import pandas as pd
 
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from pydit import transform_tools
+from pydit import transform
 
 
 logging.basicConfig(
@@ -22,8 +21,6 @@ logging.basicConfig(
     level=logging.DEBUG,
 )
 logging.info("Started")
-
-tools = transform_tools.TransformTools()
 
 
 def test_clean_column_names_1():
@@ -38,7 +35,7 @@ def test_clean_column_names_1():
         "col  3": [1, 2, 3],
     }
     df = pd.DataFrame(data=d)
-    tools.clean_columns_names(df)
+    transform.clean_columns_names(df)
     print(df.columns)
     assert list(df.columns) == ["col1", "col2", "col_3", "col3", "col_3_2"]
 
@@ -55,7 +52,7 @@ def test_clean_column_names_2():
         "col5\n": [1, 2, 3],
     }
     df = pd.DataFrame(data=d)
-    tools.clean_columns_names(df)
+    transform.clean_columns_names(df)
     print(df.columns)
     assert list(df.columns) == ["col1", "col2", "col3perc", "col4", "col5"]
 

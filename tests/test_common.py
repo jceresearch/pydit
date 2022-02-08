@@ -1,18 +1,19 @@
 """ test of base functions"""
 import os
 import sys
+import logging
+
 
 import numpy as np
 import pandas as pd
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from pydit import base_tools
+from pydit import common
 
 
 # import numpy as np
 # from datetime import datetime, date, timedelta
 # from pandas import Timestamp
-import logging
 
 logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S",
@@ -20,10 +21,23 @@ logging.basicConfig(
     level=logging.DEBUG,
 )
 
-
 logging.info("Started")
 
-tools = base_tools.BaseTools()
+tools = common.CommonTools()
+
+
+def test_init():
+    """ testing the initiatlisation and setup"""
+    assert tools.input_path == "./"
+    tools.input_path = "./input"
+    assert tools.input_path == "./input/"
+
+
+def test_stem_name():
+    """ test the internal function to find the stemp of a filename"""
+    assert tools._stem_name("Test.xlsx") == "test"
+    assert tools._stem_name(r"c:\test\test.xlsx") == "test"
+    assert tools._stem_name(r".\Test.xls") == "test"
 
 
 def test_deduplicate_list():

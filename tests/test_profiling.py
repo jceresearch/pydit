@@ -12,7 +12,7 @@ from pandas import Timestamp
 # from datetime import datetime, date, timedelta
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from pydit import profiling_tools
+from pydit import profiling
 
 
 logging.basicConfig(
@@ -21,8 +21,6 @@ logging.basicConfig(
     level=logging.DEBUG,
 )
 logging.info("Started")
-
-tools = profiling_tools.ProfilingTools()
 
 
 def test_profile_dataframe():
@@ -64,5 +62,5 @@ def test_profile_dataframe():
         ],
         columns=["id", "ref", "date_trans", "status", "amount", "notes"],
     )
-    assert tools.profile_dataframe(df["id"]) is None
+    assert profiling.profile_dataframe(df["id"]) is None
 
