@@ -124,12 +124,12 @@ class CommonTools(object):
                 res = path
                 logging.debug("Setting path to %s", path)
         if Path(res).is_dir() is False:
-            logging.warning(
+            logger.warning(
                 "Could not find the folder %s , ensure it does exist or gets created",
                 res,
             )
         else:
-            logging.debug("Folder %s found alright", res)
+            logger.debug("Folder %s found alright", res)
 
         return res
 

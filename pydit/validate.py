@@ -35,13 +35,13 @@ def check_duplicates(df, columns=None, keep="first", ascending=None):
     """
 
     if not isinstance(df, pd.DataFrame):
-        logging.error(
+        logger.error(
             "Expecting a dataframe, a single column dataframe is a Series and not yet supported"
         )
         # TODO: #17 Add support for Series in the duplicate check
         return
     if not isinstance(columns, list):
-        logging.error("Expecting a list, even a list of one element")
+        logger.error("Expecting a list, even a list of one element")
         return
     else:
         if not columns:
@@ -180,7 +180,7 @@ def check_blanks(
     """
 
     if not isinstance(df_in, pd.DataFrame):
-        logging.error(
+        logger.error(
             "Expecting a dataframe, a single column dataframe is a Series and not yet supported"
         )
         return
@@ -190,20 +190,20 @@ def check_blanks(
     elif not columns:
         cols = df.columns
     else:
-        logging.error("Expecting a list, even a list of one element")
+        logger.error("Expecting a list, even a list of one element")
         return
 
     fields = ",".join(cols)
-    logging.info("Checking for blanks in %s", fields)
+    logger.info("Checking for blanks in %s", fields)
     total_results = []
     for c in cols:
         if is_numeric_dtype(df[c]) and zeroes:
             df[c + "_blanks"] = (pd.isna(df[c])) | (df[c] == 0)
         elif is_string_dtype(df[c]) and null_strings_and_spaces:
-            logging.debug("Checking for spaces and nullstring too in %s", c)
+            logger.debug("Checking for spaces and nullstring too in %s", c)
             df[c + "_blanks"] = (pd.isna(df[c])) | (df[c].str.strip() == "")
         else:
-            logging.debug("Checking just for NaN or NaT in %s", c)
+            logger.debug("Checking just for NaN or NaT in %s", c)
             df[c + "_blanks"] = pd.isna(df[c])
         total_results.append(df[c + "_blanks"].sum())
     new_cols = [c + "_blanks" for c in cols]
