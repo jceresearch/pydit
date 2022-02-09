@@ -107,6 +107,7 @@ class CommonTools(object):
     ):
         """ initialise configuration"""
         # TODO: #14 check that the folders exist, see to that this check is done every time it is updated
+
         self.temp_path = temp_path
         self.output_path = output_path
         self.input_path = input_path
@@ -377,3 +378,22 @@ class CommonTools(object):
             logger.error("Errors found when saving")
 
         return flag
+
+
+class AppGlobal:
+
+    __single = None
+
+    def __init__(self):
+        if not AppGlobal.__single:
+            # Your definitions here
+            self.x = 1
+
+        else:
+            raise RuntimeError("An instance of this object already exists")
+
+    @classmethod
+    def getInstance(cls):
+        if not cls.__single:
+            cls.__single = AppGlobal()
+        return cls.__single
