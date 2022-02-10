@@ -1,4 +1,7 @@
 """' Demo of the use of these libraries"""
+
+#%%
+
 import logging
 from logging.handlers import RotatingFileHandler
 
@@ -8,19 +11,35 @@ from pandas import Timestamp
 
 from pydit import common
 
-logging.basicConfig(
-    datefmt="%Y-%m-%d %H:%M:%S",
-    format="%(asctime)s %(levelname)s %(name)s %(message)s",
-    level=logging.DEBUG,
-    handlers=[
-        RotatingFileHandler("audit.log", maxBytes=50000, backupCount=5),
-        logging.StreamHandler(),
-    ],
+
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
+fh = RotatingFileHandler("audit.log", maxBytes=50000, backupCount=5)
+fh.setLevel(logging.DEBUG)
+ch = logging.StreamHandler()
+ch.setLevel(logging.DEBUG)
+formatter = logging.Formatter(
+    "%(asctime)s %(levelname)s - %(message)s", "%Y-%m-%d %H:%M:%S"
 )
+ch.setFormatter(formatter)
+fh.setFormatter(formatter)
+logger.addHandler(ch)
+logger.addHandler(fh)
 
 
-logging.info("Started")
+logger.info("Started")
 
+# %%
+import pydit
+
+config = pydit.common.Singleton.getInstance()
+config.input_path = ".."
+
+#%%
+config.input_path = "test"
+
+
+# %%
 
 tools = common.CommonTools()
 tools.input_path = "./demo_data/"

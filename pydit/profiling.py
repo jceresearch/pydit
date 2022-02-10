@@ -98,11 +98,13 @@ def add_percentile(df_in, col, col_group=None):
     if col_group and not set(col_group).issubset(set(df_in.columns)):
         return
     df = df_in.copy()
+    logger.info("Adding percentile column based on column %s", col)
     if col_group:
         col_group_joined = "_".join(col_group)
         df["percentile_in_" + col_group_joined] = (
             df.groupby(col_group)[col].rank(pct=True).mul(100)
         )
+        logger.debug("and grouping by column percentile_in_%s", col_group_joined)
     else:
         # df["PCNT_RANK"] = df[col].rank(method="max", pct=True)
         # df["POF"] = df[col].apply(
@@ -113,9 +115,10 @@ def add_percentile(df_in, col, col_group=None):
         # )
         df["RANKTMP"] = df[col].rank(method="max")
         sz = df["RANKTMP"].size - 1
-        df["PCNT_LIN"] = df["RANKTMP"].apply(lambda x: (x - 1) / sz)
+        df["percentile_in_" + col] = df["RANKTMP"].apply(lambda x: (x - 1) / sz)
         # df["CHK"] = df["PCNT_LIN"].apply(lambda x: df[col].quantile(x))
         df.drop("RANKTMP", inplace=True, axis=1)
+
     return df
 
 

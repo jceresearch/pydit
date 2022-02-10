@@ -380,20 +380,19 @@ class CommonTools(object):
         return flag
 
 
-class AppGlobal:
+class Singleton:
+    __instance = None
 
-    __single = None
+    @staticmethod
+    def getInstance():
+        """ Static access method. """
+        if Singleton.__instance == None:
+            Singleton()
+        return Singleton.__instance
 
     def __init__(self):
-        if not AppGlobal.__single:
-            # Your definitions here
-            self.x = 1
-
+        """ Virtually private constructor. """
+        if Singleton.__instance != None:
+            raise Exception("You cannot initialise this class again")
         else:
-            raise RuntimeError("An instance of this object already exists")
-
-    @classmethod
-    def getInstance(cls):
-        if not cls.__single:
-            cls.__single = AppGlobal()
-        return cls.__single
+            Singleton.__instance = self
