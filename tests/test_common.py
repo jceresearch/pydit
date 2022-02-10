@@ -15,44 +15,28 @@ from pydit import common
 # from datetime import datetime, date, timedelta
 # from pandas import Timestamp
 
-logging.basicConfig(
+logger = logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S",
     format="%(asctime)s %(levelname)s %(message)s",
     level=logging.DEBUG,
 )
 
-logging.info("Started")
-
-tools = common.CommonTools()
-
-
-def test_init():
-    """ testing the initiatlisation and setup"""
-    assert tools.input_path == "./"
-    tools.input_path = "./input"
-    assert tools.input_path == "./input/"
-
-
-def test_stem_name():
-    """ test the internal function to find the stemp of a filename"""
-    assert tools._stem_name("Test.xlsx") == "test"
-    assert tools._stem_name(r"c:\test\test.xlsx") == "test"
-    assert tools._stem_name(r".\Test.xls") == "test"
+logger.info("Started")
 
 
 def test_deduplicate_list():
     """test the intermal function to cleanup dataframe column names"""
-    assert tools._deduplicate_list(["A", "B", "B"]) == ["A", "B", "B_2"]
-    assert tools._deduplicate_list([]) == []
-    assert tools._deduplicate_list([1, 2, 2]) == ["1", "2", "2_2"]
+    assert common.deduplicate_list(["A", "B", "B"]) == ["A", "B", "B_2"]
+    assert common.deduplicate_list([]) == []
+    assert common.deduplicate_list([1, 2, 2]) == ["1", "2", "2_2"]
 
 
 def test_clean_string():
     """test the clean string function"""
-    assert tools.clean_string(" John Smith 123  456 .  ") == "john_smith_123_456"
+    assert common.clean_string(" John Smith 123  456 .  ") == "john_smith_123_456"
 
     assert (
-        tools.clean_string(" John Smith 123  456 .  ", space_to_underscore=False)
+        common.clean_string(" John Smith 123  456 .  ", space_to_underscore=False)
         == "john smith 123 456"
     )
 

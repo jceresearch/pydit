@@ -308,3 +308,14 @@ FileNotFoundError: [Errno 2] No such file or directory: './output/test.xlsx'
 2022-02-10 06:58:01 DEBUG - and grouping by column percentile_in_col2_col3
 2022-02-10 06:58:01 INFO - Adding percentile column based on column col1
 2022-02-10 07:28:51 INFO - Started
+2022-02-10 08:25:48 INFO - Started
+2022-02-10 08:26:04 INFO - Started
+2022-02-10 08:28:52 INFO - Started
+2022-02-10 08:29:56 DEBUG - Setting path to ./
+2022-02-10 08:29:56 DEBUG - Folder ./ found alright
+2022-02-10 08:29:56 DEBUG - Setting path to ./
+2022-02-10 08:29:56 DEBUG - Folder ./ found alright
+2022-02-10 08:29:56 DEBUG - Setting path to ./
+2022-02-10 08:29:56 DEBUG - Folder ./ found alright
+2022-02-10 08:40:39 DEBUG - Adding a trailing / to path
+2022-02-10 08:40:39 WARNING - Could not find the folder /temp/ , ensure it does exist or gets created

@@ -9,9 +9,6 @@ from logging.handlers import RotatingFileHandler
 import pandas as pd
 from pandas import Timestamp
 
-from pydit import common
-
-
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 fh = RotatingFileHandler("audit.log", maxBytes=50000, backupCount=5)
@@ -32,8 +29,6 @@ logger.info("Started")
 # %%
 import pydit
 
-config = pydit.common.Singleton.getInstance()
-config.input_path = ".."
 
 #%%
 config.input_path = "test"

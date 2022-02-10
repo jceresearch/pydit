@@ -3,9 +3,6 @@
 
 import logging
 
-from .common import CommonTools
-
-tools = CommonTools()
 logger = logging.getLogger(__name__)
 
 

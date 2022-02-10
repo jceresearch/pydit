@@ -1,3 +1,4 @@
+from .filemanager import *
 from .common import *
 from .modelling import *
 from .presenting import *

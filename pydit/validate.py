@@ -1,7 +1,7 @@
 """ Validation functions"""
 
 import logging
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 import pandas as pd
 from pandas.api.types import is_datetime64_any_dtype as is_datetime
@@ -9,10 +9,8 @@ from pandas.api.types import is_string_dtype, is_numeric_dtype
 from pandas import Series, DataFrame
 import numpy as np
 
-from .common import CommonTools
 
 logger = logging.getLogger(__name__)
-tools = CommonTools()
 
 
 def check_duplicates(df, columns=None, keep="first", ascending=None):
@@ -22,11 +20,11 @@ def check_duplicates(df, columns=None, keep="first", ascending=None):
     to excel the offending duplicates
     Args:
         df (DataFrame): pandas dataframe
-        columns (str, list or int, optional): column(s) to check, if multiple columns provided 
+        columns (str, list or int, optional): column(s) to check, if multiple columns provided
         the check is combined duplicates, exactly as pandas duplicated().
         keep ('first','last' or False, optional): Argument for pandas df.duplicated() method.
         Defaults to 'first'.
-        ascending (True, False or None, optional): Argument for DataFrame.value_counts() 
+        ascending (True, False or None, optional): Argument for DataFrame.value_counts()
         Defaults to None.
 
     Returns:
@@ -166,7 +164,7 @@ def check_sequence(obj_in, col=""):
 def check_blanks(
     df_in, columns=None, zeroes=True, null_strings_and_spaces=True, totals_only=False,
 ):
-    """ Reports on blanks in the Dataframe and optionally saves to an excel file 
+    """ Reports on blanks in the Dataframe and optionally saves to an excel file
 
     Args:
         df_in ([type]): [description]

@@ -5,11 +5,9 @@ from datetime import datetime
 
 import numpy as np
 from pandas.api.types import is_datetime64_any_dtype as is_datetime
-from .common import CommonTools
+from pydit import common
 
 logger = logging.getLogger(__name__)
-
-tools = CommonTools()
 
 
 def clean_columns_names(df):
@@ -26,7 +24,7 @@ def clean_columns_names(df):
 
     if len(df.columns) != len(set(df.columns)):
         print("Identified some duplicate columns, renaming them")
-        new_cols = tools._deduplicate_list(list(df.columns))
+        new_cols = common.deduplicate_list(list(df.columns))
         df.columns = new_cols
     if len(df.columns) != len(set(df.columns)):
         raise ValueError("Duplicated column names remain!!! check what happened")
