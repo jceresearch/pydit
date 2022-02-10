@@ -15,11 +15,12 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from pydit import profiling
 
 
-logger = logging.basicConfig(
+logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S",
     format="%(asctime)s %(levelname)s %(message)s",
     level=logging.DEBUG,
 )
+logger = logging.getLogger()
 logger.info("Started")
 
 

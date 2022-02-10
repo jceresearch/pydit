@@ -2,29 +2,22 @@
 
 import logging
 import re
-from datetime import datetime
-import pickle
-import os
-from pathlib import Path, PureWindowsPath
-import csv
-
-import pandas as pd
 import numpy as np
 
 logger = logging.getLogger(__name__)
 
 
-def print_red( *args):
+def print_red(*args):
     """ print ansi codes to make the printout red"""
     print("\x1b[31m" + " ".join([str(x) for x in args]) + "\x1b[0m")
 
 
-def print_green( *args):
+def print_green(*args):
     """ print ansi codes to make the printout green"""
     print("\x1b[32m" + " ".join([str(x) for x in args]) + "\x1b[0m")
 
 
-def deduplicate_list( list_to_deduplicate):
+def deduplicate_list(list_to_deduplicate):
     "Deduplicates a list"
     if not list_to_deduplicate:
         return []
@@ -56,7 +49,7 @@ def about():
     return about_text
 
 
-def dataframe_to_code( df):
+def dataframe_to_code(df):
     """ utility function to convert a dataframe to a piece of code
     that one can include in a test script or tutorial. May need extra tweaks
     or imports , e.g. from pandas import Timestamp to deal with dates, etc.
@@ -68,7 +61,7 @@ def dataframe_to_code( df):
     return f"""df = pd.DataFrame({data}, columns={cols})"""
 
 
-def clean_string( t, keep_dot=False, space_to_underscore=True, case="lower"):
+def clean_string(t, keep_dot=False, space_to_underscore=True, case="lower"):
     """Sanitising text:
     - Keeps only [a-zA-Z0-9]
     - Optional to retain dot
