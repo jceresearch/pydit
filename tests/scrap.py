@@ -26,10 +26,10 @@ logging.basicConfig(
 
 
 logging.info("Started")
-tools = pydit.common.CommonTools()
+fm = pydit.filemanager.FileManager.getInstance()
 
-tools.input_path = "./input"
-tools.output_path = "./output"
+fm.input_path = "./input"
+fm.output_path = "./output"
 
 d = {
     "col1": [1, 2, 3, 4, 5],
@@ -42,6 +42,9 @@ df = pd.DataFrame(data=d)
 # tools.save(df, "test.xlsx")
 # print(tools.output_path)
 
-tools.print_red("Alert")
+pydit.print_red("Alert")
 
 print(pydit.profiling.profile_dataframe(df))
+
+s = pd.Series([1, 2, 3, 4, 5])
+s.to_excel("./output/test_saving_series.xlsx")

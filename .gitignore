@@ -6,3 +6,6 @@
 /pydit/__pycache__
 /to delete/
 audit.log
+tests/audit.log
+
+

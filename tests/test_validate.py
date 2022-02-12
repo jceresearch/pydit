@@ -11,15 +11,11 @@ import pandas as pd
 # from datetime import datetime, date, timedelta
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from pydit import validate
+from pydit import validate, setup_logging
 
 
-logging.basicConfig(
-    datefmt="%Y-%m-%d %H:%M:%S",
-    format="%(asctime)s %(levelname)s %(message)s",
-    level=logging.DEBUG,
-)
-logger=logging.getLogger()
+logger = logging.getLogger()
+setup_logging(logger)
 logger.info("Started")
 
 

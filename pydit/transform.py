@@ -26,9 +26,12 @@ def clean_columns_names(df):
         print("Identified some duplicate columns, renaming them")
         new_cols = common.deduplicate_list(list(df.columns))
         df.columns = new_cols
+
+    logger.info("New columns names:%s", list(df.columns))
     if len(df.columns) != len(set(df.columns)):
         raise ValueError("Duplicated column names remain!!! check what happened")
-    return True
+
+    return list(df.columns)
 
 
 def clean_cols(in_df, date_fillna="latest"):

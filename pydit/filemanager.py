@@ -24,22 +24,16 @@ class FileManager:
             FileManager()
         return FileManager.__instance
 
-    def __init__(
-        self,
-        temp_path="./",
-        input_path="./",
-        output_path="./",
-        max_rows_to_excel=200000,
-    ):
+    def __init__(self,):
         """ Virtually private constructor. """
         if FileManager.__instance is not None:
             raise Exception("You cannot initialise the Configuration class again")
         else:
             FileManager.__instance = self
-            self.temp_path = temp_path
-            self.output_path = output_path
-            self.input_path = input_path
-            self.max_rows_to_excel = max_rows_to_excel
+            self._temp_path = "./"
+            self._output_path = "./"
+            self._input_path = "./"
+            self._max_rows_to_excel = 200000
 
     def _fix_path(self, path=None):
         if not path:
@@ -64,14 +58,14 @@ class FileManager:
     @property
     def max_rows_to_excel(self):
         """Maximum number of rows to save to Excel, past that CSV or Pickle"""
-        return self._MAX_ROWS_TO_EXCEL
+        return self._max_rows_to_excel
 
     @max_rows_to_excel.setter
     def max_rows_to_excel(self, n):
         """ Setter for max_rows_to_excel"""
         if n > 999999 or n < 0:
             raise Exception("Rows number must be positive and less than 1,000,000")
-        self._MAX_ROWS_TO_EXCEL = n
+        self._max_rows_to_excel = n
 
     @property
     def temp_path(self):
@@ -144,7 +138,7 @@ class FileManager:
             separator = ""
         else:
             separator = "\\"
-            logger.warning(
+            logger.debug(
                 "Output path does not end in backslash, add it in the config for stability"
             )
 
@@ -166,6 +160,9 @@ class FileManager:
             separator = ""
         else:
             separator = "\\"
+            logger.debug(
+                "Output path does not end in backslash, add it in the config for stability"
+            )
 
         full_file_name = self.temp_path + separator + stem_name + ".pickle"
         try:
@@ -259,7 +256,7 @@ class FileManager:
             filename ([type]): [description]
             bool_also_pickle (bool, optional): [description]. Defaults to False.
         """
-        if filename is False:
+        if not filename:
             return
 
         flag = False
@@ -268,15 +265,19 @@ class FileManager:
         start_time = datetime.now()
         stem_name = self._stem_name(filename)
 
+        if ".pickle" in filename or bool_also_pickle:
+            logger.debug("Saving to pickle format")
+            output = self._save_to_pickle(obj, stem_name)
+            if output:
+                logger.info("Saved to %s", output)
+                flag = True
         if isinstance(obj, pd.DataFrame) or isinstance(obj, pd.Series):
             if ".xlsx" in filename:
-                if obj.shape[0] < self._MAX_ROWS_TO_EXCEL:
-                    logger.debug("Saving to an excel file")
+                if obj.shape[0] < self._max_rows_to_excel:
                     output = self._save_to_excel(obj, stem_name)
                     if output:
                         logger.info("Saved to %s", output)
                         flag = True
-
                 else:
                     flag_to_csv_instead = True
                     logger.warning("Too big for excel, saving to csv instead")
@@ -284,17 +285,13 @@ class FileManager:
                 logger.debug("Saving to csv")
                 output = self._save_to_csv(obj, stem_name)
                 if output:
-                    print("Saved to ", output)
+                    logger.info("Saved to %s", output)
                     flag = True
-        if ".pickle" in filename or bool_also_pickle:
-            logger.debug("Saving to pickle format")
-            output = self._save_to_pickle(obj, stem_name)
-            if output:
-                logger.info("Saved to %s", output)
-                flag = True
+        else:
+            logger.info("Object is not a DataFrame or Series, can't save to Excel")
+
         if flag:
             try:
-                # TODO #15 Look into pretty outputs for logging lists/tuples
                 print("Shape :", obj.shape)
                 print("Saved columns:", list(obj.columns))
             except Exception:
@@ -304,6 +301,6 @@ class FileManager:
                 str(round((datetime.now() - start_time).total_seconds() / 60.0, 2)),
             )
         else:
-            logger.error("Errors found when saving")
+            logger.error("Nothing saved")
 
         return flag

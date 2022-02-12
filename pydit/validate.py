@@ -13,17 +13,19 @@ import numpy as np
 logger = logging.getLogger(__name__)
 
 
-def check_duplicates(df, columns=None, keep="first", ascending=None):
+def check_duplicates(df, columns=None, keep=False, ascending=None):
     """
-    Bundles duplicate analysis, common steps like checking duplicates
-    showing the total numbers, showing the actual duplicates, exporting
-    to excel the offending duplicates
+    Duplicate analysis
     Args:
         df (DataFrame): pandas dataframe
-        columns (str, list or int, optional): column(s) to check, if multiple columns provided
+        
+        columns (list, optional): column(s) to check between square brackets, 
+        even if it is one column only, if multiple columns provided
         the check is combined duplicates, exactly as pandas duplicated().
+        
         keep ('first','last' or False, optional): Argument for pandas df.duplicated() method.
         Defaults to 'first'.
+        
         ascending (True, False or None, optional): Argument for DataFrame.value_counts()
         Defaults to None.
 

@@ -8,19 +8,15 @@ import numpy as np
 import pandas as pd
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from pydit import common
+from pydit import common, setup_logging
 
 
 # import numpy as np
 # from datetime import datetime, date, timedelta
 # from pandas import Timestamp
 
-logging.basicConfig(
-    datefmt="%Y-%m-%d %H:%M:%S",
-    format="%(asctime)s %(levelname)s %(message)s",
-    level=logging.DEBUG,
-)
 logger = logging.getLogger()
+setup_logging(logger)
 logger.info("Started")
 
 

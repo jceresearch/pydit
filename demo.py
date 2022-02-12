@@ -3,44 +3,26 @@
 #%%
 
 import logging
-from logging.handlers import RotatingFileHandler
 
 
 import pandas as pd
 from pandas import Timestamp
+import pydit
 
 logger = logging.getLogger()
-logger.setLevel(logging.DEBUG)
-fh = RotatingFileHandler("audit.log", maxBytes=50000, backupCount=5)
-fh.setLevel(logging.DEBUG)
-ch = logging.StreamHandler()
-ch.setLevel(logging.DEBUG)
-formatter = logging.Formatter(
-    "%(asctime)s %(levelname)s - %(message)s", "%Y-%m-%d %H:%M:%S"
-)
-ch.setFormatter(formatter)
-fh.setFormatter(formatter)
-logger.addHandler(ch)
-logger.addHandler(fh)
-
-
+pydit.setup_logging(logger)
 logger.info("Started")
 
 # %%
-import pydit
-
-
-#%%
-config.input_path = "test"
 
 
 # %%
 
-tools = common.CommonTools()
-tools.input_path = "./demo_data/"
-tools.output_path = "./demo_data"
-tools.temp_path = "./demo_data"
-tools.max_rows_to_excel = 10000
+fm = pydit.filemanager.FileManager.getInstance()
+fm.input_path = "./demo_data/"
+fm.output_path = "./demo_data"
+fm.temp_path = "./demo_data"
+fm.max_rows_to_excel = 10000
 
 df = pd.DataFrame(
     [
@@ -66,15 +48,13 @@ df = pd.DataFrame(
 )
 
 
-from pydit import profiling
-
 col1 = range(1, 100)
 col2 = [1] * 30 + [2] * 50 + [3] * 20
 col3 = [1] * 10 + [2] * 90
 
 
 df = pd.DataFrame(zip(col1, col2, col3), columns=["col1", "col2", "col3"])
-print(profiling.add_percentile(df, "col1", ["col2", "col3"]))
+print(pydit.profiling.add_percentile(df, "col1", ["col2", "col3"]))
 
-print(profiling.add_percentile(df, "col1"))
+print(pydit.profiling.add_percentile(df, "col1"))
 

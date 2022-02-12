@@ -3,8 +3,33 @@
 import logging
 import re
 import numpy as np
+from logging.handlers import RotatingFileHandler
 
 logger = logging.getLogger(__name__)
+
+
+def setup_logging(
+    logger, logfile="./audit.log", level_screen=logging.DEBUG, level_file=logging.DEBUG
+):
+    """ Configure the logging both to screen and a file with sensible optional
+    parameters:
+    logfile= audit.log with rotation ever 50k and 5 backups
+    level_screen= one of the logging.DEBUG, logging.ERROR values
+    level_file= same
+    """
+    logger.setLevel(logging.DEBUG)
+    if logger.handlers == []:
+        fh = RotatingFileHandler(logfile, maxBytes=50000, backupCount=5)
+        fh.setLevel(level_file)
+        ch = logging.StreamHandler()
+        ch.setLevel(level_screen)
+        formatter = logging.Formatter(
+            "%(asctime)s %(levelname)s - %(message)s", "%Y-%m-%d %H:%M"
+        )
+        ch.setFormatter(formatter)
+        fh.setFormatter(formatter)
+        logger.addHandler(fh)
+        logger.addHandler(ch)
 
 
 def print_red(*args):
