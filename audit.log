@@ -319,3 +319,45 @@ FileNotFoundError: [Errno 2] No such file or directory: './output/test.xlsx'
 2022-02-10 08:29:56 DEBUG - Folder ./ found alright
 2022-02-10 08:40:39 DEBUG - Adding a trailing / to path
 2022-02-10 08:40:39 WARNING - Could not find the folder /temp/ , ensure it does exist or gets created
+2022-02-10 22:02:38 INFO - Started
+2022-02-10 22:02:38 DEBUG - Setting path to ./
+2022-02-10 22:02:38 DEBUG - Folder ./ found alright
+2022-02-10 22:02:38 DEBUG - Setting path to ./
+2022-02-10 22:02:38 DEBUG - Folder ./ found alright
+2022-02-10 22:02:38 DEBUG - Setting path to ./
+2022-02-10 22:02:38 DEBUG - Folder ./ found alright
+2022-02-10 22:02:38 DEBUG - Setting path to ./demo_data/
+2022-02-10 22:02:38 WARNING - Could not find the folder ./demo_data/ , ensure it does exist or gets created
+2022-02-10 22:02:38 DEBUG - Adding a trailing / to path
+2022-02-10 22:02:38 WARNING - Could not find the folder ./demo_data/ , ensure it does exist or gets created
+2022-02-10 22:02:38 DEBUG - Adding a trailing / to path
+2022-02-10 22:02:39 WARNING - Could not find the folder ./demo_data/ , ensure it does exist or gets created
+2022-02-10 22:02:39 INFO - Adding percentile column based on column col1
+2022-02-10 22:02:39 DEBUG - and grouping by column percentile_in_col2_col3
+2022-02-10 22:02:39 INFO - Adding percentile column based on column col1
+2022-02-12 05:53:54 INFO - Started
+2022-02-12 05:54:35 INFO - Started
+2022-02-12 05:54:35 INFO - Started
+2022-02-12 05:54:55 INFO - Started
+2022-02-12 05:54:55 INFO - Started
+2022-02-12 05:54:55 INFO - Started
+2022-02-12 06:02:32 INFO - Started
+2022-02-12 06:02:41 INFO - Started
+2022-02-12 06:02:42 INFO - Started
+2022-02-12 06:02:42 INFO - Started
+2022-02-12 06:02:42 INFO - Started
+2022-02-12 06:02:43 INFO - Started
+2022-02-12 06:28 INFO - Started
+2022-02-12 06:28 INFO - Started
+2022-02-12 06:28 INFO - Started
+2022-02-12 06:28 INFO - Started
+2022-02-12 06:37 INFO - Started
+2022-02-12 06:38 INFO - Started
+2022-02-12 06:38 INFO - Checking for blanks in id,ref,date_trans,status,amount,notes
+2022-02-12 06:38 DEBUG - Checking for spaces and nullstring too in ref
+2022-02-12 06:38 DEBUG - Checking just for NaN or NaT in date_trans
+2022-02-12 06:38 DEBUG - Checking for spaces and nullstring too in status
+2022-02-12 06:38 DEBUG - Checking for spaces and nullstring too in notes
+2022-02-12 07:09 INFO - Started
+2022-02-12 07:09 INFO - Saved to ./test_zero_len.xlsx
+2022-02-12 07:09 INFO - Finished in 0.0 mins

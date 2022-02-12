@@ -121,3 +121,51 @@ FileNotFoundError: [Errno 2] No such file or directory: './output2/test.xlsx'
 2022-02-06 12:16:47 DEBUG Folder ./input/ found alright
 2022-02-06 12:16:47 DEBUG Adding a trailing / to path
 2022-02-06 12:16:47 DEBUG Folder ./output/ found alright
+2022-02-12 06:49:38 INFO Started
+2022-02-12 06:50:35 INFO Started
+2022-02-12 06:50:35 DEBUG Adding a trailing / to path
+2022-02-12 06:50:35 DEBUG Folder ./input/ found alright
+2022-02-12 06:50:35 DEBUG Adding a trailing / to path
+2022-02-12 06:50:35 DEBUG Folder ./output/ found alright
+2022-02-12 16:35 INFO - Started
+2022-02-12 16:35 INFO - Saved to ./test_zero_len.xlsx
+2022-02-12 16:35 INFO - Finished in 0.0 mins
+2022-02-12 16:40 INFO - Started
+2022-02-12 16:40 INFO - Saved to ./test_zero_len.xlsx
+2022-02-12 16:40 INFO - Finished in 0.0 mins
+2022-02-12 16:44 INFO - Started
+2022-02-12 16:45 INFO - Saved to ./test_zero_len.xlsx
+2022-02-12 16:45 INFO - Finished in 0.0 mins
+2022-02-12 16:51 INFO - Started
+2022-02-12 16:51 INFO - Saved to ./test_zero_len.xlsx
+2022-02-12 16:51 INFO - Finished in 0.0 mins
+2022-02-12 16:51 INFO - Saved to ./test_zero_len.xlsx
+2022-02-12 16:51 INFO - Finished in 0.0 mins
+2022-02-12 16:52 INFO - Saved to ./test_zero_len.xlsx
+2022-02-12 16:52 INFO - Finished in 0.0 mins
+2022-02-12 16:52 INFO - Saved to ./test_zero_len.xlsx
+2022-02-12 16:52 INFO - Finished in 0.0 mins
+2022-02-12 16:55 INFO - Started
+2022-02-12 16:55 INFO - Saved to ./test_zero_len.xlsx
+2022-02-12 16:55 INFO - Finished in 0.0 mins
+2022-02-12 16:56 INFO - Started
+2022-02-12 16:58 INFO - Started
+2022-02-12 16:58 WARNING - Length zero object, nothing to save
+2022-02-12 16:58 INFO - Started
+2022-02-12 17:01 INFO - Started
+2022-02-12 17:01 INFO - Started
+2022-02-12 17:02 INFO - Started
+2022-02-12 17:02 WARNING - Length zero object, nothing to save
+2022-02-12 17:02 INFO - Started
+2022-02-12 17:02 WARNING - Length zero object, nothing to save
+2022-02-12 17:02 INFO - Started
+2022-02-12 17:02 WARNING - Length zero object, nothing to save
+2022-02-12 17:02 INFO - Started
+2022-02-12 17:02 WARNING - Length zero object, nothing to save
+2022-02-12 17:07 INFO - Started
+2022-02-12 17:07 WARNING - Length zero object, nothing to save
+2022-02-12 17:07 WARNING - Length zero object, nothing to save
+2022-02-12 17:07 WARNING - Length zero object, nothing to save
+2022-02-12 17:07 WARNING - Length zero object, nothing to save
+2022-02-12 17:07 INFO - Saved to ./test_nonzero_len.xlsx
+2022-02-12 17:07 INFO - Finished in 0.0 mins

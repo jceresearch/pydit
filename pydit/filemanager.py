@@ -27,7 +27,10 @@ class FileManager:
     def __init__(self,):
         """ Virtually private constructor. """
         if FileManager.__instance is not None:
-            raise Exception("You cannot initialise the Configuration class again")
+            return None
+            # TODO: #21 Research whether returning None in singleton __init__ is the right approach, got some errors in ipython
+            # when rerruning the initialisation somehow gets called again. now seems to be working
+            # raise Exception("You cannot initialise the Configuration class again")
         else:
             FileManager.__instance = self
             self._temp_path = "./"
@@ -179,9 +182,9 @@ class FileManager:
         return full_file_name
 
     def load(self, file_name, source="auto"):
-        """Load a xlsx, csv or pickle file into a DataFrame with extra features 
-        and sensible parameters. Assumes it is perfectly tabular and fields are 
-        in row one, assumes spreadsheets has one sheet. This is meant to be used 
+        """Load a xlsx, csv or pickle file into a DataFrame with extra features
+        and sensible parameters. Assumes it is perfectly tabular and fields are
+        in row one, assumes spreadsheets has one sheet. This is meant to be used
         for highly standard files, typically intermediate files we control
         Args:
             file_name (String): the core (stem) file name and externsion
@@ -258,6 +261,23 @@ class FileManager:
         """
         if not filename:
             return
+
+        try:
+            if len(obj) == 0:
+                logger.warning("Length zero object, nothing to save")
+                return False
+            else:
+                if obj.empty:
+                    logger.warning("Empty DataFrame/Series object, nothing to save")
+                    return False
+                else:
+                    # object not empty, we continue
+                    pass
+
+        except Exception:
+            # we failed somehow to check the len(), probably None object
+            logger.warning("Empty object nothing to save ")
+            return False
 
         flag = False
         flag_to_csv_instead = False
