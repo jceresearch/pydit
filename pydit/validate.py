@@ -2,6 +2,7 @@
 
 import logging
 from datetime import timedelta
+from xmlrpc.client import FastParser
 
 import pandas as pd
 from pandas.api.types import is_datetime64_any_dtype as is_datetime
@@ -215,6 +216,46 @@ def check_blanks(
         return total_results
 
     return df
+
+
+def check_referential_integrity(df1, df2, key1, key2):
+    """' check whether two dataframes are one-to-one , many-to-one"""
+    set1 = set(df1[key1])
+    key1_is_unique= ( len(set1) == list(df1[key1]))
+    set2 = set(df2[key2])
+    key2_is_unique = (len(set2) == list(df2[key2]))
+    two_sets_equal = (set1 == set2)
+    set1_in_set2=set1.issubset(set2)
+    set2_in_set1=set2.issubset(set1)
+    if two_sets_equal:
+        print("key1 and key2 unique values are the same")
+        if key1_is_unique and key2_is_unique:    
+            print("One to one and match fully")
+            return "1-to-1 strict"   
+        elif not key1_is_unique and not key2_is_unique:
+            print ("Both keys have duplicates, many to many")
+            return "m-to-m strict"
+        elif key1_is_unique and not key2_is_unique:
+            return "1-to-m strict, key2 is fact"
+        elif key2_is_unique and not key1_is_unique:
+            return "m-to-1 strict key1 is fact"
+        
+    else:            
+        if set1_in_set2:
+            
+            if key2_is_unique:
+                print("key2 is dimension, also has values not appearing in key1")
+                return "m-to-1 loose"
+            else:
+                #key2 has duplicates, so it is a fact table
+                if key1_is_unique:
+                    print("key1 is possible dimension (no duplicates) but misses values in key2")
+                    return "1-to-m with incomplete key1"
+                else:
+                    print("key1 and key2 have both duplicates, key1 is possibly fact table (subset of key2)")
+                    return "m-to-1 with duplicate keys in both"
+        else:
+            
 
 
 def main():
