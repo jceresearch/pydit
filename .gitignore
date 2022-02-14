@@ -10,3 +10,5 @@ tests/audit.log
 **/test_nonzero_len.xlsx
 **/test_zero_len.xlsx
 
+tests/test_nonzero_len.xlsx
+tests/test_zero_len.xlsx
