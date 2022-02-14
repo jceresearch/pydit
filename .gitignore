@@ -7,7 +7,6 @@
 /to delete/
 audit.log
 tests/audit.log
-
-
 test_nonzero_len.xlsx
 test_zero_len.xlsx
+
