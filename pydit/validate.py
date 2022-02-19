@@ -2,7 +2,7 @@
 
 import logging
 from datetime import timedelta
-from xmlrpc.client import FastParser
+from collections import Counter
 
 import pandas as pd
 from pandas.api.types import is_datetime64_any_dtype as is_datetime
@@ -20,13 +20,13 @@ def check_duplicates(df, columns=None, keep=False, ascending=None):
     Args:
         df (DataFrame): pandas dataframe
         
-        columns (list, optional): column(s) to check between square brackets, 
+        columns (list, optional): column(s) to check between square brackets,
         even if it is one column only, if multiple columns provided
         the check is combined duplicates, exactly as pandas duplicated().
-        
+
         keep ('first','last' or False, optional): Argument for pandas df.duplicated() method.
         Defaults to 'first'.
-        
+
         ascending (True, False or None, optional): Argument for DataFrame.value_counts()
         Defaults to None.
 
@@ -81,7 +81,6 @@ def check_duplicates(df, columns=None, keep=False, ascending=None):
 def check_sequence(obj_in, col=""):
     """ to check the numerical sequence of a series including dates
     and numbers within an text ID """
-    # TODO: #16 Develop tests and check the fullrng.issubset(unique) approach is correct
     if col:
         obj = obj_in[col]
     else:
@@ -218,44 +217,172 @@ def check_blanks(
     return df
 
 
-def check_referential_integrity(df1, df2, key1, key2):
-    """' check whether two dataframes are one-to-one , many-to-one"""
-    set1 = set(df1[key1])
-    key1_is_unique= ( len(set1) == list(df1[key1]))
-    set2 = set(df2[key2])
-    key2_is_unique = (len(set2) == list(df2[key2]))
-    two_sets_equal = (set1 == set2)
-    set1_in_set2=set1.issubset(set2)
-    set2_in_set1=set2.issubset(set1)
+def check_referential_integrity(a1, a2, verbose=False):
+    """Check what relationship two hashable arrays/lists have ("one to one",
+    "many to many" etc.)
+    Optionally, explains in a verbose way that relationship
+
+    Args:
+        a1 (List or Array): Anything that can be iterated and converted to set
+        a2 (List or Array): Same as a1
+        verbose (bool, optional): Provide extra explanation. Defaults to False.
+    """
+
+    def explain(*args, verbose=verbose):
+        """' Prints/logs these messages if verbose is True"""
+        if verbose:
+            print(*args)
+
+    set1 = set(a1)
+    key1_is_unique = len(set1) == len(a1)
+    set2 = set(a2)
+    key2_is_unique = len(set2) == len(a2)
+    two_sets_equal = set1 == set2
     if two_sets_equal:
-        print("key1 and key2 unique values are the same")
-        if key1_is_unique and key2_is_unique:    
-            print("One to one and match fully")
-            return "1-to-1 strict"   
+        # key1 and key2 unique values are the same"
+        if key1_is_unique and key2_is_unique:
+            explain("One-to-one, key1 and key2 match")
+            return "1-to-1"
         elif not key1_is_unique and not key2_is_unique:
-            print ("Both keys have duplicates, many to many")
-            return "m-to-m strict"
+            explain("Many-to-many, all values in both, but both have duplicates")
+            return "n-to-n"
         elif key1_is_unique and not key2_is_unique:
-            return "1-to-m strict, key2 is fact"
+            explain(
+                "One-to-many, all values in both,\
+                key2 is facts (has duplicates)\
+                , key1 is the dimension/master table"
+            )
+            return "1-to-n"
         elif key2_is_unique and not key1_is_unique:
-            return "m-to-1 strict key1 is fact"
-        
-    else:            
-        if set1_in_set2:
-            
-            if key2_is_unique:
-                print("key2 is dimension, also has values not appearing in key1")
-                return "m-to-1 loose"
-            else:
-                #key2 has duplicates, so it is a fact table
-                if key1_is_unique:
-                    print("key1 is possible dimension (no duplicates) but misses values in key2")
-                    return "1-to-m with incomplete key1"
+            explain(
+                "Many-to-one, all values in both, \
+                key1 is facts (has duplicates),\
+                key2 is dimension/master table"
+            )
+            return "n-to-1"
+    else:  # two sets are not equal, we need to find out how so
+        intersection = set1.intersection(set2)
+        if len(intersection) == 0:  # Disjoint sets, no commonalities
+            if key1_is_unique:
+                if key2_is_unique:
+                    explain("No common values, and both have no duplicates")
+                    return "disjoint - no duplicates"
                 else:
-                    print("key1 and key2 have both duplicates, key1 is possibly fact table (subset of key2)")
-                    return "m-to-1 with duplicate keys in both"
-        else:
-            
+                    explain(
+                        "No common values, key1 has no duplicates, key2 has duplicates"
+                    )
+                    return "disjoint - duplicates in key2"
+            else:
+                if key2_is_unique:
+                    explain(
+                        "No common values, key2 has no duplicate values, key1 has duplicates"
+                    )
+                    return "disjoint - duplicates in key1"
+                else:
+                    explain("No common values, both have duplicates also in the data")
+                    return "disjoint - both have duplicates"
+        else:  # intersection is not null, so there are some common elements
+            set1_in_set2 = set1.issubset(set2)
+            set2_in_set1 = set2.issubset(set1)
+            count1 = Counter(a1)
+            count2 = Counter(a2)
+            if set1_in_set2:
+                if key2_is_unique:
+                    explain(
+                        "Many-to-one, key2 is dimension (no duplicates) but has values not in key1"
+                    )
+                    return "*-to-1"
+                else:  # key2 has duplicates, so it is likely a fact table
+                    if key1_is_unique:
+                        explain(
+                            "key1 is possible dimension (no duplicates) but misses values in key2"
+                        )
+                        return "1-to-* - need fix incomplete key1"
+                    else:
+                        explain(
+                            "key1 and key2 have duplicates, key1 is likely facts as is subset of key2"
+                        )
+                        return "*-to-1 - need fix duplicate keys in key2"
+            if set2_in_set1:
+                if key1_is_unique:
+                    explain(
+                        "One-to-Many, key1 is dimension, no duplicates but has values not in key2"
+                    )
+                    return "1-to-*"
+                else:
+                    if key2_is_unique:
+                        explain(
+                            "key2 is possible dimension (no duplicates) but misses values in key1"
+                        )
+                        return "*-to-1 - need fix incomplete key2"
+                    else:
+                        explain(
+                            "key1 and key2 have duplicates, key2 is likely facts as is subset of key1"
+                        )
+                        return "1-to-* - need fix duplicate keys in key1"
+            explain("Both key1 and key2 have values not shared between them")
+            set1diffset2 = set1 - set2
+            set2diffset1 = set2 - set1
+            if key1_is_unique:
+                if key2_is_unique:
+                    explain(
+                        "Both have no duplicates values.\nThey share",
+                        len(intersection),
+                        " unique values.\nKey1 has ",
+                        len(set1diffset2),
+                        " unique values non shared.\nKey2 has ",
+                        len(set2diffset1),
+                        " unique values non shared",
+                    )
+                    return "partial overlap and no duplicates in either"
+                else:
+                    key2_all_non_shared = [x for x in a2 if x in set2diffset1]
+                    key2_all_non_shared_dup = [
+                        x for x in a2 if ((count2[x] > 1) and (x in set2diffset1))
+                    ]
+                    explain(
+                        "Key1 has unique values but key2 has duplicates.\nThey share",
+                        len(intersection),
+                        " unique values.\nKey1 has ",
+                        len(set1diffset2),
+                        " unique values non shared.\nKey2 has ",
+                        len(set2diffset1),
+                        " unique values non shared.\nKey2 has ",
+                        len(key2_all_non_shared),
+                        " elements non shared.\nKey2 has ",
+                        len(key2_all_non_shared_dup),
+                        " elements duplicated and non shared",
+                    )
+
+                    return "partial overlap and key2 has duplicates"
+
+            else:
+                if key2_is_unique:
+                    key1_all_non_shared = [x for x in a1 if x in set1diffset2]
+                    key1_all_non_shared_dup = [
+                        x for x in a1 if ((count1[x] > 1) and (x in set1diffset2))
+                    ]
+                    explain(
+                        "Key2 has unique values but key1 has duplicates.\nThey share",
+                        len(intersection),
+                        " unique values.\nKey1 has ",
+                        len(set1diffset2),
+                        " unique values non shared.\nKey2 has ",
+                        len(set2diffset1),
+                        " unique values non shared.\nKey1 has ",
+                        len(key1_all_non_shared),
+                        " elements non shared.\nKey1 has ",
+                        len(key1_all_non_shared_dup),
+                        " elements duplicated and non shared",
+                    )
+
+                    return "partial overlap and key1 has duplicates"
+                else:
+                    explain(
+                        "Both have duplicates and values non shared with each other"
+                    )
+
+                    return "partial overlap and both have duplicates"
 
 
 def main():
