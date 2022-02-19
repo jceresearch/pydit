@@ -2,10 +2,12 @@
 
 import logging
 import re
-import numpy as np
 from logging.handlers import RotatingFileHandler
 
+import numpy as np
+
 logger = logging.getLogger(__name__)
+
 
 
 def setup_logging(
