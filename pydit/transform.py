@@ -10,18 +10,20 @@ from pydit import common
 logger = logging.getLogger(__name__)
 
 
-def clean_columns_names(df):
+def clean_columns_names(df, max_field_name_len=40):
     """ Cleanup the column names of a Pandas dataframe
         e.g. removes non alphanumeric chars, _ instead of space, perc instead
         of %, strips trailing spaces, converts to lowercase
         """
-    df.columns = df.columns.str.replace(r"%", "perc", regex=True)
+    df.columns = df.columns.str.replace(r"%", "pc", regex=True)
     df.columns = df.columns.str.replace(r"[^a-zA-Z0-9]", " ", regex=True)
     df.columns = df.columns.str.strip()
     df.columns = df.columns.str.replace(" +", "_", regex=True)
     df.columns = df.columns.str.lower()
-    # TODO: #20 Implement some truncation in the clean_columns_name function if the field is too long TBC how long
-
+    # arbitrary limit of field names to avoid some random issues with importing in
+    # other systems, for example PowerBI has a limit of 80 charts for importing column
+    # names, just in case keeping this quite low, feel free to increase or remove
+    df.column = df.columns.str[0:max_field_name_len]
     if len(df.columns) != len(set(df.columns)):
         print("Identified some duplicate columns, renaming them")
         new_cols = common.deduplicate_list(list(df.columns))

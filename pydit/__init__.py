@@ -1,3 +1,4 @@
+""" when importing pydit this script is run and imports the entirety"""
 from .filemanager import *
 from .common import *
 from .modelling import *

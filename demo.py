@@ -15,9 +15,6 @@ logger.info("Started")
 
 # %%
 
-
-# %%
-
 fm = pydit.filemanager.FileManager.getInstance()
 fm.input_path = "./demo_data/"
 fm.output_path = "./demo_data"
