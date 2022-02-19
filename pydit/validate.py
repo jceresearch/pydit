@@ -233,6 +233,15 @@ def check_referential_integrity(a1, a2, verbose=False):
         if verbose:
             print(*args)
 
+    expl = ""
+    key1_nans = np.count_nonzero(pd.isna(a1))
+    key2_nans = np.count_nonzero(pd.isna(a2))
+    if key1_nans > 0:
+        expl = expl + "Key1 has " + key1_nans + " nan/None values\n"
+
+    if any(pd.isna(a2)):
+        expl = expl + "Key2 has " + key2_nans + " nan/None values\n"
+
     set1 = set(a1)
     key1_is_unique = len(set1) == len(a1)
     set2 = set(a2)
@@ -241,23 +250,25 @@ def check_referential_integrity(a1, a2, verbose=False):
     if two_sets_equal:
         # key1 and key2 unique values are the same"
         if key1_is_unique and key2_is_unique:
-            explain("One-to-one, key1 and key2 match")
+            explain(expl, "One-to-one, key1 and key2 match")
             return "1-to-1"
         elif not key1_is_unique and not key2_is_unique:
-            explain("Many-to-many, all values in both, but both have duplicates")
+            explain(expl, "Many-to-many, all values in both, but both have duplicates")
             return "n-to-n"
         elif key1_is_unique and not key2_is_unique:
             explain(
+                expl,
                 "One-to-many, all values in both,\
                 key2 is facts (has duplicates)\
-                , key1 is the dimension/master table"
+                , key1 is the dimension/master table",
             )
             return "1-to-n"
         elif key2_is_unique and not key1_is_unique:
             explain(
+                expl,
                 "Many-to-one, all values in both, \
                 key1 is facts (has duplicates),\
-                key2 is dimension/master table"
+                key2 is dimension/master table",
             )
             return "n-to-1"
     else:  # two sets are not equal, we need to find out how so
@@ -265,21 +276,25 @@ def check_referential_integrity(a1, a2, verbose=False):
         if len(intersection) == 0:  # Disjoint sets, no commonalities
             if key1_is_unique:
                 if key2_is_unique:
-                    explain("No common values, and both have no duplicates")
+                    explain(expl, "No common values, and both have no duplicates")
                     return "disjoint - no duplicates"
                 else:
                     explain(
-                        "No common values, key1 has no duplicates, key2 has duplicates"
+                        expl,
+                        "No common values, key1 has no duplicates, key2 has duplicates",
                     )
                     return "disjoint - duplicates in key2"
             else:
                 if key2_is_unique:
                     explain(
-                        "No common values, key2 has no duplicate values, key1 has duplicates"
+                        expl,
+                        "No common values, key2 has no duplicate values, key1 has duplicates",
                     )
                     return "disjoint - duplicates in key1"
                 else:
-                    explain("No common values, both have duplicates also in the data")
+                    explain(
+                        expl, "No common values, both have duplicates also in the data"
+                    )
                     return "disjoint - both have duplicates"
         else:  # intersection is not null, so there are some common elements
             set1_in_set2 = set1.issubset(set2)
@@ -289,35 +304,41 @@ def check_referential_integrity(a1, a2, verbose=False):
             if set1_in_set2:
                 if key2_is_unique:
                     explain(
-                        "Many-to-one, key2 is dimension (no duplicates) but has values not in key1"
+                        expl,
+                        "Many-to-one, key2 is dimension (no duplicates) but has values not in key1",
                     )
                     return "*-to-1"
                 else:  # key2 has duplicates, so it is likely a fact table
                     if key1_is_unique:
                         explain(
-                            "key1 is possible dimension (no duplicates) but misses values in key2"
+                            expl,
+                            "key1 is possible dimension (no duplicates) but misses values in key2",
                         )
                         return "1-to-* - need fix incomplete key1"
                     else:
                         explain(
-                            "key1 and key2 have duplicates, key1 is likely facts as is subset of key2"
+                            expl,
+                            "key1 and key2 have duplicates, key1 is likely facts as is subset of key2",
                         )
                         return "*-to-1 - need fix duplicate keys in key2"
             if set2_in_set1:
                 if key1_is_unique:
                     explain(
-                        "One-to-Many, key1 is dimension, no duplicates but has values not in key2"
+                        expl,
+                        "One-to-Many, key1 is dimension, no duplicates but has values not in key2",
                     )
                     return "1-to-*"
                 else:
                     if key2_is_unique:
                         explain(
-                            "key2 is possible dimension (no duplicates) but misses values in key1"
+                            expl,
+                            "key2 is possible dimension (no duplicates) but misses values in key1",
                         )
                         return "*-to-1 - need fix incomplete key2"
                     else:
                         explain(
-                            "key1 and key2 have duplicates, key2 is likely facts as is subset of key1"
+                            expl,
+                            "key1 and key2 have duplicates, key2 is likely facts as is subset of key1",
                         )
                         return "1-to-* - need fix duplicate keys in key1"
             explain("Both key1 and key2 have values not shared between them")
@@ -326,6 +347,7 @@ def check_referential_integrity(a1, a2, verbose=False):
             if key1_is_unique:
                 if key2_is_unique:
                     explain(
+                        expl,
                         "Both have no duplicates values.\nThey share",
                         len(intersection),
                         " unique values.\nKey1 has ",
@@ -341,6 +363,7 @@ def check_referential_integrity(a1, a2, verbose=False):
                         x for x in a2 if ((count2[x] > 1) and (x in set2diffset1))
                     ]
                     explain(
+                        expl,
                         "Key1 has unique values but key2 has duplicates.\nThey share",
                         len(intersection),
                         " unique values.\nKey1 has ",
@@ -363,6 +386,7 @@ def check_referential_integrity(a1, a2, verbose=False):
                         x for x in a1 if ((count1[x] > 1) and (x in set1diffset2))
                     ]
                     explain(
+                        expl,
                         "Key2 has unique values but key1 has duplicates.\nThey share",
                         len(intersection),
                         " unique values.\nKey1 has ",
@@ -379,7 +403,8 @@ def check_referential_integrity(a1, a2, verbose=False):
                     return "partial overlap and key1 has duplicates"
                 else:
                     explain(
-                        "Both have duplicates and values non shared with each other"
+                        expl,
+                        "Both have duplicates and values non shared with each other",
                     )
 
                     return "partial overlap and both have duplicates"

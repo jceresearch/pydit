@@ -20,7 +20,7 @@ def clean_columns_names(df):
     df.columns = df.columns.str.strip()
     df.columns = df.columns.str.replace(" +", "_", regex=True)
     df.columns = df.columns.str.lower()
-    # TODO: #20 Implement some truncation in the clean_columns_name functionif the field is too long TBC how long
+    # TODO: #20 Implement some truncation in the clean_columns_name function if the field is too long TBC how long
 
     if len(df.columns) != len(set(df.columns)):
         print("Identified some duplicate columns, renaming them")
