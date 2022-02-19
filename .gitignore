@@ -1,7 +1,7 @@
 /.ipynb_checkpoints/*
 /__pycache__
 /tests/__pycache__
-/tests/output
+/tests/output/*
 /tests/temp
 /pydit/__pycache__
 /to delete/
