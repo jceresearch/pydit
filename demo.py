@@ -1,16 +1,13 @@
 """' Demo of the use of these libraries"""
 
 #%%
-
-import logging
-
-
 import pandas as pd
 from pandas import Timestamp
+
 import pydit
 
-logger = logging.getLogger()
-pydit.setup_logging(logger)
+
+logger = pydit.common.setup_logging()
 logger.info("Started")
 
 # %%
@@ -54,4 +51,3 @@ df = pd.DataFrame(zip(col1, col2, col3), columns=["col1", "col2", "col3"])
 print(pydit.profiling.add_percentile(df, "col1", ["col2", "col3"]))
 
 print(pydit.profiling.add_percentile(df, "col1"))
-

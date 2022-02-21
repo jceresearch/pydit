@@ -1,8 +1,6 @@
 """ pytest version of tests - WIP"""
 import os
 import sys
-import logging
-
 
 import numpy as np
 import pandas as pd
@@ -11,11 +9,10 @@ import pandas as pd
 # from datetime import datetime, date, timedelta
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from pydit import validate, setup_logging
-from pydit import check_referential_integrity as check
+from pydit import validate, common
 
-logger = logging.getLogger()
-setup_logging(logger)
+check = validate.check_referential_integrity
+logger = common.setup_logging()
 logger.info("Started")
 
 
@@ -89,6 +86,7 @@ def test_check_referential_integrity():
     Dx = [100, 200, 300, 400, 400, 500, 500]
     E = [10, 20, 60, 70, 80, 90]
     Ex = [10, 20, 60, 60, 70, 80, 90, 90, 90]
+
     assert check(A, C) == "1-to-1"
     assert check(C, A) == "1-to-1"
     assert check(A, B) == "*-to-1"

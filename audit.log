@@ -363,3 +363,354 @@ FileNotFoundError: [Errno 2] No such file or directory: './output/test.xlsx'
 2022-02-12 07:09 INFO - Finished in 0.0 mins
 2022-02-19 10:33 INFO - Started
 2022-02-19 10:51 INFO - Started
+2022-02-21 17:31 INFO - Started
+2022-02-21 17:31 DEBUG - Setting path to ./demo_data/
+2022-02-21 17:31 DEBUG - Folder ./demo_data/ found alright
+2022-02-21 17:31 DEBUG - Adding a trailing / to path
+2022-02-21 17:31 DEBUG - Folder ./demo_data/ found alright
+2022-02-21 17:31 DEBUG - Adding a trailing / to path
+2022-02-21 17:31 DEBUG - Folder ./demo_data/ found alright
+2022-02-21 17:31 INFO - Adding percentile column based on column col1
+2022-02-21 17:31 DEBUG - and grouping by column percentile_in_col2_col3
+2022-02-21 17:31 INFO - Adding percentile column based on column col1
+2022-02-21 17:34 INFO - Started
+2022-02-21 17:34 INFO - Started
+2022-02-21 17:34 INFO - Started
+2022-02-21 17:35 INFO - Started
+2022-02-21 17:35 INFO - Started
+2022-02-21 17:35 INFO - Started
+2022-02-21 17:35 INFO - Started
+2022-02-21 17:35 INFO - Started
+2022-02-21 17:36 INFO - Started
+2022-02-21 17:36 INFO - Started
+2022-02-21 17:36 INFO - Started
+2022-02-21 17:36 INFO - Started
+2022-02-21 17:36 INFO - Started
+2022-02-21 17:36 INFO - Started
+2022-02-21 17:36 INFO - Started
+2022-02-21 17:36 INFO - Started
+2022-02-21 17:36 INFO - Started
+2022-02-21 17:36 INFO - Started
+2022-02-21 17:36 INFO - Started
+2022-02-21 17:36 INFO - Started
+2022-02-21 17:36 INFO - Started
+2022-02-21 17:36 INFO - Started
+2022-02-21 17:36 INFO - Started
+2022-02-21 17:36 INFO - Started
+2022-02-21 17:38 INFO - Started
+2022-02-21 17:38 INFO - Started
+2022-02-21 17:38 INFO - Started
+2022-02-21 17:38 INFO - Started
+2022-02-21 17:38 INFO - Started
+2022-02-21 17:38 INFO - Started
+2022-02-21 17:38 INFO - Started
+2022-02-21 17:38 INFO - Started
+2022-02-21 17:38 INFO - Started
+2022-02-21 17:38 INFO - Started
+2022-02-21 17:38 INFO - Started
+2022-02-21 17:38 INFO - Started
+2022-02-21 17:38 INFO - Started
+2022-02-21 17:38 INFO - Started
+2022-02-21 17:38 INFO - Started
+2022-02-21 17:38 INFO - Started
+2022-02-21 17:38 INFO - Started
+2022-02-21 17:38 INFO - Started
+2022-02-21 17:38 INFO - Started
+2022-02-21 17:38 INFO - Started
+2022-02-21 17:38 INFO - Started
+2022-02-21 17:38 INFO - Started
+2022-02-21 17:38 INFO - Started
+2022-02-21 17:38 INFO - Started
+2022-02-21 17:38 INFO - Started
+2022-02-21 17:38 INFO - Started
+2022-02-21 17:38 INFO - Started
+2022-02-21 17:38 INFO - Started
+2022-02-21 17:38 INFO - Started
+2022-02-21 17:38 INFO - Started
+2022-02-21 17:40 INFO - Started
+2022-02-21 17:40 INFO - Started
+2022-02-21 17:40 INFO - Started
+2022-02-21 17:40 INFO - Started
+2022-02-21 17:40 INFO - Started
+2022-02-21 17:40 INFO - Started
+2022-02-21 17:40 INFO - Started
+2022-02-21 17:40 INFO - Started
+2022-02-21 17:40 INFO - Started
+2022-02-21 17:40 INFO - Started
+2022-02-21 17:40 INFO - Started
+2022-02-21 17:40 INFO - Started
+2022-02-21 17:40 INFO - Started
+2022-02-21 17:40 INFO - Started
+2022-02-21 17:40 INFO - Started
+2022-02-21 17:42 INFO - Started
+2022-02-21 17:42 INFO - Started
+2022-02-21 17:42 INFO - Started
+2022-02-21 17:42 INFO - Started
+2022-02-21 17:42 INFO - Started
+2022-02-21 17:42 INFO - Started
+2022-02-21 17:42 INFO - Started
+2022-02-21 17:42 INFO - Started
+2022-02-21 17:42 INFO - Started
+2022-02-21 17:42 INFO - Started
+2022-02-21 17:42 INFO - Started
+2022-02-21 17:42 INFO - Started
+2022-02-21 17:42 INFO - Started
+2022-02-21 17:42 INFO - Started
+2022-02-21 17:42 INFO - Started
+2022-02-21 17:43 INFO - Started
+2022-02-21 17:43 INFO - Started
+2022-02-21 17:43 INFO - Started
+2022-02-21 17:43 INFO - Started
+2022-02-21 17:43 INFO - Started
+2022-02-21 17:43 INFO - Started
+2022-02-21 17:43 INFO - Started
+2022-02-21 17:43 INFO - Started
+2022-02-21 17:43 INFO - Started
+2022-02-21 17:43 INFO - Started
+2022-02-21 17:43 INFO - Started
+2022-02-21 17:43 INFO - Started
+2022-02-21 17:43 INFO - Started
+2022-02-21 17:43 INFO - Started
+2022-02-21 17:43 INFO - Started
+2022-02-21 17:44 INFO - Started
+2022-02-21 17:44 INFO - Started
+2022-02-21 17:44 INFO - Started
+2022-02-21 17:44 INFO - Started
+2022-02-21 17:44 INFO - Started
+2022-02-21 17:44 INFO - Started
+2022-02-21 17:44 INFO - Started
+2022-02-21 17:44 INFO - Started
+2022-02-21 17:44 INFO - Started
+2022-02-21 17:44 INFO - Started
+2022-02-21 17:44 INFO - Started
+2022-02-21 17:44 INFO - Started
+2022-02-21 17:44 INFO - Started
+2022-02-21 17:44 INFO - Started
+2022-02-21 17:44 INFO - Started
+2022-02-21 17:44 INFO - Started
+2022-02-21 17:44 INFO - Started
+2022-02-21 17:44 INFO - Started
+2022-02-21 17:44 INFO - Started
+2022-02-21 17:44 INFO - Started
+2022-02-21 17:44 INFO - Started
+2022-02-21 17:44 INFO - Started
+2022-02-21 17:44 INFO - Started
+2022-02-21 17:44 INFO - Started
+2022-02-21 17:44 INFO - Started
+2022-02-21 17:44 INFO - Started
+2022-02-21 17:44 INFO - Started
+2022-02-21 17:44 INFO - Started
+2022-02-21 17:44 INFO - Started
+2022-02-21 17:44 INFO - Started
+2022-02-21 17:44 WARNING - Length zero object, nothing to save
+2022-02-21 17:44 WARNING - Length zero object, nothing to save
+2022-02-21 17:44 WARNING - Length zero object, nothing to save
+2022-02-21 17:44 WARNING - Length zero object, nothing to save
+2022-02-21 17:44 WARNING - Length zero object, nothing to save
+2022-02-21 17:44 WARNING - Length zero object, nothing to save
+2022-02-21 17:44 WARNING - Length zero object, nothing to save
+2022-02-21 17:44 WARNING - Length zero object, nothing to save
+2022-02-21 17:44 WARNING - Length zero object, nothing to save
+2022-02-21 17:44 WARNING - Length zero object, nothing to save
+2022-02-21 17:44 WARNING - Length zero object, nothing to save
+2022-02-21 17:44 WARNING - Length zero object, nothing to save
+2022-02-21 17:44 WARNING - Length zero object, nothing to save
+2022-02-21 17:44 WARNING - Length zero object, nothing to save
+2022-02-21 17:44 WARNING - Length zero object, nothing to save
+2022-02-21 17:44 WARNING - Length zero object, nothing to save
+2022-02-21 17:44 WARNING - Length zero object, nothing to save
+2022-02-21 17:44 WARNING - Length zero object, nothing to save
+2022-02-21 17:44 WARNING - Length zero object, nothing to save
+2022-02-21 17:44 WARNING - Length zero object, nothing to save
+2022-02-21 17:44 INFO - Saved to ./test_nonzero_len.xlsx
+2022-02-21 17:44 INFO - Saved to ./test_nonzero_len.xlsx
+2022-02-21 17:44 INFO - Saved to ./test_nonzero_len.xlsx
+2022-02-21 17:44 INFO - Saved to ./test_nonzero_len.xlsx
+2022-02-21 17:44 INFO - Saved to ./test_nonzero_len.xlsx
+2022-02-21 17:44 INFO - Finished in 0.0 mins
+2022-02-21 17:44 INFO - Finished in 0.0 mins
+2022-02-21 17:44 INFO - Finished in 0.0 mins
+2022-02-21 17:44 INFO - Finished in 0.0 mins
+2022-02-21 17:44 INFO - Finished in 0.0 mins
+2022-02-21 17:44 WARNING - Length zero object, nothing to save
+2022-02-21 17:44 WARNING - Length zero object, nothing to save
+2022-02-21 17:44 WARNING - Length zero object, nothing to save
+2022-02-21 17:44 WARNING - Length zero object, nothing to save
+2022-02-21 17:44 WARNING - Length zero object, nothing to save
+2022-02-21 17:44 INFO - Saved to ./test_zero_len.xlsx
+2022-02-21 17:44 INFO - Saved to ./test_zero_len.xlsx
+2022-02-21 17:44 INFO - Saved to ./test_zero_len.xlsx
+2022-02-21 17:44 INFO - Saved to ./test_zero_len.xlsx
+2022-02-21 17:44 INFO - Saved to ./test_zero_len.xlsx
+2022-02-21 17:44 INFO - Finished in 0.0 mins
+2022-02-21 17:44 INFO - Finished in 0.0 mins
+2022-02-21 17:44 INFO - Finished in 0.0 mins
+2022-02-21 17:44 INFO - Finished in 0.0 mins
+2022-02-21 17:44 INFO - Finished in 0.0 mins
+2022-02-21 17:44 INFO - New columns names:['col1', 'col2', 'col_3', 'col3', 'col_3_2']
+2022-02-21 17:44 INFO - New columns names:['col1', 'col2', 'col_3', 'col3', 'col_3_2']
+2022-02-21 17:44 INFO - New columns names:['col1', 'col2', 'col_3', 'col3', 'col_3_2']
+2022-02-21 17:44 INFO - New columns names:['col1', 'col2', 'col_3', 'col3', 'col_3_2']
+2022-02-21 17:44 INFO - New columns names:['col1', 'col2', 'col_3', 'col3', 'col_3_2']
+2022-02-21 17:44 INFO - New columns names:['col1', 'col2', 'col3pc', 'col4', 'col5']
+2022-02-21 17:44 INFO - New columns names:['col1', 'col2', 'col3pc', 'col4', 'col5']
+2022-02-21 17:44 INFO - New columns names:['col1', 'col2', 'col3pc', 'col4', 'col5']
+2022-02-21 17:44 INFO - New columns names:['col1', 'col2', 'col3pc', 'col4', 'col5']
+2022-02-21 17:44 INFO - New columns names:['col1', 'col2', 'col3pc', 'col4', 'col5']
+2022-02-21 17:44 ERROR - Type not recognised
+2022-02-21 17:44 ERROR - Type not recognised
+2022-02-21 17:44 ERROR - Type not recognised
+2022-02-21 17:44 ERROR - Type not recognised
+2022-02-21 17:44 ERROR - Type not recognised
+2022-02-21 17:44 INFO - Checking for blanks in col1,col2,col3,col4,col5
+2022-02-21 17:44 INFO - Checking for blanks in col1,col2,col3,col4,col5
+2022-02-21 17:44 INFO - Checking for blanks in col1,col2,col3,col4,col5
+2022-02-21 17:44 INFO - Checking for blanks in col1,col2,col3,col4,col5
+2022-02-21 17:44 INFO - Checking for blanks in col1,col2,col3,col4,col5
+2022-02-21 17:44 DEBUG - Checking for spaces and nullstring too in col2
+2022-02-21 17:44 DEBUG - Checking for spaces and nullstring too in col2
+2022-02-21 17:44 DEBUG - Checking for spaces and nullstring too in col2
+2022-02-21 17:44 DEBUG - Checking for spaces and nullstring too in col2
+2022-02-21 17:44 DEBUG - Checking for spaces and nullstring too in col2
+2022-02-21 17:44 DEBUG - Checking for spaces and nullstring too in col5
+2022-02-21 17:44 DEBUG - Checking for spaces and nullstring too in col5
+2022-02-21 17:44 DEBUG - Checking for spaces and nullstring too in col5
+2022-02-21 17:44 DEBUG - Checking for spaces and nullstring too in col5
+2022-02-21 17:44 DEBUG - Checking for spaces and nullstring too in col5
+2022-02-21 17:44 INFO - Checking for blanks in col1,col2,col3,col4,col5
+2022-02-21 17:44 INFO - Checking for blanks in col1,col2,col3,col4,col5
+2022-02-21 17:44 INFO - Checking for blanks in col1,col2,col3,col4,col5
+2022-02-21 17:44 INFO - Checking for blanks in col1,col2,col3,col4,col5
+2022-02-21 17:44 INFO - Checking for blanks in col1,col2,col3,col4,col5
+2022-02-21 17:44 DEBUG - Checking for spaces and nullstring too in col2
+2022-02-21 17:44 DEBUG - Checking for spaces and nullstring too in col2
+2022-02-21 17:44 DEBUG - Checking for spaces and nullstring too in col2
+2022-02-21 17:44 DEBUG - Checking for spaces and nullstring too in col2
+2022-02-21 17:44 DEBUG - Checking for spaces and nullstring too in col2
+2022-02-21 17:44 DEBUG - Checking for spaces and nullstring too in col5
+2022-02-21 17:44 DEBUG - Checking for spaces and nullstring too in col5
+2022-02-21 17:44 DEBUG - Checking for spaces and nullstring too in col5
+2022-02-21 17:44 DEBUG - Checking for spaces and nullstring too in col5
+2022-02-21 17:44 DEBUG - Checking for spaces and nullstring too in col5
+2022-02-21 17:44 INFO - Started
+2022-02-21 17:44 INFO - New columns names:['col1', 'col2', 'col3pc', 'col4', 'col5']
+2022-02-21 17:45 INFO - Started
+2022-02-21 17:45 INFO - Started
+2022-02-21 17:45 INFO - Started
+2022-02-21 17:45 INFO - Started
+2022-02-21 17:45 INFO - Started
+2022-02-21 17:45 INFO - Started
+2022-02-21 17:45 INFO - Started
+2022-02-21 17:45 INFO - Started
+2022-02-21 17:45 INFO - Started
+2022-02-21 17:45 INFO - Started
+2022-02-21 17:45 INFO - Started
+2022-02-21 17:45 INFO - Started
+2022-02-21 17:45 INFO - Started
+2022-02-21 17:45 INFO - Started
+2022-02-21 17:45 INFO - Started
+2022-02-21 17:45 WARNING - Length zero object, nothing to save
+2022-02-21 17:45 WARNING - Length zero object, nothing to save
+2022-02-21 17:45 WARNING - Length zero object, nothing to save
+2022-02-21 17:45 WARNING - Length zero object, nothing to save
+2022-02-21 17:45 WARNING - Length zero object, nothing to save
+2022-02-21 17:45 WARNING - Length zero object, nothing to save
+2022-02-21 17:45 WARNING - Length zero object, nothing to save
+2022-02-21 17:45 WARNING - Length zero object, nothing to save
+2022-02-21 17:45 WARNING - Length zero object, nothing to save
+2022-02-21 17:45 WARNING - Length zero object, nothing to save
+2022-02-21 17:45 WARNING - Length zero object, nothing to save
+2022-02-21 17:45 WARNING - Length zero object, nothing to save
+2022-02-21 17:45 WARNING - Length zero object, nothing to save
+2022-02-21 17:45 WARNING - Length zero object, nothing to save
+2022-02-21 17:45 WARNING - Length zero object, nothing to save
+2022-02-21 17:45 WARNING - Length zero object, nothing to save
+2022-02-21 17:45 WARNING - Length zero object, nothing to save
+2022-02-21 17:45 WARNING - Length zero object, nothing to save
+2022-02-21 17:45 WARNING - Length zero object, nothing to save
+2022-02-21 17:45 WARNING - Length zero object, nothing to save
+2022-02-21 17:45 INFO - Saved to ./test_nonzero_len.xlsx
+2022-02-21 17:45 INFO - Saved to ./test_nonzero_len.xlsx
+2022-02-21 17:45 INFO - Saved to ./test_nonzero_len.xlsx
+2022-02-21 17:45 INFO - Saved to ./test_nonzero_len.xlsx
+2022-02-21 17:45 INFO - Saved to ./test_nonzero_len.xlsx
+2022-02-21 17:45 INFO - Finished in 0.0 mins
+2022-02-21 17:45 INFO - Finished in 0.0 mins
+2022-02-21 17:45 INFO - Finished in 0.0 mins
+2022-02-21 17:45 INFO - Finished in 0.0 mins
+2022-02-21 17:45 INFO - Finished in 0.0 mins
+2022-02-21 17:45 WARNING - Length zero object, nothing to save
+2022-02-21 17:45 WARNING - Length zero object, nothing to save
+2022-02-21 17:45 WARNING - Length zero object, nothing to save
+2022-02-21 17:45 WARNING - Length zero object, nothing to save
+2022-02-21 17:45 WARNING - Length zero object, nothing to save
+2022-02-21 17:45 INFO - Saved to ./test_zero_len.xlsx
+2022-02-21 17:45 INFO - Saved to ./test_zero_len.xlsx
+2022-02-21 17:45 INFO - Saved to ./test_zero_len.xlsx
+2022-02-21 17:45 INFO - Saved to ./test_zero_len.xlsx
+2022-02-21 17:45 INFO - Saved to ./test_zero_len.xlsx
+2022-02-21 17:45 INFO - Finished in 0.0 mins
+2022-02-21 17:45 INFO - Finished in 0.0 mins
+2022-02-21 17:45 INFO - Finished in 0.0 mins
+2022-02-21 17:45 INFO - Finished in 0.0 mins
+2022-02-21 17:45 INFO - Finished in 0.0 mins
+2022-02-21 17:45 INFO - New columns names:['col1', 'col2', 'col_3', 'col3', 'col_3_2']
+2022-02-21 17:45 INFO - New columns names:['col1', 'col2', 'col_3', 'col3', 'col_3_2']
+2022-02-21 17:45 INFO - New columns names:['col1', 'col2', 'col_3', 'col3', 'col_3_2']
+2022-02-21 17:45 INFO - New columns names:['col1', 'col2', 'col_3', 'col3', 'col_3_2']
+2022-02-21 17:45 INFO - New columns names:['col1', 'col2', 'col_3', 'col3', 'col_3_2']
+2022-02-21 17:45 INFO - New columns names:['col1', 'col2', 'col3pc', 'col4', 'col5']
+2022-02-21 17:45 INFO - New columns names:['col1', 'col2', 'col3pc', 'col4', 'col5']
+2022-02-21 17:45 INFO - New columns names:['col1', 'col2', 'col3pc', 'col4', 'col5']
+2022-02-21 17:45 INFO - New columns names:['col1', 'col2', 'col3pc', 'col4', 'col5']
+2022-02-21 17:45 INFO - New columns names:['col1', 'col2', 'col3pc', 'col4', 'col5']
+2022-02-21 17:45 ERROR - Type not recognised
+2022-02-21 17:45 ERROR - Type not recognised
+2022-02-21 17:45 ERROR - Type not recognised
+2022-02-21 17:45 ERROR - Type not recognised
+2022-02-21 17:45 ERROR - Type not recognised
+2022-02-21 17:45 INFO - Checking for blanks in col1,col2,col3,col4,col5
+2022-02-21 17:45 INFO - Checking for blanks in col1,col2,col3,col4,col5
+2022-02-21 17:45 INFO - Checking for blanks in col1,col2,col3,col4,col5
+2022-02-21 17:45 INFO - Checking for blanks in col1,col2,col3,col4,col5
+2022-02-21 17:45 INFO - Checking for blanks in col1,col2,col3,col4,col5
+2022-02-21 17:45 DEBUG - Checking for spaces and nullstring too in col2
+2022-02-21 17:45 DEBUG - Checking for spaces and nullstring too in col2
+2022-02-21 17:45 DEBUG - Checking for spaces and nullstring too in col2
+2022-02-21 17:45 DEBUG - Checking for spaces and nullstring too in col2
+2022-02-21 17:45 DEBUG - Checking for spaces and nullstring too in col2
+2022-02-21 17:45 DEBUG - Checking for spaces and nullstring too in col5
+2022-02-21 17:45 DEBUG - Checking for spaces and nullstring too in col5
+2022-02-21 17:45 DEBUG - Checking for spaces and nullstring too in col5
+2022-02-21 17:45 DEBUG - Checking for spaces and nullstring too in col5
+2022-02-21 17:45 DEBUG - Checking for spaces and nullstring too in col5
+2022-02-21 17:45 INFO - Checking for blanks in col1,col2,col3,col4,col5
+2022-02-21 17:45 INFO - Checking for blanks in col1,col2,col3,col4,col5
+2022-02-21 17:45 INFO - Checking for blanks in col1,col2,col3,col4,col5
+2022-02-21 17:45 INFO - Checking for blanks in col1,col2,col3,col4,col5
+2022-02-21 17:45 INFO - Checking for blanks in col1,col2,col3,col4,col5
+2022-02-21 17:45 DEBUG - Checking for spaces and nullstring too in col2
+2022-02-21 17:45 DEBUG - Checking for spaces and nullstring too in col2
+2022-02-21 17:45 DEBUG - Checking for spaces and nullstring too in col2
+2022-02-21 17:45 DEBUG - Checking for spaces and nullstring too in col2
+2022-02-21 17:45 DEBUG - Checking for spaces and nullstring too in col2
+2022-02-21 17:45 DEBUG - Checking for spaces and nullstring too in col5
+2022-02-21 17:45 DEBUG - Checking for spaces and nullstring too in col5
+2022-02-21 17:45 DEBUG - Checking for spaces and nullstring too in col5
+2022-02-21 17:45 DEBUG - Checking for spaces and nullstring too in col5
+2022-02-21 17:45 DEBUG - Checking for spaces and nullstring too in col5
+2022-02-21 17:45 INFO - Started
+2022-02-21 17:45 INFO - Started
+2022-02-21 17:45 INFO - Started
+2022-02-21 17:45 INFO - Started
+2022-02-21 17:45 INFO - Started
+2022-02-21 17:45 INFO - Started
+2022-02-21 17:45 INFO - Started
+2022-02-21 17:45 INFO - Started
+2022-02-21 17:45 INFO - Started
+2022-02-21 17:45 INFO - Started
+2022-02-21 17:45 INFO - Started
+2022-02-21 17:45 INFO - Started
+2022-02-21 17:45 INFO - Started
+2022-02-21 17:45 INFO - Started
+2022-02-21 17:45 INFO - Started

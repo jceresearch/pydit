@@ -1,9 +1,7 @@
 """ Pytest suite for transform tools functions"""
 import os
 import sys
-import logging
 
-import numpy as np
 import pandas as pd
 
 
@@ -13,15 +11,10 @@ import pandas as pd
 
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from pydit import transform
+from pydit import transform, common
 
 
-logging.basicConfig(
-    datefmt="%Y-%m-%d %H:%M:%S",
-    format="%(asctime)s %(levelname)s %(message)s",
-    level=logging.DEBUG,
-)
-logger=logging.getLogger()
+logger = common.setup_logging()
 logger.info("Started")
 
 
@@ -56,7 +49,7 @@ def test_clean_column_names_2():
     df = pd.DataFrame(data=d)
     transform.clean_columns_names(df)
     print(df.columns)
-    assert list(df.columns) == ["col1", "col2", "col3perc", "col4", "col5"]
+    assert list(df.columns) == ["col1", "col2", "col3pc", "col4", "col5"]
 
 
 if __name__ == "__main__":

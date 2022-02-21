@@ -1,10 +1,7 @@
 """ pytest test suite for profiling tools module"""
 import os
 import sys
-import logging
 
-
-import numpy as np
 import pandas as pd
 from pandas import Timestamp
 
@@ -12,15 +9,10 @@ from pandas import Timestamp
 # from datetime import datetime, date, timedelta
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from pydit import profiling
+from pydit import profiling, common
 
 
-logging.basicConfig(
-    datefmt="%Y-%m-%d %H:%M:%S",
-    format="%(asctime)s %(levelname)s %(message)s",
-    level=logging.DEBUG,
-)
-logger = logging.getLogger()
+logger = common.setup_logging()
 logger.info("Started")
 
 

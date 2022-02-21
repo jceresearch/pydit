@@ -4,15 +4,12 @@
 
 import os
 import sys
-import logging
 
-
-import numpy as np
 import pandas as pd
 
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-import pydit
+from pydit import common, filemanager
 
 
 # import numpy as np
@@ -20,11 +17,11 @@ import pydit
 # from pandas import Timestamp
 
 
-logger = logging.getLogger()
-pydit.setup_logging(logger)
+logger = common.setup_logging()
 logger.info("Started")
 
-fm = pydit.filemanager.FileManager().getInstance()
+
+fm = filemanager.FileManager().getInstance()
 
 
 def test_stem_name():
@@ -35,6 +32,7 @@ def test_stem_name():
 
 
 def test_save():
+    """ test for savling objects"""
     d = {
         "col1": [1, 2, 3, 5, 6],
         "col2": [1, 2, 3, 4, 5],
@@ -54,16 +52,3 @@ def test_save():
     assert fm.save(d1, "test_zero_len.xlsx") == False
     assert fm.save(df, "test_zero_len.xlsx") == True
     return
-
-
-#%%
-
-test_save()
-
-# %%
-
-# %%
-
-# %%
-fm.output_path
-# %%
