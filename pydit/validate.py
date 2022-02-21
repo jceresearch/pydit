@@ -237,10 +237,10 @@ def check_referential_integrity(a1, a2, verbose=False):
     key1_nans = np.count_nonzero(pd.isna(a1))
     key2_nans = np.count_nonzero(pd.isna(a2))
     if key1_nans > 0:
-        expl = expl + "Key1 has " + key1_nans + " nan/None values\n"
+        expl = expl + "Key1 has " + str(key1_nans) + " nan/None values\n"
 
     if any(pd.isna(a2)):
-        expl = expl + "Key2 has " + key2_nans + " nan/None values\n"
+        expl = expl + "Key2 has " + str(key2_nans) + " nan/None values\n"
 
     set1 = set(a1)
     key1_is_unique = len(set1) == len(a1)
