@@ -1,22 +1,17 @@
 """ test of base functions"""
 import os
 import sys
-import logging
 
-
-import numpy as np
-import pandas as pd
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from pydit import common, setup_logging
+from pydit import common
 
 
 # import numpy as np
 # from datetime import datetime, date, timedelta
 # from pandas import Timestamp
 
-logger = logging.getLogger()
-setup_logging(logger)
+logger = common.setup_logging()
 logger.info("Started")
 
 
