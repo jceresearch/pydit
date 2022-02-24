@@ -249,7 +249,7 @@ def add_counts_in_each_row(df1, df2, left_on=None, right_on=None, on=None):
     df1["count_" + right_on] = df1["count_" + left_on].fillna(0).astype("Int64")
     df2["count_" + left_on] = df2["count_" + right_on].fillna(0).astype("Int64")
     # TODO: #22 Add_counts_in_each_row: add option for not overwriting the column but creating a new one
-    # TODO: Add_counts_in_each_row: add more checks for when not providing a DataFrame or no records
+    # TODO: #23 Add_counts_in_each_row: add more checks for when not providing a DataFrame or no records
 
     return True
 
