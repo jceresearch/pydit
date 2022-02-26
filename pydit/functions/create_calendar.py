@@ -1,11 +1,4 @@
-""" Modelling functions"""
-
-import logging
-
 import pandas as pd
-
-
-logger = logging.getLogger(__name__)
 
 
 def create_calendar(start="1975-01-01", end="2050-12-31"):
@@ -43,11 +36,3 @@ def create_calendar(start="1975-01-01", end="2050-12-31"):
     df.insert(3, "yyyyqq", (df.year.astype(str) + df.quarter.astype(str).str.zfill(2)))
     df.insert(4, "yyyyww", (df.year.astype(str) + df.week.astype(str).str.zfill(2)))
     return df
-
-
-def main():
-    """ Modelling related functions"""
-
-
-if __name__ == "__main__":
-    main()

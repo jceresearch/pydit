@@ -1,4 +1,5 @@
-""" Base class with underlying project configuration information"""
+""" class for dealing with opening and saving files within the project
+"""
 
 import logging
 from datetime import datetime
@@ -6,7 +7,6 @@ import pickle
 import os
 from pathlib import Path, PureWindowsPath
 import csv
-
 import pandas as pd
 
 logger = logging.getLogger(__name__)

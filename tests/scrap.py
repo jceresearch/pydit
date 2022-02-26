@@ -8,6 +8,7 @@ from pathlib import Path
 import pandas as pd
 import numpy as np
 
+# pylint: disable=import-error disable=wrong-import-position
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import pydit
 
@@ -44,7 +45,7 @@ df = pd.DataFrame(data=d)
 
 pydit.print_red("Alert")
 
-print(pydit.profiling.profile_dataframe(df))
+print(pydit.profile_dataframe(df))
 
 s = pd.Series([1, 2, 3, 4, 5])
 s.to_excel("./output/test_saving_series.xlsx")

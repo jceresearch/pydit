@@ -7,12 +7,15 @@ from pandas import Timestamp
 
 # import numpy as np
 # from datetime import datetime, date, timedelta
-
+# pylint: disable=import-error disable=wrong-import-position
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from pydit import profiling, common
+from pydit import (
+    profile_dataframe,
+    setup_logging,
+)
 
 
-logger = common.setup_logging()
+logger = setup_logging()
 logger.info("Started")
 
 
@@ -55,5 +58,4 @@ def test_profile_dataframe():
         ],
         columns=["id", "ref", "date_trans", "status", "amount", "notes"],
     )
-    assert profiling.profile_dataframe(df["id"]) is None
-
+    assert profile_dataframe(df["id"]) is None

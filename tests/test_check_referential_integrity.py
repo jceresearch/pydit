@@ -7,70 +7,14 @@ import pandas as pd
 
 # import numpy as np
 # from datetime import datetime, date, timedelta
-
+# pylint: disable=import-error disable=wrong-import-position
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from pydit import validate, common
+from pydit import check_referential_integrity as check
+from pydit import setup_logging
 
-check = validate.check_referential_integrity
-logger = common.setup_logging()
+
+logger = setup_logging()
 logger.info("Started")
-
-
-def test_check_sequence():
-    """ testing the numerical sequence checker"""
-    d = {
-        "col1": [1, 2, 3, 5, 6],
-        "col2": ["Id1", "ID2", "ID3", "ID-4", "ID 5"],
-        "col3": [1, 2, 3, 4, 5],
-    }
-    df = pd.DataFrame(data=d)
-    assert validate.check_sequence(df, "col1") == [4]
-    assert validate.check_sequence(df, "col2") == []
-    assert validate.check_sequence(df, "col3") == []
-    assert validate.check_sequence([1, 2, 3, 4, 5]) == []
-    assert validate.check_sequence([1, 2, 4, 5]) == [3]
-    assert validate.check_sequence([1, 15]) == [
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13,
-        14,
-    ]
-    assert validate.check_sequence(pd.Series([1, 2, 3, 5])) == [4]
-    assert validate.check_sequence("1 2 3 4 5") is None
-
-
-def test_check_blanks():
-    """ testing the blanks checker"""
-    d = {
-        "col1": [1, 2, 3, 4, 5],
-        "col2": ["Value 1", "Value 2", "", " ", "Value 5"],
-        "col3": [np.nan, 2.0, 0.0, 4.0, 5.1],
-        "col4": [np.nan, 2, 0, 4, 5],
-        "col5": [np.nan, "    ", "  \t", "   \n", "Value 5"],
-    }
-    df = pd.DataFrame(data=d)
-    totals = validate.check_blanks(df, totals_only=True)
-    assert totals[0] == 0
-    assert totals[1] == 2
-    assert totals[2] == 2
-    assert totals[3] == 2
-    assert totals[4] == 4
-    dfx = validate.check_blanks(df)
-    d = dfx.to_dict()
-    assert d["has_blanks"][0] is True
-    assert d["has_blanks"][1] is True
-    assert d["has_blanks"][2] is True
-    assert d["has_blanks"][3] is True
-    assert d["has_blanks"][4] is False
 
 
 def test_check_referential_integrity():
@@ -158,21 +102,4 @@ def test_check_referential_integrity_load():
     assert check(Dx, Ax) == "disjoint - both have duplicates"
     assert check(Ax, Dx) == "disjoint - both have duplicates"
     assert check(D, Dx) == "1-to-n"
-
-
-def test_add_counts():
-    d1 = {"mkey": [1, 2, 3, 4], "mvalue": ["a", "b", "c", "d"]}
-    d2 = {
-        "tkey": [100, 101, 102, 103, 104, 105, 106],
-        "mkey": [1, 1, 1, 2, 3, 3, 5],
-        "tvalue": [10.12, 20.4, 33.3, 45, 59.99, 60, -1],
-    }
-
-    df1 = pd.DataFrame(data=d1)
-    df2 = pd.DataFrame(data=d2)
-    validate.add_counts_in_each_row(df1, df2, on="mkey")
-    assert df1["count_mkey"].to_list() == [3, 1, 2, 0]
-    assert df2["count_mkey"].to_list() == [1, 1, 1, 1, 1, 1, 0]
-    assert validate.add_counts_in_each_row(df1, df2) == None
-    assert validate.add_counts_in_each_row(df1, df2, left_on="mkey") == None
 

@@ -1,15 +1,13 @@
 """ test of base functions"""
 
-#%%
-
 import os
 import sys
 
 import pandas as pd
 
-
+# pylint: disable=import-error disable=wrong-import-position
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from pydit import common, filemanager
+from pydit import FileManager, setup_logging
 
 
 # import numpy as np
@@ -17,11 +15,11 @@ from pydit import common, filemanager
 # from pandas import Timestamp
 
 
-logger = common.setup_logging()
+logger = setup_logging()
 logger.info("Started")
 
 
-fm = filemanager.FileManager().getInstance()
+fm = FileManager().getInstance()
 
 
 def test_stem_name():
@@ -52,3 +50,8 @@ def test_save():
     assert fm.save(d1, "test_zero_len.xlsx") == False
     assert fm.save(df, "test_zero_len.xlsx") == True
     return
+
+
+if __name__ == "__main__":
+    test_stem_name
+    test_save
