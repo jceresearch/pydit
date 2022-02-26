@@ -260,7 +260,8 @@ class FileManager:
             bool_also_pickle (bool, optional): [description]. Defaults to False.
         """
         if not filename:
-            return
+            logger.warning("No filename provided")
+            return False
 
         try:
             if len(obj) == 0:
@@ -272,6 +273,7 @@ class FileManager:
                     return False
                 else:
                     # object not empty, we continue
+                    logger.debug("Non empty object, will proceed")
                     pass
 
         except Exception:
@@ -322,5 +324,4 @@ class FileManager:
             )
         else:
             logger.error("Nothing saved")
-
         return flag

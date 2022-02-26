@@ -42,16 +42,15 @@ def test_save():
     t1 = ""
     l1 = []
     d1 = {}
-    assert fm.save(s2, "test_zero_len.xlsx") == False
-    assert fm.save(df1, "test_zero_len.xlsx") == False
-    assert fm.save(t1, "test_zero_len.pickle") == False
-    assert fm.save(l1, "test_zero_len.pickle") == False
-    assert fm.save(s1, "test_nonzero_len.xlsx") == True
-    assert fm.save(d1, "test_zero_len.xlsx") == False
-    assert fm.save(df, "test_zero_len.xlsx") == True
+    fm.output_path = "./tests/output/"
+    assert fm.save(s2, "test_zero_len.xlsx") is False
+    assert fm.save(df1, "test_zero_len.xlsx") is False
+    assert fm.save(t1, "test_zero_len.pickle") is False
+    assert fm.save(l1, "test_zero_len.pickle") is False
+    assert fm.save(s1, "test_nonzero_len.xlsx") is True
+    assert fm.save(d1, "test_zero_len.xlsx") is False
+    assert fm.save(df, "test_zero_len.xlsx") is True
     return
 
 
-if __name__ == "__main__":
-    test_stem_name
-    test_save
+test_save()
