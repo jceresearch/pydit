@@ -20,7 +20,10 @@ def cleanup_column_names(df, max_field_name_len=40):
     # arbitrary limit of field names to avoid some random issues with importing in
     # other systems, for example PowerBI has a limit of 80 charts for importing column
     # names, just in case keeping this quite low, feel free to increase or remove
-    df.column = df.columns.str[0:max_field_name_len]
+
+    # df.columns = [s[0:max_field_name_len] for s in df.columns] #alternative way if the below raised warnings
+    df.columns = df.columns.str[0:max_field_name_len]
+
     new_cols = deduplicate_list(list(df.columns))
     df.columns = new_cols
     logger.info("New columns names:%s", list(df.columns))

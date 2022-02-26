@@ -6,6 +6,14 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+def _hello_world(who):
+    print(who, " ,hello world")
+
+
+def hello_world():
+    _hello_world("Juan")
+
+
 def add_counts_between_related_df(df1, df2, left_on=None, right_on=None, on=None):
     """Add a count column that will bring the count of that key in the
     other table.

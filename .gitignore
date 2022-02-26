@@ -13,3 +13,7 @@ tests/test_nonzero_len.xlsx
 tests/test_zero_len.xlsx
 *.pyc
 pydit/functions/__pycache__/*
+.coverage
+audit.log.1
+htmlcov
+pydit/functions/__pycache__/*.pyc
