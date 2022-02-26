@@ -14,7 +14,7 @@ def setup_logging(
     """
 
     log = logging.getLogger()
-    log.handlers.clear
+    log.handlers.clear()
     log.setLevel(logging.DEBUG)
     fh = RotatingFileHandler(logfile, maxBytes=50000, backupCount=5)
     fh.setLevel(level_file)

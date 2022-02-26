@@ -6,7 +6,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def add_counts(df1, df2, left_on=None, right_on=None, on=None):
+def add_counts_between_related_df(df1, df2, left_on=None, right_on=None, on=None):
     """Add a count column that will bring the count of that key in the
     other table.
 

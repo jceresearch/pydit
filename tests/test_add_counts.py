@@ -8,7 +8,7 @@ import pandas as pd
 # from datetime import datetime, date, timedelta
 # pylint: disable=import-error disable=wrong-import-position
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from pydit import add_counts
+from pydit import add_counts_between_related_df
 from pydit import setup_logging
 
 log = setup_logging()
@@ -26,9 +26,8 @@ def test_add_counts():
 
     df1 = pd.DataFrame(data=d1)
     df2 = pd.DataFrame(data=d2)
-    add_counts(df1, df2, on="mkey")
+    add_counts_between_related_df(df1, df2, on="mkey")
     assert df1["count_mkey"].to_list() == [3, 1, 2, 0]
     assert df2["count_mkey"].to_list() == [1, 1, 1, 1, 1, 1, 0]
-    assert add_counts(df1, df2) == None
-    assert add_counts(df1, df2, left_on="mkey") == None
-
+    assert add_counts_between_related_df(df1, df2) is None
+    assert add_counts_between_related_df(df1, df2, left_on="mkey") is None
