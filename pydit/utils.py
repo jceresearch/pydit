@@ -1,7 +1,13 @@
 """ Convenience functions"""
+import random
+import string
+import logging
 
 import re
 import numpy as np
+import pandas as pd
+
+logger = logging.getLogger()
 
 
 def print_red(*args):
@@ -14,23 +20,61 @@ def print_green(*args):
     print("\x1b[32m" + " ".join([str(x) for x in args]) + "\x1b[0m")
 
 
-def deduplicate_list(list_to_deduplicate):
-    "Deduplicates a list"
+def deduplicate_list(
+    list_to_deduplicate, default_field_name="column", force_lower_case=True
+):
+    """deduplicates a list
+    Uses enumerate and a loop, so it is not good for very long lists
+    This function is for dealing with header/field names, where performance
+    is not really an issue
+    Returns a list of fields with no duplicates and suffixes where there were
+    duplicates
+    """
+
+    def get_random_string(length):
+        # choose from all letter
+        letters = string.ascii_lowercase
+        result_str = "".join(random.choice(letters) for i in range(length))
+        return result_str
+
     if not list_to_deduplicate:
         return []
-    newlist = list_to_deduplicate.copy()
-    for i, el in enumerate(list_to_deduplicate):
-        dupes = list_to_deduplicate.count(el)
-        if dupes > 1:
-            for j in range(dupes):
-                pos = [i for i, n in enumerate(list_to_deduplicate) if n == el][j]
-                if j == 0:
-                    newlist[pos] = str(el)
-                else:
-                    newlist[pos] = str(el) + "_" + str(j + 1)
+    try:
+        if force_lower_case:
+            list_clean = [
+                "" if pd.isna(x) else str.lower(str.strip(str(x)))
+                for x in list_to_deduplicate
+            ]
         else:
-            newlist[i] = str(el)
-    return newlist
+            list_clean = [
+                "" if pd.isna(x) else str.strip(str(x)) for x in list_to_deduplicate
+            ]
+    except:
+        logger.error("Unable to convert elements in the list to string type")
+        return False
+    new_list = []
+    for i, el in enumerate(list_clean):
+        if pd.isna(el) or el == "":
+            new_value = default_field_name + "_" + str(i + 1)
+        else:
+            if el in new_list:
+                new_value = el + "_2"
+            else:
+                new_list.append(el)
+                continue
+        if new_value in new_list:
+            n = 2
+            while el + "_" + str(n) in new_list and n < 10000:
+                n = n + 1
+            new_value = el + "_" + str(n)
+            if new_value in new_list:
+                new_value = el + "_" + get_random_string(4)
+                if new_value in new_list:
+                    new_value = el + "_" + get_random_string(8)
+                    if new_value in new_list:
+                        return False
+        new_list.append(new_value)
+    return new_list
 
 
 def version():

@@ -3,23 +3,25 @@
 import logging
 from datetime import datetime
 
-import numpy as np
 from pandas.api.types import is_datetime64_any_dtype as is_datetime
 
 
 logger = logging.getLogger(__name__)
 
 
-def fillna_smart(df, date_fillna="latest"):
+def fillna_smart(df, date_fillna="latest", text_fillna=""):
     """Cleanup the actual values of the dataframe with sensible
     nulls handling.
 
     Args:
         df ([type]): Input DataFrame
+
         date_fillna ('latest','first' or datetime, optional):
         What to put in NaT values, takes the first, last or a specified
         date to fill the gaps.
         Defaults to "latest".
+
+        text_fillna: String to use to replace nan in text/object columns
 
     Returns:
         DataFrame: Returns copy of the original dataframe with modifications
@@ -40,5 +42,5 @@ def fillna_smart(df, date_fillna="latest"):
                 val = date_fillna
             df[col].fillna(val, inplace=True)
         elif typ == "object":
-            df[col].fillna("", inplace=True)
+            df[col].fillna(text_fillna, inplace=True)
     return df

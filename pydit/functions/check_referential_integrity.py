@@ -44,10 +44,10 @@ def check_referential_integrity(a1, a2, verbose=False):
         # key1 and key2 unique values are the same"
         if key1_is_unique and key2_is_unique:
             explain(expl, "One-to-one, key1 and key2 match")
-            return "1-to-1"
+            return "1:1"
         elif not key1_is_unique and not key2_is_unique:
             explain(expl, "Many-to-many, all values in both, but both have duplicates")
-            return "n-to-n"
+            return "m:m"
         elif key1_is_unique and not key2_is_unique:
             explain(
                 expl,
@@ -55,7 +55,7 @@ def check_referential_integrity(a1, a2, verbose=False):
                 key2 is facts (has duplicates)\
                 , key1 is the dimension/master table",
             )
-            return "1-to-n"
+            return "1:m"
         elif key2_is_unique and not key1_is_unique:
             explain(
                 expl,
@@ -63,7 +63,7 @@ def check_referential_integrity(a1, a2, verbose=False):
                 key1 is facts (has duplicates),\
                 key2 is dimension/master table",
             )
-            return "n-to-1"
+            return "m:1"
     else:  # two sets are not equal, we need to find out how so
         intersection = set1.intersection(set2)
         if len(intersection) == 0:  # Disjoint sets, no commonalities
@@ -100,40 +100,40 @@ def check_referential_integrity(a1, a2, verbose=False):
                         expl,
                         "Many-to-one, key2 is dimension (no duplicates) but has values not in key1",
                     )
-                    return "*-to-1"
+                    return "*:1"
                 else:  # key2 has duplicates, so it is likely a fact table
                     if key1_is_unique:
                         explain(
                             expl,
                             "key1 is possible dimension (no duplicates) but misses values in key2",
                         )
-                        return "1-to-* - need fix incomplete key1"
+                        return "1:* - need fix incomplete key1"
                     else:
                         explain(
                             expl,
                             "key1 and key2 have duplicates, key1 is likely facts as is subset of key2",
                         )
-                        return "*-to-1 - need fix duplicate keys in key2"
+                        return "*:1 - need fix duplicate keys in key2"
             if set2_in_set1:
                 if key1_is_unique:
                     explain(
                         expl,
                         "One-to-Many, key1 is dimension, no duplicates but has values not in key2",
                     )
-                    return "1-to-*"
+                    return "1:*"
                 else:
                     if key2_is_unique:
                         explain(
                             expl,
                             "key2 is possible dimension (no duplicates) but misses values in key1",
                         )
-                        return "*-to-1 - need fix incomplete key2"
+                        return "*:1 - need fix incomplete key2"
                     else:
                         explain(
                             expl,
                             "key1 and key2 have duplicates, key2 is likely facts as is subset of key1",
                         )
-                        return "1-to-* - need fix duplicate keys in key1"
+                        return "1:* - need fix duplicate keys in key1"
             explain("Both key1 and key2 have values not shared between them")
             set1diffset2 = set1 - set2
             set2diffset1 = set2 - set1
