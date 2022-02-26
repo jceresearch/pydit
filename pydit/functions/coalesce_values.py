@@ -9,7 +9,7 @@ from pandas.api.types import is_datetime64_any_dtype as is_datetime
 logger = logging.getLogger(__name__)
 
 
-def coalesce_categories(
+def coalesce_values(
     df_in, cols, top_n_values_to_keep=0, translation_dict=None, other_label="OTHER"
 ):
     """Creates a new column with a translation of the top N most frequent values
