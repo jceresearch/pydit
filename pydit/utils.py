@@ -2,10 +2,19 @@
 import random
 import string
 import logging
-
+import socket
+import warnings
+from typing import (
+    Callable,
+    Dict,
+    Iterable,
+    Union,
+)
 import re
+
 import numpy as np
 import pandas as pd
+
 
 logger = logging.getLogger()
 
@@ -77,19 +86,6 @@ def deduplicate_list(
     return new_list
 
 
-def version():
-    """ version information"""
-    return "V.01"
-
-
-def about():
-    """ About information"""
-    about_text = "Pydit - Tools for internal auditors\n \
-    Version: 1.01\n \
-    Released:Jan 2022 "
-    return about_text
-
-
 def dataframe_to_code(df):
     """ utility function to convert a dataframe to a piece of code
     that one can include in a test script or tutorial. May need extra tweaks
@@ -136,3 +132,165 @@ def clean_string(t, keep_dot=False, space_to_underscore=True, case="lower"):
         else:
             r = re.sub(" +", " ", r)
     return r
+
+
+def check_types(varname: str, value, expected_types: list):
+    """
+    One-liner syntactic sugar for checking types.
+    It can also check callables.
+
+    Example usage:
+
+    ```python
+    check('x', x, [int, float])
+    ```
+
+    :param varname: The name of the variable (for diagnostic error message).
+    :param value: The value of the `varname`.
+    :param expected_types: The type(s) the item is expected to be.
+    :raises TypeError: if data is not the expected type.
+    """
+    is_expected_type: bool = False
+    for t in expected_types:
+        if t is callable:
+            is_expected_type = t(value)
+        else:
+            is_expected_type = isinstance(value, t)
+        if is_expected_type:
+            break
+
+    if not is_expected_type:
+        raise TypeError(
+            "{varname} should be one of {expected_types}".format(
+                varname=varname, expected_types=expected_types
+            )
+        )
+
+
+def check_column_presence(
+    df: pd.DataFrame, column_names: Union[Iterable, str], present: bool = True
+):
+    """
+    One-liner syntactic sugar for checking the presence or absence
+    of columns.
+
+    Example usage:
+
+    ```python
+    check(df, ['a', 'b'], present=True)
+    ```
+
+    This will check whether columns `'a'` and `'b'` are present in
+    `df`'s columns.
+
+    One can also guarantee that `'a'` and `'b'` are not present
+    by switching to `present=False`.
+
+    :param df: The name of the variable.
+    :param column_names: A list of column names we want to check to see if
+        present (or absent) in `df`.
+    :param present: If `True` (default), checks to see if all of `column_names`
+        are in `df.columns`. If `False`, checks that none of `column_names` are
+        in `df.columns`.
+    :raises ValueError: if data is not the expected type.
+    """
+    if isinstance(column_names, str) or not isinstance(column_names, Iterable):
+        column_names = [column_names]
+
+    for column_name in column_names:
+        if present and column_name not in df.columns:  # skipcq: PYL-R1720
+            raise ValueError(f"{column_name} not present in dataframe columns!")
+        elif not present and column_name in df.columns:
+            raise ValueError(f"{column_name} already present in dataframe columns!")
+
+
+def skipna(f: Callable) -> Callable:
+    """
+    Decorator for escaping `np.nan` and `None` in a function.
+
+    Example usage:
+
+    ```python
+    df[column].apply(skipna(transform))
+
+    # Can also be used as shown below
+    @skipna
+    def transform(x):
+        pass
+    ```
+
+    :param f: the function to be wrapped.
+    :returns: the wrapped function.
+    """
+
+    def _wrapped(x, *args, **kwargs):
+        if (type(x) is float and np.isnan(x)) or x is None:
+            return np.nan
+        return f(x, *args, **kwargs)
+
+    return _wrapped
+
+
+def skiperror(f: Callable, return_x: bool = False, return_val=np.nan) -> Callable:
+    """
+    Decorator for escaping any error in a function.
+
+    Example usage:
+
+    ```python
+    df[column].apply(
+        skiperror(transform, return_val=3, return_x=False))
+
+    # Can also be used as shown below
+    @skiperror(return_val=3, return_x=False)
+    def transform(x):
+        pass
+    ```
+    :param f: the function to be wrapped.
+    :param return_x: whether or not the original value that caused error
+        should be returned.
+    :param return_val: the value to be returned when an error hits.
+        Ignored if `return_x` is `True`.
+    :returns: the wrapped function.
+    """
+
+    def _wrapped(x, *args, **kwargs):
+        try:
+            return f(x, *args, **kwargs)
+        except Exception:  # skipcq: PYL-W0703
+            if return_x:
+                return x
+            return return_val
+
+    return _wrapped
+
+
+def is_connected(url: str) -> bool:
+    """
+    This is a helper function to check if the client
+    is connected to the internet.
+
+    Example:
+        print(is_connected("www.google.com"))
+        console >> True
+
+    :param url: We take a test url to check if we are
+        able to create a valid connection.
+    :raises OSError: if connection to `URL` cannot be
+        established
+    :return: We return a boolean that signifies our
+        connection to the internet
+    """
+    try:
+        sock = socket.create_connection((url, 80))
+        if sock is not None:
+            sock.close()
+            return True
+    except OSError as e:
+
+        warnings.warn(
+            "There was an issue connecting to the internet. "
+            "Please see original error below."
+        )
+        raise e
+    return False

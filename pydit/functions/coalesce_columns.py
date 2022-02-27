@@ -1,23 +1,15 @@
 """Function for performing coalesce."""
-""" Transform and Munging functions"""
-
 import logging
-
-
 from typing import Optional, Union
+
 import pandas as pd
+from pyparsing import col
+from pydit.utils import check_types
 
 logger = logging.getLogger(__name__)
 
 
-# import pandas_flavor as pf
-# from janitor.utils import check, deprecated_alias
-# from janitor.functions.utils import _select_column_names
-
-
-# pf.register_dataframe_method
-# deprecated_alias(columns="column_names", new_column_name="target_column_name")
-def coalesce(
+def coalesce_columns(
     df: pd.DataFrame,
     *column_names,
     target_column_name: Optional[str] = None,
@@ -89,13 +81,23 @@ def coalesce(
     if len(column_names) < 2:
         raise ValueError("The number of columns to coalesce should be a minimum of 2.")
 
-    column_names = _select_column_names([*column_names], df)
+    if isinstance(column_names, list) or isinstance(column_names, tuple):
+        wrong_columns = [x for x in column_names if x not in df.columns]
+        if wrong_columns:
+            raise ValueError(
+                "At least one column name provided is not in the dataframe"
+            )
+
+    else:
+        raise TypeError("Please provide a list of columns")
 
     if target_column_name:
-        check("target_column_name", target_column_name, [str])
+        check_types("target_column_name", target_column_name, [str])
+        # if not isinstance(target_column_name, str):
+        #    raise TypeError("Target column name needs to be a string")
 
     if default_value:
-        check("default_value", default_value, [int, float, str])
+        check_types("default_value", default_value, [int, float, str])
 
     if target_column_name is None:
         target_column_name = column_names[0]
@@ -107,3 +109,4 @@ def coalesce(
         outcome = outcome.fillna(default_value)
 
     return df.assign(**{target_column_name: outcome})
+
