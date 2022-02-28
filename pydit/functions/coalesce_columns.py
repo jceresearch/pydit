@@ -84,17 +84,13 @@ def coalesce_columns(
     if isinstance(column_names, list) or isinstance(column_names, tuple):
         wrong_columns = [x for x in column_names if x not in df.columns]
         if wrong_columns:
-            raise ValueError(
-                "At least one column name provided is not in the dataframe"
-            )
+            raise ValueError("Columns not in the dataframe:" + " ".join(wrong_columns))
 
     else:
         raise TypeError("Please provide a list of columns")
 
     if target_column_name:
         check_types("target_column_name", target_column_name, [str])
-        # if not isinstance(target_column_name, str):
-        #    raise TypeError("Target column name needs to be a string")
 
     if default_value:
         check_types("default_value", default_value, [int, float, str])
@@ -107,6 +103,6 @@ def coalesce_columns(
     )
     if outcome.hasnans and (default_value is not None):
         outcome = outcome.fillna(default_value)
+    # TODO: #24 coalesce_columns() add options for summing values, concatenate strings, or maybe max or other operation.
 
     return df.assign(**{target_column_name: outcome})
-

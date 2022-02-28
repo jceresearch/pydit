@@ -16,7 +16,6 @@ from pydit import (
 
 
 logger = setup_logging()
-logger.info("Started")
 
 
 def test_profile_dataframe():

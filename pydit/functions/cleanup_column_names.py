@@ -1,7 +1,11 @@
 """ Transform and Munging functions"""
 
 import logging
+
+import re
+
 from pydit.utils import deduplicate_list
+
 
 logger = logging.getLogger(__name__)
 
@@ -11,21 +15,26 @@ def cleanup_column_names(df, max_field_name_len=40):
         e.g. removes non alphanumeric chars, _ instead of space, perc instead
         of %, strips trailing spaces, converts to lowercase
         """
-
-    df.columns = df.columns.str.replace(r"%", "pc", regex=True)
-    df.columns = df.columns.str.replace(r"[^a-zA-Z0-9]", " ", regex=True)
-    df.columns = df.columns.str.strip()
-    df.columns = df.columns.str.replace(" +", "_", regex=True)
-    df.columns = df.columns.str.lower()
-    # arbitrary limit of field names to avoid some random issues with importing in
+    prev_cols = list(df.columns)
+    new_cols = []
+    for e in prev_cols:
+        try:
+            new = str(e)
+        except Exception as e:
+            logger.exception("Problem converting header into str, leaving it blank")
+            new = ""
+        new = re.sub("%", "pc", new)
+        new = re.sub(r"[^a-zA-Z0-9£$€]", " ", new, re.MULTILINE)
+        new = str.lower(new.strip())
+        new = re.sub(" +", "_", new)
+        new = new[0:max_field_name_len]
+        new_cols.append(new)
+    # We apply arbitrary limit of field names to avoid some random issues with importing in
     # other systems, for example PowerBI has a limit of 80 charts for importing column
     # names, just in case keeping this quite low, feel free to increase or remove
-
-    # df.columns = [s[0:max_field_name_len] for s in df.columns] #alternative way if the below raised warnings
-    df.columns = df.columns.str[0:max_field_name_len]
-
-    new_cols = deduplicate_list(list(df.columns))
+    new_cols = deduplicate_list(new_cols)
     df.columns = new_cols
+    logger.debug("Previous column names:%s", prev_cols)
     logger.info("New columns names:%s", list(df.columns))
     if len(df.columns) != len(set(df.columns)):
         raise ValueError("Duplicated column names remain!!! check what happened")

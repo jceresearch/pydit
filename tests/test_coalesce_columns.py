@@ -28,14 +28,14 @@ def test_wrong_column_names(df):
 def test_wrong_type_column_names(df):
     """Raise Error if empty column is provided for `column_names`."""
     with pytest.raises(ValueError):
-        coalesce_columns(df, target_column_name="new_name")
+        coalesce_columns(df, "", target_column_name="new_col")
 
 
 def test_wrong_type_column_names2(df):
     """Raise Error if none objec is provided for `column_names`."""
     columns = None
     with pytest.raises(ValueError):
-        coalesce_columns(df, columns, target_column_name="new_name")
+        coalesce_columns(df, columns, target_column_name=None)
 
 
 def test_wrong_type_target_column_name(df):

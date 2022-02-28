@@ -12,7 +12,7 @@ from pydit import setup_logging, clean_string
 # from pandas import Timestamp
 
 logger = setup_logging()
-logger.info("Started")
+
 
 
 def test_clean_string():

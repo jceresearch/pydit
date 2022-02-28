@@ -13,7 +13,7 @@ from pydit import check_sequence, setup_logging
 
 
 logger = setup_logging()
-logger.info("Started")
+
 
 
 def test_check_sequence():

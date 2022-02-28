@@ -16,9 +16,6 @@ from pydit import FileManager, setup_logging
 
 
 logger = setup_logging()
-logger.info("Started")
-
-
 fm = FileManager().getInstance()
 
 
@@ -51,6 +48,3 @@ def test_save():
     assert fm.save(d1, "test_zero_len.xlsx") is False
     assert fm.save(df, "test_zero_len.xlsx") is True
     return
-
-
-test_save()

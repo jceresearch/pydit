@@ -14,7 +14,6 @@ from pydit import setup_logging
 
 
 logger = setup_logging()
-logger.info("Started")
 
 
 def test_check_referential_integrity():

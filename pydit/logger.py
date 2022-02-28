@@ -1,6 +1,6 @@
 """ setup the logging features """
 import logging
-from logging.handlers import RotatingFileHandler
+from logging.handlers import RotatingFileHandler, TimedRotatingFileHandler
 
 
 def setup_logging(
@@ -16,7 +16,11 @@ def setup_logging(
     log = logging.getLogger()
     log.handlers.clear()
     log.setLevel(logging.DEBUG)
-    fh = RotatingFileHandler(logfile, maxBytes=50000, backupCount=5)
+    # This is size based rotating log
+    # fh = RotatingFileHandler(logfile, maxBytes=50000, backupCount=7)
+    # This is to keep last week daily log
+    fh = TimedRotatingFileHandler(logfile, when="midnight", backupCount=7)
+
     fh.setLevel(level_file)
     ch = logging.StreamHandler()
     ch.setLevel(level_screen)

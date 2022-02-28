@@ -12,8 +12,7 @@ from pydit import deduplicate_list, setup_logging
 # from datetime import datetime, date, timedelta
 # from pandas import Timestamp
 
-log = setup_logging()
-log.info("Started")
+logger = setup_logging()
 
 
 def test_deduplicate_list():

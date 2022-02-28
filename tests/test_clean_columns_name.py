@@ -14,8 +14,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from pydit import cleanup_column_names, setup_logging
 
 
-log = setup_logging()
-log.info("Started")
+logger = setup_logging()
 
 
 def test_clean_column_names_1():
@@ -51,8 +50,3 @@ def test_clean_column_names_2():
     print(df.columns)
     assert list(df.columns) == ["col1", "col2", "col3pc", "col4", "col5"]
 
-
-if __name__ == "__main__":
-    test_clean_column_names_1
-    test_clean_column_names_2
-    log.info("Test completed")

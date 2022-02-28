@@ -11,8 +11,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from pydit import add_counts_between_related_df
 from pydit import setup_logging
 
-log = setup_logging()
-log.info("Started")
+logger = setup_logging()
 
 
 def test_add_counts():

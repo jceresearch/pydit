@@ -12,8 +12,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from pydit import check_blanks, setup_logging
 
 
-log = setup_logging()
-log.info("Started")
+logger = setup_logging()
 
 
 def test_check_blanks():
@@ -40,6 +39,3 @@ def test_check_blanks():
     assert d["has_blanks"][3] is True
     assert d["has_blanks"][4] is False
 
-
-if __name__ == "__main__":
-    test_check_blanks
