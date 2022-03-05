@@ -32,34 +32,23 @@ def check_sequence(obj_in, col=""):
         fullrng = set(range(min(unique), max(unique) + 1))
         diff = fullrng.difference(unique)
         if diff:
-            print("Missing in sequence: ", list(diff)[0:10])
+            print(len(diff), " missing in sequence. First 10:", list(diff)[0:10])
             return list(diff)
         else:
             print("Full sequence")
             return []
     elif is_datetime(obj):
         unique = set([i.date() for i in obj[pd.notna(obj)]])
-        fullrng = set(
-            pd.date_range(
-                min(unique), max(unique) - timedelta(days=1), freq="d"
-            ).to_list()
-        )
+        fullrng = pd.date_range(min(unique), max(unique) + timedelta(days=1), freq="d")
+        fullrng = set([i.date() for i in fullrng])
         diff = fullrng.difference(unique)
         if diff:
             print(
-                len(diff),
-                " missing, first ",
-                min(len(diff), 10),
-                ":",
-                list(diff)[0:10],
+                len(diff), " missing, first 10:", list(diff)[0:10],
             )
             working_days = [wd for wd in diff if wd.weekday() < 5]
             print(
-                len(working_days),
-                " missing working days",
-                min(len(diff), 10),
-                ":",
-                list(diff)[0:10],
+                len(working_days), " missing working days:", list(diff)[0:10],
             )
 
             return list(diff)
