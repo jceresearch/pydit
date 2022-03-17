@@ -39,3 +39,7 @@ def test_check_blanks():
     assert d["has_blanks"][3] is True
     assert d["has_blanks"][4] is False
 
+
+if __name__ == "__main__":
+    # execute only if run as a script
+    test_check_blanks()

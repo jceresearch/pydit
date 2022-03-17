@@ -57,7 +57,7 @@ def check_blanks(
     new_cols = [c + "_blanks" for c in cols]
     df["has_blanks"] = np.any(df[new_cols], axis=1)
 
-    print("Total blanks found in each columns:", total_results)
+    logger.info("Total blanks found in each columns:\n%s", total_results)
 
     if totals_only:
         return total_results

@@ -11,8 +11,8 @@ def check_duplicates(df, columns=None, keep=False, ascending=None):
     Duplicate analysis
     Args:
         df (DataFrame): pandas dataframe
-        
-        columns (list, optional): column(s) to check between square brackets,
+
+        columns (list, optional): list of column(s) to check between square brackets,
         even if it is one column only, if multiple columns provided
         the check is combined duplicates, exactly as pandas duplicated().
 
@@ -44,28 +44,20 @@ def check_duplicates(df, columns=None, keep=False, ascending=None):
 
     fields = ",".join(cols)
     df_duplicates = df[df.duplicated(subset=cols, keep=keep)]
-    print(
-        "Duplicates in",
-        fields,
-        "(keep=",
-        keep,
-        "):",
-        len(df_duplicates),
-        " of population: ",
-        len(df),
-    )
+    logger.info("Duplicates in fields: %s", fields)
     if len(df_duplicates) == 0:
+        logger.info("No duplicates found")
         return None
     else:
+        logger.info("(keep=%s)", keep)
+        logger.info("%s of population %s", len(df_duplicates), len(df))
         if ascending is True:
-            print("Ascending")
+            # Ascending
             df_ret = df_duplicates.sort_values(cols, ascending=True)
         elif ascending is False:
-            print("Descending")
+            # Descending
             df_ret = df_duplicates.sort_values(cols, ascending=False)
         else:
-            print("No sort")
+            # No sort
             df_ret = df_duplicates
-
     return df_ret
-
