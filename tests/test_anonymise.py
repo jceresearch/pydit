@@ -11,6 +11,7 @@ from pydit import anonymise_key
 
 
 def test_anonymise():
+    """ general test that it completes, TBC specifics"""
     d1 = {"mkey": ["a", "b", "c", "d", np.nan], "mvalue": ["aa", "bb", "cc", "dd", ""]}
     d2 = {
         "tkey": [100, 101, 102, 103, 104, 105, 106, 107],
