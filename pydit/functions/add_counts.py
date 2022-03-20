@@ -46,7 +46,6 @@ def add_counts_between_related_df(df1, df2, left_on="", right_on="", on=""):
 
     # TODO: #22 Add_counts_in_each_row: add option for not overwriting the column but creating a new one
     # TODO: #23 Add_counts_in_each_row: add more checks for when not providing a DataFrame or no records
-    # TODO: #25 Add counts on itself, as a quick check of duplicates , TBC if useful
     mapped_df1 = len(df1[df1["count_fk_" + right_on] > 0])
     mapped_df2 = len(df2[df2["count_fk_" + left_on] > 0])
     logger.info(
