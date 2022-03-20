@@ -32,16 +32,23 @@ def add_counts_between_related_df(df1, df2, left_on="", right_on="", on=""):
     if (not left_on) or (not right_on):
         logger.error("Missing key")
         return None
-    # df1["count"]= df1['mkey'].map(df2.groupby('mkey')['mkey'].count())
-    # df2["count"]= df2['mkey'].map(df1.groupby('mkey')['mkey'].count())
-    df1["count_" + right_on] = df1["mkey"].map(df2[right_on].value_counts())
-    df2["count_" + left_on] = df2["mkey"].map(df1[left_on].value_counts())
-    df1["count_" + right_on] = df1["count_" + left_on].fillna(0).astype("Int64")
-    df2["count_" + left_on] = df2["count_" + right_on].fillna(0).astype("Int64")
+
+    df1["count_fk_" + right_on] = df1[left_on].map(df2[right_on].value_counts())
+    df1["count_" + left_on] = df1[left_on].map(df1[left_on].value_counts())
+
+    df2["count_fk_" + left_on] = df2[right_on].map(df1[left_on].value_counts())
+    df2["count_" + right_on] = df2[right_on].map(df2[right_on].value_counts())
+
+    df1["count_fk_" + right_on] = df1["count_fk_" + right_on].fillna(0).astype("Int64")
+    df2["count_fk_" + left_on] = df2["count_fk_" + left_on].fillna(0).astype("Int64")
+    df1["count_" + left_on] = df1["count_" + left_on].fillna(0).astype("Int64")
+    df2["count_" + right_on] = df2["count_" + right_on].fillna(0).astype("Int64")
+
     # TODO: #22 Add_counts_in_each_row: add option for not overwriting the column but creating a new one
     # TODO: #23 Add_counts_in_each_row: add more checks for when not providing a DataFrame or no records
-    mapped_df1 = len(df1[df1["count_" + right_on] > 0])
-    mapped_df2 = len(df2[df2["count_" + left_on] > 0])
+    # TODO: #25 Add counts on itself, as a quick check of duplicates , TBC if useful
+    mapped_df1 = len(df1[df1["count_fk_" + right_on] > 0])
+    mapped_df2 = len(df2[df2["count_fk_" + left_on] > 0])
     logger.info(
         "Mapped %s records in df1 to df2 from a total of %s in df1",
         mapped_df1,
@@ -53,10 +60,12 @@ def add_counts_between_related_df(df1, df2, left_on="", right_on="", on=""):
         df2.shape[0],
     )
     logger.info(
-        "Sum total of %s is %s", "count_" + right_on, sum(df1["count_" + right_on])
+        "Sum total of %s is %s",
+        "count_fk_" + right_on,
+        sum(df1["count_fk_" + right_on]),
     )
     logger.info(
-        "Sum total of %s is %s", "count_" + left_on, sum(df2["count_" + left_on])
+        "Sum total of %s is %s", "count_fk_" + left_on, sum(df2["count_fk_" + left_on])
     )
 
     return True
