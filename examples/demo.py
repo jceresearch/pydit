@@ -1,20 +1,25 @@
 """' Demo of the use of these libraries"""
 
 #%%
+import sys
+import os
 import pandas as pd
 from pandas import Timestamp
 
+
+# pylint: disable=import-error disable=wrong-import-position
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import pydit
 
 
-logger = pydit.common.setup_logging()
+logger = pydit.setup_logging()
 logger.info("Started")
 
 # %%
 
-fm = pydit.filemanager.FileManager.getInstance()
+fm = pydit.FileManager.getInstance()
 fm.input_path = "./demo_data/"
-fm.output_path = "./demo_data"
+fm.output_path = "./demo_output"
 fm.temp_path = "./demo_data"
 fm.max_rows_to_excel = 10000
 
@@ -48,6 +53,6 @@ col3 = [1] * 10 + [2] * 90
 
 
 df = pd.DataFrame(zip(col1, col2, col3), columns=["col1", "col2", "col3"])
-print(pydit.profiling.add_percentile(df, "col1", ["col2", "col3"]))
+print(pydit.add_percentile(df, "col1", ["col2", "col3"]))
 
-print(pydit.profiling.add_percentile(df, "col1"))
+print(pydit.add_percentile(df, "col1"))

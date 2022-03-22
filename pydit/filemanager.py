@@ -171,10 +171,9 @@ class FileManager:
         try:
             with open(full_file_name, "wb") as handle:
                 pickle.dump(obj, handle, protocol=pickle.HIGHEST_PROTOCOL)
-                print(
+                logger.info(
                     "Saved pickle to " + full_file_name,
-                    round((handle.tell() / 1024) / 1024, 1),
-                    " MB",
+                    str(round((handle.tell() / 1024) / 1024, 1)) + " MB",
                 )
         except Exception:
             logger.exception("Failed to save to a pickle file")
@@ -219,35 +218,37 @@ class FileManager:
             try:
                 with open(full_name, "rb") as handle:
                     obj = pickle.load(handle)
-                    print(
+                    logger.info(
                         "Loaded pickle from: " + full_name,
-                        " Size:",
-                        round((handle.tell() / 1024) / 1024, 1),
-                        " MB",
+                        "\nSize:"
+                        + str(round((handle.tell() / 1024) / 1024, 1))
+                        + " MB",
                     )
             except Exception as e:
                 print(e)
         if ".xlsx" in full_name:
             try:
                 obj = pd.read_excel(full_name)
-                print(full_name)
+                logger.info("Loading from: " + full_name)
             except Exception as e:
-                print(e)
+                logger.error(e)
         if ".csv" in full_name:
             try:
                 obj = pd.read_csv(full_name)
-                print(full_name)
+                logger.info("Loading from: " + full_name)
             except Exception as e:
-                print(e)
+                logger.error(e)
         if isinstance(obj, pd.DataFrame):
-            print("Shape:", obj.shape)
-            print(list(obj.columns))
+            logger.info(
+                "Loading into a dataframe with rows/cols: %s",
+                "/".join(map(str, obj.shape)),
+            )
+            logger.info("Columns: ['%s']", "','".join(map(str, obj.columns)))
         else:
             try:
-                print(len(obj))
+                logger.info("Length: %s", len(obj))
             except Exception:
                 logger.debug("Object doesnt have len()")
-        print(datetime.now())
         return obj
 
     def save(self, obj, filename, bool_also_pickle=False):
@@ -274,7 +275,6 @@ class FileManager:
                 else:
                     # object not empty, we continue
                     logger.debug("Non empty object, will proceed")
-                    pass
 
         except Exception:
             # we failed somehow to check the len(), probably None object
@@ -314,9 +314,9 @@ class FileManager:
 
         if flag:
             try:
-                print("Shape :", obj.shape)
-                print("Saved columns:", list(obj.columns))
-            except Exception:
+                logger.info("Shape: %s", " ".join(map(str, obj.shape)))
+                logger.info("columns:\n['%s']", "','".join(map(str, obj.columns)))
+            except Exception as e:
                 pass  # should be when the object doesnt support shape or columns
             logger.info(
                 "Finished in %s mins",

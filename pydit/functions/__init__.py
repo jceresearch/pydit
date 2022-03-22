@@ -29,5 +29,7 @@ from .cleanup_column_names import cleanup_column_names
 from .anonymise import anonymise_key
 from .count_cumulative_unique import count_cumulative_unique
 from .coalesce_columns import coalesce_columns
-from .check_benford import check_benford
-from .collapse_levels import collapse_levels
+from .check_benford import benford_to_dataframe
+from .check_benford import benford_to_plot
+from .check_benford import benford_list_anomalies
+

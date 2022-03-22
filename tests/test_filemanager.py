@@ -26,6 +26,12 @@ def test_stem_name():
     assert fm._stem_name(r".\Test.xls") == "test"
 
 
+def test_load():
+    fm.input_path = "./tests/test_data/"
+    df = fm.load("test_data.xlsx")
+    assert df.shape[0] == 10
+
+
 def test_save():
     """ test for savling objects"""
     d = {
@@ -45,6 +51,12 @@ def test_save():
     assert fm.save(t1, "test_zero_len.pickle") is False
     assert fm.save(l1, "test_zero_len.pickle") is False
     assert fm.save(s1, "test_nonzero_len.xlsx") is True
+    assert fm.save(s1, "test_nonzero_len.csv") is True
     assert fm.save(d1, "test_zero_len.xlsx") is False
     assert fm.save(df, "test_zero_len.xlsx") is True
-    return
+
+
+if __name__ == "__main__":
+    # execute only if run as a script
+    test_load()
+
