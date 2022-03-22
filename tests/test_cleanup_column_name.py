@@ -42,12 +42,21 @@ def test_clean_column_names_2():
         "Col1!": [1, 2, 3],
         "Col2@": [1, 2, 3],
         "col3%": [1, 2, 3],
-        "col4!": [1, 2, 3],
+        "col4!\n(extra)": [1, 2, 3],
         "col5\n": [1, 2, 3],
         "(col6)": [1, 2, 3],
+        "aaaaaaaaaabbbbbbbbbbccccccccccddddddddddz": [1, 2, 3],
     }
     df = pd.DataFrame(data=d)
     cleanup_column_names(df)
     print(df.columns)
-    assert list(df.columns) == ["col1", "col2", "col3pc", "col4", "col5", "col6"]
+    assert list(df.columns) == [
+        "col1",
+        "col2",
+        "col3pc",
+        "col4_extra",
+        "col5",
+        "col6",
+        "aaaaaaaaaabbbbbbbbbbccccccccccdddddddddd",
+    ]
 
