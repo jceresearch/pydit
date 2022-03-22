@@ -172,8 +172,10 @@ class FileManager:
             with open(full_file_name, "wb") as handle:
                 pickle.dump(obj, handle, protocol=pickle.HIGHEST_PROTOCOL)
                 logger.info(
-                    "Saved pickle to " + full_file_name,
-                    str(round((handle.tell() / 1024) / 1024, 1)) + " MB",
+                    "Saved pickle to "
+                    + full_file_name
+                    + str(round((handle.tell() / 1024) / 1024, 1))
+                    + " MB",
                 )
         except Exception:
             logger.exception("Failed to save to a pickle file")
@@ -219,8 +221,9 @@ class FileManager:
                 with open(full_name, "rb") as handle:
                     obj = pickle.load(handle)
                     logger.info(
-                        "Loaded pickle from: " + full_name,
-                        "\nSize:"
+                        "Loaded pickle from: "
+                        + full_name
+                        + "\nSize:"
                         + str(round((handle.tell() / 1024) / 1024, 1))
                         + " MB",
                     )
@@ -266,19 +269,20 @@ class FileManager:
 
         try:
             if len(obj) == 0:
-                logger.warning("Length zero object, nothing to save")
+                logger.warning("Nothing to save to %s, length zero object", filename)
                 return False
             else:
                 if obj.empty:
-                    logger.warning("Empty DataFrame/Series object, nothing to save")
+                    logger.warning("Nothing to save to %s, empty object", filename)
                     return False
                 else:
                     # object not empty, we continue
-                    logger.debug("Non empty object, will proceed")
+                    # logger.debug("Non empty object, will proceed")
+                    pass
 
         except Exception:
             # we failed somehow to check the len(), probably None object
-            logger.warning("Empty object nothing to save ")
+            logger.warning("Nothing to save to %s, empty object", filename)
             return False
 
         flag = False
