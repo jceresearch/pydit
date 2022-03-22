@@ -30,4 +30,4 @@ from .anonymise import anonymise_key
 from .count_cumulative_unique import count_cumulative_unique
 from .coalesce_columns import coalesce_columns
 from .check_benford import check_benford
-
+from .collapse_levels import collapse_levels
