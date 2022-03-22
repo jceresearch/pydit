@@ -32,4 +32,4 @@ from .coalesce_columns import coalesce_columns
 from .check_benford import benford_to_dataframe
 from .check_benford import benford_to_plot
 from .check_benford import benford_list_anomalies
-
+from .collapse_levels import collapse_levels

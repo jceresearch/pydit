@@ -5,6 +5,7 @@ import pandas as pd
 
 logger = logging.getLogger(__name__)
 
+
 def collapse_levels(df: pd.DataFrame, sep: str = "_") -> pd.DataFrame:
     """Flatten multi-level column dataframe to a single level.
 
@@ -36,27 +37,18 @@ def collapse_levels(df: pd.DataFrame, sep: str = "_") -> pd.DataFrame:
         3  mammal         80    Lion
         4  mammal         21  Monkey
         >>> grouped_df = df.groupby("class").agg(["mean", "median"])
-        >>> grouped_df  
-                 max_speed
-                      mean median
+        >>> grouped_df
+                max_speed
+                mean        median
         class
         bird    267.333333  389.0
         mammal   50.500000   50.5
-        >>> grouped_df.collapse_levels(sep="_")
+        >>> collapse_levels(grouped_df, sep="_")
                 max_speed_mean  max_speed_median
         class
         bird        267.333333             389.0
         mammal       50.500000              50.5
 
-    Before applying `.collapse_levels`, the `.agg` operation returns a
-    multi-level column DataFrame whose columns are `(level 1, level 2)`:
-
-        [("max_speed", "mean"), ("max_speed", "median")]
-
-    `.collapse_levels` then flattens the column MultiIndex into a single
-    level index with names:
-
-        ["max_speed_mean", "max_speed_median"]
 
     :param df: A pandas DataFrame.
     :param sep: String separator used to join the column level names.
@@ -64,14 +56,13 @@ def collapse_levels(df: pd.DataFrame, sep: str = "_") -> pd.DataFrame:
     """  # noqa: E501
     if not isinstance(sep, str):
         logger.debug("Invalid separator provider, defaulting to underscore")
-        sep="_"
+        sep = "_"
     # if already single-level, just return the DataFrame
     if not isinstance(df.columns, pd.MultiIndex):
         return df
 
     df.columns = [
-        sep.join(str(el) for el in tup if str(el) != "")
-        for tup in df  # noqa: PD011
+        sep.join(str(el) for el in tup if str(el) != "") for tup in df  # noqa: PD011
     ]
 
     return df
