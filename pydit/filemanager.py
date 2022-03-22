@@ -174,6 +174,7 @@ class FileManager:
                 logger.info(
                     "Saved pickle to "
                     + full_file_name
+                    + " "
                     + str(round((handle.tell() / 1024) / 1024, 1))
                     + " MB",
                 )
@@ -319,7 +320,7 @@ class FileManager:
         if flag:
             try:
                 logger.info("Shape: %s", " ".join(map(str, obj.shape)))
-                logger.info("columns:\n['%s']", "','".join(map(str, obj.columns)))
+                logger.info("Columns: ['%s']", "','".join(map(str, obj.columns)))
             except Exception as e:
                 pass  # should be when the object doesnt support shape or columns
             logger.info(
