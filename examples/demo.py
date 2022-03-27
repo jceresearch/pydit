@@ -46,13 +46,23 @@ df = pd.DataFrame(
     columns=["id", "ref", "date_trans", "status", "amount", "notes"],
 )
 
+#%%
 
 col1 = range(1, 100)
 col2 = [1] * 30 + [2] * 50 + [3] * 20
 col3 = [1] * 10 + [2] * 90
-
-
 df = pd.DataFrame(zip(col1, col2, col3), columns=["col1", "col2", "col3"])
+df
+
+for i, r in df.iterrows():
+    print(i, r)
+
+
+#%%
+
 print(pydit.add_percentile(df, "col1", ["col2", "col3"]))
 
 print(pydit.add_percentile(df, "col1"))
+
+
+# %%
