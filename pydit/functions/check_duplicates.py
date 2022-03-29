@@ -12,7 +12,7 @@ def check_duplicates(df, columns=None, keep=False, ascending=None):
     Args:
         df (DataFrame): pandas dataframe
 
-        columns (list, optional): list of column(s) to check between square brackets,
+        columns (str or list, optional): column or list of column(s) to check
         even if it is one column only, if multiple columns provided
         the check is combined duplicates, exactly as pandas duplicated().
 
@@ -33,17 +33,19 @@ def check_duplicates(df, columns=None, keep=False, ascending=None):
         )
         # TODO: #17 Add support for Series in the duplicate check
         return
-    if not isinstance(columns, list):
-        logger.error("Expecting a list, even a list of one element")
+    if isinstance(columns, str):
+        if columns in df.columns:
+            cols=[columns]
         return
     else:
-        if not columns:
-            cols = df.columns
-        else:
+        if isinstance(columns,list):
             cols = columns
+        else:
+            cols = df.columns
 
     fields = ",".join(cols)
     df_duplicates = df[df.duplicated(subset=cols, keep=keep)]
+    
     logger.info("Duplicates in fields: %s", fields)
     if len(df_duplicates) == 0:
         logger.info("No duplicates found")

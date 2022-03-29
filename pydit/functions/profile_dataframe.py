@@ -35,8 +35,8 @@ def profile_dataframe(df):
         if "float" in str(typ):
             metrics["max"] = max(df[col])
             metrics["min"] = min(df[col])
-            metrics["sum"] = sum(df[col])
-            metrics["sum_abs"] = sum(abs(df[col]))
+            metrics["sum"] = df[col].sum(skipna=True)
+            metrics["sum_abs"] = df[col].abs().sum(skipna=True)
             metrics["std"] = df[col].std()
             metrics["zeroes"] = np.count_nonzero(df[col] == 0)
             # TODO: possibly add hist/sparkline data to further add to the profiling

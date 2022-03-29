@@ -32,3 +32,7 @@ def setup_logging(
     log.addHandler(fh)
     log.addHandler(ch)
     return log
+
+def setup_logging_info():
+    return setup_logging(logfile="./audit.log", level_screen=logging.INFO, level_file=logging.INFO)
+    
