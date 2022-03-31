@@ -3,13 +3,20 @@
 import logging
 from datetime import datetime
 
+import numpy as np
 from pandas.api.types import is_datetime64_any_dtype as is_datetime
 
 
 logger = logging.getLogger(__name__)
 
 
-def fillna_smart(df, date_fillna="latest", text_fillna=""):
+def fillna_smart(
+    df,
+    date_fillna="latest",
+    text_fillna="",
+    include_empty_string=False,
+    include_spaces=False,
+):
     """Cleanup the actual values of the dataframe with sensible
     nulls handling.
 
@@ -42,5 +49,13 @@ def fillna_smart(df, date_fillna="latest", text_fillna=""):
                 val = date_fillna
             df[col].fillna(val, inplace=True)
         elif typ == "object":
+            if include_empty_string:
+                df[col] = df[col].replace("", np.nan)
+            if include_spaces:
+                df[col] = (
+                    df[col]
+                    .apply(lambda x: x.strip() if isinstance(x, str) else x)
+                    .replace("", np.nan)
+                )
             df[col].fillna(text_fillna, inplace=True)
     return df
