@@ -34,7 +34,7 @@ def fillna_smart(
         DataFrame: Returns copy of the original dataframe with modifications
         Beware if the dataframe is large you may have memory issues.
     """
-
+    # TODO: #27 Add ability to provide the specific columns to fill
     df = df.copy(deep=True)
     dtypes = df.dtypes.to_dict()
     for col, typ in dtypes.items():
