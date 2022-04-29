@@ -10,7 +10,7 @@ import numpy as np
 logger = logging.getLogger(__name__)
 
 
-def check_referential_integrity(a1, a2, verbose=False):
+def check_referential_integrity(a1, a2, on=None,left_on=None, right_on=None, verbose=False):
     """Check what relationship two hashable arrays/lists have ("one to one",
     "many to many" etc.)
     Optionally, explains in a verbose way that relationship
