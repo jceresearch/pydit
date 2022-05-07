@@ -4,12 +4,7 @@ import string
 import logging
 import socket
 import warnings
-from typing import (
-    Callable,
-    Dict,
-    Iterable,
-    Union,
-)
+
 import re
 
 import numpy as np
