@@ -3,10 +3,41 @@ import logging
 from typing import Optional, Union
 
 import pandas as pd
-from pyparsing import col
-from pydit.utils import check_types
 
 logger = logging.getLogger(__name__)
+
+
+def check_types(varname: str, value, expected_types: list):
+    """
+    Function for checking types.
+    It can also check callables.
+
+    Example usage:
+
+    ```python
+    check('x', x, [int, float])
+    ```
+
+    :param varname: The name of the variable (for diagnostic error message).
+    :param value: The value of the `varname`.
+    :param expected_types: The type(s) the item is expected to be.
+    :raises TypeError: if data is not the expected type.
+    """
+    is_expected_type: bool = False
+    for t in expected_types:
+        if t is callable:
+            is_expected_type = t(value)
+        else:
+            is_expected_type = isinstance(value, t)
+        if is_expected_type:
+            break
+
+    if not is_expected_type:
+        raise TypeError(
+            "{varname} should be one of {expected_types}".format(
+                varname=varname, expected_types=expected_types
+            )
+        )
 
 
 def coalesce_columns(
@@ -23,56 +54,6 @@ def coalesce_columns(
     `default_value` will be filled in.
 
     This method does not mutate the original DataFrame.
-
-    Example: Using `coalesce` with 3 columns, "a", "b" and "c".
-
-        >>> import pandas as pd
-        >>> import numpy as np
-        >>> import janitor
-        >>> df = pd.DataFrame({
-        ...     "a": [np.nan, 1, np.nan],
-        ...     "b": [2, 3, np.nan],
-        ...     "c": [4, np.nan, np.nan],
-        ... })
-        >>> df.coalesce("a", "b", "c", target_column_name="new_col")
-             a    b    c  new_col
-        0  NaN  2.0  4.0      2.0
-        1  1.0  3.0  NaN      1.0
-        2  NaN  NaN  NaN      NaN
-
-    Example: Providing a default value.
-
-        >>> import pandas as pd
-        >>> import numpy as np
-        >>> import janitor
-        >>> df = pd.DataFrame({
-        ...     "a": [1, np.nan, np.nan],
-        ...     "b": [2, 3, np.nan],
-        ... })
-        >>> df.coalesce(
-        ...     "a", "b",
-        ...     target_column_name="new_col",
-        ...     default_value=-1,
-        ... )
-             a    b  new_col
-        0  1.0  2.0      1.0
-        1  NaN  3.0      3.0
-        2  NaN  NaN     -1.0
-
-    This is more syntactic diabetes! For R users, this should look familiar to
-    `dplyr`'s `coalesce` function; for Python users, the interface
-    should be more intuitive than the `pandas.Series.combine_first`
-    method.
-
-    :param df: A pandas DataFrame.
-    :param column_names: A list of column names.
-    :param target_column_name: The new column name after combining.
-        If `None`, then the first column in `column_names` is updated,
-        with the Null values replaced.
-    :param default_value: A scalar to replace any remaining nulls
-        after coalescing.
-    :returns: A pandas DataFrame with coalesced columns.
-    :raises ValueError: if length of `column_names` is less than 2.
     """
 
     if not column_names:
@@ -97,6 +78,7 @@ def coalesce_columns(
 
     if target_column_name is None:
         target_column_name = column_names[0]
+
     # bfill/ffill combo is faster than combine_first
     outcome = (
         df.filter(column_names).bfill(axis="columns").ffill(axis="columns").iloc[:, 0]
@@ -105,4 +87,5 @@ def coalesce_columns(
         outcome = outcome.fillna(default_value)
     # TODO: #24 coalesce_columns() add options for summing values, concatenate strings, or maybe max or other operation.
 
+    # Using assign creates a new dataframe.
     return df.assign(**{target_column_name: outcome})
