@@ -1,4 +1,17 @@
-""" Convenience functions"""
+""" Convenience functions
+While these can be used within the pydit package, e.g. the logging or file manager module
+we should not use them as imports in the functions, as we want those to be self standing.
+The principle is that we could drop a particular function module to do an audit test and it would
+work just fine, being simple and self contained enough to be understood and audited,
+rather than relying on a complex set of imports, decorators and auxiliary functions.
+I still want to keep the master copy of those functions here, with tests and documentation.
+Because we would drop in the specific function module a copy at a point in time we need to somewhat keep version
+control. Possibly he test suite for a particular function/module should include the tests for those auxiliary functions. 
+Somewhat cumbersome but the idea is to make it easier for an auditor to use one specific module without having to
+understand the entire works of the package if he/she chooses to.
+
+"""
+
 import random
 import string
 import logging
