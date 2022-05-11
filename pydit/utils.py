@@ -35,9 +35,9 @@ def print_red(*args):
 def print_green(*args):
     """ print ansi codes to make the printout green"""
     print("\x1b[32m" + " ".join([str(x) for x in args]) + "\x1b[0m")
+  
 
-
-def deduplicate_list(
+def _deduplicate_list(
     list_to_deduplicate, default_field_name="column", force_lower_case=True
 ):
     """deduplicates a list
@@ -49,8 +49,7 @@ def deduplicate_list(
     """
 
     def _get_random_string(length):
-        # internal funtion to create a likely unique suffix for repeating fields
-        
+        # choose from all letter
         letters = string.ascii_lowercase
         result_str = "".join(random.choice(letters) for i in range(length))
         return result_str
@@ -60,19 +59,20 @@ def deduplicate_list(
     try:
         if force_lower_case:
             list_clean = [
-                "" if pd.isna(x) else str.lower(str.strip(str(x)))
+                str.lower(str.strip(x)) if isinstance(x, str) else ""
                 for x in list_to_deduplicate
             ]
         else:
             list_clean = [
-                "" if pd.isna(x) else str.strip(str(x)) for x in list_to_deduplicate
+                str.strip(str(x)) if isinstance(x,str) or isinstance(x,int) else ""
+                for x in list_to_deduplicate
             ]
     except:
         logger.error("Unable to convert elements in the list to string type")
         return False
     new_list = []
     for i, el in enumerate(list_clean):
-        if pd.isna(el) or el == "":
+        if el == "":
             new_value = default_field_name + "_" + str(i + 1)
         else:
             if el in new_list:
@@ -93,8 +93,8 @@ def deduplicate_list(
                         return False
         new_list.append(new_value)
     return new_list
-
-
+ 
+   
 def dataframe_to_code(df):
     """ utility function to convert a dataframe to a piece of code
     that one can include in a test script or tutorial. May need extra tweaks

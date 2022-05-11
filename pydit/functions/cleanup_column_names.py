@@ -2,6 +2,7 @@
 
 import logging
 import re
+import pandas as pd 
 
 logger = logging.getLogger(__name__)
 
@@ -27,19 +28,20 @@ def _deduplicate_list(
     try:
         if force_lower_case:
             list_clean = [
-                "" if pd.isna(x) else str.lower(str.strip(str(x)))
+                str.lower(str.strip(x)) if isinstance(x, str) else ""
                 for x in list_to_deduplicate
             ]
         else:
             list_clean = [
-                "" if pd.isna(x) else str.strip(str(x)) for x in list_to_deduplicate
+                str.strip(str(x)) if isinstance(x,str) or isinstance(x,int) else ""
+                for x in list_to_deduplicate
             ]
     except:
         logger.error("Unable to convert elements in the list to string type")
         return False
     new_list = []
     for i, el in enumerate(list_clean):
-        if pd.isna(el) or el == "":
+        if el == "":
             new_value = default_field_name + "_" + str(i + 1)
         else:
             if el in new_list:
