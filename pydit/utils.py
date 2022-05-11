@@ -35,8 +35,9 @@ def deduplicate_list(
     duplicates
     """
 
-    def get_random_string(length):
-        # choose from all letter
+    def _get_random_string(length):
+        # internal funtion to create a likely unique suffix for repeating fields
+        
         letters = string.ascii_lowercase
         result_str = "".join(random.choice(letters) for i in range(length))
         return result_str
@@ -72,9 +73,9 @@ def deduplicate_list(
                 n = n + 1
             new_value = el + "_" + str(n)
             if new_value in new_list:
-                new_value = el + "_" + get_random_string(4)
+                new_value = el + "_" + _get_random_string(4)
                 if new_value in new_list:
-                    new_value = el + "_" + get_random_string(8)
+                    new_value = el + "_" + _get_random_string(8)
                     if new_value in new_list:
                         return False
         new_list.append(new_value)

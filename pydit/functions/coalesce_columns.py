@@ -7,7 +7,7 @@ import pandas as pd
 logger = logging.getLogger(__name__)
 
 
-def check_types(varname: str, value, expected_types: list):
+def _check_types(varname: str, value, expected_types: list):
     """
     Function for checking types.
     It can also check callables.
@@ -71,10 +71,10 @@ def coalesce_columns(
         raise TypeError("Please provide a list of columns")
 
     if target_column_name:
-        check_types("target_column_name", target_column_name, [str])
+        _check_types("target_column_name", target_column_name, [str])
 
     if default_value:
-        check_types("default_value", default_value, [int, float, str])
+        _check_types("default_value", default_value, [int, float, str])
 
     if target_column_name is None:
         target_column_name = column_names[0]
