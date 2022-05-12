@@ -15,13 +15,10 @@ understand the entire works of the package if he/she chooses to.
 import random
 import string
 import logging
-import socket
-import warnings
-from typing import Union
+
 import re
 
 import numpy as np
-import pandas as pd
 
 
 logger = logging.getLogger()
@@ -35,9 +32,9 @@ def print_red(*args):
 def print_green(*args):
     """ print ansi codes to make the printout green"""
     print("\x1b[32m" + " ".join([str(x) for x in args]) + "\x1b[0m")
-  
 
-def _deduplicate_list(
+
+def deduplicate_list(
     list_to_deduplicate, default_field_name="column", force_lower_case=True
 ):
     """deduplicates a list
@@ -59,16 +56,18 @@ def _deduplicate_list(
     try:
         if force_lower_case:
             list_clean = [
-                str.lower(str.strip(x)) if isinstance(x, str) else ""
+                str.lower(str.strip(str(x)))
+                if isinstance(x, str) or isinstance(x, int)
+                else ""
                 for x in list_to_deduplicate
             ]
         else:
             list_clean = [
-                str.strip(str(x)) if isinstance(x,str) or isinstance(x,int) else ""
+                str.strip(str(x)) if isinstance(x, str) or isinstance(x, int) else ""
                 for x in list_to_deduplicate
             ]
-    except:
-        logger.error("Unable to convert elements in the list to string type")
+    except Exception as e:
+        logger.error(e)
         return False
     new_list = []
     for i, el in enumerate(list_clean):
@@ -93,8 +92,8 @@ def _deduplicate_list(
                         return False
         new_list.append(new_value)
     return new_list
- 
-   
+
+
 def dataframe_to_code(df):
     """ utility function to convert a dataframe to a piece of code
     that one can include in a test script or tutorial. May need extra tweaks

@@ -2,6 +2,7 @@
 
 import os
 import sys
+import pathlib
 
 import pandas as pd
 
@@ -33,7 +34,7 @@ def test_load():
 
 
 def test_save():
-    """ test for savling objects"""
+    """ test for saving objects"""
     d = {
         "col1": [1, 2, 3, 5, 6],
         "col2": [1, 2, 3, 4, 5],
@@ -45,7 +46,11 @@ def test_save():
     t1 = ""
     l1 = []
     d1 = {}
+    # We ensure the output path exists, this needs to be put into a fixture
+    path = pathlib.Path("./tests/output/")
+    path.mkdir(parents=True, exist_ok=True)
     fm.output_path = "./tests/output/"
+    fm.temp_path = "./tests/output/"
     assert fm.save(s2, "test_zero_len.xlsx") is False
     assert fm.save(df1, "test_zero_len.xlsx") is False
     assert fm.save(t1, "test_zero_len.pickle") is False
@@ -58,5 +63,4 @@ def test_save():
 
 if __name__ == "__main__":
     # execute only if run as a script
-    test_load()
-
+    pass
