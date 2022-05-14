@@ -18,9 +18,18 @@ def test_collapse_levels():
             "type": ["falcon", "falcon", "parrot", "Lion", "Monkey"],
         }
     )
-    grouped_df = df.groupby("class").agg(["mean", "median"])
+    grouped_df = (
+        df[["class", "max_speed"]]
+        .groupby("class")
+        .agg(["mean", "median", "count", "sum"])
+    )
     collapse_levels(grouped_df, sep="_")
-    assert list(grouped_df.columns) == ["max_speed_mean", "max_speed_median"]
+    assert list(grouped_df.columns) == [
+        "max_speed_mean",
+        "max_speed_median",
+        "max_speed_count",
+        "max_speed_sum",
+    ]
 
 
 if __name__ == "__main__":

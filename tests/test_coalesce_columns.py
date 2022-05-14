@@ -5,7 +5,7 @@ import sys
 import numpy as np
 import pandas as pd
 import pytest
-from pandas.testing import assert_frame_equal
+from pandas.testing import assert_frame_equal, assert_series_equal
 
 
 # pylint: disable=import-error disable=wrong-import-position
@@ -15,8 +15,67 @@ from pydit import coalesce_columns
 
 @pytest.fixture
 def df():
-    "Base DataFrame fixture"
+    """Base DataFrame fixture"""
     return pd.DataFrame({"a": [1, np.nan, 3], "b": [2, 3, 1], "c": [2, np.nan, 9]})
+
+
+@pytest.fixture
+def df_nans():
+    """DataFrame with multiple NaNs"""
+    return pd.DataFrame({"s1": [np.nan, np.nan, 6, 9, 9], "s2": [np.nan, 8, 7, 9, 9]})
+
+
+@pytest.fixture
+def df_text():
+    """ Simple dataframe with text columns"""
+    return pd.DataFrame(
+        {
+            "class": ["bird", "bird", "bird", "mammal", "mammal"],
+            "max_speed": [389, 0, 0, 0, np.nan],
+            "country": ["UK", " ", "", "", np.nan],
+            "type": ["falcon", "falcon", "parrot", "Lion", "Monkey"],
+        }
+    )
+
+
+def test_concat_all_texts(df_text):
+    expected = [
+        "bird_falcon",
+        "bird_falcon",
+        "bird_parrot",
+        "mammal_Lion",
+        "mammal_Monkey",
+    ]
+    result = coalesce_columns(
+        df_text,
+        ["class", "type"],
+        operation="concatenate",
+        target_column_name="result",
+        separator="_",
+    )
+    print(result)
+    assert list(result["result"]) == expected
+
+
+def test_concat_some_empty(df_text):
+    expected = [
+        "bird 389.0",
+        "bird 0.0",
+        "bird 0.0",
+        "mammal 0.0",
+        "mammal ",
+        # TODO: #28 find an elegant way of stripping the trailing space in coalesce_columns() using concatenate option
+    ]
+    result = coalesce_columns(
+        df_text,
+        ["class", "max_speed"],
+        operation="concatenate",
+        target_column_name="result",
+        separator=" ",
+        default_value="",
+    )
+    print(result)
+    assert list(result["result"]) == expected
 
 
 def test_wrong_column_names(df):
@@ -70,9 +129,11 @@ def test_coalesce_without_target(df):
     assert_frame_equal(result, expected_output)
 
 
-def test_coalesce_without_delete():
+def test_coalesce_without_delete(df_nans):
     """Test ouptut if nulls remain and `default_value` is provided."""
-    df = pd.DataFrame({"s1": [np.nan, np.nan, 6, 9, 9], "s2": [np.nan, 8, 7, 9, 9]})
-    expected = df.assign(s3=df.s1.combine_first(df.s2).fillna(0))
-    result = coalesce_columns(df, "s1", "s2", target_column_name="s3", default_value=0)
+    expected = df_nans.assign(s3=df_nans.s1.combine_first(df_nans.s2).fillna(0))
+    result = coalesce_columns(
+        df_nans, "s1", "s2", target_column_name="s3", default_value=0
+    )
     assert_frame_equal(result, expected)
+

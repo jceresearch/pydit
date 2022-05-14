@@ -6,6 +6,12 @@ packages = [
 version = "0.0.1"
 description = "Data cleansing tools for Internal Auditors"
 authors = ["jceresearch <jceresearch@users.noreply.github.com>"]
+keywords=["internal audit", "munging", "cleansing", "audit"]
+classifiers=[
+"Development Status :: 3 - Alpha",
+"Programming Language :: Python :: 3 :: Only",
+"License :: OSI Approved :: MIT License"
+]
 license = "MIT"
 
 [tool.poetry.dependencies]

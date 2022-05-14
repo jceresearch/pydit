@@ -3,7 +3,6 @@
 /to delete/
 audit.log*
 *.pyc
-audit.log.1
 .ipynb_checkpoints
 # Created by https://www.toptal.com/developers/gitignore/api/python
 # Edit at https://www.toptal.com/developers/gitignore?templates=python

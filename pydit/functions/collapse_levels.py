@@ -23,32 +23,7 @@ def collapse_levels(df: pd.DataFrame, sep: str = "_") -> pd.DataFrame:
     this through a simple string-joining of all the names across different
     levels in a single column.
 
-    Example:
-        >>> df = pd.DataFrame({
-        ...     "class": ["bird", "bird", "bird", "mammal", "mammal"],
-        ...     "max_speed": [389, 389, 24, 80, 21],
-        ...     "type": ["falcon", "falcon", "parrot", "Lion", "Monkey"],
-        ... })
-        >>> df
-            class  max_speed    type
-        0    bird        389  falcon
-        1    bird        389  falcon
-        2    bird         24  parrot
-        3  mammal         80    Lion
-        4  mammal         21  Monkey
-        >>> grouped_df = df.groupby("class").agg(["mean", "median"])
-        >>> grouped_df
-                max_speed
-                mean        median
-        class
-        bird    267.333333  389.0
-        mammal   50.500000   50.5
-        >>> collapse_levels(grouped_df, sep="_")
-                max_speed_mean  max_speed_median
-        class
-        bird        267.333333             389.0
-        mammal       50.500000              50.5
-
+    Args:
 
     :param df: A pandas DataFrame.
     :param sep: String separator used to join the column level names.
