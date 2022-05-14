@@ -1,3 +1,19 @@
+[tool.poetry]
+name = "pydit-jceresearch"
+packages = [
+	{ include = "pydit" }
+]
+version = "0.0.1"
+description = "Data cleansing tools for Internal Auditors"
+authors = ["jceresearch <jceresearch@users.noreply.github.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pandas = "^1.4.2"
+
+[tool.poetry.dev-dependencies]
+
 [build-system]
-requires = ["setuptools>=42"]
-build-backend = "setuptools.build_meta"
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
