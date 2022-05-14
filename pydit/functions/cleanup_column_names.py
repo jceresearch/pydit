@@ -2,8 +2,13 @@
 
 import logging
 import re
+import random
+import string
+
+import pandas as pd
 
 logger = logging.getLogger(__name__)
+
 
 def _deduplicate_list(
     list_to_deduplicate, default_field_name="column", force_lower_case=True
@@ -61,8 +66,6 @@ def _deduplicate_list(
         new_list.append(new_value)
     return new_list
 
-    
-
 
 def cleanup_column_names(df, max_field_name_len=40):
     """ Cleanup the column names of a Pandas dataframe
@@ -80,7 +83,7 @@ def cleanup_column_names(df, max_field_name_len=40):
         new = re.sub("%", "pc", new)
         new = re.sub(r"[^a-zA-Z0-9£$€]", " ", new)
         new = re.sub(" +", " ", new)
-        new = new[0 : max_field_name_len ]
+        new = new[0:max_field_name_len]
         new = str.lower(new.strip())
         new = re.sub(" +", "_", new)
 
