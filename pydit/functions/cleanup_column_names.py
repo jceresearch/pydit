@@ -4,12 +4,8 @@ import logging
 import string
 import re
 import random
-<<<<<<< HEAD
 import string
 
-import pandas as pd
-=======
->>>>>>> da2e4ea0a0650ca5b968085d936e40ad67e972f6
 
 logger = logging.getLogger(__name__)
 
