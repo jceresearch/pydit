@@ -43,6 +43,7 @@ def deduplicate_list(
     is not really an issue
     Returns a list of fields with no duplicates and suffixes where there were
     duplicates
+    V0.1 - 14 May 2022
     """
 
     def _get_random_string(length):
