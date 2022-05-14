@@ -1,11 +1,15 @@
 """ Transform and Munging functions"""
 
 import logging
+import string
 import re
 import random
+<<<<<<< HEAD
 import string
 
 import pandas as pd
+=======
+>>>>>>> da2e4ea0a0650ca5b968085d936e40ad67e972f6
 
 logger = logging.getLogger(__name__)
 
@@ -32,19 +36,22 @@ def _deduplicate_list(
     try:
         if force_lower_case:
             list_clean = [
-                "" if pd.isna(x) else str.lower(str.strip(str(x)))
+                str.lower(str.strip(str(x)))
+                if isinstance(x, str) or isinstance(x, int)
+                else ""
                 for x in list_to_deduplicate
             ]
         else:
             list_clean = [
-                "" if pd.isna(x) else str.strip(str(x)) for x in list_to_deduplicate
+                str.strip(str(x)) if isinstance(x, str) or isinstance(x, int) else ""
+                for x in list_to_deduplicate
             ]
-    except:
-        logger.error("Unable to convert elements in the list to string type")
+    except Exception as e:
+        logger.error(e)
         return False
     new_list = []
     for i, el in enumerate(list_clean):
-        if pd.isna(el) or el == "":
+        if el == "":
             new_value = default_field_name + "_" + str(i + 1)
         else:
             if el in new_list:
@@ -78,7 +85,7 @@ def cleanup_column_names(df, max_field_name_len=40):
         try:
             new = str(e)
         except Exception as e:
-            logger.exception("Problem converting header into str, leaving it blank")
+            logger.exception(e)
             new = ""
         new = re.sub("%", "pc", new)
         new = re.sub(r"[^a-zA-Z0-9£$€]", " ", new)
