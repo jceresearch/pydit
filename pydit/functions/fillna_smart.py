@@ -12,6 +12,7 @@ logger = logging.getLogger(__name__)
 
 def fillna_smart(
     df,
+    cols=None,
     date_fillna="latest",
     text_fillna="",
     include_empty_string=False,
@@ -31,13 +32,24 @@ def fillna_smart(
         text_fillna: String to use to replace nan in text/object columns
 
     Returns:
-        DataFrame: Returns copy of the original dataframe with modifications
+        DataFrame: Returns a copy of the original dataframe with modifications
         Beware if the dataframe is large you may have memory issues.
     """
-    # TODO: #27 Add ability to provide the specific columns to fill
     df = df.copy(deep=True)
+    if cols is None:
+        cols=df.columns
+    else:
+        if not set(cols).issubset(set(df.columns)):
+            logger.error("Columns provided are not in the dataframe")
+            return df
+        else:
+            cols=list(set(cols))
+
     dtypes = df.dtypes.to_dict()
     for col, typ in dtypes.items():
+        if  col not in cols:
+            # we skip this column 
+            continue
         if ("int" in str(typ)) or ("float" in str(typ)):
             df[col].fillna(0, inplace=True)
         elif is_datetime(df[col]):
