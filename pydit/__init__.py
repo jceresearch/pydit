@@ -6,4 +6,4 @@ from .filemanager import FileManager
 from .logger import setup_logging
 from .logger import setup_logging_info
 
-__version__ = "0.01.0"
+__version__ = "0.0.2"

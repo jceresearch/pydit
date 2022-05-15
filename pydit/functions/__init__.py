@@ -1,4 +1,4 @@
-# General Functions
+""" General Functions"""
 
 from .create_calendar import create_calendar
 from .add_percentile import add_percentile
@@ -18,3 +18,8 @@ from .check_benford import benford_to_dataframe
 from .check_benford import benford_to_plot
 from .check_benford import benford_list_anomalies
 from .collapse_levels import collapse_levels
+from .groupby_text import groupby_text
+
+# Here we import each of the functions in the functions/ directory to have them
+# available in the functions namespace.
+# In turn functions gets imported with * at root
