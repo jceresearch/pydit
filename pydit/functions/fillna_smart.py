@@ -22,14 +22,11 @@ def fillna_smart(
     nulls handling.
 
     Args:
-        df ([type]): Input DataFrame
-
-        date_fillna ('latest','first' or datetime, optional):
-        What to put in NaT values, takes the first, last or a specified
-        date to fill the gaps.
-        Defaults to "latest".
-
-        text_fillna: String to use to replace nan in text/object columns
+        df (DataFrame): Input panda DataFrame
+        cols (Optional, list): List of columns to be cleaned, if None all are cleaned
+        date_fillna ('latest','first' or datetime, optional): What to put in NaT values, 
+            takes the first, last or a specified date to fill the gaps. Defaults to "latest".
+        text_fillna (String, Optional, Defaults to ""): String to use to replace nan in text/object columns
 
     Returns:
         DataFrame: Returns a copy of the original dataframe with modifications
@@ -37,18 +34,18 @@ def fillna_smart(
     """
     df = df.copy(deep=True)
     if cols is None:
-        cols=df.columns
+        cols = df.columns
     else:
         if not set(cols).issubset(set(df.columns)):
             logger.error("Columns provided are not in the dataframe")
             return df
         else:
-            cols=list(set(cols))
+            cols = list(set(cols))
 
     dtypes = df.dtypes.to_dict()
     for col, typ in dtypes.items():
-        if  col not in cols:
-            # we skip this column 
+        if col not in cols:
+            # we skip this column
             continue
         if ("int" in str(typ)) or ("float" in str(typ)):
             df[col].fillna(0, inplace=True)
