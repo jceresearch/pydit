@@ -3,7 +3,7 @@ name = "pydit-jceresearch"
 packages = [
 	{ include = "pydit" }
 ]
-version = "0.0.2"
+version = "0.0.3"
 description = "Data cleansing tools for Internal Auditors"
 authors = ["jceresearch <jceresearch@users.noreply.github.com>"]
 keywords=["internal audit", "munging", "cleansing", "audit"]
@@ -19,6 +19,8 @@ python = "^3.9"
 pandas = "^1.4.2"
 numpy = "^1.21.5"
 matplotlib = "^3.1.3"
+openpyxl="^3.0.9"
+
 [tool.poetry.dev-dependencies]
 
 [build-system]
