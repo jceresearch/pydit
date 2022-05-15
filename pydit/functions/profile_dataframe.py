@@ -51,7 +51,7 @@ def profile_dataframe(df):
             metrics["max"] = max(df[col])
             metrics["min"] = min(df[col])
         elif typ == "object":
-            values = df[pd.notna(df[col])][col]
+            values = df[col].fillna("").astype(str).str.strip()
             numeric_chars = values.str.replace(
                 r"[^0-9^-^.]+", "", regex=True
             )  # TODO: refactor this regex, currently very simplistic works only for clean id sequences, e.g. double dots
@@ -60,7 +60,7 @@ def profile_dataframe(df):
             if len(numeric) > 0:
                 metrics["max"] = max(numeric)
                 metrics["min"] = min(numeric)
-            metrics["empty_strings"] = len(df[df[col].str.strip().eq("")])
+            metrics["empty_strings"] = len(values[values.str.len() == 0])
         col_metrics.append(metrics)
 
     df_metrics = pd.DataFrame(col_metrics)

@@ -48,8 +48,10 @@ def check_blanks(
         if is_numeric_dtype(df[c]) and zeroes:
             df[c + "_blanks"] = (pd.isna(df[c])) | (df[c] == 0)
         elif is_string_dtype(df[c]) and null_strings_and_spaces:
+            df[c + "_strip"] = df[c].fillna("").astype(str).str.strip()
             logger.debug("Checking for spaces and nullstring too in %s", c)
-            df[c + "_blanks"] = (pd.isna(df[c])) | (df[c].str.strip() == "")
+            df[c + "_blanks"] = ~df[c + "_strip"].astype(bool)
+            df.drop(c + "_strip", axis=1, inplace=True)
         else:
             logger.debug("Checking just for NaN or NaT in %s", c)
             df[c + "_blanks"] = pd.isna(df[c])
@@ -57,7 +59,9 @@ def check_blanks(
     new_cols = [c + "_blanks" for c in cols]
     df["has_blanks"] = np.any(df[new_cols], axis=1)
 
-    logger.info("Total blanks found in each column:\n%s", dict(zip(cols,total_results)))
+    logger.info(
+        "Total blanks found in each column:\n%s", dict(zip(cols, total_results))
+    )
 
     if totals_only:
         return total_results
