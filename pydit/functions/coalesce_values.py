@@ -1,10 +1,8 @@
-""" Transform and Munging functions"""
+""" Creates a new column with the top N most frequent values and the rest are replaced by Other """
 
 import logging
 
-
 import numpy as np
-from pandas.api.types import is_datetime64_any_dtype as is_datetime
 
 logger = logging.getLogger(__name__)
 
@@ -12,11 +10,12 @@ logger = logging.getLogger(__name__)
 def coalesce_values(
     df_in, cols, top_n_values_to_keep=0, translation_dict=None, other_label="OTHER"
 ):
-    """Creates a new column with a translation of the top N most frequent values
-    and the rest are replaced by Other.
+    """Creates a new column with the top N most frequent values and the rest are replaced by Other.
+
     Also can take a translation dictionary to do the manual translation prior
     to applying that top N limit.
     Returns a copy of the DataFrame with the new column
+    
     Args:
         df_in (DataFrame): Pandas DataFrame to transform   
         cols (Str or List): Column or list of columns to apply the selection
@@ -35,7 +34,7 @@ def coalesce_values(
 
         Example:
         translation={"OPEN":"OPEN","PENDING":"OPEN","Completed":"COMPLETED","CLOSED":"CLOSED"}
-        df=group_categories(df_in=dfraw, 
+        df=group_categories(df_in=dfraw,
         cols=["status"],t
         op_n_values_to_keep=2,
         translation_dict=translation
@@ -44,15 +43,17 @@ def coalesce_values(
         DataFrame: Copy of the original Pandas DataFrame with the extra columns
     """
 
+    # We ensure we create a copy so not to mutate the original DataFrame
     df = df_in.copy()
+
     if isinstance(cols, str):
         if not cols in df.columns:
-            return "Not found"
+            raise ValueError("Column %s not found in DataFrame", cols)
         else:
             col = cols
     else:
         if not isinstance(cols, list):
-            return "Please provide a list or a string"
+            raise TypeError("cols must be a string or a list")
 
         check = all(item in df.columns for item in cols)
         if not check:
@@ -64,7 +65,7 @@ def coalesce_values(
             def concat_categories(r, cols):
                 try:
                     v = "_".join([str(v) for v in r[cols].values])
-                except:
+                except Exception as e:
                     v = np.NAN
                 return v
 

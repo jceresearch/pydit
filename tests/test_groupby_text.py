@@ -5,7 +5,6 @@ import sys
 import numpy as np
 import pandas as pd
 import pytest
-from pandas.testing import assert_frame_equal
 
 # pylint: disable=redefined-outer-name
 # pylint: disable=import-error
@@ -25,6 +24,10 @@ def df():
         "user": ["user1", "user2", "user1", "user2", "", np.nan, "user3"],
     }
     return pd.DataFrame(data)
+
+
+def test_groupby_bad_formed(df):
+    """test for badly formed calls"""
 
 
 def test_groupby_text(df):

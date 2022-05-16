@@ -2,6 +2,7 @@
 import os
 import sys
 
+import pytest
 import pandas as pd
 
 # import numpy as np
@@ -36,8 +37,10 @@ def test_add_counts():
     assert df2["count_fk_mkey"].to_list() == [1, 1, 1, 1, 1, 1, 0]
 
     # testing wrong imput fails gracefully
-    assert add_counts_between_related_df(df1, df2) is None
-    assert add_counts_between_related_df(df1, df2, left_on="mkey") is None
+    with pytest.raises(ValueError):
+        add_counts_between_related_df(df1, df2)
+    with pytest.raises(ValueError):
+        add_counts_between_related_df(df1, df2, left_on="mkey")
 
     # testing left_on and right_on
     df1 = pd.DataFrame(data=d1)

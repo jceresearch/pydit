@@ -1,4 +1,4 @@
-""" Test module for coalesce_columns"""
+""" Test module for coalesce_values"""
 import os
 import sys
 
@@ -11,4 +11,7 @@ from pandas.testing import assert_frame_equal
 # pylint: disable=import-error disable=wrong-import-position
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from pydit import coalesce_values
+
+
+# TODO: Add tests for coalesce_values
 
