@@ -9,6 +9,15 @@ logger = logging.getLogger(__name__)
 def add_counts_between_related_df(df1, df2, left_on="", right_on="", on=""):
     """Add a count column to bring the count of that key in those tables
 
+    This works similar to adding countif() in Excel to sense check if an 
+    identifier in one sheet is in fullly in another (presumably master), or
+    if there are duplicated keys or orphans/gaps. 
+    This routine does both ways so you can quickly check whether you have 
+    one to one, many to many etc, and where there may be the anomales.
+    There is another function that checks referential integrity and does this
+    in a more conceptual way, but often you just need to add some counting 
+    numbers and filter for >1 or zeroes.
+
     Args:
         df1 (DataFrame): Primary pandas dataFrame
         df2 (DataFrame): Secondary/Referenced pandas DataFrame

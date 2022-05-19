@@ -11,6 +11,34 @@ It is inspired in Pyjanitor (awesome library!) but taking a different approach t
 It is more important to ensure accuracy and audit trails than raw performance/cleverness.
 
 
+Quick start:
+```
+import pydit
+logger = pydit.setup_logging()
+logger.info("Started")
+```
+
+The list of functions available are:
+
+create_calendar
+add_percentile
+profile_dataframe
+check_duplicates
+check_sequence
+add_counts_between_related_df
+check_referential_integrity
+fillna_smart
+check_blanks
+ coalesce_values
+cleanup_column_names
+anonymise_key
+count_cumulative_unique
+coalesce_columns
+benford_to_dataframe
+benford_to_plot
+benford_list_anomalies
+import collapse_levels
+groupby_text
 
 
 
