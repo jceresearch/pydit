@@ -18,10 +18,13 @@ logger = pydit.setup_logging()
 logger.info("Started")
 ```
 
+
 The logger feature is used extensively to create a human readable audit log to be included in workpapers.
 
 
-The functions 
+The functions are typically used on a pandas DataFrame or Series object, 
+returning a new object with the output of the processing. The default is 
+not to mutate the calling object.
 
 
 
@@ -45,25 +48,25 @@ fillna_smart
 
 check_blanks
 
-coalesce_values
+coalesce_values()
 
-cleanup_column_names
+cleanup_column_names()
 
-anonymise_key
+anonymise_key()
 
-count_cumulative_unique
+count_cumulative_unique()
 
-coalesce_columns
+coalesce_columns()
 
-benford_to_dataframe
+benford_to_dataframe()
 
-benford_to_plot
+benford_to_plot()
 
-benford_list_anomalies
+benford_list_anomalies()
 
-import collapse_levels
+collapse_levels()
 
-groupby_text
+groupby_text()
 
 
 
