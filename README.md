@@ -18,26 +18,51 @@ logger = pydit.setup_logging()
 logger.info("Started")
 ```
 
+The logger feature is used extensively to create a human readable audit log to be included in workpapers.
+
+
+The functions 
+
+
+
 The list of functions available are:
 
 create_calendar
+
 add_percentile
+
 profile_dataframe
+
 check_duplicates
+
 check_sequence
+
 add_counts_between_related_df
+
 check_referential_integrity
+
 fillna_smart
+
 check_blanks
- coalesce_values
+
+coalesce_values
+
 cleanup_column_names
+
 anonymise_key
+
 count_cumulative_unique
+
 coalesce_columns
+
 benford_to_dataframe
+
 benford_to_plot
+
 benford_list_anomalies
+
 import collapse_levels
+
 groupby_text
 
 
