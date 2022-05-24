@@ -1,11 +1,11 @@
-""" Transform and Munging functions"""
+"""
+Cleanup the dataframes improving over what fillna() does
+"""
 
 import logging
 from datetime import datetime
-
 import numpy as np
 from pandas.api.types import is_datetime64_any_dtype as is_datetime
-
 
 logger = logging.getLogger(__name__)
 
@@ -18,19 +18,21 @@ def fillna_smart(
     include_empty_string=False,
     include_spaces=False,
 ):
-    """Cleanup the actual values of the dataframe with sensible
-    nulls handling.
-
+    """
+    Cleanup the values of the dataframe with sensible nulls handling.
+    
     Args:
         df (DataFrame): Input panda DataFrame
-        cols (Optional, list): List of columns to be cleaned, if None all are cleaned
+        cols (Optional, list): List of columns to be cleaned, if None, all are cleaned
         date_fillna ('latest','first' or datetime, optional): What to put in NaT values, 
-            takes the first, last or a specified date to fill the gaps. Defaults to "latest".
-        text_fillna (String, Optional, Defaults to ""): String to use to replace nan in text/object columns
+            i.e. Takes the first, last or a specified date to fill the gaps. 
+            Defaults to "latest".
+        text_fillna (String, Optional, Defaults to ""): String to use to replace nan in 
+        text/object columns
 
     Returns:
         DataFrame: Returns a copy of the original dataframe with modifications
-        Beware if the dataframe is large you may have memory issues.
+        
     """
     df = df.copy(deep=True)
     if cols is None:

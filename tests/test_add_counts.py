@@ -32,9 +32,9 @@ def test_add_counts():
     df2 = pd.DataFrame(data=d2)
 
     # testing basic results
-    add_counts_between_related_df(df1, df2, on="mkey")
-    assert df1["count_fk_mkey"].to_list() == [3, 1, 2, 0]
-    assert df2["count_fk_mkey"].to_list() == [1, 1, 1, 1, 1, 1, 0]
+    res1, res2 = add_counts_between_related_df(df1, df2, on="mkey")
+    assert res1["count_fk_mkey"].to_list() == [3, 1, 2, 0]
+    assert res2["count_fk_mkey"].to_list() == [1, 1, 1, 1, 1, 1, 0]
 
     # testing wrong imput fails gracefully
     with pytest.raises(ValueError):
@@ -42,21 +42,20 @@ def test_add_counts():
     with pytest.raises(ValueError):
         add_counts_between_related_df(df1, df2, left_on="mkey")
 
-    # testing left_on and right_on
-    df1 = pd.DataFrame(data=d1)
-    df2 = pd.DataFrame(data=d2)
-    add_counts_between_related_df(df1, df2, left_on="mkey", right_on="mkey2")
-    assert df1["count_fk_mkey2"].to_list() == [3, 1, 2, 0]
-    assert df2["count_fk_mkey"].to_list() == [1, 1, 1, 1, 1, 1, 0]
+    res1, res2 = add_counts_between_related_df(
+        df1, df2, left_on="mkey", right_on="mkey2"
+    )
+    assert res1["count_fk_mkey2"].to_list() == [3, 1, 2, 0]
+    assert res2["count_fk_mkey"].to_list() == [1, 1, 1, 1, 1, 1, 0]
 
     # testing self counts
-    assert df1["count_mkey"].to_list() == [
+    assert res1["count_mkey"].to_list() == [
         1,
         1,
         1,
         1,
     ]  # There shouldnt be duplicates in df1 for the key
-    assert df2["count_mkey2"].to_list() == [
+    assert res2["count_mkey2"].to_list() == [
         3,
         3,
         3,

@@ -28,46 +28,26 @@ not to mutate the calling object.
 
 
 
-The list of functions available are:
-
-create_calendar
-
-add_percentile
-
-profile_dataframe
-
-check_duplicates
-
-check_sequence
-
-add_counts_between_related_df
-
-check_referential_integrity
-
-fillna_smart
-
-check_blanks
-
-coalesce_values()
-
-cleanup_column_names()
-
-anonymise_key()
-
-count_cumulative_unique()
-
-coalesce_columns()
-
-benford_to_dataframe()
-
-benford_to_plot()
-
-benford_list_anomalies()
-
-collapse_levels()
-
-groupby_text()
-
+   pydit.benford_to_dataframe
+   pydit.create_calendar
+   pydit.add_percentile
+   pydit.profile_dataframe
+   pydit.check_duplicates
+   pydit.check_sequence
+   pydit.add_counts_between_related_df
+   pydit.check_referential_integrity
+   pydit.fillna_smart
+   pydit.check_blanks
+   pydit.coalesce_values
+   pydit.cleanup_column_names
+   pydit.anonymise_key
+   pydit.count_cumulative_unique
+   pydit.coalesce_columns
+   pydit.benford_to_dataframe
+   pydit.benford_to_plot
+   pydit.benford_list_anomalies
+   pydit.collapse_levels
+   pydit.groupby_text
 
 
 
