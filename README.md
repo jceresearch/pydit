@@ -21,35 +21,6 @@ logger.info("Started")
 The logger feature is used extensively to create a human readable audit log to be included in workpapers.
 
 
-<<<<<<< HEAD
-The functions are typically used on a pandas DataFrame or Series object, 
-returning a new object with the output of the processing. The default is 
-not to mutate the calling object.
-
-
-
-   pydit.benford_to_dataframe
-   pydit.create_calendar
-   pydit.add_percentile
-   pydit.profile_dataframe
-   pydit.check_duplicates
-   pydit.check_sequence
-   pydit.add_counts_between_related_df
-   pydit.check_referential_integrity
-   pydit.fillna_smart
-   pydit.check_blanks
-   pydit.coalesce_values
-   pydit.cleanup_column_names
-   pydit.anonymise_key
-   pydit.count_cumulative_unique
-   pydit.coalesce_columns
-   pydit.benford_to_dataframe
-   pydit.benford_to_plot
-   pydit.benford_list_anomalies
-   pydit.collapse_levels
-   pydit.groupby_text
-
-=======
 The functions perform common transformations and checks on data -typically 
 a pandas DataFrame or Series object- such as checking for blanks, or adding 
 counters to check if two tables are plausibly in a 1:n or a n:n or a 1:1 
@@ -60,7 +31,6 @@ When stitching together many files, we often need to check for those many times
 along the process. 
 The default behaviour is to return a new or a transformed copy of the object and
 not to mutate the input object(s). The "inplace-True" option may be available.
->>>>>>> 31401312537102e8b1f2f42a22c818443e167952
 
 
 
