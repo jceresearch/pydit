@@ -1,7 +1,7 @@
 """ setup the logging features """
 import logging
-from logging.handlers import RotatingFileHandler, TimedRotatingFileHandler
-
+from logging.handlers import TimedRotatingFileHandler
+#TODO: consider other types of logging strategies like RotatingFileHandler
 
 def setup_logging(
     logfile="./audit.log", level_screen=logging.DEBUG, level_file=logging.DEBUG
@@ -33,6 +33,12 @@ def setup_logging(
     log.addHandler(ch)
     return log
 
-def setup_logging_info():
+def start_logging_info():
+    "Wrapper to start logging at info level right away"
     return setup_logging(logfile="./audit.log", level_screen=logging.INFO, level_file=logging.INFO)
+
+
+def start_logging_debug():
+    "Wrapper to start logging at info level right away"
+    return setup_logging(logfile="./audit.log", level_screen=logging.DEBUG, level_file=logging.DEBUG)
     
