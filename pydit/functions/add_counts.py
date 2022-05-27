@@ -6,16 +6,18 @@ import pandas as pd
 logger = logging.getLogger(__name__)
 
 
-def add_counts_between_related_df(df1, df2, left_on="", right_on="", on="", inplace=False):
+def add_counts_between_related_df(
+    df1, df2, left_on="", right_on="", on="", inplace=False
+):
     """Add a count column to bring the count of that key in those tables
 
     This works similar to adding countif() in Excel to sense check if an
     identifier in one sheet is in fullly in another (presumably master), or
     if there are duplicated keys or orphans/gaps.
-    This routine does both ways so you can quickly check whether you have 
+    This routine does both ways so you can quickly check whether you have
     one to one, many to many etc, and where there may be the anomales.
     There is another function that checks referential integrity and does this
-    in a more conceptual way, but often you just need to add some counting 
+    in a more conceptual way, but often you just need to add some counting
     numbers and filter for >1 or zeroes.
 
     Args:
@@ -25,13 +27,13 @@ def add_counts_between_related_df(df1, df2, left_on="", right_on="", on="", inpl
         right_on (str, optional): column to use as key for df2. Defaults to None.
         on (str, optional): Name of the column to use as key for df1 and df2 if they are the same.
         inplace (bool, optional): If True, the dataframes are modified in place. Defaults to False.
-    
+
     Returns:
         The calling DataFrames will not be mutated unless set inplace=True
-        If inplace=False, it returns a tuple of the two dataframes with a new 
-        column with the count of records found. In df1 it will be "count_[key2]" 
+        If inplace=False, it returns a tuple of the two dataframes with a new
+        column with the count of records found. In df1 it will be "count_[key2]"
         and in df2 it will be "count_[key1]"
-        
+
         If inplace=True it will return True, and mutate the original dataframes.
 
     """
@@ -60,9 +62,8 @@ def add_counts_between_related_df(df1, df2, left_on="", right_on="", on="", inpl
         if left_on == "" or right_on == "":
             raise ValueError("You must specify both left_on and right_on key to use")
     if not inplace:
-        df1=df1.copy()
-        df2=df2.copy()
-    
+        df1 = df1.copy()
+        df2 = df2.copy()
 
     df1["count_fk_" + right_on] = df1[left_on].map(df2[right_on].value_counts())
     df1["count_" + left_on] = df1[left_on].map(df1[left_on].value_counts())
@@ -93,9 +94,11 @@ def add_counts_between_related_df(df1, df2, left_on="", right_on="", on="", inpl
         sum(df1["count_fk_" + right_on]),
     )
     logger.info(
-        "Sum total in df2 on %s is %s", "count_fk_" + left_on, sum(df2["count_fk_" + left_on])
+        "Sum total in df2 on %s is %s",
+        "count_fk_" + left_on,
+        sum(df2["count_fk_" + left_on]),
     )
     if inplace:
         return True
     else:
-        return (df1,df2)
+        return (df1, df2)

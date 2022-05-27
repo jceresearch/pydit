@@ -58,3 +58,4 @@ def test_profile_dataframe():
         columns=["id", "ref", "date_trans", "status", "amount", "notes"],
     )
     assert profile_dataframe(df["id"]) is None
+    assert "This test is still not fully implemented" == False

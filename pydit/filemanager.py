@@ -333,7 +333,7 @@ class FileManager:
                 logger.info("Rows/Columns: %s", " ".join(map(str, obj.shape)))
                 logger.info("Columns: ['%s']", "','".join(map(str, obj.columns)))
             except Exception:
-                logger.info("Object of type: " + obj.type())
+                logger.info("Object of type: %s ", type(obj))
                 # should happen when the object doesnt support shape or columns
                 # so we show the object type so user can check if that is expected
             logger.info(

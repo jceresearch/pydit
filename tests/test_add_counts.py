@@ -16,7 +16,7 @@ logger = setup_logging()
 
 
 def test_add_counts():
-    """ test for add counts in master and dimension table to check how they relate"""
+    """test for add counts in master and dimension table to check how they relate"""
     d1 = {"mkey": [1, 2, 3, 4], "mvalue": ["a", "b", "c", "d"]}
 
     # mkey and mkey2 are the same just different names to test how the
@@ -32,7 +32,7 @@ def test_add_counts():
     df2 = pd.DataFrame(data=d2)
 
     # testing basic results
-    add_counts_between_related_df(df1, df2, on="mkey")
+    add_counts_between_related_df(df1, df2, on="mkey", inplace=True)
     assert df1["count_fk_mkey"].to_list() == [3, 1, 2, 0]
     assert df2["count_fk_mkey"].to_list() == [1, 1, 1, 1, 1, 1, 0]
 
@@ -45,7 +45,9 @@ def test_add_counts():
     # testing left_on and right_on
     df1 = pd.DataFrame(data=d1)
     df2 = pd.DataFrame(data=d2)
-    add_counts_between_related_df(df1, df2, left_on="mkey", right_on="mkey2")
+    add_counts_between_related_df(
+        df1, df2, left_on="mkey", right_on="mkey2", inplace=True
+    )
     assert df1["count_fk_mkey2"].to_list() == [3, 1, 2, 0]
     assert df2["count_fk_mkey"].to_list() == [1, 1, 1, 1, 1, 1, 0]
 
