@@ -71,7 +71,7 @@ def _deduplicate_list(
     return new_list
 
 
-def cleanup_column_names(df, max_field_name_len=40):
+def cleanup_column_names(df, max_field_name_len=40, inplace=False):
     """ Cleanup the column names of a Pandas dataframe
         e.g. removes non alphanumeric chars, _ instead of space, perc instead
         of %, strips trailing spaces, converts to lowercase
@@ -96,9 +96,14 @@ def cleanup_column_names(df, max_field_name_len=40):
     # other systems, for example PowerBI has a limit of 80 charts for importing column
     # names, just in case keeping this quite low, feel free to increase or remove
     new_cols = _deduplicate_list(new_cols)
+    if not inplace:
+        df=df.copy()
     df.columns = new_cols
     logger.debug("Previous column names:%s", prev_cols)
     logger.info("New columns names:%s", list(df.columns))
     if len(df.columns) != len(set(df.columns)):
         raise ValueError("Duplicated column names remain!!! check what happened")
-    return list(df.columns)
+    if inplace:
+        return True
+    else:
+        return df

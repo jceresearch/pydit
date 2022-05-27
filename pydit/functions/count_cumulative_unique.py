@@ -1,5 +1,5 @@
-""" Add a cumulative count of unique keys, mutates the df
-Adapted from similar function in Pyjanitor
+""" 
+Add a cumulative count of unique keys, does not mutates the df
 """
 
 from typing import Hashable
@@ -14,6 +14,7 @@ def count_cumulative_unique(
     column_name: Hashable,
     dest_column_name: str,
     case_sensitive: bool = True,
+    inplace=False
 ) -> pd.DataFrame:
     """Generates a running total of cumulative unique values in a given column.
 
@@ -28,8 +29,8 @@ def count_cumulative_unique(
 
     :returns: A pandas DataFrame with a new column containing a cumulative
     count of unique values from another column.
-    
-    
+
+
     Functional usage syntax:
 
     ```python
@@ -52,11 +53,14 @@ def count_cumulative_unique(
     any letters will matter (i.e., `a != A`);
     otherwise, the case of any letters will not matter.
 
-    This method does NOT mutate the original DataFrame.
+    This method does NOT mutate the original DataFrame by default.
 
     
     """
-    df=df.copy()
+    if not isinstance(df, pd.DataFrame):
+        raise TypeError("Expecting a dataframe")
+    if not inplace:
+        df=df.copy()
     if not case_sensitive:
         # Make it so that the the same uppercase and lowercase
         # letter are treated as one unique value
