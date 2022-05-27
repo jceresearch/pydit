@@ -17,7 +17,8 @@ def groupby_text(
     field_separator=" ",
     row_separator="\n",
 ):
-    """Groupby text column into concatenated text, with extra smartness
+    """
+    Groupby text column into concatenated text, with extra smartness
 
     Args:
         df (DataFrame): _description_
@@ -27,10 +28,11 @@ def groupby_text(
         field_separator (str, optional): if multiple value_cols provided then how to concatenate. Defaults to " ".
         row_separator (str, optional): separator for the rows. Defaults to "\n".
 
-    This function does not mutate the input dataframe.
-
     Returns:
         DataFrame: a grouped dataframe with the concatenated text
+        
+        This function does not mutate the input dataframe.
+
     """
     if not isinstance(df, pd.DataFrame):
         raise TypeError("df must be a pandas DataFrame")
