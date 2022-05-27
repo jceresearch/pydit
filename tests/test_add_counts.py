@@ -52,13 +52,13 @@ def test_add_counts():
     assert df2["count_fk_mkey"].to_list() == [1, 1, 1, 1, 1, 1, 0]
 
     # testing self counts
-    assert res1["count_mkey"].to_list() == [
+    assert df1["count_mkey"].to_list() == [
         1,
         1,
         1,
         1,
     ]  # There shouldnt be duplicates in df1 for the key
-    assert res2["count_mkey2"].to_list() == [
+    assert df2["count_mkey2"].to_list() == [
         3,
         3,
         3,
