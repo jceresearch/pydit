@@ -7,7 +7,7 @@ import pandas as pd
 logger = logging.getLogger(__name__)
 
 
-def add_percentile(df, col, col_group=None):
+def add_percentile(df, col, col_group=None, inplace=False):
     """Adds columns for percentile for a chosen column and also
     within a category group , if provided
     from https://stackoverflow.com/questions/50804120/how-do-i-get-the-percentile-for-a-row-in-a-pandas-dataframe
@@ -21,20 +21,21 @@ def add_percentile(df, col, col_group=None):
 
     Returns:
         DataFrame: A new copy of the DataFrame with the percentile column
-        
+
     """
     if not isinstance(df, pd.DataFrame):
         logger.error("df is not a pandas DataFrame")
         return
-    if isinstance(col,list) and len(col)==1:
-        col=col[0]
+    if isinstance(col, list) and len(col) == 1:
+        col = col[0]
     if col not in df.columns:
         logger.error("Column %s not in DataFrame", col)
         return
     if col_group and not set(col_group).issubset(set(df.columns)):
         logger.error("Columns %s not in DataFrame", col_group)
         return
-    df = df.copy(deep=True)
+    if not inplace:
+        df = df.copy(deep=True)
     logger.info("Adding percentile column based on column %s", col)
     if col_group:
         col_group_joined = "_".join(col_group)

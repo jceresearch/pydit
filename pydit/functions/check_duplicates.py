@@ -8,6 +8,9 @@ from pandas.api.types import is_string_dtype, is_numeric_dtype
 
 logger = logging.getLogger(__name__)
 
+# pylint: disable=logging-not-lazy
+# pylint: disable=logging-fstring-interpolation
+
 
 def check_duplicates(
     df,
@@ -32,12 +35,11 @@ def check_duplicates(
         ascending (True, False or None, optional): Argument for DataFrame.value_counts()
         Defaults to None.
 
-        indicator=(True, False, optional): If True, a column is added to the dataframe. 
+        indicator=(True, False, optional): If True, a column is added to the dataframe.
         Defaults to False
 
     Returns:
-        DataFrame or None: Returns the DataFrame with the duplicates.
-        If no duplicates, returns None.
+        Returns the DataFrame with the duplicates or None if no duplicates found.
     """
 
     if not isinstance(df, pd.DataFrame):
@@ -147,4 +149,3 @@ def check_duplicates(
     else:
         logger.info("No duplicates found")
         return None
-
