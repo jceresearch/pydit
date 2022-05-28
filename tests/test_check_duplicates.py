@@ -102,6 +102,7 @@ def test_check_duplicates_series():
     ser3 = pd.Series(data=[1, 2, 3, 4, 4, np.nan, np.nan], name="col3")
     dfdupes = check_duplicates(ser1, ["col1"])
     assert dfdupes is None
+
     dfdupes = check_duplicates(ser2, ["col2"])
     print("DEbug:", dfdupes)
 
