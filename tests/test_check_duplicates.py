@@ -76,7 +76,7 @@ def test_check_duplicates_dataframe():
 
     # Getting the entire population
     dfdupes = check_duplicates(
-        df, ["col2"], keep=False, indicator=False, return_non_duplicates=True
+        df, ["col2"], keep=False, indicator=True, return_non_duplicates=True
     )
     assert len(dfdupes) == 7  # we should get all the population
     assert sum(dfdupes["_duplicates"]) == 2
