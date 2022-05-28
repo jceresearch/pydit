@@ -1,18 +1,18 @@
 """
 Test module for keyword_search 
 """
+
 import os
 import sys
 
 import numpy as np
 import pandas as pd
-import pytest
 
 # pylint: disable=redefined-outer-name
 # pylint: disable=import-error
 # pylint: disable=wrong-import-position
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from pydit import groupby_text
+from pydit import keyword_search
 
 
 def test_keyword_search():
@@ -29,10 +29,12 @@ def test_keyword_search():
             " Hello world",
             "hello world",
         ],
+        "col6": [1, 2, 3, 4, 5, 6],
     }
     df = pd.DataFrame(data)
-    assert "test not implemented" == False
-    return
+    # assert "test not implemented" == False
+    res = keyword_search(df, "hello", columns=["col4"])
+    print(res)
 
 
 if __name__ == "__main__":
