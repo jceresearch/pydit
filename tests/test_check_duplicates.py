@@ -4,6 +4,7 @@ import sys
 
 import numpy as np
 import pandas as pd
+import pytest
 
 # import numpy as np
 # from datetime import datetime, date, timedelta
@@ -14,7 +15,7 @@ from pydit import check_duplicates, setup_logging
 logger = setup_logging()
 
 
-def test_check_duplicates():
+def test_check_duplicates_dataframe():
     """test check duplicates"""
     d = {
         "col1": [1, 2, 3, 4, 5, 6, 7],
@@ -27,12 +28,14 @@ def test_check_duplicates():
     assert dfdupes is None
     dfdupes = check_duplicates(df, ["col2"])
     assert len(dfdupes) == 2
-    dfdupes = check_duplicates(df, ["col3"])
-    assert dfdupes is None
+    with pytest.raises(ValueError):
+        check_duplicates(df, ["col3"])
+
     dfdupes = check_duplicates(df, "col2")
     assert len(dfdupes) == 2
-    dfdupes = check_duplicates(df, "col3")
-    assert dfdupes is None
+    with pytest.raises(ValueError):
+        dfdupes = check_duplicates(df, "col3")
+
     dfdupes = check_duplicates(df, ["col2"], keep="first")
     assert len(dfdupes) == 1
     assert dfdupes["col1"].iloc[0] == 1  # the first record is kept
@@ -61,6 +64,19 @@ def test_check_duplicates():
         df, ["col4"], keep=False, indicator=False, return_non_duplicates=False
     )
     assert len(dfdupes) == 4  # we should get the duplicates and the two nans
+
+
+def test_check_duplicates_series():
+    """test check duplicates"""
+    ser1 = pd.Series(data=[1, 2, 3, 4, 5, 6, 7], name="col1")
+    ser2 = pd.Series(
+        data=["Value 1", "Value 1", "", " ", "Value 5", "Value 6", "Value 7"],
+        name="col2",
+    )
+    ser3 = pd.series(data=[1, 2, 3, 4, 4, np.nan, np.nan], name="col3")
+    print(ser1.name)
+    dfdupes = check_duplicates(ser1, ["col1"])
+    assert dfdupes is None
 
 
 if __name__ == "__main__":

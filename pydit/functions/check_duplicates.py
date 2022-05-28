@@ -3,8 +3,11 @@
 
 
 import logging
+from typing import Union
+
 import pandas as pd
 from pandas.api.types import is_string_dtype, is_numeric_dtype
+
 
 logger = logging.getLogger(__name__)
 
@@ -13,17 +16,18 @@ logger = logging.getLogger(__name__)
 
 
 def check_duplicates(
-    df,
+    df_or_series,
     columns=None,
     keep=False,
     ascending=None,
     indicator=False,
     return_non_duplicates=False,
+    inplace=False,
 ):
     """
     Duplicate analysis
     Args:
-        df (DataFrame): pandas dataframe
+        df_or_series: pandas dataframe or series
 
         columns (str or list, optional): column or list of column(s) to check
         even if it is one column only, if multiple columns provided
@@ -38,36 +42,55 @@ def check_duplicates(
         indicator=(True, False, optional): If True, a column is added to the dataframe.
         Defaults to False
 
+        inplace (bool, optional): If True, the dataframe is modified in place.
+        If a Series is provided then it is always copied into a new dataframe and
+        this parameter is ignored.
+
     Returns:
         Returns the DataFrame with the duplicates or None if no duplicates found.
     """
 
-    if not isinstance(df, pd.DataFrame):
-        logger.error(
-            "Expecting a dataframe, a single column dataframe is a Series and not yet supported"
-        )
+    if not isinstance(df_or_series, (pd.DataFrame, pd.Series)):
+        logger.error("Expecting a dataframe or a Series")
         # TODO: #17 Add support for Series in the duplicate check
         return
-    if isinstance(columns, str):
-        if columns in df.columns:
-            cols = [columns]
-            print("converted to list", cols)
+
+    if isinstance(df_or_series, pd.Series):
+        # If it is Series we convert it to DataFrame
+        if df_or_series.name is None and isinstance(columns, str):
+            df_or_series.name = columns
+
         else:
-            logger.error(f"column {columns} not in dataframe")
-            return
+            df.name = "data"
+            columns = "data"
+        df = df_or_series.to_frame()
+
+    else:
+        # If it is DataFrame we deal with the inplace options
+        if not inplace:
+            # this creates a new copy
+            df = df_or_series.copy()
+        else:
+            # this is just referencing
+            df = df_or_series
+
+    if isinstance(columns, str):
+        if columns in df_or_series.columns:
+            cols = [columns]
+        else:
+            raise ValueError(f"column {columns} not in dataframe")
     else:
         if isinstance(columns, list):
             check_isin = [x in df.columns for x in columns]
             if all(check_isin):
                 cols = columns
             else:
-                logger.error("Expecting a list of columns that are in the dataframe")
-                return
+                raise ValueError("at least one column provided not in dataframe")
         else:
             cols = df.columns
 
     fields = ",".join(cols)
-    df = df.copy()
+
     ser_duplicates = df.duplicated(cols, keep=False)
     if keep == "first" or keep == "last":
         ser_duplicates_keep = df.duplicated(cols, keep=keep)
