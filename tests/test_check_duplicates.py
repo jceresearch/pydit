@@ -15,30 +15,30 @@ from pydit import check_duplicates, setup_logging
 logger = setup_logging()
 
 
-def test_check_duplicates_df_invalid():
-    """test check duplicates"""
-    d = {
+@pytest.fixture
+def df():
+    """Base DataFrame fixture"""
+    data = {
         "col1": [1, 2, 3, 4, 5, 6, 7],
         "col2": ["Value 1", "Value 1", "", " ", "Value 5", "Value 6", "Value 7"],
         "col4": [1, 2, 3, 4, 4, np.nan, np.nan],
+        "col5": [1, 2, 3, 4, 4, 5, 5],
     }
-    df = pd.DataFrame(data=d)
+
+    return pd.DataFrame(data)
+
+
+def test_check_duplicates_df_invalid(df):
+    """test check duplicates"""
+
     with pytest.raises(ValueError):
         check_duplicates(df, ["col3"])
     with pytest.raises(ValueError):
         dfdupes = check_duplicates(df, "col3")
 
 
-def test_check_duplicates_dataframe():
+def test_check_duplicates_dataframe(df):
     """test check duplicates"""
-    d = {
-        "col1": [1, 2, 3, 4, 5, 6, 7],
-        "col2": ["Value 1", "Value 1", "", " ", "Value 5", "Value 6", "Value 7"],
-        "col4": [1, 2, 3, 4, 4, np.nan, np.nan],
-        "col5": [1, 2, 3, 4, 4, 5, 5],
-    }
-    df = pd.DataFrame(data=d)
-    print(df)
 
     dfdupes = check_duplicates(df, ["col1"])
     assert dfdupes is None

@@ -1,4 +1,6 @@
-""" Validation functions"""
+""" 
+Checks for blanks in a dataframe and returns the counts of various types of blansk
+"""
 
 import logging
 
@@ -12,38 +14,52 @@ logger = logging.getLogger(__name__)
 
 
 def check_blanks(
-    df,
+    obj_in,
     columns=None,
     zeroes=True,
     null_strings_and_spaces=True,
     totals_only=False,
+    inplace=False,
 ):
     """Reports on blanks in the Dataframe and optionally saves to an excel file
 
     Args:
-        df_in ([type]): [description]
+        obj_in ([type]): [description]
         columns ([type], optional): [description]. Defaults to None.
         zeroes (bool, optional): [description]. Defaults to True.
         null_strings_and_spaces (bool, optional): [description]. Defaults to True.
         totals_only (bool, optional): [description]. Defaults to False.
+        inplace (bool, optional): If True it mutates the dataframe otherwise returns a copy. Defaults to False.
 
     Returns:
         [type]: [description]
     """
 
-    if not isinstance(df, pd.DataFrame):
-        logger.error(
-            "Expecting a dataframe, a single-column dataframe is a Series and not yet supported"
-        )
-        return
-    df = df.copy()
-    if columns and isinstance(columns, list):
-        cols = columns
-    elif not columns:
-        cols = df.columns
+    # We validate and standardise the input
+    if not isinstance(obj_in, (pd.DataFrame, pd.Series)):
+        raise TypeError("Expecting a dataframe or a Series")
+    if isinstance(obj_in, pd.Series):
+        if not obj_in.name:
+            name = "data"
+        else:
+            name = obj_in.name
+
+        df = obj_in.to_frame(name=name)
     else:
-        logger.error("Expecting a list, even a list of one element")
-        return
+        if not inplace:
+            df = obj_in.copy()
+
+    if isinstance(columns, list):
+        cols = columns
+    elif isinstance(columns, str):
+        cols = [columns]
+    else:
+        cols = df.columns
+        logger.debug("Using all columns")
+    try:
+        dfsubset = df[cols]
+    except:
+        raise ValueError("Columns not found in dataframe")
 
     fields = ",".join(cols)
     logger.info("Checking for blanks in %s", fields)

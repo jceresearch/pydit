@@ -20,7 +20,15 @@ def df():
         "team": ["teamA", "teamA", "teamA", "teamA", "teamA", "teamB", "teamC"],
         "purid": ["P01", "P01", "P01", "P02", "P02", "P03", "P03"],
         "apprid": [1, 2, 3, 4, 5, 6, 7],
-        "appr": ["ok", "ok", "rejected", "ok", " ", "Error", "ok",],
+        "appr": [
+            "ok",
+            "ok",
+            "rejected",
+            "ok",
+            " ",
+            "Error",
+            "ok",
+        ],
         "user": ["user1", "user2", "user1", "user2", "", np.nan, "user3"],
     }
     return pd.DataFrame(data)
@@ -28,6 +36,7 @@ def df():
 
 def test_groupby_bad_formed(df):
     """test for badly formed calls"""
+    assert "Test not implemented" == False
 
 
 def test_groupby_text(df):
