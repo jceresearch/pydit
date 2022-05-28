@@ -1,4 +1,4 @@
-""" pytest version of tests - WIP"""
+""" Testing check_duplicates using pytest """
 import os
 import sys
 

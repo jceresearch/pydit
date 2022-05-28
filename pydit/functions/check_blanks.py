@@ -12,9 +12,13 @@ logger = logging.getLogger(__name__)
 
 
 def check_blanks(
-    df, columns=None, zeroes=True, null_strings_and_spaces=True, totals_only=False,
+    df,
+    columns=None,
+    zeroes=True,
+    null_strings_and_spaces=True,
+    totals_only=False,
 ):
-    """ Reports on blanks in the Dataframe and optionally saves to an excel file
+    """Reports on blanks in the Dataframe and optionally saves to an excel file
 
     Args:
         df_in ([type]): [description]
@@ -29,7 +33,7 @@ def check_blanks(
 
     if not isinstance(df, pd.DataFrame):
         logger.error(
-            "Expecting a dataframe, a single column dataframe is a Series and not yet supported"
+            "Expecting a dataframe, a single-column dataframe is a Series and not yet supported"
         )
         return
     df = df.copy()
