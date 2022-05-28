@@ -104,7 +104,7 @@ def test_check_duplicates_series():
     assert dfdupes is None
 
     dfdupes = check_duplicates(ser2, ["col2"])
-    print("DEbug:", dfdupes)
+    assert list(dfdupes["data"]) == ["Value 1", "Value 1"]
 
 
 if __name__ == "__main__":
