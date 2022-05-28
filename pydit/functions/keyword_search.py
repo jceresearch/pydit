@@ -50,7 +50,7 @@ def keyword_search(obj_in, keywords, columns=None):
 
     df.fillna("", inplace=True)
     if len(columns) > 1:
-        df["dummy_keyword_search"] = df[columns].astype(str).sum(axis=1)
+        df["dummy_keyword_search"] = df[columns].astype(str).T.agg(" ".join)
     else:
         df["dummy_keyword_search"] = df[columns].astype(str)
 
@@ -59,7 +59,7 @@ def keyword_search(obj_in, keywords, columns=None):
     for re_text in keywords:
         print(re_text)
         pattern = re.compile(re_text, re.IGNORECASE)
-        regmatch = np.vectorize(lambda x: bool(pattern.match(x)))
+        regmatch = np.vectorize(lambda x: bool(pattern.search(x)))
         df["kw_match" + str.zfill(str(n), 2)] = regmatch(
             df["dummy_keyword_search"].values
         )
@@ -67,6 +67,8 @@ def keyword_search(obj_in, keywords, columns=None):
 
     match_columns = [m for m in df.columns if "kw_match" in m]
     df["kw_match_all"] = df.apply(lambda row: any(row[match_columns]), axis=1)
+    df.drop(["dummy_keyword_search"], axis=1, inplace=True)
+
     return df
 
 
