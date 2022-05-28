@@ -106,6 +106,9 @@ def test_check_duplicates_series():
     dfdupes = check_duplicates(ser2, ["col2"])
     assert list(dfdupes["data"]) == ["Value 1", "Value 1"]
 
+    dfdupes = check_duplicates(ser2)
+    assert list(dfdupes["data"]) == ["Value 1", "Value 1"]
+
 
 if __name__ == "__main__":
     # execute only if run as a script
