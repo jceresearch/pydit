@@ -51,9 +51,7 @@ def check_duplicates(
     """
 
     if not isinstance(df_or_series, (pd.DataFrame, pd.Series)):
-        logger.error("Expecting a dataframe or a Series")
-        # TODO: #17 Add support for Series in the duplicate check
-        return
+        raise TypeError("df_or_series must be a pandas DataFrame or Series")
 
     if isinstance(df_or_series, pd.Series):
         # If it is Series we convert it to DataFrame
@@ -61,7 +59,7 @@ def check_duplicates(
             df_or_series.name = columns
 
         else:
-            df.name = "data"
+            df_or_series.name = "data"
             columns = "data"
         df = df_or_series.to_frame()
 
@@ -75,7 +73,7 @@ def check_duplicates(
             df = df_or_series
 
     if isinstance(columns, str):
-        if columns in df_or_series.columns:
+        if columns in df.columns:
             cols = [columns]
         else:
             raise ValueError(f"column {columns} not in dataframe")
