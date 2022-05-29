@@ -6,13 +6,11 @@
 Welcome to pydit's documentation!
 =================================
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+.. autosummary::
+   :toctree: _autosummary
+   :recursive:
 
-   api
-
-
+   pydit
 
 Indices and tables
 ==================
