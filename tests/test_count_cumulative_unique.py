@@ -2,14 +2,10 @@
 import os
 import sys
 
-# import pytest
-# from janitor.functions import count_cumulative_unique  # noqa: F401
-# pylint: disable=import-error disable=wrong-import-position
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-# from pydit import setup_logging
 from pydit import count_cumulative_unique
 
-# @pytest.mark.functions
+
 def test_count_cumulative_unique_1(dataframe):
     """ test case sensitive """
     dataframe["ccu"] = ["a", "b", "c", "A", "B", "C", "a", "b", "c"]
@@ -20,7 +16,6 @@ def test_count_cumulative_unique_1(dataframe):
     assert all(df["ccu_count"] == [1, 2, 3, 4, 5, 6, 6, 6, 6])
 
 
-# @pytest.mark.functions
 def test_count_cumulative_unique_2(dataframe):
     """ Test not case sensitive"""
     dataframe["ccu"] = ["a", "b", "c", "A", "B", "C", "a", "b", "c"]

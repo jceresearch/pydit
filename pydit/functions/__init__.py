@@ -19,6 +19,7 @@ from .check_benford import benford_to_plot
 from .check_benford import benford_list_anomalies
 from .collapse_levels import collapse_levels
 from .groupby_text import groupby_text
+from .keyword_search import keyword_search
 
 # Here we import each of the functions in the functions/ directory to have them
 # available in the functions namespace.

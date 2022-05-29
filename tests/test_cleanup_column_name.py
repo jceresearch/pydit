@@ -29,7 +29,7 @@ def test_clean_column_names_1():
         "col  3": [1, 2, 3],
     }
     df = pd.DataFrame(data=d)
-    cleanup_column_names(df)
+    cleanup_column_names(df,inplace=True)
     print(df.columns)
     assert list(df.columns) == ["col1", "col2", "col_3", "col3", "col_3_2"]
 
@@ -49,7 +49,7 @@ def test_clean_column_names_2():
         1: [1, 2, 3],
     }
     df = pd.DataFrame(data=d)
-    cleanup_column_names(df)
+    cleanup_column_names(df,inplace=True)
     print(df.columns)
     assert list(df.columns) == [
         "col1",

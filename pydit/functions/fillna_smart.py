@@ -4,6 +4,7 @@ Cleanup the dataframes improving over what fillna() does
 
 import logging
 from datetime import datetime
+import pandas as pd
 import numpy as np
 from pandas.api.types import is_datetime64_any_dtype as is_datetime
 
@@ -17,6 +18,7 @@ def fillna_smart(
     text_fillna="",
     include_empty_string=False,
     include_spaces=False,
+    inplace=False
 ):
     """
     Cleanup the values of the dataframe with sensible nulls handling.
@@ -29,12 +31,16 @@ def fillna_smart(
             Defaults to "latest".
         text_fillna (String, Optional, Defaults to ""): String to use to replace nan in 
         text/object columns
+        inplace (bool, optional): If True, the dataframe is modified in place.
 
     Returns:
         DataFrame: Returns a copy of the original dataframe with modifications
-        
+        (or the modified original dataframe if inplace=True))        
     """
-    df = df.copy(deep=True)
+    if not isinstance(df, pd.DataFrame):
+        raise TypeError("Expecting a dataframe")
+    if not inplace:
+        df = df.copy(deep=True)
     if cols is None:
         cols = df.columns
     else:

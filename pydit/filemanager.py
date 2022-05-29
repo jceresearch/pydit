@@ -9,6 +9,10 @@ from pathlib import Path, PureWindowsPath
 import csv
 import pandas as pd
 
+# pylint: disable=logging-fstring-interpolation
+# pylint: disable=logging-not-lazy
+
+
 logger = logging.getLogger(__name__)
 
 
@@ -19,13 +23,15 @@ class FileManager:
 
     @staticmethod
     def getInstance():
-        """ Static access method. """
+        """Static access method."""
         if FileManager.__instance is None:
             FileManager()
         return FileManager.__instance
 
-    def __init__(self,):
-        """ Virtually private constructor. """
+    def __init__(
+        self,
+    ):
+        """Virtually private constructor."""
         if FileManager.__instance is not None:
             return None
             # TODO: #21 Research whether returning None in singleton __init__ is the right approach, got some errors in ipython
@@ -65,7 +71,7 @@ class FileManager:
 
     @max_rows_to_excel.setter
     def max_rows_to_excel(self, n):
-        """ Setter for max_rows_to_excel"""
+        """Setter for max_rows_to_excel"""
         if n > 999999 or n < 0:
             raise Exception("Rows number must be positive and less than 1,000,000")
         self._max_rows_to_excel = n
@@ -77,31 +83,31 @@ class FileManager:
 
     @temp_path.setter
     def temp_path(self, path):
-        """ Where we validate the temp_path property"""
+        """Where we validate the temp_path property"""
         self._temp_path = self._fix_path(path)
 
     @property
     def input_path(self):
-        """ input_path property"""
+        """input_path property"""
         return self._input_path
 
     @input_path.setter
     def input_path(self, path):
-        """ Where we validate the input_path property"""
+        """Where we validate the input_path property"""
         self._input_path = self._fix_path(path)
 
     @property
     def output_path(self):
-        """ Output path property"""
+        """Output path property"""
         return self._output_path
 
     @output_path.setter
     def output_path(self, path):
-        """ where we validate the output_path property"""
+        """where we validate the output_path property"""
         self._output_path = self._fix_path(path)
 
     def _stem_name(self, file_name):
-        """ find the core name of a provided string with a filename and lowers case"""
+        """find the core name of a provided string with a filename and lowers case"""
         try:
             p = PureWindowsPath(file_name)
         except Exception:
@@ -110,7 +116,7 @@ class FileManager:
         return s
 
     def _save_to_excel(self, obj, file_name, sheet_name=None):
-        """ Internal routine to save a dataframe to excel with sensible options"""
+        """Internal routine to save a dataframe to excel with sensible options"""
         stem_name = self._stem_name(file_name)
 
         if self.output_path[-1] == "/" or self.output_path[-1] == "\\":
@@ -134,7 +140,7 @@ class FileManager:
         return full_file_name
 
     def _save_to_csv(self, df, file_name):
-        """ Internal routine to save a dataframe to a csv with sensible options"""
+        """Internal routine to save a dataframe to a csv with sensible options"""
         stem_name = self._stem_name(file_name)
 
         if self.output_path[-1] == "/" or self.output_path[-1] == "\\":
@@ -148,7 +154,10 @@ class FileManager:
         full_file_name = self.temp_path + separator + stem_name + ".csv"
         try:
             df.to_csv(
-                full_file_name, index=False, quotechar='"', quoting=csv.QUOTE_ALL,
+                full_file_name,
+                index=False,
+                quotechar='"',
+                quoting=csv.QUOTE_ALL,
             )
         except Exception:
             logger.exception("Failed to save to csv file")
@@ -156,7 +165,7 @@ class FileManager:
         return full_file_name
 
     def _save_to_pickle(self, obj, file_name):
-        """ Internal routine to save a dataframe to a pickle with sensible options"""
+        """Internal routine to save a dataframe to a pickle with sensible options"""
         stem_name = self._stem_name(file_name)
 
         if self.output_path[-1] == "/" or self.output_path[-1] == "\\":
@@ -222,9 +231,11 @@ class FileManager:
                 with open(full_name, "rb") as handle:
                     obj = pickle.load(handle)
                     logger.info(
-                        "Loaded pickle from: "
+                        "Loaded pickle: "
+                        + file_name
+                        + "\nFull path: "
                         + full_name
-                        + "\nSize:"
+                        + "\nFile Size:"
                         + str(round((handle.tell() / 1024) / 1024, 1))
                         + " MB",
                     )
@@ -233,13 +244,13 @@ class FileManager:
         if ".xlsx" in full_name:
             try:
                 obj = pd.read_excel(full_name)
-                logger.info("Loading from: " + full_name)
+                logger.info("Loading excel from: " + full_name)
             except Exception as e:
                 logger.error(e)
         if ".csv" in full_name:
             try:
                 obj = pd.read_csv(full_name)
-                logger.info("Loading from: " + full_name)
+                logger.info("Loading csv from: " + full_name)
             except Exception as e:
                 logger.error(e)
         if isinstance(obj, pd.DataFrame):
@@ -319,10 +330,12 @@ class FileManager:
 
         if flag:
             try:
-                logger.info("Shape: %s", " ".join(map(str, obj.shape)))
+                logger.info("Rows/Columns: %s", " ".join(map(str, obj.shape)))
                 logger.info("Columns: ['%s']", "','".join(map(str, obj.columns)))
-            except Exception as e:
-                pass  # should be when the object doesnt support shape or columns
+            except Exception:
+                logger.info("Object of type: %s ", type(obj))
+                # should happen when the object doesnt support shape or columns
+                # so we show the object type so user can check if that is expected
             logger.info(
                 "Finished in %s mins",
                 str(round((datetime.now() - start_time).total_seconds() / 60.0, 2)),
