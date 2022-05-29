@@ -27,12 +27,12 @@ def check_duplicates(
 ):
     """
     Duplicate analysis
+    ==================
+
     Args:
         df_or_series: pandas dataframe or series
 
-        columns (str or list, optional): column or list of column(s) to check
-        even if it is one column only, if multiple columns provided
-        the check is combined duplicates, exactly as pandas duplicated().
+        columns (str or list, optional): column or list of column(s) to check even if it is one column only, if multiple columns provided the check is combined duplicates, exactly as pandas duplicated().
 
         keep ('first','last' or False, optional): Argument for pandas df.duplicated() method.
         Defaults to 'first'.
@@ -44,8 +44,7 @@ def check_duplicates(
         Defaults to False
 
         inplace (bool, optional): If True, the dataframe is modified in place.
-        If a Series is provided then it is always copied into a new dataframe and
-        this parameter is ignored.
+        If a Series is provided then it is always copied into a new dataframe and this parameter is ignored.
 
     Returns:
         Returns the DataFrame with the duplicates or None if no duplicates found.
