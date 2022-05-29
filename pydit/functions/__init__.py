@@ -1,4 +1,15 @@
-""" General Functions"""
+""" 
+Main container of data wrangling functions.
+
+Functions are imported individually so they can be used from pydit directly:
+e.g. pydit.create_calendar()
+
+The modules are also self standing, you should be able to copy any .py file
+and import it in your script to use it with no dependencies on other modules.
+At the time of this comment, there are no exceptions to this design principle.
+
+
+"""
 
 from .create_calendar import create_calendar
 from .add_percentile import add_percentile

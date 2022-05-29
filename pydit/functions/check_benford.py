@@ -54,8 +54,34 @@ def _benford(rawdata, digit=1):
 
 
 def benford_to_dataframe(obj, column_name="", first_n_digits=1):
-    """ 
-    Returns a dataframe with the expected and actual Benford's Law frequency 
+    """
+    Returns a summary dataframe with the expected and actual Benford's Law frequency.
+
+    _extended_summary_
+
+    Parameters
+    ----------
+    obj : _type_
+        _description_
+    column_name : str, optional
+        _description_, by default ""
+    first_n_digits : int, optional
+        _description_, by default 1
+
+    Returns
+    -------
+    _type_
+        _description_
+    
+    
+    Examples
+    --------
+    
+
+    See also
+    --------
+
+    
     """
 
     if obj is None:
