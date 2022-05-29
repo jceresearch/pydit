@@ -9,7 +9,8 @@ logger = logging.getLogger(__name__)
 def add_counts_between_related_df(
     df1, df2, left_on="", right_on="", on="", inplace=False
 ):
-    """Add a count column to bring the count of that key in another dataframe
+    """
+    Add a count column to bring the count of that key in another dataframe
 
     This works similar to adding countif() in Excel to sense check if an
     identifier in one sheet is in fullly in another (presumably master), or
@@ -22,8 +23,10 @@ def add_counts_between_related_df(
     in a more conceptual way, but often you just need to add some counting
     numbers and filter for >1 or zeroes.
 
-    Args:
+    Parameters
+    ----------
         df1 (DataFrame): Primary pandas dataFrame
+        
         df2 (DataFrame): Secondary/Referenced pandas DataFrame
         left_on (str, optional): column to use as key for df1. Defaults to None.
         right_on (str, optional): column to use as key for df2. Defaults to None.
