@@ -1,4 +1,4 @@
-""" Validation functions"""
+""" Calculate the Benford's Law frequencies for a given column in a dataframe generate a plot"""
 
 import logging
 import math
@@ -11,7 +11,8 @@ logger = logging.getLogger(__name__)
 
 
 def _benford(rawdata, digit=1):
-    """ Internal function to calculate the core expectation vs actual count of values as per Benford Law
+    """ 
+    Internal function to calculate the core Benford freq expectations vs actual count of values.
     """
     s = pd.Series(rawdata)
     # we cleanup any string, any negative and also accept decimals up to 4 zeros, you could
@@ -53,9 +54,8 @@ def _benford(rawdata, digit=1):
 
 
 def benford_to_dataframe(obj, column_name="", first_n_digits=1):
-    """ Returns a dataframe with the expected and actual frequency values according 
-    to Benford's law for each of the possible first n digits of a column 
-    in the pandas DataFrame provided.
+    """ 
+    Returns a dataframe with the expected and actual Benford's Law frequency 
     """
 
     if obj is None:
@@ -63,11 +63,13 @@ def benford_to_dataframe(obj, column_name="", first_n_digits=1):
             "No object provided to the Benford function, probably empty/null object?"
         )
         return None
-    if not isinstance(first_n_digits,int):
-        logger.error ("first_n_digits must be an integer between 1 and 4")
+    if not isinstance(first_n_digits, int):
+        logger.error("first_n_digits must be an integer between 1 and 4")
         return None
-    if not(first_n_digits>0 and first_n_digits<4):
-        logger.error("first_n_digits must be an integer betwen 1 and 3 (I haven't tested what happens after 3 but Benford is not that useful then anyway)")
+    if not (first_n_digits > 0 and first_n_digits < 4):
+        logger.error(
+            "first_n_digits must be an integer betwen 1 and 3 (I haven't tested what happens after 3 but Benford is not that useful then anyway)"
+        )
     if isinstance(obj, pd.Series):
         data = obj
     elif isinstance(obj, pd.DataFrame):

@@ -1,5 +1,6 @@
-""" function for anonymising a key/identifier column applying a randomly generated
-translation table of integers
+""" 
+Function for anonymising a key/identifier column 
+It applies a randomly generated translation table of integers
 """
 import random
 import logging
@@ -17,9 +18,9 @@ def anonymise_key(
     create_new_hash_list=False,
     hash_list_size=1000000,
 ):
-    """Function to anonymise a column of one or many dataframes. by a
-    the values with a scrambled list of integers. Will persist across the list
-    and it will return the translation table used, 
+    """
+    Anonymise a column of one or many dataframes with a scrambled list of integers.
+    Will persist across the list and it will return the translation table used. 
 
     Args:
         df_list (_type_): _description_
@@ -28,6 +29,9 @@ def anonymise_key(
         hash_list (_type_, optional): _description_. Defaults to None.
         create_new_hash_list (bool, optional): _description_. Defaults to False.
         hash_list_size (int, optional): _description_. Defaults to 1000000.
+
+    Returns:
+    This function returns a tuple of the translation table and the hash list.
     """
 
     def _anonymise(df_list, key_list, map_dict=None, hash_list=None):
@@ -39,7 +43,7 @@ def anonymise_key(
         unique_keys = set(master_list)
         print(list(unique_keys))
         if map_dict is None:
-            print("Creating new mapping dictionary")
+            logger.debug("Creating new mapping dictionary")
             map_dict_new = {}
             new_keys = list(unique_keys)
             dummy_keys = list(range(1, len(unique_keys) + 1))
@@ -51,8 +55,8 @@ def anonymise_key(
                 range(len(cur_keys) + 1, len(cur_keys) + len(new_keys) + 1)
             )
 
-        print("New keys count:", len(new_keys))
-        print("Dummy keys count:", len(dummy_keys))
+        logger.info("New keys count:%s", len(new_keys))
+        logger.info("Dummy keys count:%s", len(dummy_keys))
         random.shuffle(dummy_keys)
         add_list = list(zip(new_keys, dummy_keys))
         add_dict = dict(add_list)
@@ -74,20 +78,19 @@ def anonymise_key(
     if create_new_hash_list:
         hash_list = list(range(1, hash_list_size))
         random.shuffle(hash_list)
-        print("Created new hash list")
+        logger.info("Created new hash list")
     if map_table_or_dict is not None:
         if isinstance(map_table_or_dict, dict):
             if (
                 isinstance(map_table_or_dict.values()[0], list)
                 and len(map_table_or_dict.values()[0]) == 2
             ):
-                print("Debug: Stripping previous hash table results")
+                logger.debug("Stripping previous hash table results")
                 clean_dict = {k: map_table_or_dict[k][0] for k in map_table_or_dict}
             elif len(map_table_or_dict.values()[0]) == 1:
                 clean_dict = map_table_or_dict.copy()
             else:
-                print("Mapping dictionary format not recognised, aborting")
-                return
+                raise ValueError("Mapping dictionary format not recognised, aborting")
         elif isinstance(map_table_or_dict, pd.DataFrame):
             # TODO, probably worth doing more checks about the data coming,
             print(
@@ -104,10 +107,7 @@ def anonymise_key(
                 )
             )
         else:
-            print(
-                "Mapping object provided is not a Dictionary or a Dataframe, aborting"
-            )
-            return
+            raise TypeError("Object not a dictionary or a dataframe")
     else:
         # no mapping object provided
         clean_dict = None
@@ -123,7 +123,7 @@ def anonymise_key(
         translation_df = pd.DataFrame(
             data=translation_list, columns=["original_key", "anon_key", "hash_key"]
         )
-        print(
+        logger.info(
             "Finished, returning translation DataFrame and hashtable as separate return values"
         )
         return translation_df, hash_list
@@ -132,5 +132,5 @@ def anonymise_key(
         translation_df = pd.DataFrame(
             data=translation_list, columns=["original_key", "anon_key"]
         )
-        print("Finished, returning translation DataFrame")
+        logger.info("Finished, returning translation DataFrame")
         return translation_df
