@@ -77,26 +77,4 @@ def groupby_text(
 
 
 if __name__ == "__main__":
-    # some examples of use, see the test suite for further details
-    data = {
-        "team": ["teamA", "teamA", "teamA", "teamA", "teamA", "teamB", "teamC"],
-        "purid": ["P01", "P01", "P01", "P02", "P02", "P03", "P03"],
-        "apprid": [1, 2, 3, 4, 5, 6, 7],
-        "appr": ["ok", "ok", "rejected", "ok", " ", "Error", "ok",],
-        "user": ["user1", "user2", "user1", "user2", "", np.nan, "user3"],
-    }
-    dftest = pd.DataFrame(data)
-    df1 = groupby_text(dftest, "purid", value_cols=["appr", "user"])
-    df2 = groupby_text(dftest, ["team", "purid"], value_cols=["apprid", "appr", "user"])
-    df3 = groupby_text(dftest, ["team", "purid"], value_cols=["appr", "user"])
-    df4 = groupby_text(dftest, ["team"], value_cols=["user"], row_separator=" ")
-    df5 = groupby_text(
-        dftest, ["team"], value_cols=["purid", "appr"], row_separator=" "
-    )
-    df6 = groupby_text(
-        dftest, ["purid"], value_cols=["apprid", "appr"], row_separator="|"
-    )
-    df7 = groupby_text(dftest, "purid", value_cols="appr", row_separator="|")
-    dflist = [df1, df2, df3, df4, df5, df6, df7]
-    for df in dflist:
-        print(df)
+    pass
