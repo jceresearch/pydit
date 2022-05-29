@@ -72,10 +72,21 @@ def _deduplicate_list(
 
 
 def cleanup_column_names(df, max_field_name_len=40, inplace=False):
-    """ Cleanup the column names of a Pandas dataframe
-        e.g. removes non alphanumeric chars, _ instead of space, perc instead
-        of %, strips trailing spaces, converts to lowercase
-        """
+    """
+    Cleanup the column names of a Pandas dataframe. 
+
+    e.g. removes non alphanumeric chars, _ instead of space, perc instead
+    of %, strips trailing spaces, converts to lowercase.
+
+    Args:
+        df (DataFrame): Pandas DataFrame
+        max_field_name_len (int, optional): Maximum length of field name. Defaults to 40.
+        inplace (bool, optional): If True, the dataframe is modified in place. Defaults to False.
+    Returns:
+        Pandas DataFrame with cleaned column names
+
+
+    """
     prev_cols = list(df.columns)
     new_cols = []
     for e in prev_cols:
@@ -97,7 +108,7 @@ def cleanup_column_names(df, max_field_name_len=40, inplace=False):
     # names, just in case keeping this quite low, feel free to increase or remove
     new_cols = _deduplicate_list(new_cols)
     if not inplace:
-        df=df.copy()
+        df = df.copy()
     df.columns = new_cols
     logger.debug("Previous column names:%s", prev_cols)
     logger.info("New columns names:%s", list(df.columns))

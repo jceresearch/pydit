@@ -8,11 +8,13 @@ logger = logging.getLogger(__name__)
 
 
 def add_percentile(df, col, col_group=None, inplace=False):
-    """Adds columns for percentile for a chosen column and also
-    within a category group , if provided
-    from https://stackoverflow.com/questions/50804120/how-do-i-get-the-percentile-for-a-row-in-a-pandas-dataframe
-    Using the percentile with linear interpolation method, but kept
-    various ranks calculations for reference
+    """Adds columns for percentile for a chosen column in a DataFrame
+
+    It can also provide it within a category group (col_group)
+    
+    Reference: https://stackoverflow.com/questions/50804120/how-do-i-get-the-percentile-for-a-row-in-a-pandas-dataframe
+    Using the percentile with linear interpolation method, but kept various 
+    ranks calculations for reference
 
     Args:
         df_in (DataFrame): Pandas DataFrame

@@ -6,11 +6,21 @@
 Welcome to pydit's documentation!
 =================================
 
+.. include:: readme_link.rst
+
+Detailed documentation
+======================
+
 .. autosummary::
    :toctree: _autosummary
    :recursive:
 
-   pydit
+   pydit.functions
+   pydit.logger
+   pydit.filemanager
+   pydit.utils
+
+
 
 Indices and tables
 ==================

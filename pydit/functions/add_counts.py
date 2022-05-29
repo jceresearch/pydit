@@ -1,4 +1,4 @@
-""" Add a count column that will bring the count of that key in the referenced table"""
+""" Adds the count of that key from another dataframe, similar to COUNTIF() in Excel"""
 
 import logging
 import pandas as pd
@@ -9,13 +9,15 @@ logger = logging.getLogger(__name__)
 def add_counts_between_related_df(
     df1, df2, left_on="", right_on="", on="", inplace=False
 ):
-    """Add a count column to bring the count of that key in those tables
+    """Add a count column to bring the count of that key in another dataframe
 
     This works similar to adding countif() in Excel to sense check if an
     identifier in one sheet is in fullly in another (presumably master), or
     if there are duplicated keys or orphans/gaps.
-    This routine does both ways so you can quickly check whether you have
-    one to one, many to many etc, and where there may be the anomales.
+
+    This routine does both ways to quickly check whether the relationship is
+    one to one, many to many etc.
+
     There is another function that checks referential integrity and does this
     in a more conceptual way, but often you just need to add some counting
     numbers and filter for >1 or zeroes.
