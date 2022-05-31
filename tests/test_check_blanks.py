@@ -16,7 +16,7 @@ logger = setup_logging()
 
 
 def test_check_blanks():
-    """ testing the blanks checker"""
+    """testing the blanks checker"""
     d = {
         "col1": [1, 2, 3, 4, 5],
         "col2": ["Value 1", "Value 2", "", " ", "Value 5"],
@@ -26,11 +26,11 @@ def test_check_blanks():
     }
     df = pd.DataFrame(data=d)
     totals = check_blanks(df, totals_only=True)
-    assert totals[0] == 0
-    assert totals[1] == 2
-    assert totals[2] == 2
-    assert totals[3] == 2
-    assert totals[4] == 4
+    assert totals["col1"] == 0
+    assert totals["col2"] == 2
+    assert totals["col3"] == 2
+    assert totals["col4"] == 2
+    assert totals["col5"] == 4
     dfx = check_blanks(df)
     d = dfx.to_dict()
     assert d["has_blanks"][0] is True

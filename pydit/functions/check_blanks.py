@@ -14,40 +14,68 @@ logger = logging.getLogger(__name__)
 
 
 def check_blanks(
-    obj_in,
+    obj,
     columns=None,
-    zeroes=True,
-    null_strings_and_spaces=True,
+    include_zeroes=True,
+    include_nullstrings_and_spaces=True,
     totals_only=False,
     inplace=False,
 ):
-    """Reports on blanks in the Dataframe and optionally saves to an excel file
+    """
+    Reports on blanks in the Dataframe, one boolean column per input columns,
+    plus a summary column that is True if any column has blanks.
 
-    Args:
-        obj_in ([type]): [description]
-        columns ([type], optional): [description]. Defaults to None.
-        zeroes (bool, optional): [description]. Defaults to True.
-        null_strings_and_spaces (bool, optional): [description]. Defaults to True.
-        totals_only (bool, optional): [description]. Defaults to False.
-        inplace (bool, optional): If True it mutates the dataframe otherwise returns a copy. Defaults to False.
+    It can optionally return a summary dataframe.
 
-    Returns:
-        [type]: [description]
+
+    Parameters
+    ----------
+    obj : DataFrame or Series
+        The dataframe or series to check for blanks
+    columns : list, optional
+        The columns to check for blanks. If None, all columns are checked.
+    include_zeroes : bool, optional
+        If True, checks for zeroes as blanks
+    include_nullstrings_and_spaces : bool, optional
+        If True, checks for null strings and spaces as blanks
+    totals_only : bool, optional
+        If True, only the total counts are returned
+    inplace : bool, optional
+        If True, the dataframe is modified in place. If False, a new dataframe is returned.
+        Defaults to False.
+
+    Returns
+    -------
+    DataFrame
+        A dataframe with the counts of blanks in each column.
+        Or a summary list with various counts.
+
+
+
+    Examples
+    --------
+
+
+    See also
+    --------
+    profile_dataframe() : Profile the dataframe, includes metrics on blanks
+
+
     """
 
     # We validate and standardise the input
-    if not isinstance(obj_in, (pd.DataFrame, pd.Series)):
+    if not isinstance(obj, (pd.DataFrame, pd.Series)):
         raise TypeError("Expecting a dataframe or a Series")
-    if isinstance(obj_in, pd.Series):
-        if not obj_in.name:
+    if isinstance(obj, pd.Series):
+        if not obj.name:
             name = "data"
         else:
-            name = obj_in.name
+            name = obj.name
 
-        df = obj_in.to_frame(name=name)
+        df = obj.to_frame(name=name)
     else:
         if not inplace:
-            df = obj_in.copy()
+            df = obj.copy()
 
     if isinstance(columns, list):
         cols = columns
@@ -65,9 +93,9 @@ def check_blanks(
     logger.info("Checking for blanks in %s", fields)
     total_results = []
     for c in cols:
-        if is_numeric_dtype(df[c]) and zeroes:
+        if is_numeric_dtype(df[c]) and include_zeroes:
             df[c + "_blanks"] = (pd.isna(df[c])) | (df[c] == 0)
-        elif is_string_dtype(df[c]) and null_strings_and_spaces:
+        elif is_string_dtype(df[c]) and include_nullstrings_and_spaces:
             df[c + "_strip"] = df[c].fillna("").astype(str).str.strip()
             logger.debug("Checking for spaces and nullstring too in %s", c)
             df[c + "_blanks"] = ~df[c + "_strip"].astype(bool)
@@ -84,6 +112,7 @@ def check_blanks(
     )
 
     if totals_only:
-        return total_results
+        dict_totals = dict(zip(cols, total_results), columns=["column", "count"])
+        return dict_totals
 
     return df

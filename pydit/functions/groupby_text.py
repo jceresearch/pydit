@@ -20,18 +20,41 @@ def groupby_text(
     """
     Groupby text column into concatenated text, with extra smartness
 
-    Args:
-        df (DataFrame): _description_
-        key_cols (list or str): key columns used for grouping
-        value_cols (list or str or None, optional): Value colums to concatenate Defaults to None.
-        target_col_name (str, optional): name for the resulting column. Defaults to "groupby_text".
-        field_separator (str, optional): if multiple value_cols provided then how to concatenate. Defaults to " ".
-        row_separator (str, optional): separator for the rows. Defaults to "\n".
+    Parameters
+    ----------
 
-    Returns:
-        DataFrame: a grouped dataframe with the concatenated text
-        
+    df: DataFrame
+        DataFrame to group
+    key_cols: list or str
+        key columns used for grouping
+    value_cols: list or str or None, optional
+        Value colums to concatenate
+        Defaults to None.
+    target_col_name: str, optional
+        name for the resulting column.
+        Defaults to "groupby_text".
+    field_separator: str, optional
+        if multiple value_cols provided then how to concatenate.
+        Defaults to " ".
+    row_separator: str, optional
+        separator for the rows.
+        Defaults to "\n".
+
+    Returns
+    -------
+
+    DataFrame
+        A grouped dataframe with the concatenated text
         This function does not mutate the input dataframe.
+
+    Examples
+    --------
+
+    See Also
+    --------
+
+
+
 
     """
     if not isinstance(df, pd.DataFrame):
@@ -49,13 +72,16 @@ def groupby_text(
         logger.info(
             "No value columns provided, using all object columns: %s", value_cols
         )
-    elif isinstance(value_cols, str) and value_cols in df.columns:
-        value_cols = [value_cols]
+    elif isinstance(value_cols, str):
+        if value_cols in df.columns:
+            value_cols = [value_cols]
+        else:
+            raise ValueError(f"Value column {value_cols} not in dataframe")
     elif isinstance(value_cols, list):
         if not set(value_cols).issubset(set(df.columns)):
             raise ValueError(f"One or more from {value_cols} not in dataframe")
     else:
-        raise TypeError("text_cols must be a string or list of strings")
+        raise TypeError("value_cols must be a string or list of strings")
 
     # pick just the columns we need, remove nans and conver to string
     df = (
