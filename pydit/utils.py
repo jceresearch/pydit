@@ -15,7 +15,7 @@ understand the entire works of the package if he/she chooses to.
 import random
 import string
 import logging
-
+import pandas as pd
 import re
 
 import numpy as np
@@ -25,12 +25,12 @@ logger = logging.getLogger()
 
 
 def print_red(*args):
-    """ print ansi codes to make the printout red"""
+    """print ansi codes to make the printout red"""
     print("\x1b[31m" + " ".join([str(x) for x in args]) + "\x1b[0m")
 
 
 def print_green(*args):
-    """ print ansi codes to make the printout green"""
+    """print ansi codes to make the printout green"""
     print("\x1b[32m" + " ".join([str(x) for x in args]) + "\x1b[0m")
 
 
@@ -96,7 +96,7 @@ def deduplicate_list(
 
 
 def dataframe_to_code(df):
-    """ utility function to convert a dataframe to a piece of code
+    """utility function to convert a dataframe to a piece of code
     that one can include in a test script or tutorial. May need extra tweaks
     or imports , e.g. from pandas import Timestamp to deal with dates, etc.
     """
@@ -174,3 +174,19 @@ def check_types(varname: str, value, expected_types: list):
                 varname=varname, expected_types=expected_types
             )
         )
+
+
+def create_test_df():
+    """
+    Convenience funtion to create test dataframes, currently creates one
+    """
+    # TODO: add more test dataframes/datasets
+    # IMPORTANT these are NOT for the core test suite but for the exampels
+    # and for users to play, tutorials etc.
+    data = {
+        "col1": ["january", "february", "march", "april", "may", "june"],
+        "col2": ["Jan", "Feb", "Mar", "Apr", np.nan, 0],
+        "col3": [1, 2, 3, 4, 5, 6],
+    }
+    df = pd.DataFrame(data)
+    return df
