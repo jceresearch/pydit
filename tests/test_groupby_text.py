@@ -20,7 +20,15 @@ def df():
         "team": ["teamA", "teamA", "teamA", "teamA", "teamA", "teamB", "teamC"],
         "purid": ["P01", "P01", "P01", "P02", "P02", "P03", "P03"],
         "apprid": [1, 2, 3, 4, 5, 6, 7],
-        "appr": ["ok", "ok", "rejected", "ok", " ", "Error", "ok",],
+        "appr": [
+            "ok",
+            "ok",
+            "rejected",
+            "ok",
+            " ",
+            "Error",
+            "ok",
+        ],
         "user": ["user1", "user2", "user1", "user2", "", np.nan, "user3"],
     }
     return pd.DataFrame(data)
@@ -28,7 +36,23 @@ def df():
 
 def test_groupby_bad_formed(df):
     """test for badly formed calls"""
-    assert "Test not implemented" == False
+
+    print("Not a dataframe, should raise type error")
+    with pytest.raises(TypeError):
+        groupby_text(["list_element", "list_element"], "team", "appr")
+
+    print("Null string , value error")
+    with pytest.raises(ValueError):
+        groupby_text(df, "", "appr")
+        # empty key column, value error
+
+    print("Wrong column name, value error")
+    with pytest.raises(ValueError):
+        groupby_text(df, "wrong_column_name", "appr")
+
+    print("Wrong value column name, value error")
+    with pytest.raises(ValueError):
+        groupby_text(df, "team", "purid2")
 
 
 def test_groupby_text(df):

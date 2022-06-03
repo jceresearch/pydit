@@ -1,5 +1,5 @@
 """
-Test module for keyword_search 
+Test module for keyword_search
 """
 
 import os
@@ -27,14 +27,21 @@ def test_keyword_search():
             "Hello world\n",
             "Hello world ",
             " Hello world",
-            "Hi, hello world",
+            "Hi, \nhello world",
         ],
         "col6": [1, 2, 3, 4, 5, 6],
     }
     df = pd.DataFrame(data)
     # assert "test not implemented" == False
     res = keyword_search(df, ["feb", "mar"], columns=["col1", "col2", "col3"])
+    assert list(res["kw_match01"]) == [False, True, True, False, False, True]
+    assert list(res["kw_match02"]) == [False, False, True, True, False, False]
+    assert list(res["kw_match_all"]) == [False, True, True, True, False, True]
+
+    res = keyword_search(df, ["hello"], columns="col4")
     print(res)
+    assert list(res["kw_match01"]) == [True, True, True, True, True, True]
+    assert list(res["kw_match_all"]) == [True, True, True, True, True, True]
 
 
 if __name__ == "__main__":

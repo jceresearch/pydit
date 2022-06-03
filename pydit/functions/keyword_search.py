@@ -14,7 +14,7 @@ from pandas import Series, DataFrame
 logger = logging.getLogger(__name__)
 
 
-def keyword_search(obj_in, keywords, columns=None):
+def keyword_search(obj, keywords, columns=None):
     """
     Searches the keywords in a dataframe or series and returns a matrix of matches
 
@@ -22,31 +22,58 @@ def keyword_search(obj_in, keywords, columns=None):
     and a combined column that is True if any of the other columns is True.
     For simplicity we name columns sequentially as pushing keywords straight
     as columns may yield error with special characters or duplicated/banned names
+
+    Parameters
+    ----------
+    obj : pandas.DataFrame or pandas.Series
+        The dataframe or series to search
+    keywords : list
+        The list of keywords to search for
+    columns : list
+        The list of columns to search in, if None then all columns are searched
+
+    Returns
+    -------
+    DataFrame
+        The dataframe with the new columns added
+        This is a copy of the original dataframe
+
+    Examples
+    --------
+
+
+    See Also
+    --------
+
+
+
+
+
     """
 
-    if not keywords:
+    if not isinstance(keywords, (list, str)):
         raise ValueError("keywords must be a list of strings or a string")
-
+    if isinstance(keywords, str):
+        keywords = [keywords]
+    if isinstance(columns, str):
+        columns = [columns]
     if columns:
         try:
-            df = obj_in[columns].copy()
+            df = obj[columns].copy()
         except:
             raise ValueError("Columns not found in dataframe")
 
     else:
-        if isinstance(obj_in, Series):
-            df = obj_in.to_frame()
+        if isinstance(obj.Series):
+            df = obj.to_frame()
 
-        elif isinstance(obj_in, DataFrame):
-            df = obj_in.copy()
-        elif isinstance(obj_in, list):
-            df = pd.DataFrame(obj_in, columns="text_data")
+        elif isinstance(obj, DataFrame):
+            df = obj.copy()
+        elif isinstance(obj, list):
+            df = pd.DataFrame(obj, columns="text_data")
 
         else:
-            raise ValueError("Type not recognised")
-
-    if isinstance(keywords, str):
-        keywords = [keywords]
+            raise TypeError("Type not recognised")
 
     df.fillna("", inplace=True)
     if len(columns) > 1:
@@ -55,21 +82,22 @@ def keyword_search(obj_in, keywords, columns=None):
         df["dummy_keyword_search"] = df[columns].astype(str)
 
     n = 1
-
+    dfres = pd.DataFrame()
     for re_text in keywords:
-        print(re_text)
+        logger.info("Searching for keyword: %s", re_text)
         pattern = re.compile(re_text, re.IGNORECASE)
+        # TODO: keyword_search() implement option for case sensitive search
         regmatch = np.vectorize(lambda x: bool(pattern.search(x)))
-        df["kw_match" + str.zfill(str(n), 2)] = regmatch(
+        dfres["kw_match" + str.zfill(str(n), 2)] = regmatch(
             df["dummy_keyword_search"].values
         )
         n = n + 1
 
-    match_columns = [m for m in df.columns if "kw_match" in m]
-    df["kw_match_all"] = df.apply(lambda row: any(row[match_columns]), axis=1)
-    df.drop(["dummy_keyword_search"], axis=1, inplace=True)
+    match_columns = [m for m in dfres.columns if "kw_match" in m]
 
-    return df
+    dfres["kw_match_all"] = dfres.apply(lambda row: any(row[match_columns]), axis=1)
+
+    return dfres
 
 
 def keyword_search_str(keyword_list, df_in, field_name):

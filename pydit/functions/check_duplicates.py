@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 def check_duplicates(
-    df_or_series,
+    obj: Union[pd.DataFrame, pd.Series],
     columns=None,
     keep=False,
     ascending=None,
@@ -29,48 +29,66 @@ def check_duplicates(
     Duplicate analysis
     ==================
 
-    Args:
-        df_or_series: pandas dataframe or series
+    Parameters
+    ----------
 
-        columns (str or list, optional): column or list of column(s) to check even if it is one column only, if multiple columns provided the check is combined duplicates, exactly as pandas duplicated().
+    obj:  DataFrame or Series
+        The dataframe or series to check for duplicates
 
-        keep ('first','last' or False, optional): Argument for pandas df.duplicated() method.
+    columns: str or list, optional
+        Column or list of column(s) to check even if it is one column only.
+        If multiple columns provided the check is combined duplicates.
+
+
+    keep: 'first','last' or False, optional
+        Argument for pandas df.duplicated() method.
         Defaults to 'first'.
 
-        ascending (True, False or None, optional): Argument for DataFrame.value_counts()
+    ascending: True, False or None, optional
+        Argument for DataFrame.value_counts().
         Defaults to None.
 
-        indicator=(True, False, optional): If True, a column is added to the dataframe.
+    indicator: bool, optional
+        If True, a column is added to the dataframe.
         Defaults to False
 
-        inplace (bool, optional): If True, the dataframe is modified in place.
-        If a Series is provided then it is always copied into a new dataframe and this parameter is ignored.
+    inplace: bool, optional
+        If True, the dataframe is modified in place.
+        For Series a new dataframe is created and this parameter is ignored.
 
-    Returns:
+    Returns
+    -------
+    DataFrame
         Returns the DataFrame with the duplicates or None if no duplicates found.
+
+    Examples
+    --------
+
+    See also
+    --------
+
     """
 
-    if not isinstance(df_or_series, (pd.DataFrame, pd.Series)):
-        raise TypeError("df_or_series must be a pandas DataFrame or Series")
+    if not isinstance(obj, (pd.DataFrame, pd.Series)):
+        raise TypeError("obj must be a pandas DataFrame or Series")
 
-    if isinstance(df_or_series, pd.Series):
+    if isinstance(obj, pd.Series):
         # If it is Series we convert it to DataFrame
-        if df_or_series.name is None and isinstance(columns, str):
-            df_or_series.name = columns
-
+        if obj.name is None and isinstance(columns, str):
+            obj.name = columns
         else:
-            df_or_series.name = "data"
+            obj.name = "data"
             columns = "data"
-        df = df_or_series.to_frame()
+        df = obj.to_frame()
 
     else:
         # If it is DataFrame we deal with the inplace options
         if not inplace:
             # this creates a new copy
-            df = df_or_series.copy()
+            df = obj.copy()
         else:
             # this is just referencing
-            df = df_or_series
+            df = obj
 
     if isinstance(columns, str):
         if columns in df.columns:
@@ -162,7 +180,8 @@ def check_duplicates(
                     dfres.drop(columns=["_duplicates"], inplace=True)
 
             else:
-                # regardless of the indicator flag, if we bring all records and keep=False we somehow need to flag the duplicates
+                # regardless of the indicator flag, if we bring all records
+                # and keep=False we somehow need to flag the duplicates
                 dfres.drop(columns=["_duplicates_keep"], inplace=True)
 
         return dfres

@@ -1,7 +1,6 @@
 """ Adds a percentile column to a DataFrame, optionally based on a column """
 
 import logging
-from typing import Hashable
 
 import pandas as pd
 
@@ -16,6 +15,7 @@ def add_percentile(df, col, col_group=None, inplace=False):
 
     Parameters
     ----------
+
     df : DataFrame
         A pandas Dataframe object
 
@@ -30,17 +30,22 @@ def add_percentile(df, col, col_group=None, inplace=False):
 
     See Also:
     ---------
+
     https://stackoverflow.com/questions/50804120/how-do-i-get-the-percentile-for-a-row-in-a-pandas-dataframe
-    Using the percentile with linear interpolation method, but kept various 
+    Using the percentile with linear interpolation method, but kept various
     ranks calculations for reference.
+
     These are alternative ways of calculating for reference/debugging:
+
     df["PCNT_RANK"] = df[col].rank(method="max", pct=True)
+
     df["POF"] = df[col].apply(lambda x: stats.percentileofscore(df[col], x, kind="weak"))
+
     df["QUANTILE_VALUE"] = df["PCNT_RANK"].apply(lambda x: df[col].quantile(x, "lower"))
+
     df["CHK"] = df["PCNT_LIN"].apply(lambda x: df[col].quantile(x))
 
     You can check these methods in acdtion in the test suite
-
 
     Returns
     -------
@@ -51,6 +56,12 @@ def add_percentile(df, col, col_group=None, inplace=False):
 
     Examples
     --------
+
+    >>> import pydit
+    >>> pydit.start_logging_info()
+    >>> df = pydit.create_test_df()
+    >>> df = pydit.add_percentile(df, "col1")
+    >>> print(list(df("percentile_in_col1")))
 
     """
 
