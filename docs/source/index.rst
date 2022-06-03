@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to pydit's documentation!
-=================================
+Read me
+=======
 
 .. include:: readme_link.rst
 
@@ -13,6 +13,7 @@ Detailed documentation
 
 .. autosummary::
    :toctree: _autosummary
+   :template: custom-module-template.rst
    :recursive:
 
    pydit.functions

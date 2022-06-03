@@ -1,6 +1,6 @@
-""" 
-Function for anonymising a key/identifier column 
-It applies a randomly generated translation table of integers
+"""Module for anonymising a key/identifier column
+
+It applies a randomly generated translation table of integers to the column.
 """
 import random
 import logging

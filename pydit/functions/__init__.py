@@ -6,8 +6,8 @@ e.g. pydit.create_calendar()
 
 The modules are also self standing, you should be able to copy any .py file
 and import it in your script to use it with no dependencies on other modules.
-At the time of this comment, there are no exceptions to this design principle.
 
+There are currently no exceptions to this design principle.
 
 """
 
@@ -16,7 +16,7 @@ from .add_percentile import add_percentile
 from .profile_dataframe import profile_dataframe
 from .check_duplicates import check_duplicates
 from .check_sequence import check_sequence
-from .add_counts import add_counts_between_related_df
+from .add_counts import add_counts
 from .check_referential_integrity import check_referential_integrity
 from .fillna_smart import fillna_smart
 from .check_blanks import check_blanks

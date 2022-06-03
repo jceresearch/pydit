@@ -1,4 +1,5 @@
-""" Counts occurences of a key in the other dataframe, similar to Excel's COUNTIF()"""
+"""Counts occurences of a key in the other dataframe, similar to Excel's COUNTIF()
+"""
 
 import logging
 import pandas as pd
@@ -6,11 +7,8 @@ import pandas as pd
 logger = logging.getLogger(__name__)
 
 
-def add_counts_between_related_df(
-    df1, df2, left_on="", right_on="", on="", inplace=False
-):
-    """
-    Adds column in each df counting occurences of each key in the other dataframe
+def add_counts(df1, df2, left_on="", right_on="", on="", inplace=False):
+    """Adds column in each df counting occurences of each key in the other dataframe
 
     This works similar to adding countif() in Excel to sense check if an
     identifier in one sheet is fullly in another (presumably master), or
@@ -19,41 +17,33 @@ def add_counts_between_related_df(
     This routine does both ways to quickly check whether the relationship is
     one to one, many to many etc.
 
+    Check also cross_check_key() which checks referential integrity and does 
+    this in a more conceptual way, but often you just want to add some counting 
+    numbers and filter for >1 or zeroes.
+
     Parameters
     ----------
     df1 : DataFrame
         A pandas Dataframe object
     df2 : DataFrame
         A pandas Dataframe object to compare against
-    left_on : str, optional
-        column to use as key for df1, by default ""
-    right_on : str, optional
-        column to use as key for df2, by default ""
-    on : str, optional
-        column to use as key for df1 and df2 if they are the same, by default ""
-    inplace : bool, optional
-        If True the original dataframes will be mutated, by default False
+    left_on : str, optional, default ""
+        column to use as key for df1
+    right_on : str, optional, default ""
+        column to use as key for df2
+    on : str, optional, default ""
+        column to use as key for df1 and df2 if they are the same"
+    inplace : bool, optional, default False
+        If True the original dataframes will be mutated
 
     Returns
     -------
     DataFrame
-
-        If inplace=False, it returns a tuple of the two dataframes with a new
+        If inplace = False, it returns a tuple of the two dataframes with a new
         column with the count of records found. In df1 it will be "count_[key2]"
-        and in df2 it will be "count_[key1]"
+        and in df2 it will be "count_[key1]".
+        If inplace = True it will return True, and mutate the original dataframes.
 
-        If inplace=True it will return True, and mutate the original dataframes.
-
-    See Also
-    --------
-    cross_check_key(): There is another function that checks referential
-    integrity and does this in a more conceptual way, but often you just want
-    to add some counting numbers and filter for >1 or zeroes.
-
-    Examples
-    --------
-
-    TODO: Add example
 
 
     """

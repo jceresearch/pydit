@@ -1,4 +1,22 @@
-""" Calculate the Benford's Law frequencies for a given column in a dataframe generate a plot"""
+"""Module to compute the Benford's Law frequencies for a column in a dataframe
+
+This is an common audit test to find indications (non conclusive) of fraud or 
+errors in the population
+The Benford's Law is an expected distribution for the "first n digits" of a magnitude.
+
+It applies to natural magnitudes (please do research before applying it),
+typically height of people, lenght of rivers, etc.
+Because it posit that low digits should be more common, it tends to highlight fabricated
+transactions as, to humans, it look more natural to create them with a mix of low and high
+digits (e.g a transaction starting with 9 or 8 are disproportionally less likely to occur
+according to Benford's Law)
+
+Also where there is an artificial limit (approvals are needed over a certain amount)
+there is a tendency to see higher number of transactions with high first digits
+(e.g. $4,980 vs $4,000 for a limit of $5,000)
+
+
+"""
 
 import logging
 import math
@@ -11,7 +29,7 @@ logger = logging.getLogger(__name__)
 
 
 def _benford(rawdata, digit=1):
-    """ 
+    """
     Internal function to calculate the core Benford freq expectations vs actual count of values.
     """
     s = pd.Series(rawdata)
@@ -54,63 +72,38 @@ def _benford(rawdata, digit=1):
 
 
 def benford_to_dataframe(obj, column_name="", first_n_digits=1):
-    """
-    Returns a summary dataframe with the expected and actual Benford's Law frequency.
-
-    _extended_summary_
+    """Returns a summary with the expected and actual Benford's Law frequency.
 
     Parameters
     ----------
-    obj : _type_
-        _description_
-    column_name : str, optional
-        _description_, by default ""
-    first_n_digits : int, optional
-        _description_, by default 1
+    obj : DataFrame or Series or list
+        The data to be analyzed.
+    column_name : str, optional, default: ""
+        The column name to be analyzed. Not needed for series or lists
+    first_n_digits : int, optional, default: 1
+        The number of first digits to be considered.
 
     Returns
     -------
-    _type_
-        _description_
-    
-    
-    Examples
-    --------
-    
+    DataFrame
+        A dataframe with the expected and actual Benford's Law frequency.
 
-    See also
-    --------
-
-    
     """
 
-    if obj is None:
-        logger.error(
-            "No object provided to the Benford function, probably empty/null object?"
-        )
-        return None
     if not isinstance(first_n_digits, int):
-        logger.error("first_n_digits must be an integer between 1 and 4")
-        return None
-    if not (first_n_digits > 0 and first_n_digits < 4):
-        logger.error(
-            "first_n_digits must be an integer betwen 1 and 3 (I haven't tested what happens after 3 but Benford is not that useful then anyway)"
-        )
-    if isinstance(obj, pd.Series):
+        raise TypeError("first_n_digits must be an integer")
+    elif first_n_digits == 0 or first_n_digits > 4:
+        raise ValueError("first_n_digits must be between 1 and 4")
+    if isinstance(obj, (pd.Series, list, tuple)):
         data = obj
     elif isinstance(obj, pd.DataFrame):
+
         if column_name in obj.columns:
             data = obj[column_name]
         else:
-            logger.error(
-                "Column name %s is not in dataframe, check for typos?", column_name
-            )
-            return None
-    elif isinstance(obj, list) or isinstance(obj, tuple):
-        data = obj
+            raise ValueError("column_name not found in dataframe")
     else:
-        logger.error("No DataFrame or Series or list/tuple provided")
-        return None
+        raise TypeError("obj must be a DataFrame or Series or list or tuple")
 
     c, e, p = _benford(data, first_n_digits)
     ct = sum(c)
@@ -132,8 +125,26 @@ def benford_to_dataframe(obj, column_name="", first_n_digits=1):
 
 
 def benford_to_plot(df, column_name, first_n_digits=1):
-    """ plots the histogram with benford expectation and the actual distribution
+    """ Plots the histogram with Benford's Law expected and the actual frequencies.
+    
+    Parameters
+    ----------
+    obj : DataFrame or Series or list
+        The data to be analyzed.
+    column_name : str, optional, default: ""
+        The column name to be analyzed. Not needed for series or lists
+    first_n_digits : int, optional, default: 1
+        The number of first digits to be considered.
+
+    Returns
+    -------
+    DataFrame
+        A dataframe with the expected and actual Benford's Law frequency.
+
+        Also it would return a plot of the histogram with the expected and actual frequencies.
+
     """
+
     dfres = benford_to_dataframe(df, column_name, first_n_digits)
     y1 = dfres["bf_exp_count"]
     y2 = dfres["bf_act_count"]
@@ -149,11 +160,10 @@ def benford_to_plot(df, column_name, first_n_digits=1):
 
 
 def benford_list_anomalies(
-    df, column_name, top_n_digits=3, first_n_digits=1, return_anomalies_only=False
+    df, column_name, top_n_digits=3, first_n_digits=1, return_anomalies_only=False,
 ):
-    """Runs the Benford analysis and returns a copy of the original DataFrame with
-    the expectation and actual results merged to each record (i.e. the result from
-    running the benford_to_dataframe function). 
+    """Checks the Benford's Law frequencies returning the results in a copy of the original dataframe.
+
     Also adds an extra "flag_bf_anomaly" boolean column that is True for those
     records where the first n digits match those identified as top N anomalies
     which, in turn, are those that have largest (absolute) percent variation 
@@ -162,17 +172,27 @@ def benford_list_anomalies(
     Note that blanks and zeroes are not deemed anomalies, they are simply ignored
     Those you need to analyse separately, as they are likely to be data quality anomalies
 
-    Args:
-        df (DataFrame or Series): _description_
-        column_name (str): _description_
-        top_n_digits (int, optional): _description_. Defaults to 3.
-        first_n_digits (int, optional): _description_. Defaults to 1.
-        only_anomalies (boolean, optional): True to return just the anomalies,
-                                            False for full original dataframe
+    Parameters
+    ----------
+        df : DataFrame or Series
+            The data to be analyzed.
+        column_name : str
+            The column name to be analyzed.
+        top_n_digits : int, optional, default: 3
+            Threshold for when we consider an anomaly, based on rank of abs difference.
+        first_n_digits : int, optional, default: 1
+            The number of first digits to be considered.
+        only_anomalies : boolean, optional, default: False
+            True to return just the anomalies. False for full original dataframe
 
 
-    Returns:
-        _type_: _description_
+    Returns
+    -------
+    DataFrame
+        A copy of the dataframe with the expected and actual Benford's Law frequency.
+        Also adds an extra "flag_bf_anomaly" boolean column that is True for those
+        records where the first n digits match those identified as top N anomalies
+ 
     """
     dfres = benford_to_dataframe(df, column_name, first_n_digits)
     anomalies = list(
