@@ -1,10 +1,9 @@
-""" Groupby text column into concatenated text, with extra smartness """
+""" Groupby text column into concatenated text, with extra smartness
+"""
 
 import logging
 
 import pandas as pd
-import numpy as np
-
 
 logger = logging.getLogger(__name__)
 
@@ -17,20 +16,30 @@ def groupby_text(
     field_separator=" ",
     row_separator="\n",
 ):
-    """
-    Groupby text column into concatenated text, with extra smartness
+    """ Groupby text column into concatenated text, with extra smartness.
 
-    Args:
-        df (DataFrame): _description_
-        key_cols (list or str): key columns used for grouping
-        value_cols (list or str or None, optional): Value colums to concatenate Defaults to None.
-        target_col_name (str, optional): name for the resulting column. Defaults to "groupby_text".
-        field_separator (str, optional): if multiple value_cols provided then how to concatenate. Defaults to " ".
-        row_separator (str, optional): separator for the rows. Defaults to "\n".
+    Parameters
+    ----------
+    df : DataFrame
+        Pandas DataFrame to groupby
+    key_cols : list or str
+        Key columns used for grouping
+    value_cols : list or str or None, optional
+        Value colums to concatenate Defaults to None.
+    target_col_name : str, optional
+        Name for the resulting column.
+        Defaults to "groupby_text".
+    field_separator : str, optional
+        If multiple value_cols provided then how to concatenate.
+        Defaults to " ".
+    row_separator : str, optional
+        separator for the rows.
+        Defaults to "\n".
 
-    Returns:
-        DataFrame: a grouped dataframe with the concatenated text
-        
+    Returns
+    -------
+    DataFrame
+        A grouped dataframe with the concatenated text
         This function does not mutate the input dataframe.
 
     """

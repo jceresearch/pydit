@@ -20,8 +20,6 @@ Detailed documentation
    pydit.filemanager
    pydit.utils
 
-
-
 Indices and tables
 ==================
 

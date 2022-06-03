@@ -40,9 +40,9 @@ release = "0.0.5"
 
 extensions = [
     "sphinx.ext.napoleon",
+    "sphinx.ext.autodoc",
     "sphinx.ext.duration",
     "sphinx.ext.doctest",
-    "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
     "myst_parser",
 ]
