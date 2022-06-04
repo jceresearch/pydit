@@ -1,5 +1,9 @@
-""" Convenience function to check for duplicates in a dataframe
-Check from codespaces
+"""Module for checking for duplicates in a dataframe.
+
+It wraps the pandas.DataFrame.duplicated() to perform a more "end to end" check
+with logging and informational messages. This can be useful in an audit scenario
+as we tend to have to do a lot of duplicate checks in intermediate files.
+
 """
 
 
@@ -25,33 +29,25 @@ def check_duplicates(
     return_non_duplicates=False,
     inplace=False,
 ):
-    """
-    Duplicate analysis
-    ==================
+    """Check for duplicates in a dataframe.
+
 
     Parameters
     ----------
-
     obj:  DataFrame or Series
         The dataframe or series to check for duplicates
-
     columns: str or list, optional
         Column or list of column(s) to check even if it is one column only.
         If multiple columns provided the check is combined duplicates.
-
-
     keep: 'first','last' or False, optional
         Argument for pandas df.duplicated() method.
         Defaults to 'first'.
-
     ascending: True, False or None, optional
         Argument for DataFrame.value_counts().
         Defaults to None.
-
     indicator: bool, optional
         If True, a column is added to the dataframe.
         Defaults to False
-
     inplace: bool, optional
         If True, the dataframe is modified in place.
         For Series a new dataframe is created and this parameter is ignored.
@@ -60,12 +56,6 @@ def check_duplicates(
     -------
     DataFrame
         Returns the DataFrame with the duplicates or None if no duplicates found.
-
-    Examples
-    --------
-
-    See also
-    --------
 
     """
 

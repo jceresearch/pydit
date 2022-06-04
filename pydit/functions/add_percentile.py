@@ -1,4 +1,4 @@
-""" Adds a percentile column to a DataFrame, optionally based on a column """
+"""Adds a percentile column to a DataFrame, optionally based on a column """
 
 import logging
 

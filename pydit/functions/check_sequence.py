@@ -1,4 +1,5 @@
-" Validation functions" ""
+""" Module to check for numerical sequence of DataFrame column or Series
+"""
 
 import logging
 from datetime import timedelta
@@ -12,8 +13,28 @@ logger = logging.getLogger(__name__)
 
 
 def check_sequence(obj_in, col=""):
-    """ to check the numerical sequence of a series including dates
-    and numbers within an text ID """
+    """ Checks the numerical sequence of a series including dates
+    
+    If a text column is provided it will attempt to connver to numeric after
+    extacting any non numberic chars.
+
+    Parameters
+    ----------
+    obj_in : list, pandas.Series or pandas.DataFrame
+        The list, series or dataframe to check
+    col : str, optional, default ""
+        The column name to check, if a DataFrame is provided.
+        If not provided, will check the first column.
+
+    Returns
+    -------
+    list
+        A list of the missing values in the series
+
+    """
+
+    # TODO: #32 check_sequence() refactor to do better input validation and error handling and simpler flow control
+
     if col:
         obj = obj_in[col]
     else:

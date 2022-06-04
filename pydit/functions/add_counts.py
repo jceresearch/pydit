@@ -17,8 +17,8 @@ def add_counts(df1, df2, left_on="", right_on="", on="", inplace=False):
     This routine does both ways to quickly check whether the relationship is
     one to one, many to many etc.
 
-    Check also cross_check_key() which checks referential integrity and does 
-    this in a more conceptual way, but often you just want to add some counting 
+    Check also cross_check_key() which checks referential integrity and does
+    this in a more conceptual way, but often you just want to add some counting
     numbers and filter for >1 or zeroes.
 
     Parameters
@@ -43,9 +43,7 @@ def add_counts(df1, df2, left_on="", right_on="", on="", inplace=False):
         column with the count of records found. In df1 it will be "count_[key2]"
         and in df2 it will be "count_[key1]".
         If inplace = True it will return True, and mutate the original dataframes.
-
-
-
+        
     """
 
     if isinstance(df1, pd.DataFrame) and isinstance(df2, pd.DataFrame):

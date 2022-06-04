@@ -1,5 +1,4 @@
-""" 
-Checks for blanks in a dataframe and returns the counts of various types of blansk
+""" Checks for various types of nulls/blanks in a dataframe and returns counts.
 """
 
 import logging
@@ -50,16 +49,9 @@ def check_blanks(
         A dataframe with the counts of blanks in each column.
         Or a summary list with various counts.
 
-
-
-    Examples
-    --------
-
-
     See also
     --------
     profile_dataframe() : Profile the dataframe, includes metrics on blanks
-
 
     """
 

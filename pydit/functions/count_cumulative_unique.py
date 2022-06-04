@@ -1,5 +1,4 @@
-""" 
-Add a cumulative count of unique keys, does not mutates the df
+""" Add a cumulative count of unique keys, does not mutates the dataframe
 """
 
 from typing import Hashable
@@ -14,7 +13,7 @@ def count_cumulative_unique(
     column_name: Hashable,
     dest_column_name: str,
     case_sensitive: bool = True,
-    inplace=False
+    inplace=False,
 ) -> pd.DataFrame:
     """Generates a running total of cumulative unique values in a given column.
 
@@ -60,12 +59,12 @@ def count_cumulative_unique(
     if not isinstance(df, pd.DataFrame):
         raise TypeError("Expecting a dataframe")
     if not inplace:
-        df=df.copy()
+        df = df.copy()
     if not case_sensitive:
         # Make it so that the the same uppercase and lowercase
         # letter are treated as one unique value
         df[column_name] = df[column_name].astype(str).map(str.lower)
-    
+
     df[dest_column_name] = (
         (df[[column_name]].drop_duplicates().assign(dummyabcxyz=1).dummyabcxyz.cumsum())
         .reindex(df.index)
