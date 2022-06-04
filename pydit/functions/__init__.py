@@ -1,5 +1,5 @@
 """ 
-Main container of data wrangling functions.
+Sub-package (./functions) containing the core functionality of pydit.
 
 Functions are imported individually so they can be used from pydit directly:
 e.g. pydit.create_calendar()
