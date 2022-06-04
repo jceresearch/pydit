@@ -21,6 +21,7 @@ pandas = "^1.2.1"
 numpy = "^1.21.5"
 openpyxl="^3.0.0"
 matplotlib="*"
+myst-parser ="*"
 
 
 [tool.poetry.dev-dependencies]
