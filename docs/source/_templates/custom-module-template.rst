@@ -1,8 +1,6 @@
 {{ fullname | escape | underline}}
 
 .. automodule:: {{ fullname }}
-   :members:
-
 
    {% block attributes %}
    {% if attributes %}
