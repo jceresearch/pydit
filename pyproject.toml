@@ -3,7 +3,7 @@ name = "pydit-jceresearch"
 packages = [
 	{ include = "pydit" }
 ]
-version = "0.0.4"
+version = "0.0.5"
 description = "Data cleansing tools for Internal Auditors"
 authors = ["jceresearch <jceresearch@users.noreply.github.com>"]
 keywords=["internal audit", "munging", "cleansing", "audit"]
@@ -13,6 +13,7 @@ classifiers=[
 "License :: OSI Approved :: MIT License"
 ]
 license = "MIT"
+documentation="https://pydit.readthedocs.io/en/latest/"
 
 [tool.poetry.dependencies]
 python = "^3.8"
@@ -20,6 +21,7 @@ pandas = "^1.2.1"
 numpy = "^1.21.5"
 openpyxl="^3.0.0"
 matplotlib="*"
+
 
 [tool.poetry.dev-dependencies]
 

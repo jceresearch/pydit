@@ -1,4 +1,5 @@
-""" Convenience functions
+"""Convenience functions
+
 While these can be used within the pydit package, e.g. the logging or file manager module
 we should not use them as imports in the functions, as we want those to be self standing.
 The principle is that we could drop a particular function module to do an audit test and it would
