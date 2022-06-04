@@ -42,4 +42,5 @@ def test_check_blanks():
 
 if __name__ == "__main__":
     # execute only if run as a script
-    test_check_blanks()
+    # test_check_blanks()
+    pass

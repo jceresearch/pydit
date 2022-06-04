@@ -170,5 +170,6 @@ def test_check_benford():
 
 if __name__ == "__main__":
     # execute only if run as a script
-    test_check_benford()
-    test_check_benford_wrong_inputs()
+    # test_check_benford()
+    # test_check_benford_wrong_inputs()
+    pass

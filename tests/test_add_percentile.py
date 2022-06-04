@@ -78,4 +78,3 @@ if __name__ == "__main__":
     temp["CHK"] = temp["PCNT_LIN"].apply(lambda x: temp["INCOME"].quantile(x))
     result = add_percentile(temp, "INCOME")
     print(result.sort_values("INCOME"))
-    test_add_percentile_categories()

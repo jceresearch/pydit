@@ -1,5 +1,5 @@
 """ pytest test suite for profiling tools module"""
-from cmath import nan
+
 import os
 import sys
 
@@ -8,8 +8,7 @@ from pandas import Timestamp
 import numpy as np
 import pytest
 
-# import numpy as np
-# from datetime import datetime, date, timedelta
+# pylint: disable=redefined-outer-name
 # pylint: disable=import-error disable=wrong-import-position
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from pydit import (
