@@ -11,14 +11,31 @@ logger = logging.getLogger(__name__)
 def _deduplicate_list(
     list_to_deduplicate, default_field_name="column", force_lower_case=True
 ):
-    """deduplicates a list
-    
-    Uses enumerate and a loop, so it is not good for very long lists
-    This function is for dealing with header/field names, where performance
-    is not really an issue
-    Returns a list of fields with no duplicates and suffixes where there were
-    duplicates
+    """Internal function for deduplicating a list.
+
+    Uses enumerate and a loop, so it is not good for very long lists.
+    This function is meant to be used for header/field names, where performance
+    is not a concern given the size of the list being on the 10s.
+
+    This is a copy of the corresponding function in the utility module
     V0.1 - 14 May 2022
+
+    Parameters
+    -----------
+
+    list_to_deduplicate : list
+        The list to deduplicate
+    default_field_name : str, optional, default "column"
+        The default field name to use if the field is empty
+    force_lower_case : bool, optional, default True
+        If True, will convert the field name to lower case
+
+    Returns
+    -------
+    list
+        Returns a list of fields with no duplicates and suffixes where there were duplicates.
+
+
     """
 
     def _get_random_string(length):
@@ -84,7 +101,7 @@ def cleanup_column_names(df, max_field_name_len=40, inplace=False):
         The maximum length of the field name
     inplace : bool, optional, default False
         If True, will modify the dataframe inplace
-    
+
     Returns
     -------
     pandas.DataFrame

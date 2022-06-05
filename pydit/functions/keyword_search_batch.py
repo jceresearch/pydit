@@ -1,6 +1,4 @@
-""" 
-functions to sweep a dataframe for keywords and return a matrix of matches
-or a sparse matrix if the keyword list is large
+"""Functions to sweep a dataframe for keywords and return a matrix of matches.
 """
 
 import logging
