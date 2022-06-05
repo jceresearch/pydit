@@ -24,7 +24,6 @@ sys.path.append(os.path.dirname(Path.cwd().parent))
 # -- Project information -----------------------------------------------------
 
 project = "pydit"
-copyright = "2022, jceresearch"
 author = "jceresearch"
 
 # The full version, including alpha/beta/rc tags
@@ -44,6 +43,7 @@ extensions = [
     "sphinx.ext.duration",
     "sphinx.ext.doctest",
     "sphinx.ext.autosummary",
+    "sphinx.ext.viewcode",
     "myst_parser",
 ]
 

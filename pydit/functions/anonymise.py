@@ -101,7 +101,7 @@ def anonymise_key(
             else:
                 raise ValueError("Mapping dictionary format not recognised, aborting")
         elif isinstance(map_table_or_dict, pd.DataFrame):
-            # TODO, probably worth doing more checks about the data coming,
+            # TODO, do more input validation,
             print(
                 "Using ",
                 map_table_or_dict.columns[0],
