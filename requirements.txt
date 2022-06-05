@@ -3,3 +3,4 @@ pandas==1.2.1
 openpyxl
 matplotlib
 myst-parser
+sphinx
