@@ -11,24 +11,20 @@
    :recursive:
 
    pydit
-   
-   
-   .
 
 Read me
 =======
 
 .. include:: readme_link.rst
 
-Detailed documentation
-======================
-
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   pydit
    
+.. toctree::
+   :hidden:
+
+   Home page <self>
+   API reference <_autosummary/pydit>
+
+
 
 Indices and tables
 ==================
