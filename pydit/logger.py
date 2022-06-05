@@ -1,4 +1,4 @@
-""" Module to provide support for logging """
+""" Module to provide support for logging with typical parameters """
 import logging
 from logging.handlers import TimedRotatingFileHandler
 
@@ -6,9 +6,11 @@ from logging.handlers import TimedRotatingFileHandler
 def setup_logging(
     logfile="./audit.log", level_screen=logging.DEBUG, level_file=logging.DEBUG
 ):
-    """ Configure the logging both to screen and a file with sensible parameters
+    """Configure the logging both to screen and a file with sensible parameters
 
-    By default it will generate an audit.log file with daily rotation
+    By default it will generate an audit.log file with daily rotation kept 7 days.
+    You can explore changing this to other kind of rotation/retention criteria.
+
 
     Parameters
     ----------
@@ -59,4 +61,3 @@ def start_logging_debug():
     return setup_logging(
         logfile="./audit.log", level_screen=logging.DEBUG, level_file=logging.DEBUG
     )
-

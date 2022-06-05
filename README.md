@@ -14,7 +14,7 @@ readability. Pyjanitor is great and the chaining approach is super elegant. defi
 Quick start:
 ```
 import pydit
-logger = pydit.setup_logging()
+logger = pydit.start_logging_info()
 logger.info("Started")
 ```
 
@@ -24,7 +24,20 @@ The logger feature is used extensively to create a human readable audit log to b
 The functions perform common transformations and checks on data -typically 
 a pandas DataFrame or Series object- such as checking for blanks, or adding 
 counters to check if two tables are plausibly in a 1:n or a n:n or a 1:1 
-relationship. Typically these can be done with a short snippet of code in
+relationship. 
+
+```
+import pandas as pd
+df_profile=pydit.profile_dataframe(df) #will return a df with summary statistics
+
+
+
+
+```
+
+
+
+Typically these can be done with a short snippet of code in
 pandas, but those can be fairly complex and obscure and you would also need to 
 build some print() or logging feature to show the result and various exceptions
 When stitching together many files, we often need to check for those many times

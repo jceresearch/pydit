@@ -4,3 +4,5 @@ openpyxl
 matplotlib
 myst-parser
 sphinx
+pytest
+pytest-coverage
