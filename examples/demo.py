@@ -1,4 +1,4 @@
-"""' Demo of the use of these libraries"""
+"""Example of using pydit"""
 
 #%%
 import sys
@@ -10,7 +10,6 @@ from pandas import Timestamp
 # pylint: disable=import-error disable=wrong-import-position
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import pydit
-
 
 logger = pydit.setup_logging()
 logger.info("Started")
