@@ -43,7 +43,7 @@ build some print() or logging feature to show the result and various exceptions
 When stitching together many files, we often need to check for those many times
 along the process. 
 The default behaviour is to return a new or a transformed copy of the object and
-not to mutate the input object(s). The "inplace-True" option may be available.
+not to mutate the input object(s). The "inplace=True" option may be available.
 
 
 

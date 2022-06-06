@@ -1,5 +1,5 @@
 """Utility functions, they are not used directly in the core functions.
- 
+
 The functions below can be used directly.
 However, when needed for a specific core function, instead of importing them, 
 we would create a copy of the function and rename it with an _ prefix.
@@ -11,10 +11,9 @@ import random
 import string
 import logging
 import re
+from datetime import datetime
 
 import pandas as pd
-
-
 import numpy as np
 
 
@@ -35,13 +34,13 @@ def deduplicate_list(
     list_to_deduplicate, default_field_name="column", force_lower_case=True
 ):
     """Deduplicates a list
-    
+
     Uses enumerate and a loop, so it is not good for very long lists
     This function is for dealing with header/field names, where performance
     is not really an issue
-    
-    
-    
+
+
+
     Returns a list of fields with no duplicates and suffixes where there were
     duplicates
     V0.1 - 14 May 2022
@@ -97,11 +96,11 @@ def deduplicate_list(
 
 
 def dataframe_to_code(df):
-    """Convert a dataframe to source code that one can include in a test script or tutorial. 
-    
+    """Convert a dataframe to source code that one can include in a test script or tutorial.
+
     May need extra tweaks or imports, e.g. from pandas import Timestamp to deal with dates, etc.
-    
-    
+
+
     """
     data = np.array2string(df.to_numpy(), separator=", ")
     data = data.replace(" nan", " float('nan')")
@@ -110,22 +109,46 @@ def dataframe_to_code(df):
     return f"""df = pd.DataFrame({data}, columns={cols})"""
 
 
-def clean_string(t, keep_dot=False, space_to_underscore=True, case="lower"):
-    """Sanitising text:
+def clean_string(t=None, keep_dot=False, space_to_underscore=True, case="lower"):
+    """Sanitising a string
+
+    Cleans the strings applying the following transformations:
     - Keeps only [a-zA-Z0-9]
     - Optional to retain dot
     - Spaces to underscore
     - Removes multiple spaces , trims
     - Optional to lowercase
-    The purpose is just for easier typing, exporting, saving to filenames.
-    Args:
-        t (string]): string with the text to sanitise
-        keep_dot (bool, optional): Keep the dot or not. Defaults to False.
-        space_to_underscore (bool, optional): False to keep spaces. Defaults to True.
-        case= "lower" (default), "upper" or "keep"(unchanged)
-    Returns:
-        string: cleanup string
+
+    This is a very naive/slow implementation, useful for sanitising things like
+    a filename or titles etc. If you need to cleanup large datasets,
+    you need to look into pandas/numpy tools, and vectorised functions.
+
+
+    Parameters
+    ----------
+    t : str
+        String to clean
+    keep_dot : bool, optional, default False
+        Whether to keep the dot in the string
+    space_to_underscore : bool, optional, default True
+        Whether to replace spaces with underscores
+    case : str, optional, default "lower", choices=["lower", "upper", "keep"]
+        Whether to lowercase the string
+
+    Returns
+    -------
+    str
+        Cleaned string
+
     """
+    if pd.isna(t):
+        return ""
+    if not isinstance(t, str):
+        try:
+            t = str(t)
+        except TypeError:
+            return ""
+
     r = ""
     if case == "lower":
         r = str.lower(str(t))
@@ -146,48 +169,60 @@ def clean_string(t, keep_dot=False, space_to_underscore=True, case="lower"):
     return r
 
 
-def check_types(varname: str, value, expected_types: list):
-    """ One-liner syntactic sugar for checking types.
-    It can also check callables.
+def create_test_dataframe(dataset_name: str, n_rows: int = 10, n_cols: int = 10):
+    """Create test dataframes
 
-    Example usage:
+    IMPORTANT these are NOT to be used for the core test suite.
+    These are meant for the examples and for users to play, tutorials etc.
 
-    ```python
-    check('x', x, [int, float])
-    ```
+    Parameters
+    ----------
+    dataset_name : str
+        Name of the dataset
+        One of: random_numeric, random_categorical, dataset_01
+    n_rows : int, optional, default 10
+        Number of rows in the dataframe
+    n_cols : int, optional, default 10
+        Number of columns in the dataframe
 
-    :param varname: The name of the variable (for diagnostic error message).
-    :param value: The value of the `varname`.
-    :param expected_types: The type(s) the item is expected to be.
-    :raises TypeError: if data is not the expected type.
+    Returns
+    -------
+    pd.DataFrame
+        A test dataframe
+
+
+
+
     """
-    is_expected_type: bool = False
-    for t in expected_types:
-        if t is callable:
-            is_expected_type = t(value)
-        else:
-            is_expected_type = isinstance(value, t)
-        if is_expected_type:
-            break
 
-    if not is_expected_type:
-        raise TypeError(
-            "{varname} should be one of {expected_types}".format(
-                varname=varname, expected_types=expected_types
-            )
+    if dataset_name == "random_numeric":
+        df = pd.DataFrame(
+            np.random.randn(n_rows, n_cols),
+            columns=["col" + str(x) for x in range(1, n_cols + 1)],
         )
+        return df
+    elif dataset_name == "random_categorical":
+        df = pd.DataFrame(
+            np.random.randint(0, 10, (n_rows, n_cols)),
+            columns=["col" + str(x) for x in range(1, n_cols + 1)],
+        )
+        return df
+    elif dataset_name == "dataset_01":
+        yyyy = datetime.now().year
 
-
-def create_test_df():
-    """Create test dataframes, currently creates a simple one
-    """
-    # TODO: add more test dataframes/datasets
-    # IMPORTANT these are NOT for the core test suite but for the exampels
-    # and for users to play, tutorials etc.
-    data = {
-        "col1": ["january", "february", "march", "april", "may", "june"],
-        "col2": ["Jan", "Feb", "Mar", "Apr", np.nan, 0],
-        "col3": [1, 2, 3, 4, 5, 6],
-    }
-    df = pd.DataFrame(data)
-    return df
+        data = {
+            "col1": ["january", "february", "march", "april", "may", "june"],
+            "col2": ["Jan", "Feb", "Mar", "Apr", np.nan, 0],
+            "col3": [1, 2, 3, 4, 5, 6],
+            "col4": [
+                datetime(yyyy, 1, 1),
+                datetime(yyyy, 2, 1),
+                datetime(yyyy, 3, 1),
+                datetime(yyyy, 4, 1),
+                datetime(yyyy, 5, 1),
+                datetime(yyyy, 6, 1),
+            ],
+            "col5": [423.34, 120.01, 123.45, 12.34, 9.45, 12.00],
+        }
+        df = pd.DataFrame(data)
+        return df

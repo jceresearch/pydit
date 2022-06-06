@@ -10,7 +10,7 @@ from pydit import collapse_levels
 
 
 def test_collapse_levels():
-    """ test function"""
+    """test function"""
     df = pd.DataFrame(
         {
             "class": ["bird", "bird", "bird", "mammal", "mammal"],
@@ -23,8 +23,9 @@ def test_collapse_levels():
         .groupby("class")
         .agg(["mean", "median", "count", "sum"])
     )
-    collapse_levels(grouped_df, sep="_")
-    assert list(grouped_df.columns) == [
+    res = collapse_levels(grouped_df, sep="_")
+
+    assert list(res.columns) == [
         "max_speed_mean",
         "max_speed_median",
         "max_speed_count",
@@ -34,5 +35,5 @@ def test_collapse_levels():
 
 if __name__ == "__main__":
     # execute only if run as a script
-    #test_collapse_levels()
+    # test_collapse_levels()
     pass

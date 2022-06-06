@@ -2,6 +2,9 @@
 import os
 import sys
 
+import numpy as np
+
+
 # pylint: disable=import-error disable=wrong-import-position
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from pydit import setup_logging, clean_string
@@ -22,6 +25,12 @@ def test_clean_string():
         clean_string(" John Smith 123  456 .  ", space_to_underscore=False)
         == "john smith 123 456"
     )
+
+    assert clean_string("") == ""
+    assert clean_string(np.nan) == ""
+    assert clean_string(None) == ""
+    assert clean_string(123) == "123"
+    assert clean_string() == ""
 
 
 if __name__ == "__main__":
