@@ -40,12 +40,14 @@ def fillna_smart(
         If str, will attempt to parse the date using "%Y-%m-%d" format.
     text_fillna : str, optional, default ""
         The text to use for the nulls in the text columns.
-
-        inplace (bool, optional): If True, the dataframe is modified in place.
+    inplace: bool, optional, default False
+        If True, the dataframe is modified in place.
 
     Returns:
-        DataFrame: Returns a copy of the original dataframe with modifications
-        (or the modified original dataframe if inplace=True))
+
+    DataFrame
+        Returns a copy of the original dataframe with modifications
+
     """
     if not isinstance(df, pd.DataFrame):
         raise TypeError("Expecting a dataframe")
@@ -102,4 +104,6 @@ def fillna_smart(
                 )
 
             df[col].fillna(text_fillna, inplace=True)
+        if inplace:
+            return True
     return df
