@@ -1,6 +1,6 @@
-""" 
-Function for anonymising a key/identifier column 
-It applies a randomly generated translation table of integers
+"""Module for anonymising a key/identifier column
+
+It applies a randomly generated translation table of integers to the column.
 """
 import random
 import logging
@@ -18,20 +18,29 @@ def anonymise_key(
     create_new_hash_list=False,
     hash_list_size=1000000,
 ):
-    """
-    Anonymise a column of one or many dataframes with a scrambled list of integers.
+    """Anonymise a column of one or many dataframes with a scrambled list of integers.
+    
     Will persist across the list and it will return the translation table used. 
 
-    Args:
-        df_list (_type_): _description_
-        key_list (_type_): _description_
-        map_table_or_dict (_type_, optional): _description_. Defaults to None.
-        hash_list (_type_, optional): _description_. Defaults to None.
-        create_new_hash_list (bool, optional): _description_. Defaults to False.
-        hash_list_size (int, optional): _description_. Defaults to 1000000.
+    Parameters
+    ----------
+    df_list : list of pandas.DataFrame
+        List of dataframes to anonymise.
+    key_list : list of str
+        List of keys to anonymise.
+    map_table_or_dict : dict or pandas.DataFrame, optional, default None
+        Dictionary or dataframe to use for the translation table.
+    hash_list : list of int, optional, default None
+        List of integers to use for the translation table.
+    create_new_hash_list : bool, optional, default False
+        If True, a new list of integers will be created.
+    hash_list_size : int, optional, default 1000000
+        Size of the hash list to create.
 
-    Returns:
-    This function returns a tuple of the translation table and the hash list.
+    Returns
+    -------
+    tuple 
+        A tuple of the translation table and the hash list.
     """
 
     def _anonymise(df_list, key_list, map_dict=None, hash_list=None):
@@ -92,7 +101,7 @@ def anonymise_key(
             else:
                 raise ValueError("Mapping dictionary format not recognised, aborting")
         elif isinstance(map_table_or_dict, pd.DataFrame):
-            # TODO, probably worth doing more checks about the data coming,
+            # TODO, do more input validation,
             print(
                 "Using ",
                 map_table_or_dict.columns[0],

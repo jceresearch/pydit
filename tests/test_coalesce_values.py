@@ -14,4 +14,7 @@ from pydit import coalesce_values
 
 
 # TODO: Add tests for coalesce_values
+def test_coalesce_values():
+    """ test the coalesce_values function"""
+    assert True ==False #Test in development
 

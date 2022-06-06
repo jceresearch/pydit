@@ -1,4 +1,13 @@
-""" Validation functions"""
+"""Module to perform referential integrity checks on two dataframes.
+
+The purpose of these tools is to quickly ascertain what kind of relationship exists
+between two dataframe, e.g. many to many, one to many, one to one, etc.
+This is useful in an audit scenario as oftentimes the data is not clean and we
+may have missing detail records or blanks or duplicates. 
+
+Currently this module only supports providing a list or series of keys to check.
+
+"""
 
 import logging
 from collections import Counter
@@ -10,15 +19,25 @@ import numpy as np
 logger = logging.getLogger(__name__)
 
 
-def check_referential_integrity(a1, a2, on=None,left_on=None, right_on=None, verbose=False):
-    """Check what relationship two hashable arrays/lists have ("one to one",
+def check_referential_integrity(a1, a2, verbose=False):
+    """Check what relationship two hashable list have ("one to one",
     "many to many" etc.)
     Optionally, explains in a verbose way that relationship
 
-    Args:
-        a1 (List or Array): Anything that can be iterated and converted to set
-        a2 (List or Array): Same as a1
-        verbose (bool, optional): Provide extra explanation. Defaults to False.
+    Parameters
+    ----------
+    a1 : list or pandas.Series
+        First list to check
+    a2 : list or pandas.Series
+        Second list to check
+    verbose : bool, optional, default False
+        If True, prints a verbose explanation of the relationship.
+
+    Returns
+    -------
+    str
+        A string describing the relationship.
+
     """
 
     def explain(*args, verbose=verbose):

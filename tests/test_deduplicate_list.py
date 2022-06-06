@@ -44,5 +44,3 @@ def test_deduplicate_list():
         "2_8",
     ]
 
-
-print(deduplicate_list([1, 2, 2]))

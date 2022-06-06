@@ -1,24 +1,28 @@
 .. pydit documentation master file, created by
    sphinx-quickstart on Sat May 21 20:55:58 2022.
    You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+   contain the root `toctree` directive
 
-Welcome to pydit's documentation!
-=================================
+   Detailed documentation
+   ======================
+   .. autosummary::
+   :toctree: _autosummary
+   :template: custom-module-template.rst
+   :recursive:
+
+   pydit
+
+Read me
+=======
 
 .. include:: readme_link.rst
 
-Detailed documentation
-======================
+   
+.. toctree::
+   :hidden:
 
-.. autosummary::
-   :toctree: _autosummary
-   :recursive:
-
-   pydit.functions
-   pydit.logger
-   pydit.filemanager
-   pydit.utils
+   Home page <self>
+   API reference <_autosummary/pydit>
 
 
 

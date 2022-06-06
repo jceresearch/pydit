@@ -24,7 +24,6 @@ sys.path.append(os.path.dirname(Path.cwd().parent))
 # -- Project information -----------------------------------------------------
 
 project = "pydit"
-copyright = "2022, jceresearch"
 author = "jceresearch"
 
 # The full version, including alpha/beta/rc tags
@@ -40,10 +39,11 @@ release = "0.0.5"
 
 extensions = [
     "sphinx.ext.napoleon",
+    "sphinx.ext.autodoc",
     "sphinx.ext.duration",
     "sphinx.ext.doctest",
-    "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
+    "sphinx.ext.viewcode",
     "myst_parser",
 ]
 
@@ -55,7 +55,7 @@ templates_path = ["_templates"]
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store", "_templates"]
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -73,4 +73,3 @@ html_theme = "classic"
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ["_static"]
 html_css_files = ["custom.css"]
-

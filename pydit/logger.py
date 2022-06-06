@@ -1,16 +1,31 @@
-""" setup the logging features """
+""" Module to provide support for logging with typical parameters """
 import logging
 from logging.handlers import TimedRotatingFileHandler
-#TODO: consider other types of logging strategies like RotatingFileHandler
+
 
 def setup_logging(
     logfile="./audit.log", level_screen=logging.DEBUG, level_file=logging.DEBUG
 ):
-    """ Configure the logging both to screen and a file with sensible optional
-    parameters:
-    logfile= audit.log with rotation ever 50k and 5 backups
-    level_screen= one of the logging.DEBUG, logging.ERROR values
-    level_file= same
+    """Configure the logging both to screen and a file with sensible parameters
+
+    By default it will generate an audit.log file with daily rotation kept 7 days.
+    You can explore changing this to other kind of rotation/retention criteria.
+
+
+    Parameters
+    ----------
+    logfile : str, optional, default "./audit.log"
+        Path to the log file
+    level_screen: int, optional, default logging.DEBUG
+        Level of logging to screen
+    level_file: int, optional, default logging.DEBUG
+        Level of logging to file
+
+    Returns
+    -------
+    logger : logging.Logger
+        The logger object
+
     """
 
     log = logging.getLogger()
@@ -33,12 +48,16 @@ def setup_logging(
     log.addHandler(ch)
     return log
 
+
 def start_logging_info():
-    "Wrapper to start logging at info level right away"
-    return setup_logging(logfile="./audit.log", level_screen=logging.INFO, level_file=logging.INFO)
+    "Wrapper function to start logging at INFO level, with default log file"
+    return setup_logging(
+        logfile="./audit.log", level_screen=logging.INFO, level_file=logging.INFO
+    )
 
 
 def start_logging_debug():
-    "Wrapper to start logging at info level right away"
-    return setup_logging(logfile="./audit.log", level_screen=logging.DEBUG, level_file=logging.DEBUG)
-    
+    "Wrapper to start logging at DEBUG, with default log file"
+    return setup_logging(
+        logfile="./audit.log", level_screen=logging.DEBUG, level_file=logging.DEBUG
+    )

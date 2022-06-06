@@ -137,4 +137,3 @@ def test_coalesce_without_delete(df_nans):
         df_nans, "s1", "s2", target_column_name="s3", default_value=0
     )
     assert_frame_equal(result, expected)
-

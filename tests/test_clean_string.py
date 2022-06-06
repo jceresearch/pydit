@@ -14,7 +14,6 @@ from pydit import setup_logging, clean_string
 logger = setup_logging()
 
 
-
 def test_clean_string():
     """test the clean string function"""
     assert clean_string(" John Smith 123  456 .  ") == "john_smith_123_456"
@@ -26,4 +25,5 @@ def test_clean_string():
 
 
 if __name__ == "__main__":
-    test_clean_string
+    # test_clean_string
+    pass

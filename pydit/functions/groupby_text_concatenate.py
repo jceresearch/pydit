@@ -1,10 +1,9 @@
-""" Groupby text column into concatenated text, with extra smartness """
+"""Groupby text column into concatenated text
+"""
 
 import logging
 
 import pandas as pd
-import numpy as np
-
 
 logger = logging.getLogger(__name__)
 
@@ -17,44 +16,30 @@ def groupby_text(
     field_separator=" ",
     row_separator="\n",
 ):
-    """
-    Groupby text column into concatenated text, with extra smartness
+    """Groupby text column into concatenated text
 
     Parameters
     ----------
+    df : DataFrame
+        Pandas DataFrame to apply the function to
+    key_cols : list or str
+        Key columns used for grouping
+    value_cols : list or str or None, optional, default None
+        Value colums to concatenate.
+    target_col_name : str, optional, default "groupby_text"
+        Name for the resulting column.
+    field_separator : str, optional, default " "
+        If multiple value_cols provided then how to concatenate.
+    row_separator : str, optional, default newline
+        Separator for the rows.
 
-    df: DataFrame
-        DataFrame to group
-    key_cols: list or str
-        key columns used for grouping
-    value_cols: list or str or None, optional
-        Value colums to concatenate
-        Defaults to None.
-    target_col_name: str, optional
-        name for the resulting column.
-        Defaults to "groupby_text".
-    field_separator: str, optional
-        if multiple value_cols provided then how to concatenate.
-        Defaults to " ".
-    row_separator: str, optional
-        separator for the rows.
-        Defaults to "\n".
 
     Returns
     -------
-
     DataFrame
-        A grouped dataframe with the concatenated text
+        A grouped dataframe with the concatenated text.
+
         This function does not mutate the input dataframe.
-
-    Examples
-    --------
-
-    See Also
-    --------
-
-
-
 
     """
     if not isinstance(df, pd.DataFrame):
@@ -83,7 +68,7 @@ def groupby_text(
     else:
         raise TypeError("value_cols must be a string or list of strings")
 
-    # pick just the columns we need, remove nans and conver to string
+    # pick just the columns we need, remove nans and convert to string
     df = (
         df[key_cols + value_cols].fillna("").astype(str).copy()
     )  # copy() to avoid mutating original df

@@ -34,7 +34,7 @@ def test_anonymise():
         [df3], ["mkey"], translation, create_new_hash_list=True
     )
     print("Translation2:", translation2)
-    
-    assert "This test is still in development" == False
-    
-    return True
+
+    assert True == False  # Test still in development
+
+    return

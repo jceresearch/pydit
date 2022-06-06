@@ -1,4 +1,4 @@
-""" Creates a new column with the top N most frequent values and the rest are replaced by Other """
+"""Creates a new column with the top N most frequent values and the rest are replaced by Other """
 
 import logging
 
@@ -16,22 +16,23 @@ def coalesce_values(
     Also can take a translation dictionary to do the manual translation prior
     to applying that top N limit.
 
-    Args:
+    Parameters
+    ----------
+    df_in : pandas.DataFrame
+        The dataframe to clean up
+    cols : list
+        The column names to coalesce
+    top_n_values_to_keep : int, optional, default 0
+        The number of top values to keep. If 0, all values will be kept.
+    translation_dict : dict, optional, default None
+        A dictionary to use for manual translation/coalescing.
+    other_label : str, optional, default "OTHER"
+        The label to use for the other values.
 
-        df_in (DataFrame): Pandas DataFrame to transform   
-        cols (Str or List): Column or list of columns to apply the selection
-        top_n_values_to_keep (int, optional): Top frequent categories to keep. 
-        Defaults to 0 (means that all categories are kept. Useful if we provided
-        a translation dictionary to keep all the translated values with no further 
-        consolidation.
-        translation_dict (dict, optional): Key>Value dictionary with the 
-        translation from original category to desired category. 
-        Defaults to None.
-        other_label (string,optional): What to put on the other categories.
-        Defaults to "OTHER"
-
-    Returns:
-        Returns a copy of the DataFrame with the new columns
+    Returns
+    -------
+    pandas.DataFrame
+        Pandas DataFrame with new column with coalesced values.
 
     """
 

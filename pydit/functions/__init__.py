@@ -1,36 +1,36 @@
 """ 
-Main container of data wrangling functions.
+Sub-package (./functions) containing the core functionality of pydit.
 
 Functions are imported individually so they can be used from pydit directly:
 e.g. pydit.create_calendar()
 
 The modules are also self standing, you should be able to copy any .py file
 and import it in your script to use it with no dependencies on other modules.
-At the time of this comment, there are no exceptions to this design principle.
 
+There are currently no exceptions to this design principle.
 
 """
 
-from .create_calendar import create_calendar
-from .add_percentile import add_percentile
-from .profile_dataframe import profile_dataframe
-from .check_duplicates import check_duplicates
-from .check_sequence import check_sequence
-from .add_counts import add_counts_between_related_df
-from .check_referential_integrity import check_referential_integrity
-from .fillna_smart import fillna_smart
-from .check_blanks import check_blanks
-from .coalesce_values import coalesce_values
-from .cleanup_column_names import cleanup_column_names
+from .calendar import create_calendar
+from .percentile import add_percentile
+from .profile_dataframe_statistics import profile_dataframe
+from .duplicates import check_duplicates
+from .sequence import check_sequence
+from .referential_integrity_counts import add_counts
+from .referential_integrity_check import check_referential_integrity
+from .fillna import fillna_smart
+from .blanks import check_blanks
+from .coalesce_dataframe_values import coalesce_values
+from .cleanup_dataframe_columns_names import cleanup_column_names
 from .anonymise import anonymise_key
-from .count_cumulative_unique import count_cumulative_unique
-from .coalesce_columns import coalesce_columns
-from .check_benford import benford_to_dataframe
-from .check_benford import benford_to_plot
-from .check_benford import benford_list_anomalies
-from .collapse_levels import collapse_levels
-from .groupby_text import groupby_text
-from .keyword_search import keyword_search
+from .count_cumulative import count_cumulative_unique
+from .coalesce_dataframe_columns import coalesce_columns
+from .benford import benford_to_dataframe
+from .benford import benford_to_plot
+from .benford import benford_list_anomalies
+from .collapse_dataframe_levels import collapse_levels
+from .groupby_text_concatenate import groupby_text
+from .keyword_search_batch import keyword_search
 
 # Here we import each of the functions in the functions/ directory to have them
 # available in the functions namespace.

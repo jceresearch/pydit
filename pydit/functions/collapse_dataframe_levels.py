@@ -6,7 +6,7 @@ import pandas as pd
 logger = logging.getLogger(__name__)
 
 
-def collapse_levels(df: pd.DataFrame, sep: str = "_") -> pd.DataFrame:
+def collapse_levels(obj: pd.DataFrame, sep: str = "_") -> pd.DataFrame:
     """Flatten multi-level column dataframe to a single level.
 
     This method mutates the original DataFrame.
@@ -23,21 +23,31 @@ def collapse_levels(df: pd.DataFrame, sep: str = "_") -> pd.DataFrame:
     this through a simple string-joining of all the names across different
     levels in a single column.
 
-    Args:
+    Parameters
+    ----------
+    obj : pandas.DataFrame
+        The DataFrame to flatten.
+    sep : str, optional, default "_"
+        The separator to use when joining the column names.
+    
+    Returns
+    -------
+    pandas.DataFrame
+        A pandas DataFrame with single-level column index
 
-    :param df: A pandas DataFrame.
-    :param sep: String separator used to join the column level names.
-    :returns: A pandas DataFrame with single-level column index.
-    """  # noqa: E501
+    """
+    # noqa: E501
+    if not isinstance(obj, pd.DataFrame):
+        raise TypeError("obj must be a pandas DataFrame")
     if not isinstance(sep, str):
-        logger.debug("Invalid separator provider, defaulting to underscore")
-        sep = "_"
+        raise TypeError("Invalid separator provided. Must be a string.")
     # if already single-level, just return the DataFrame
-    if not isinstance(df.columns, pd.MultiIndex):
-        return df
+    if not isinstance(obj.columns, pd.MultiIndex):
+        return obj.copy()
+    # otherwise, flatten the multi-level index
 
+    df = obj.copy()
     df.columns = [
         sep.join(str(el) for el in tup if str(el) != "") for tup in df  # noqa: PD011
     ]
-
     return df

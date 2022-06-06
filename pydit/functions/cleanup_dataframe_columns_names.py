@@ -1,11 +1,9 @@
-""" Transform and Munging functions"""
+""" Module for cleaning up column names """
 
 import logging
 import string
 import re
 import random
-import string
-
 
 logger = logging.getLogger(__name__)
 
@@ -13,13 +11,31 @@ logger = logging.getLogger(__name__)
 def _deduplicate_list(
     list_to_deduplicate, default_field_name="column", force_lower_case=True
 ):
-    """deduplicates a list
-    Uses enumerate and a loop, so it is not good for very long lists
-    This function is for dealing with header/field names, where performance
-    is not really an issue
-    Returns a list of fields with no duplicates and suffixes where there were
-    duplicates
+    """Internal function for deduplicating a list.
+
+    Uses enumerate and a loop, so it is not good for very long lists.
+    This function is meant to be used for header/field names, where performance
+    is not a concern given the size of the list being on the 10s.
+
+    This is a copy of the corresponding function in the utility module
     V0.1 - 14 May 2022
+
+    Parameters
+    -----------
+
+    list_to_deduplicate : list
+        The list to deduplicate
+    default_field_name : str, optional, default "column"
+        The default field name to use if the field is empty
+    force_lower_case : bool, optional, default True
+        If True, will convert the field name to lower case
+
+    Returns
+    -------
+    list
+        Returns a list of fields with no duplicates and suffixes where there were duplicates.
+
+
     """
 
     def _get_random_string(length):
@@ -72,19 +88,24 @@ def _deduplicate_list(
 
 
 def cleanup_column_names(df, max_field_name_len=40, inplace=False):
-    """
-    Cleanup the column names of a Pandas dataframe. 
+    """Cleanup the column names of a Pandas dataframe.
 
     e.g. removes non alphanumeric chars, _ instead of space, perc instead
     of %, strips trailing spaces, converts to lowercase.
 
-    Args:
-        df (DataFrame): Pandas DataFrame
-        max_field_name_len (int, optional): Maximum length of field name. Defaults to 40.
-        inplace (bool, optional): If True, the dataframe is modified in place. Defaults to False.
-    Returns:
-        Pandas DataFrame with cleaned column names
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        The dataframe to clean up
+    max_field_name_len : int, optional, default 40
+        The maximum length of the field name
+    inplace : bool, optional, default False
+        If True, will modify the dataframe inplace
 
+    Returns
+    -------
+    pandas.DataFrame
+        Pandas DataFrame with cleaned column names
 
     """
     prev_cols = list(df.columns)

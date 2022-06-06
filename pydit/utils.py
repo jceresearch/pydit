@@ -1,22 +1,19 @@
-""" Convenience functions
-While these can be used within the pydit package, e.g. the logging or file manager module
-we should not use them as imports in the functions, as we want those to be self standing.
-The principle is that we could drop a particular function module to do an audit test and it would
-work just fine, being simple and self contained enough to be understood and audited,
-rather than relying on a complex set of imports, decorators and auxiliary functions.
-I still want to keep the master copy of those functions here, with tests and documentation.
-Because we would drop in the specific function module a copy at a point in time we need to somewhat keep version
-control. Possibly he test suite for a particular function/module should include the tests for those auxiliary functions. 
-Somewhat cumbersome but the idea is to make it easier for an auditor to use one specific module without having to
-understand the entire works of the package if he/she chooses to.
+"""Utility functions, they are not used directly in the core functions.
+ 
+The functions below can be used directly.
+However, when needed for a specific core function, instead of importing them, 
+we would create a copy of the function and rename it with an _ prefix.
+This is to ensure that a core function's module is self-standing, ie can be
+used/imported independently of pydit.
 
 """
-
 import random
 import string
 import logging
-import pandas as pd
 import re
+
+import pandas as pd
+
 
 import numpy as np
 
@@ -37,10 +34,14 @@ def print_green(*args):
 def deduplicate_list(
     list_to_deduplicate, default_field_name="column", force_lower_case=True
 ):
-    """deduplicates a list
+    """Deduplicates a list
+    
     Uses enumerate and a loop, so it is not good for very long lists
     This function is for dealing with header/field names, where performance
     is not really an issue
+    
+    
+    
     Returns a list of fields with no duplicates and suffixes where there were
     duplicates
     V0.1 - 14 May 2022
@@ -96,9 +97,11 @@ def deduplicate_list(
 
 
 def dataframe_to_code(df):
-    """utility function to convert a dataframe to a piece of code
-    that one can include in a test script or tutorial. May need extra tweaks
-    or imports , e.g. from pandas import Timestamp to deal with dates, etc.
+    """Convert a dataframe to source code that one can include in a test script or tutorial. 
+    
+    May need extra tweaks or imports, e.g. from pandas import Timestamp to deal with dates, etc.
+    
+    
     """
     data = np.array2string(df.to_numpy(), separator=", ")
     data = data.replace(" nan", " float('nan')")
@@ -144,8 +147,7 @@ def clean_string(t, keep_dot=False, space_to_underscore=True, case="lower"):
 
 
 def check_types(varname: str, value, expected_types: list):
-    """
-    One-liner syntactic sugar for checking types.
+    """ One-liner syntactic sugar for checking types.
     It can also check callables.
 
     Example usage:
@@ -177,8 +179,7 @@ def check_types(varname: str, value, expected_types: list):
 
 
 def create_test_df():
-    """
-    Convenience funtion to create test dataframes, currently creates one
+    """Create test dataframes, currently creates a simple one
     """
     # TODO: add more test dataframes/datasets
     # IMPORTANT these are NOT for the core test suite but for the exampels

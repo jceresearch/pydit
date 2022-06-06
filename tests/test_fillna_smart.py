@@ -39,4 +39,5 @@ def test_fillna_smart():
 
 if __name__ == "__main__":
     # execute only if run as a script
-    print(test_fillna_smart())
+    #print(test_fillna_smart())
+    pass

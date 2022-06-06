@@ -1,6 +1,4 @@
-""" 
-functions to sweep a dataframe for keywords and return a matrix of matches
-or a sparse matrix if the keyword list is large
+"""Functions to sweep a dataframe for keywords and return a matrix of matches.
 """
 
 import logging
@@ -28,7 +26,7 @@ def keyword_search(obj, keywords, columns=None):
     obj : pandas.DataFrame or pandas.Series
         The dataframe or series to search
     keywords : list
-        The list of keywords to search for
+        The list of regular expressions or string keywords to search for.
     columns : list
         The list of columns to search in, if None then all columns are searched
 
@@ -37,17 +35,6 @@ def keyword_search(obj, keywords, columns=None):
     DataFrame
         The dataframe with the new columns added
         This is a copy of the original dataframe
-
-    Examples
-    --------
-
-
-    See Also
-    --------
-
-
-
-
 
     """
 
