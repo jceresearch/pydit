@@ -8,7 +8,7 @@ import pytest
 from pandas.testing import assert_frame_equal
 
 # pylint: disable=redefined-outer-name
-# pylint: disable=import-error 
+# pylint: disable=import-error
 # pylint: disable=wrong-import-position
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from pydit import coalesce_columns
@@ -17,7 +17,10 @@ from pydit import coalesce_columns
 @pytest.fixture
 def df():
     """Base DataFrame fixture"""
-    return pd.DataFrame({"a": [1, np.nan, 3], "b": [2, 3, 1], "c": [2, np.nan, 9]})
+    return pd.DataFrame({
+        "a": [1, np.nan, 3], 
+        "b": [2, 3, 1], 
+        "c": [2, np.nan, 9]})
 
 
 @pytest.fixture
@@ -37,6 +40,16 @@ def df_text():
             "type": ["falcon", "falcon", "parrot", "Lion", "Monkey"],
         }
     )
+
+def test_coalesce_with_nans(df):
+    """Test output if `default_value` is not provided."""
+    result = coalesce_columns(df, "a", "b", "c")
+    expected=
+
+    assert result= expected
+
+
+
 
 
 def test_concat_all_texts(df_text):

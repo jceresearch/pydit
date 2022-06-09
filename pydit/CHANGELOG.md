@@ -2,6 +2,22 @@
 
 <!--next-version-placeholder-->
 
+
+## v0.0.5 (4/06/2022)
+
+### Fix
+
+- Lots of refactoring. Generally ensuring that using inplace=True returns True to avoid confusion.
+- Also working on test suite to improve it
+
+### Documentation
+
+- working on documentation across the board, thanks Autopilot for the help, couldn't have done it without you
+
+### Feature
+
+- Expanding the function to create test datasets to play and to put in examples, these are not used in the core test suite
+
 ## v0.0.4 (4/06/2022)
 
 ### Fix

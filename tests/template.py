@@ -1,4 +1,4 @@
-""" Scrap module to prototype tests"""
+""" Scrap/Test module to prototype tests"""
 import logging
 import sys
 import os

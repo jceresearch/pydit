@@ -43,7 +43,7 @@ def coalesce_columns(
 
 """
 
-    # TODO: #33 coalesce_columns(): Check exactly the overwrite works when operation is None and document in the help
+    # TODO: #33 coalesce_columns(): Check exactly how the overwrite works when operation is None and document in the help
 
     if not column_names:
         return df

@@ -190,9 +190,6 @@ def create_test_dataframe(dataset_name: str, n_rows: int = 10, n_cols: int = 10)
     pd.DataFrame
         A test dataframe
 
-
-
-
     """
 
     if dataset_name == "random_numeric":
