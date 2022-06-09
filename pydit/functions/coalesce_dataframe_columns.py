@@ -25,25 +25,22 @@ def coalesce_columns(
         The dataframe to clean up
     *column_names : str
         The column names to coalesce
-    target_column_name : str, optional, default None   
+    target_column_name : str, optional, default None
         The name of the column to store the coalesced values in.
         If None, the values will be stored in the first column.
     default_value : int, float, str, optional, default None
         The default value to use if the target column is empty.
-    operation : str, optional, "concatenate" or None, default None 
-        If None, the values will be overwritten and the latest column will prevail
+    operation : str, optional, "concatenate" or None, default None
+        If None, the first non nan will prevail, from left to right
         If "concatenate", the values will be concatenated
     separator : str, optional, default " "
         The separator to use when concatenating values
-    
+
     Returns
     -------
     pandas.DataFrame
         Pandas DataFrame with coalesced column.
-
-"""
-
-    # TODO: #33 coalesce_columns(): Check exactly how the overwrite works when operation is None and document in the help
+    """
 
     if not column_names:
         return df
