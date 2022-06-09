@@ -17,10 +17,7 @@ from pydit import coalesce_columns
 @pytest.fixture
 def df():
     """Base DataFrame fixture"""
-    return pd.DataFrame({
-        "a": [1, np.nan, 3], 
-        "b": [2, 3, 1], 
-        "c": [2, np.nan, 9]})
+    return pd.DataFrame({"a": [1, np.nan, 3], "b": [2, 3, 1], "c": [3, np.nan, 9]})
 
 
 @pytest.fixture
@@ -31,7 +28,7 @@ def df_nans():
 
 @pytest.fixture
 def df_text():
-    """ Simple dataframe with text columns"""
+    """Simple dataframe with text columns"""
     return pd.DataFrame(
         {
             "class": ["bird", "bird", "bird", "mammal", "mammal"],
@@ -41,15 +38,12 @@ def df_text():
         }
     )
 
-def test_coalesce_with_nans(df):
+
+def test_coalesce_with_nans(df, target_column_name="result"):
     """Test output if `default_value` is not provided."""
-    result = coalesce_columns(df, "a", "b", "c")
-    expected=
-
-    assert result= expected
-
-
-
+    result = coalesce_columns(df, "a", "b", "c", target_column_name="result")
+    expected = [1, 3, 3]
+    assert list(result["result"]) == expected
 
 
 def test_concat_all_texts(df_text):
