@@ -45,9 +45,10 @@ def check_blanks(
 
     Returns
     -------
-    DataFrame
+    pandas.DataFrame
         A dataframe with the counts of blanks in each column.
         Or a summary list with various counts.
+        if inplace is True, the dataframe is modified in place and returns True
 
     See also
     --------
@@ -65,6 +66,7 @@ def check_blanks(
             name = obj.name
 
         df = obj.to_frame(name=name)
+        inplace=False # to ensure we return a dataframe
     else:
         if not inplace:
             df = obj.copy()
@@ -106,5 +108,8 @@ def check_blanks(
     if totals_only:
         dict_totals = dict(zip(cols, total_results), columns=["column", "count"])
         return dict_totals
+
+    if inplace:
+        return True
 
     return df

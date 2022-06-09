@@ -10,26 +10,32 @@ def create_calendar(start="1975-01-01", end="2050-12-31"):
 
     This can be used when doing facets/aggregation, similar to the usual
     calendar table that we create automatically in PowerBI.
-    Args:
-        start (str, optional): start date. Defaults to "1975-01-01".
-        end (str, optional): end date. Defaults to "2050-12-31".
     
-    Returns:
-        DataFrame: a calendar DataFrame with various fields for:
+    Parameters
+    ----------
+    start : str, optional, default: "1975-01-01"
+        The start date of the calendar.
+    end : str, optional, default: "2050-12-31"
+        The end date of the calendar.
+    
+    Returns
+    -------
+    pandas.DataFrame
+        A dataframe with the calendar dates and fields for:
             - year
             - month
             - day
             - week
             - quarter
             - day_of_year
-            - weekday
+            - weekday (0=Monday, 6=Sunday)
             - weekday_name
             - weekday_name_short
             - weekend (True/False)
             - yyyymmdd
-            - yyyymm
-            - yyyyww
-            - yyyyq
+            - yyyymm (month number)
+            - yyyyww (week number)
+            - yyyyq (quarter)
 
     
     """

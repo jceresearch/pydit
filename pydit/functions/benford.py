@@ -86,7 +86,8 @@ def benford_to_dataframe(obj, column_name="", first_n_digits=1):
     Returns
     -------
     DataFrame
-        A dataframe with the expected and actual Benford's Law frequency.
+        A new dataframe with the expected and actual Benford's Law frequency.
+
 
     """
 
@@ -139,8 +140,7 @@ def benford_to_plot(df, column_name, first_n_digits=1):
     Returns
     -------
     DataFrame
-        A dataframe with the expected and actual Benford's Law frequency.
-
+        A new dataframe with the expected and actual Benford's Law frequency.
         Also it would return a plot of the histogram with the expected and actual frequencies.
 
     """
@@ -162,7 +162,7 @@ def benford_to_plot(df, column_name, first_n_digits=1):
 def benford_list_anomalies(
     df, column_name, top_n_digits=3, first_n_digits=1, return_anomalies_only=False,
 ):
-    """Checks the Benford's Law frequencies returning the results in a copy of the original dataframe.
+    """Returns the Benford's Law frequencies expected and actual for a column of values.
 
     Also adds an extra "flag_bf_anomaly" boolean column that is True for those
     records where the first n digits match those identified as top N anomalies
@@ -179,20 +179,20 @@ def benford_list_anomalies(
         column_name : str
             The column name to be analyzed.
         top_n_digits : int, optional, default: 3
-            Threshold for when we consider an anomaly, based on rank of abs difference.
+            Threshold for when we consider an anomaly, based on rank of abs difference. 
         first_n_digits : int, optional, default: 1
-            The number of first digits to be considered.
+            The number of first digits to be considered Typically first 1 and 2 digits are enough.
         only_anomalies : boolean, optional, default: False
             True to return just the anomalies. False for full original dataframe
 
 
     Returns
     -------
-    DataFrame
+    pandas.DataFrame
         A copy of the dataframe with the expected and actual Benford's Law frequency.
         Also adds an extra "flag_bf_anomaly" boolean column that is True for those
         records where the first n digits match those identified as top N anomalies
- 
+
     """
     dfres = benford_to_dataframe(df, column_name, first_n_digits)
     anomalies = list(

@@ -43,9 +43,9 @@ def fillna_smart(
     inplace: bool, optional, default False
         If True, the dataframe is modified in place.
 
-    Returns:
-
-    DataFrame
+    Returns
+    -------
+    pandas.DataFrame
         Returns a copy of the original dataframe with modifications
 
     """

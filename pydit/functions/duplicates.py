@@ -54,7 +54,7 @@ def check_duplicates(
 
     Returns
     -------
-    DataFrame
+    pandas.DataFrame
         Returns the DataFrame with the duplicates or None if no duplicates found.
 
     """

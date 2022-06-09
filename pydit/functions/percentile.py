@@ -15,22 +15,17 @@ def add_percentile(df, col, col_group=None, inplace=False):
 
     Parameters
     ----------
-
     df : DataFrame
         A pandas Dataframe object
-
     col : str
         The column to calculate the percentile for
-
-    col_group : list, optional
+    col_group : list, optional, default None
         The column to group by, by default None
-
-    inplace : bool, optional
+    inplace : bool, optional, default False
         If True the original dataframes will be mutated, by default False
 
     See Also:
     ---------
-
     https://stackoverflow.com/questions/50804120/how-do-i-get-the-percentile-for-a-row-in-a-pandas-dataframe
     Using the percentile with linear interpolation method, but kept various
     ranks calculations for reference.
@@ -49,14 +44,12 @@ def add_percentile(df, col, col_group=None, inplace=False):
 
     Returns
     -------
-
-    DataFrame
+    pandas.DataFrame
         If inplace=False, returns a copy of the dataframe with the new columns added.
         If inplace=True, it will return True, and mutate the original dataframes.
 
     Examples
     --------
-
     >>> import pydit
     >>> pydit.start_logging_info()
     >>> df = pydit.create_test_df()
