@@ -15,7 +15,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from pydit import keyword_search
 
 
-def test_keyword_search():
+def test_keyword_search_re():
     """Base DataFrame fixture"""
     data = {
         "col1": ["january", "february", "march", "april", "may", "june"],
@@ -44,5 +44,10 @@ def test_keyword_search():
     assert list(res["kw_match_all"]) == [True, True, True, True, True, True]
 
 
+# TODO test_keyword_search_str pending
+def test_keyword_search_str():
+    return "test not implemented"
+
+
 if __name__ == "__main__":
-    test_keyword_search()
+    pass
