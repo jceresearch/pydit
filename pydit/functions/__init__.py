@@ -31,6 +31,8 @@ from .benford import benford_list_anomalies
 from .collapse_dataframe_levels import collapse_levels
 from .groupby_text_concatenate import groupby_text
 from .keyword_search_batch import keyword_search
+from .truncate_datetime import truncate_datetime_dataframe
+
 
 # Here we import each of the functions in the functions/ directory to have them
 # available in the functions namespace.
