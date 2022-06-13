@@ -22,6 +22,7 @@ Read me
    :hidden:
 
    Home page <self>
+   pydit
    API reference <_autosummary/pydit>
 
 
