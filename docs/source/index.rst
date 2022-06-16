@@ -17,14 +17,14 @@ Read me
 
 .. include:: readme_link.rst
 
+Detailed documentation
+======================
    
 .. toctree::
-   :hidden:
+
 
    Home page <self>
-   pydit
    API reference <_autosummary/pydit>
-
 
 
 Indices and tables
