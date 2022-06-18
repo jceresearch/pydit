@@ -25,7 +25,8 @@ def check_blanks(
     plus a summary column that is True if any column has blanks.
 
     It can optionally return a summary dataframe.
-
+    Check out https://github.com/ResidentMario/missingno library for
+    a nice visualization (seems to come with Anaconda)
 
     Parameters
     ----------
@@ -55,6 +56,7 @@ def check_blanks(
     profile_dataframe() : Profile the dataframe, includes metrics on blanks
 
     """
+    # TODO #34 : check_blanks() Refactor to have more performance for the summary
 
     # We validate and standardise the input
     if not isinstance(obj, (pd.DataFrame, pd.Series)):
@@ -66,7 +68,7 @@ def check_blanks(
             name = obj.name
 
         df = obj.to_frame(name=name)
-        inplace=False # to ensure we return a dataframe
+        inplace = False  # to ensure we return a dataframe
     else:
         if not inplace:
             df = obj.copy()
