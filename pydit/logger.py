@@ -4,21 +4,22 @@ from logging.handlers import TimedRotatingFileHandler
 
 
 def setup_logging(
-    logfile="./audit.log", level_screen=logging.DEBUG, level_file=logging.DEBUG
+    logfile="./audit.log", level_screen=logging.INFO, level_file=logging.INFO
 ):
     """Configure the logging both to screen and a file with sensible parameters
 
     By default it will generate an audit.log file with daily rotation kept 7 days.
     You can explore changing this to other kind of rotation/retention criteria.
-
+    By default it will log at INFO level. I tried with DEBUG but some libraries
+    start to log a lot of garbage (e.g. faker) and I had to settle on INFO.
 
     Parameters
     ----------
     logfile : str, optional, default "./audit.log"
         Path to the log file
-    level_screen: int, optional, default logging.DEBUG
+    level_screen: int, optional, default logging.INFO
         Level of logging to screen
-    level_file: int, optional, default logging.DEBUG
+    level_file: int, optional, default logging.INFO
         Level of logging to file
 
     Returns
@@ -50,14 +51,14 @@ def setup_logging(
 
 
 def start_logging_info():
-    "Wrapper function to start logging at INFO level, with default log file"
+    "Wrapper  for setup_logging() to start logging at INFO level, with default parameters"
     return setup_logging(
         logfile="./audit.log", level_screen=logging.INFO, level_file=logging.INFO
     )
 
 
 def start_logging_debug():
-    "Wrapper to start logging at DEBUG, with default log file"
+    "Wrapper for setup_logging() to start logging at DEBUG level, with default parameters"
     return setup_logging(
         logfile="./audit.log", level_screen=logging.DEBUG, level_file=logging.DEBUG
     )

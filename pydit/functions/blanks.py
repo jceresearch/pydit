@@ -15,8 +15,8 @@ logger = logging.getLogger(__name__)
 def check_blanks(
     obj,
     columns=None,
-    include_zeroes=True,
-    include_nullstrings_and_spaces=True,
+    include_zeroes=False,
+    include_nullstrings_and_spaces=False,
     totals_only=False,
     inplace=False,
 ):
@@ -32,17 +32,16 @@ def check_blanks(
     ----------
     obj : DataFrame or Series
         The dataframe or series to check for blanks
-    columns : list, optional
+    columns : list, optional, default None
         The columns to check for blanks. If None, all columns are checked.
-    include_zeroes : bool, optional
+    include_zeroes : bool, optional, default False
         If True, checks for zeroes as blanks
-    include_nullstrings_and_spaces : bool, optional
+    include_nullstrings_and_spaces : bool, optional, default False
         If True, checks for null strings and spaces as blanks
-    totals_only : bool, optional
+    totals_only : bool, optional, default False
         If True, only the total counts are returned
-    inplace : bool, optional
+    inplace : bool, optional, default False
         If True, the dataframe is modified in place. If False, a new dataframe is returned.
-        Defaults to False.
 
     Returns
     -------
@@ -80,36 +79,36 @@ def check_blanks(
     else:
         cols = df.columns
         logger.debug("Using all columns")
-    try:
-        dfsubset = df[cols]
-    except:
-        raise ValueError("Columns not found in dataframe")
+    if not set(cols).issubset(set(df.columns)):
+        raise ValueError("Column(s) provided not found in the dataframe")
 
     fields = ",".join(cols)
     logger.info("Checking for blanks in %s", fields)
-    total_results = []
+    total_results = {}
+
     for c in cols:
         if is_numeric_dtype(df[c]) and include_zeroes:
-            df[c + "_blanks"] = (pd.isna(df[c])) | (df[c] == 0)
+            s = (pd.isna(df[c])) | (df[c] == 0)
+            if not totals_only:
+                df[c + "_blanks"] = s
+            total_results[c] = s.sum()
         elif is_string_dtype(df[c]) and include_nullstrings_and_spaces:
-            df[c + "_strip"] = df[c].fillna("").astype(str).str.strip()
-            logger.debug("Checking for spaces and nullstring too in %s", c)
-            df[c + "_blanks"] = ~df[c + "_strip"].astype(bool)
-            df.drop(c + "_strip", axis=1, inplace=True)
+            s = ~df[c].fillna("").astype(str).str.strip().astype(bool)
+            if not totals_only:
+                df[c + "_blanks"] = s
+            total_results[c] = s.sum()
         else:
-            logger.debug("Checking just for NaN or NaT in %s", c)
-            df[c + "_blanks"] = pd.isna(df[c])
-        total_results.append(df[c + "_blanks"].sum())
-    new_cols = [c + "_blanks" for c in cols]
-    df["has_blanks"] = np.any(df[new_cols], axis=1)
+            if not totals_only:
+                df[c + "_blanks"] = pd.isna(df[c])
+            total_results[c] = df[c].isnull().sum()
 
-    logger.info(
-        "Total blanks found in each column:\n%s", dict(zip(cols, total_results))
-    )
+    if not totals_only:
+        new_cols = [c + "_blanks" for c in cols]
+        df["has_blanks"] = np.any(df[new_cols], axis=1)
 
+    logger.info("Total blanks found in each column:\n%s", total_results)
     if totals_only:
-        dict_totals = dict(zip(cols, total_results), columns=["column", "count"])
-        return dict_totals
+        return total_results
 
     if inplace:
         return True
