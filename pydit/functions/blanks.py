@@ -83,6 +83,11 @@ def check_blanks(
 
     fields = ",".join(cols)
     logger.info("Checking for blanks in %s", fields)
+    if include_zeroes:
+        logger.info("Including zeroes as blanks")
+    if include_nullstrings_and_spaces:
+        logger.info("Including null strings and spaces as blanks")
+
     total_results = {}
 
     for c in cols:

@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 
 def coalesce_values(
-    df_in, cols, top_n_values_to_keep=0, translation_dict=None, other_label="OTHER"
+    df_in, cols, top_n_values_to_keep=10, translation_dict=None, other_label="OTHER"
 ):
     """
     Creates a new column with the top N most frequent values and the rest are replaced by Other.
@@ -22,8 +22,8 @@ def coalesce_values(
         The dataframe to clean up
     cols : list
         The column names to coalesce
-    top_n_values_to_keep : int, optional, default 0
-        The number of top values to keep. If 0, all values will be kept.
+    top_n_values_to_keep : int, optional, default 10
+        The number of top values to keep. 
     translation_dict : dict, optional, default None
         A dictionary to use for manual translation/coalescing.
     other_label : str, optional, default "OTHER"
@@ -70,6 +70,9 @@ def coalesce_values(
         else:
             return "empty list"
 
+    if top_n_values_to_keep <= 0:
+        raise ValueError("top_n_values_to_keep must be greater than 0")
+
     if translation_dict:
         df[col + "_translate"] = df.apply(
             lambda r: translation_dict[r[col]]
@@ -79,18 +82,22 @@ def coalesce_values(
         )
         col = col + "_translate"
 
-    if top_n_values_to_keep > 0:
-        print(col)
-        print(df[col].value_counts())
-        value_counts = df[col].value_counts().reset_index()
-        value_counts_topN = list(value_counts[0:top_n_values_to_keep]["index"])
-        df[col + "_collapsed"] = df.apply(
-            lambda r: str.strip(str.upper(str(r[col])))
-            if r[col] in value_counts_topN
-            else other_label,
-            axis=1,
-        )
+    logger.info("Processing column %s", col)
+    logger.info("Unique values before: %s", len(df[col].unique()))
+    logger.info(
+        "Top %s values to keep:\n %s",
+        top_n_values_to_keep,
+        df[col].value_counts().nlargest(top_n_values_to_keep).index,
+    )
+    value_counts = df[col].value_counts().reset_index()
+    value_counts_topN = list(value_counts[0:top_n_values_to_keep]["index"])
+    df[col + "_collapsed"] = df.apply(
+        lambda r: str.strip(str.upper(str(r[col])))
+        if r[col] in value_counts_topN
+        else other_label,
+        axis=1,
+    )
 
-        print(value_counts_topN)
-
+    logger.info("Unique values after: %s", len(df[col + "_collapsed"].unique()))
+    logger.info("Value counts:\n%s", df[col + "_collapsed"].value_counts())
     return df
