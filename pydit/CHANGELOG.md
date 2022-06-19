@@ -2,6 +2,10 @@
 
 <!--next-version-placeholder-->
 
+## v0.0.6 (19/06/2022)
+
+### Fix
+- Refactoring check_blanks() to be cleaner how it does the summary, better tests and a change in the default behaviour (by default is restricted to just nans)
 
 ## v0.0.5 (4/06/2022)
 
