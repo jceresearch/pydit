@@ -47,15 +47,14 @@ def check_blanks(
     -------
     pandas.DataFrame
         A dataframe with the counts of blanks in each column.
-        Or a summary list with various counts.
-        if inplace is True, the dataframe is modified in place and returns True
+        Or a summary dictionary with various counts.
+        If inplace is True, the dataframe is modified in place and returns True
 
     See also
     --------
     profile_dataframe() : Profile the dataframe, includes metrics on blanks
 
     """
-    # TODO #34 : check_blanks() Refactor to have more performance for the summary
 
     # We validate and standardise the input
     if not isinstance(obj, (pd.DataFrame, pd.Series)):
