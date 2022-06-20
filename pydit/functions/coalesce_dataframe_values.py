@@ -26,7 +26,7 @@ def coalesce_values(
         The number of top values to keep. 
     translation_dict : dict, optional, default None
         A dictionary to use for manual translation/coalescing.
-    other_label : str, optional, default "OTHER"
+    other_label : str or int, optional, default "OTHER"
         The label to use for the other values.
 
     Returns
@@ -70,6 +70,15 @@ def coalesce_values(
         else:
             return "empty list"
 
+    if isinstance(other_label, str):
+        flag_str_label=True
+    elif isinstance(other_label, int):
+        flag_str_label=False
+    else:
+        raise TypeError("other_label must be a string or an integer")
+
+
+
     if top_n_values_to_keep <= 0:
         raise ValueError("top_n_values_to_keep must be greater than 0")
 
@@ -91,13 +100,20 @@ def coalesce_values(
     )
     value_counts = df[col].value_counts().reset_index()
     value_counts_topN = list(value_counts[0:top_n_values_to_keep]["index"])
-    df[col + "_collapsed"] = df.apply(
-        lambda r: str.strip(str.upper(str(r[col])))
-        if r[col] in value_counts_topN
-        else other_label,
-        axis=1,
-    )
-
+    if flag_str_label:
+        df[col + "_collapsed"] = df.apply(
+            lambda r: str.strip(str.upper(str(r[col])))
+            if r[col] in value_counts_topN
+            else other_label,
+            axis=1,
+        )
+    else:
+        df[col + "_collapsed"] = df.apply(
+            lambda r: r[col]
+            if r[col] in value_counts_topN
+            else other_label,
+            axis=1,
+        )
     logger.info("Unique values after: %s", len(df[col + "_collapsed"].unique()))
     logger.info("Value counts:\n%s", df[col + "_collapsed"].value_counts())
     return df

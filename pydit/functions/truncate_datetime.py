@@ -4,6 +4,7 @@ import datetime as dt
 import pandas as pd
 from pandas.api.types import is_datetime64_any_dtype
 
+
 def _truncate_datetime(timestamp: dt.datetime, datepart: str) -> dt.datetime:
     """Truncate a given timestamp to the given datepart.
 
@@ -39,10 +40,8 @@ def _truncate_datetime(timestamp: dt.datetime, datepart: str) -> dt.datetime:
 
     return dt.datetime(*recurrence)
 
-def truncate_datetime_dataframe(
-    df: pd.DataFrame,
-    datepart: str,
-) -> pd.DataFrame:
+
+def truncate_datetime_dataframe(df: pd.DataFrame, datepart: str,) -> pd.DataFrame:
     """Truncate times down to a user-specified precision of
     year, month, day, hour, minute, or second.
 
@@ -58,8 +57,6 @@ def truncate_datetime_dataframe(
     :returns: A pandas DataFrame with all valid datetimes truncated down
         to the specified precision.
     """
-    
-    
     ACCEPTABLE_DATEPARTS = ("YEAR", "MONTH", "DAY", "HOUR", "MINUTE", "SECOND")
     datepart = datepart.upper()
     if datepart not in ACCEPTABLE_DATEPARTS:
@@ -85,6 +82,4 @@ def truncate_datetime_dataframe(
     )
 
     return df
-
-
 
