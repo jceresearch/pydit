@@ -18,7 +18,7 @@ documentation="https://pydit.readthedocs.io/en/latest/"
 [tool.poetry.dependencies]
 python = "^3.8"
 pandas = "^1.2.1"
-numpy = "^1.21.5"
+numpy = "^1.22"
 openpyxl="^3.0.0"
 matplotlib="*"
 myst-parser ="*"
