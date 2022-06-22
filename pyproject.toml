@@ -3,7 +3,7 @@ name = "pydit-jceresearch"
 packages = [
 	{ include = "pydit" }
 ]
-version = "0.0.6"
+version = "0.0.7"
 description = "Data cleansing tools for Internal Auditors"
 authors = ["jceresearch <jceresearch@users.noreply.github.com>"]
 keywords=["internal audit", "munging", "cleansing", "audit"]
