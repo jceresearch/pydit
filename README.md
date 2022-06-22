@@ -56,7 +56,8 @@ df_profile=pydit.profile_dataframe(df) #will return a df with summary statistics
 - Numpy >= 1.21.1
 - openpyxl
 - Matplotlib (for the ocassional plot, e.g. Benford)
-- 
+
+
 ## Installation
 ```bash
 pip install pydit
@@ -71,7 +72,10 @@ Documentation can be found [here](https://pydit.readthedocs.io/en/latest/index.h
 git clone https://github.com/jceresearch/pydit.git
 pip install -e .
 ```
-This project uses ```pylint```and  ```black``` for linting and ```pytest``` for testing.
-It uses  ```sphinx``` and RTD for documentation and ```poetry``` for packaging.
+This project uses:
+- ```pylint```and  ```black``` for linting/style
+- ```pytest``` for testing.
+- ```sphinx``` and RTD for documentation 
+- ```poetry``` for packaging.
 
 
