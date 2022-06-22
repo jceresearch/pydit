@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "pydit-jceresearch"
+packages = [
+	{ include = "pydit" }
+]
+version = "0.0.7"
+description = "Data cleansing tools for Internal Auditors"
+authors = ["jceresearch <jceresearch@users.noreply.github.com>"]
+keywords=["internal audit", "munging", "cleansing", "audit"]
+classifiers=[
+"Development Status :: 3 - Alpha",
+"Programming Language :: Python :: 3 :: Only",
+"License :: OSI Approved :: MIT License"
+]
+license = "MIT"
+documentation="https://pydit.readthedocs.io/en/latest/"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pandas = "^1.2.1"
+numpy = "^1.21.5"
+openpyxl="^3.0.0"
+matplotlib="*"
+myst-parser ="*"
+
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

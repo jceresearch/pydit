@@ -1,0 +1,11 @@
+To build the documentation 
+sphinx-build ./docs/source ./docs/build  -a
+
+To publish to pypi
+poetry publish --build
+or poetry build and then poetry publish
+
+To remove a folder from git
+git rm -r --cached _autosummary
+git commit -m "Removed folder from repository"
+git push origin master
