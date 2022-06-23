@@ -71,7 +71,6 @@ def fillna_smart(
         elif is_datetime(df[col]):
             if date_fillna == "latest":
                 val = max(df[col])
-                # TODO: fillna_smart() add support for first/last date across all date columns.
             elif date_fillna == "first":
                 val = min(df[col])
             elif date_fillna == "today":
@@ -87,7 +86,6 @@ def fillna_smart(
                     )
             else:
                 val = pd.NaT
-                raise ValueError("date_fillna is not a valid input: %s", date_fillna)
             df[col].fillna(val, inplace=True)
         elif typ == "object":
             if not isinstance(text_fillna, str):
