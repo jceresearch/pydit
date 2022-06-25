@@ -40,6 +40,10 @@ def fillna_smart(
         If str, will attempt to parse the date using "%Y-%m-%d" format.
     text_fillna : str, optional, default ""
         The text to use for the nulls in the text columns.
+    include_empty_string : bool, optional, default False
+        Whether to consider empty string as nulls to fill.
+    include_spaces : bool, optional, default False
+        Whether to consider spaces as nulls to fill.
     inplace: bool, optional, default False
         If True, the dataframe is modified in place.
 
@@ -61,13 +65,29 @@ def fillna_smart(
         else:
             cols = list(set(cols))
 
+    logger.info("Filling nulls in columns: {}".format(cols))
+    if include_empty_string:
+        logger.info("Will consider empty string as null")
+    if include_spaces:
+        logger.info("Will consider spaces as null")
+
+    # Quick check of nans that will be filled
+    na_counts = dict(df[cols].isnull().sum())
+    logger.info("Quick check of nulls:")
+    for c in na_counts.keys():
+        logger.info("{} has {} nulls".format(c, na_counts[c]))
+
     dtypes = df.dtypes.to_dict()
     for col, typ in dtypes.items():
         if col not in cols:
             # we skip this column
             continue
+
         if ("int" in str(typ)) or ("float" in str(typ)):
             df[col].fillna(numeric_fillna, inplace=True)
+            logger(
+                "Filling nulls in numeric column {} with {}".format(col, numeric_fillna)
+            )
         elif is_datetime(df[col]):
             if date_fillna == "latest":
                 val = max(df[col])
@@ -80,17 +100,22 @@ def fillna_smart(
             elif isinstance(date_fillna, str):
                 try:
                     val = datetime.strptime(date_fillna, "%Y-%m-%d")
-                except:
+                except Exception as e:
                     raise ValueError(
-                        "Could not parse date_fillna parameter %s", date_fillna
-                    )
+                        "Could not parse date_fillna parameter %s" % date_fillna
+                    ) from e
             else:
                 val = pd.NaT
+            logger(
+                "Filling nulls in datetime column {} with {} : {} ".format(
+                    col, date_fillna, val
+                )
+            )
             df[col].fillna(val, inplace=True)
         elif typ == "object":
             if not isinstance(text_fillna, str):
                 raise ValueError(
-                    "text_fillna needs to be a string, provided: %s", text_fillna
+                    "text_fillna needs to be a string, provided: %s" % text_fillna
                 )
             if include_empty_string:
                 df[col] = df[col].replace("", np.nan)
@@ -100,7 +125,11 @@ def fillna_smart(
                     .apply(lambda x: x.strip() if isinstance(x, str) else x)
                     .replace("", np.nan)
                 )
-
+            logger(
+                "Filling nulls in object/text type column {} with {}".format(
+                    col, text_fillna
+                )
+            )
             df[col].fillna(text_fillna, inplace=True)
         if inplace:
             return True
