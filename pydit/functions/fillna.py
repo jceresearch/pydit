@@ -85,7 +85,7 @@ def fillna_smart(
 
         if ("int" in str(typ)) or ("float" in str(typ)):
             df[col].fillna(numeric_fillna, inplace=True)
-            logger(
+            logger.info(
                 "Filling nulls in numeric column {} with {}".format(col, numeric_fillna)
             )
         elif is_datetime(df[col]):
@@ -106,7 +106,7 @@ def fillna_smart(
                     ) from e
             else:
                 val = pd.NaT
-            logger(
+            logger.info(
                 "Filling nulls in datetime column {} with {} : {} ".format(
                     col, date_fillna, val
                 )
@@ -125,7 +125,7 @@ def fillna_smart(
                     .apply(lambda x: x.strip() if isinstance(x, str) else x)
                     .replace("", np.nan)
                 )
-            logger(
+            logger.info(
                 "Filling nulls in object/text type column {} with {}".format(
                     col, text_fillna
                 )
