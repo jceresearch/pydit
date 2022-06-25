@@ -52,13 +52,17 @@ def setup_logging(
 
 def start_logging_info():
     "Wrapper  for setup_logging() to start logging at INFO level, with default parameters"
-    return setup_logging(
+    logger = setup_logging(
         logfile="./audit.log", level_screen=logging.INFO, level_file=logging.INFO
     )
+    logger.info("Logging started at INFO level")
+    return logger
 
 
 def start_logging_debug():
     "Wrapper for setup_logging() to start logging at DEBUG level, with default parameters"
-    return setup_logging(
+    logger = setup_logging(
         logfile="./audit.log", level_screen=logging.DEBUG, level_file=logging.DEBUG
     )
+    logger.info("Logging started at DEBUG level")
+    return logger

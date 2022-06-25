@@ -174,3 +174,4 @@ test_nonzero_len.csv
 poetry.lock
 .icloud
 docs/source/_autosummary/
+tests/*.log
