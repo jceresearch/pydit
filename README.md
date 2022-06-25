@@ -53,7 +53,7 @@ df_profile=pydit.profile_dataframe(df) #will return a df with summary statistics
 ## Requires
 - Python >= 3.8
 - Pandas >= 1.2.1
-- Numpy >= 1.21.1
+- Numpy >= 1.22
 - openpyxl
 - Matplotlib (for the ocassional plot, e.g. Benford)
 

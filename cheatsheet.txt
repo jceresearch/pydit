@@ -2,6 +2,12 @@ To build the documentation
 sphinx-build ./docs/source ./docs/build  -a
 
 To publish to pypi
+update version in pyproject.toml
+update version in ./setup.cfg
+update version in ./CHANGELOG.md
+update version in ./docs/source/conf.py
+
+
 poetry publish --build
 or poetry build and then poetry publish
 
