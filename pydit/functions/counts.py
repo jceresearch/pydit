@@ -6,17 +6,18 @@ from typing import Hashable
 import pandas as pd
 
 
-def count_related(df, col, column_name="count"):
+def count_related(df, col, column_name=None):
     """Count the number of values from col
 
     Parameters
     ----------
     df : pd.DataFrame
         Dataframe to be analyzed
-    col : str
+    col : str or list of str
         Name of the column containing values to tally
-    column_name : str, optional, default 'count'
-        Name of the column to be created containing the count of values
+    column_name : str or list of str, optional, default None
+        Name of the columns to be created containing the count of values
+        If None, the column name will be "count_[col]".
 
     Returns
     -------
@@ -26,18 +27,55 @@ def count_related(df, col, column_name="count"):
 
 
 
+
     """
-    df = df.copy()
+    if not isinstance(df, pd.DataFrame):
+        raise TypeError("Expecting a dataframe")
 
-    def _get_counts(val):
-        if pd.isna(val):
-            return df[col].isna().sum()
+    if isinstance(col, str):
+        cols_list = [col]
+        if isinstance(column_name, str) and str.strip(column_name) != "":
+            column_name = [column_name]
+        elif isinstance(column_name, list) and len(column_name) > 1:
+            raise ValueError("column_name must be same length as col")
+        elif not isinstance(column_name, list):
+            raise TypeError("column_name must be a string or list of strings")
         else:
-            return len(df[df[col] == val])
+            flag_auto_name = True  # we ignore the column_name
 
-    count_list = [_get_counts(val) for index, val in enumerate(df[col])]
+    elif isinstance(col, list):
+        cols_list = col
+        if isinstance(column_name, list):
+            if len(column_name) != len(cols_list):
+                raise ValueError("column_name must be the same length as col")
+        else:
+            flag_auto_name = True  # ignore whatever we put there
+    else:
+        raise TypeError("Expecting a string or list of strings")
 
-    df[column_name] = count_list
+    for c in cols_list:
+        if c not in df.columns:
+            raise ValueError("Column not found in dataframe")
+
+    if column_name is None:
+        flag_auto_name = True
+
+    df = df.copy()
+    for i, c in enumerate(cols_list):
+
+        def _get_counts(val):
+            if pd.isna(val):
+                return df[col].isna().sum()
+            else:
+                return len(df[df[col] == val])
+
+        count_list = [_get_counts(val) for index, val in enumerate(df[col])]
+        if flag_auto_name:
+            cn = "count_" + c
+        else:
+            cn = column_name[i]
+        df[cn] = count_list
+
     return df
 
 
