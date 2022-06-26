@@ -23,7 +23,7 @@ from .blanks import check_blanks
 from .coalesce_dataframe_values import coalesce_values
 from .cleanup_dataframe_columns_names import cleanup_column_names
 from .anonymise import anonymise_key
-from .count_cumulative import count_cumulative_unique
+from .counts import count_cumulative_unique
 from .coalesce_dataframe_columns import coalesce_columns
 from .benford import benford_to_dataframe
 from .benford import benford_to_plot
@@ -32,8 +32,8 @@ from .collapse_dataframe_levels import collapse_levels
 from .groupby_text_concatenate import groupby_text
 from .keyword_search_batch import keyword_search
 from .truncate_datetime import truncate_datetime_dataframe
-from .merge_smart import merge_force_suffix
-
+from .merge import merge_force_suffix
+from .counts import count_related
 
 # Here we import each of the functions in the functions/ directory to have them
 # available in the functions namespace.

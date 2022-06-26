@@ -6,6 +6,41 @@ from typing import Hashable
 import pandas as pd
 
 
+def count_related(df, col, column_name="count"):
+    """Count the number of values from col
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        Dataframe to be analyzed
+    col : str
+        Name of the column containing values to tally
+    column_name : str, optional, default 'count'
+        Name of the column to be created containing the count of values
+
+    Returns
+    -------
+    pd.DataFrame
+        New dataframe with a new column containing the count of values
+
+
+
+
+    """
+    df = df.copy()
+
+    def _get_counts(val):
+        if pd.isna(val):
+            return df[col].isna().sum()
+        else:
+            return len(df[df[col] == val])
+
+    count_list = [_get_counts(val) for index, val in enumerate(df[col])]
+
+    df[column_name] = count_list
+    return df
+
+
 def count_cumulative_unique(
     df: pd.DataFrame,
     column_name: Hashable,
