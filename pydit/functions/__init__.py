@@ -32,8 +32,11 @@ from .collapse_dataframe_levels import collapse_levels
 from .groupby_text_concatenate import groupby_text
 from .keyword_search_batch import keyword_search
 from .truncate_datetime import truncate_datetime_dataframe
+from .merge_smart import merge_force_suffix
 
 
 # Here we import each of the functions in the functions/ directory to have them
 # available in the functions namespace.
 # In turn functions gets imported with * at root
+
+__version__ = "0.0.7"

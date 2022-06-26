@@ -6,7 +6,7 @@ update version in pyproject.toml
 update version in ./setup.cfg
 update version in ./CHANGELOG.md
 update version in ./docs/source/conf.py
-
+update version in ./pydit/__init__.py
 
 poetry publish --build
 or poetry build and then poetry publish

@@ -3,6 +3,11 @@
 <!--next-version-placeholder-->
 ## v0.0.7
 
+### Fix
+- Worked on the load and save , as well as logger functions to refine messages.
+### Feature
+
+- Added merge_force_suffix() which ensures columns have suffixes even if they dont collide
 
 
 ## v0.0.6 (19/06/2022)
