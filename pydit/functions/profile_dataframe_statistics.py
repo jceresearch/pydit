@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 
 def profile_dataframe(df, return_dict=False):
-    """ Create a summary of a DataFrame with various statistics.
+    """Create a summary of a DataFrame with various statistics.
 
     Returns a DataFrame or a dict with common statistics to profile the data.
     In particular it focuses on unique (cardinality) blanks, nulls, and datetimes.
@@ -24,13 +24,15 @@ def profile_dataframe(df, return_dict=False):
     -------
     DataFrame
         DataFrame with various statistics.
-        
+
     """
     # df=in_df.copy() # if we needed to do transformations create a copy
     if isinstance(df, pd.DataFrame):
         dtypes = df.dtypes.to_dict()
     else:
         raise TypeError("df must be a pandas.DataFrame")
+    logger.info("Profiling dataframe: %s", df.shape)
+
     col_metrics = []
     for col, typ in dtypes.items():
         metrics = {}
@@ -51,7 +53,6 @@ def profile_dataframe(df, return_dict=False):
             metrics["sum_abs"] = df[col].abs().sum(skipna=True)
             metrics["std"] = df[col].std()
             metrics["zeroes"] = np.count_nonzero(df[col] == 0)
-            # TODO: possibly add hist/sparkline data to further add to the profiling
         elif "int" in str(typ):
             metrics["max"] = max(df[col])
             metrics["min"] = min(df[col])
@@ -66,7 +67,7 @@ def profile_dataframe(df, return_dict=False):
             values = df[col].fillna("").astype(str).str.strip()
             numeric_chars = values.str.replace(
                 r"[^0-9^-^.]+", "", regex=True
-            )  # TODO: refactor this regex, currently very simplistic works only for clean id sequences, e.g. double dots
+            )  # TODO: refactor this regex for more general cases
             numeric_chars_no_blank = numeric_chars[numeric_chars.str.len() > 0]
             numeric = pd.to_numeric(numeric_chars_no_blank, errors="coerce")
             if len(numeric) > 0:
@@ -78,5 +79,6 @@ def profile_dataframe(df, return_dict=False):
     df_metrics = pd.DataFrame(col_metrics)
     df_metrics["cardinality_perc"] = df_metrics["count_unique"] / df_metrics["records"]
     if return_dict:
-        return df_metrics.set_index('column').T.to_dict()
+        return df_metrics.set_index("column").T.to_dict()
+
     return df_metrics
