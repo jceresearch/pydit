@@ -45,12 +45,12 @@ def merge_force_suffix(left, right, **kwargs):
 
     try:
         on_col = kwargs["on"]
-    except Exception as e:
+    except Exception:
         on_col = []
         try:
             left_on = kwargs["left_on"]
             right_on = kwargs["right_on"]
-        except Exception as e2:
+        except Exception:
             pass
 
     left_cols = [*on_col, *left_on]
