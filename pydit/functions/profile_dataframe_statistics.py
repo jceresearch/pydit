@@ -31,7 +31,7 @@ def profile_dataframe(df, return_dict=False):
         dtypes = df.dtypes.to_dict()
     else:
         raise TypeError("df must be a pandas.DataFrame")
-    logger.info("Profiling dataframe: %s", df.shape)
+    logger.info("Profiling dataframe: %s rows , %s columns", df.shape[0], df.shape[1])
 
     col_metrics = []
     for col, typ in dtypes.items():

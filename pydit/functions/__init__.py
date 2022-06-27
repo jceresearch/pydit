@@ -38,5 +38,3 @@ from .counts import count_related
 # Here we import each of the functions in the functions/ directory to have them
 # available in the functions namespace.
 # In turn functions gets imported with * at root
-
-__version__ = "0.0.7"
