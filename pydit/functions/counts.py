@@ -23,14 +23,14 @@ def count_related(df, col, column_name=None):
     -------
     pd.DataFrame
         New dataframe with a new column containing the count of values
-
-
-
-
-
     """
     if not isinstance(df, pd.DataFrame):
         raise TypeError("Expecting a dataframe")
+    if not column_name:
+        column_name = ""
+        flag_auto_name = True
+    else:
+        flag_auto_name = False
 
     if isinstance(col, str):
         cols_list = [col]
@@ -38,7 +38,7 @@ def count_related(df, col, column_name=None):
             column_name = [column_name]
         elif isinstance(column_name, list) and len(column_name) > 1:
             raise ValueError("column_name must be same length as col")
-        elif not isinstance(column_name, list):
+        elif not isinstance(column_name, (list, str)):
             raise TypeError("column_name must be a string or list of strings")
         else:
             flag_auto_name = True  # we ignore the column_name
@@ -56,10 +56,6 @@ def count_related(df, col, column_name=None):
     for c in cols_list:
         if c not in df.columns:
             raise ValueError("Column not found in dataframe")
-
-    if column_name is None:
-        flag_auto_name = True
-
     df = df.copy()
     for i, c in enumerate(cols_list):
 

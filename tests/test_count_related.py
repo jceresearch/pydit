@@ -22,17 +22,16 @@ def test_count_related():
             "type": ["Falcon", "falcon", "parrot", "Lion", "Monkey"],
         }
     )
-    res = count_related(df, "class")
+    res = count_related(df, "class", "count")
     exp = [3, 3, 3, 2, 2]
-
     assert list(res["count"]) == exp
-    res = count_related(df, "max_speed")
+    res = count_related(df, "max_speed", "count_max_speed")
     exp = [2, 2, 2, 2, 1]
-    assert list(res["count"]) == exp
-    res = count_related(df, "country")
+    assert list(res["count_max_speed"]) == exp
+    res = count_related(df, "country", "count")
     exp = [1, 1, 2, 2, 1]
     assert list(res["count"]) == exp
-    res = count_related(df, "type")
+    res = count_related(df, "type", "count")
     exp = [1, 1, 1, 1, 1]
     assert list(res["count"]) == exp
 
