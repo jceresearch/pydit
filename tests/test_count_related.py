@@ -1,11 +1,10 @@
 """ pytest module for count_related function"""
-from math import comb
+
 import os
 import sys
 
 import pandas as pd
 import numpy as np
-import pytest
 
 # pylint: disable=import-error disable=wrong-import-position
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
