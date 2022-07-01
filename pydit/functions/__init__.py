@@ -16,7 +16,6 @@ from .percentile import add_percentile
 from .profile_dataframe_statistics import profile_dataframe
 from .duplicates import check_duplicates
 from .sequence import check_sequence
-from .referential_integrity_counts import add_counts
 from .referential_integrity_check import check_referential_integrity
 from .fillna import fillna_smart
 from .blanks import check_blanks
@@ -33,7 +32,9 @@ from .groupby_text_concatenate import groupby_text
 from .keyword_search_batch import keyword_search
 from .truncate_datetime import truncate_datetime_dataframe
 from .merge import merge_force_suffix
-from .counts import count_related
+from .counts import count_related_key
+from .counts import count_values_in_col
+
 
 # Here we import each of the functions in the functions/ directory to have them
 # available in the functions namespace.

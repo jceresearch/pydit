@@ -1,4 +1,4 @@
-""" pytest module for count_related function"""
+""" pytest module for count_values_in_col function"""
 
 import os
 import sys
@@ -9,10 +9,10 @@ import numpy as np
 # pylint: disable=import-error disable=wrong-import-position
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from pydit import count_related
+from pydit import count_values_in_col
 
 
-def test_count_related():
+def test_count_values_in_col():
     """test count related basic functionality"""
     df = pd.DataFrame(
         {
@@ -23,21 +23,21 @@ def test_count_related():
             "type_lower": ["falcon", "falcon", "parrot", "lion", "monkey", "bee"],
         }
     )
-    res = count_related(df, "class", "count")
+    res = count_values_in_col(df, "class", "count")
     exp = [3, 3, 3, 2, 2, 1]
     assert list(res["count"]) == exp
-    res = count_related(df, "max_speed", "count_max_speed")
+    res = count_values_in_col(df, "max_speed", "count_max_speed")
     exp = [2, 2, 2, 2, 2, 2]
     assert list(res["count_max_speed"]) == exp
-    res = count_related(df, "country", "count")
+    res = count_values_in_col(df, "country", "count")
     exp = [1, 1, 2, 2, 2, 2]
     assert list(res["count"]) == exp
-    res = count_related(df, "type", "count")
+    res = count_values_in_col(df, "type", "count")
     exp = [1, 1, 1, 1, 1, 1]
     assert list(res["count"]) == exp
 
 
-def test_count_related_combined():
+def test_count_values_in_col_combined():
     """test combined count"""
     df = pd.DataFrame(
         {
@@ -48,19 +48,19 @@ def test_count_related_combined():
             "type_lower": ["falcon", "falcon", "parrot", "lion", "monkey", "bee"],
         }
     )
-    res = count_related(df, ["class", "type"], "count", combined=True)
+    res = count_values_in_col(df, ["class", "type"], "count", combined=True)
     exp = [1, 1, 1, 1, 1, 1]
     assert list(res["count_combined"]) == exp
 
-    res = count_related(df, ["class", "type_lower"], combined=True)
+    res = count_values_in_col(df, ["class", "type_lower"], combined=True)
     exp = [2, 2, 1, 1, 1, 1]
     assert list(res["count_combined"]) == exp
 
-    res = count_related(df, ["max_speed", "country"], combined=True)
+    res = count_values_in_col(df, ["max_speed", "country"], combined=True)
     exp = [1, 1, 2, 2, 2, 2]
     assert list(res["count_combined"]) == exp
 
 
 if __name__ == "__main__":
-    # test_count_related_combined()
+    # test_count_values_in_col_combined()
     pass
