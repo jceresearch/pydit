@@ -9,4 +9,4 @@ from .logger import setup_logging
 from .logger import start_logging_info
 from .logger import start_logging_debug
 
-__version__ = "0.0.7"
+__version__ = "0.0.8"

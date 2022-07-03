@@ -10,6 +10,7 @@ sphinx-build ./docs/source ./docs/build  -a
 # update version in ./CHANGELOG.md
 # update version in ./docs/source/conf.py
 # update version in ./pydit/__init__.py
+# update any change in requirements in the README.md
 
 poetry publish --build
 # or poetry build and then poetry publish
