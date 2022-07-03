@@ -1,15 +1,22 @@
 # Changelog
 
-<!--next-version-placeholder-->
-## v0.0.7 (UNRELEASED)
+## v0.0.7 (3/07/2022)
+
+### Features
+
+- Fillna_smart() improved 
+- Implemented a count_values_in_col(), can do combined columns
+- Implemented merge_smart() to improve handling of suffixes
 
 ### Fix
 
-
+- Many fixes and refactoring, most notably logging when saving and load files
+- renamed count_related()
 
 ## v0.0.6 (19/06/2022)
 
 ### Fix
+
 - Refactoring check_blanks() to be cleaner how it does the summary, better tests and a change in the default behaviour (by default is restricted to just nans)
 
 ## v0.0.5 (4/06/2022)

@@ -1,17 +1,22 @@
-To build the documentation 
+conda activate pydit
+
+# To build the documentation 
+rm -r ./docs/source/_autosummary/*   #delete the content of ./docs/source/_autosummary
 sphinx-build ./docs/source ./docs/build  -a
 
-To publish to pypi
-update version in pyproject.toml
-update version in ./setup.cfg
-update version in ./CHANGELOG.md
-update version in ./docs/source/conf.py
-update version in ./pydit/__init__.py
+# Manual steps to publish to pypi
+# update version in pyproject.toml
+# update version in ./setup.cfg
+# update version in ./CHANGELOG.md
+# update version in ./docs/source/conf.py
+# update version in ./pydit/__init__.py
 
 poetry publish --build
-or poetry build and then poetry publish
+# or poetry build and then poetry publish
 
-To remove a folder from git
-git rm -r --cached _autosummary
-git commit -m "Removed folder from repository"
-git push origin master
+# To remove a folder from git
+# git commit -m "Removed folder from repository"
+# git rm -r --cached _autosummary
+# git push origin master
+
+
