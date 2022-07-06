@@ -97,7 +97,7 @@ def keyword_search(
     obj,
     keywords,
     columns=None,
-    return_hit_columns_only=True,
+    return_hit_columns_only=False,
     regexp=True,
     case_sensitive=False,
 ):
@@ -117,16 +117,16 @@ def keyword_search(
         The list of regular expressions or string keywords to search for.
     columns : list
         The list of columns to search in, if None then all columns are searched
-    return_hit_columns_only : bool, optional, default=True
-        If True then it only returns the boolean columns created, otherwise
+    return_hit_columns_only : bool, optional, default=False
+        If True then it only returns the boolean columns created, by default
         it will return the dataframe with the boolean columns added.
     regexp : bool, default True
         If True then the keywords are treated as regular expressions, otherwise
         a simpler string search is performed.
     case_sensitive : bool, default False
         If True then the keywords are case sensitive. The most typical
-        case is that we NOT care about case sensitivity.
-        You can use case_sensitive=True and include special prefix (?i) in the
+        case is that we do NOT care about case sensitivity.
+        Note: use case_sensitive=True and include special prefix (?i) in the
         regexp itself to disable case sensitivity.
         E.g. the same way you do re.findall('(?i)test', s)
 
