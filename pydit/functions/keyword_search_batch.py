@@ -3,6 +3,7 @@
 
 import logging
 import re
+import math
 
 import pandas as pd
 import numpy as np
@@ -49,12 +50,14 @@ def _keyword_search_re(keywords, df, case_sensitive):
             raise ValueError("Invalid regular expression: " + re_text) from e
     dfres = pd.DataFrame()
     n = 1  # used for column naming
+    zeroes = max(math.ceil(math.log10(len(keywords))), 2)
     for p in re_compiled:
         logger.info("Searching for keyword: %s", p.pattern)
         regmatch = np.vectorize(lambda x: bool(p.search(x)))
         res = regmatch(df["dummy_keyword_search"].values)
         logger.info("Found %d matches", sum(res))
-        dfres["kw_match" + str.zfill(str(n), 2)] = res
+
+        dfres["kw_match" + str.zfill(str(n), zeroes)] = res
         n = n + 1
     return dfres
 
@@ -100,6 +103,7 @@ def keyword_search(
     return_hit_columns_only=False,
     regexp=True,
     case_sensitive=False,
+    labels=None,
 ):
     """
     Searches the keywords in a dataframe or series and returns a matrix of matches
@@ -129,6 +133,10 @@ def keyword_search(
         Note: use case_sensitive=True and include special prefix (?i) in the
         regexp itself to disable case sensitivity.
         E.g. the same way you do re.findall('(?i)test', s)
+    labels : list, optional
+        The list of labels to use for the columns, if None then the labels are
+        kw_match_NN. Labels must be the same length as the number of keywords.
+        But they could be repeated and automagically will be grouped/rolled up.
 
     Returns
     -------
@@ -163,6 +171,24 @@ def keyword_search(
         else:
             raise TypeError("Type not recognised")
 
+    if labels and (len(labels) != len(keywords)):
+        raise ValueError("Number of labels must match number of keywords")
+    if len(keywords) < 20:
+        logger.info("Searching for keywords: %s", keywords)
+    else:
+        logger.info("Searching for %d keywords", len(keywords))
+    logger.info("Rows to check: %s", df.shape[0])
+    if case_sensitive:
+        logger.info("Applying case sensitive search")
+    if not regexp:
+        logger.info("Applying simple keyword search instead of regexp")
+    if labels:
+        if len(set(labels)) < len(keywords):
+            logger.info(
+                "Labels provided are repeated, so they will be rolled up using OR logical operator"
+            )
+    if return_hit_columns_only:
+        logger.info("Returning only the results columns")
     df.fillna("", inplace=True)
     if len(columns) > 1:
         df["dummy_keyword_search"] = df[columns].astype(str).T.agg(" ".join)
@@ -174,8 +200,26 @@ def keyword_search(
     else:
         dfres = _keyword_search_str(keywords, df, case_sensitive)
 
+    if labels:
+        if len(set(labels)) == len(dfres.columns):
+            dfres.columns = labels
+        else:
+            # we are dealing with multiple labels to group
+
+            dfresg = pd.DataFrame()
+            for l in set(labels):
+                cols = []
+                for i, c in enumerate(dfres.columns):
+                    if l == labels[i]:
+                        cols.append(c)
+                dfresg[l] = np.logical_or.reduce(dfres[cols], axis=1)
+            dfres = dfresg.copy()
+
     dfres["kw_match_all"] = dfres.apply(any, axis=1)
     if return_hit_columns_only:
+        logger.info("Returning %s columns", dfres.columns)
         return dfres
+
     df = df.join(dfres)
+    logger.info("Returning %s columns", df.columns)
     return df
