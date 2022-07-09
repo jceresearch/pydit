@@ -10,7 +10,13 @@ import pandas as pd
 # from datetime import datetime, date, timedelta
 # pylint: disable=import-error disable=wrong-import-position
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from pydit import benford_to_dataframe, setup_logging
+from pydit import (
+    benford_to_dataframe,
+    setup_logging,
+    benford_to_plot,
+    benford_list_anomalies,
+)
+
 
 logger = setup_logging()
 
@@ -168,8 +174,141 @@ def test_check_benford():
     assert list(dfres["bf_diff"]) == [0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 
+def test_benford_chart():
+    """ testing the benford chart"""
+    d = [
+        np.nan,
+        " ",
+        " ",
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -1,
+        11,
+        1.11,
+        0.1111,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        4,
+        4,
+        4,
+        4,
+        5,
+        5,
+        5,
+        5,
+        6,
+        6,
+        6,
+        7,
+        7,
+        7,
+        8,
+        8,
+        9,
+        9,
+    ]
+    df = pd.DataFrame(d, columns=["test"])
+
+    res = benford_to_plot(df, "test", 1, show=False, filename="./tests/output/test.png")
+    assert res.shape == (9, 7)
+
+
+def test_benford_list_anomalies():
+    d = [
+        np.nan,
+        " ",
+        " ",
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -1,
+        11,
+        1.11,
+        0.1111,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        3,
+        3,
+        3,
+        3,
+        3,
+        3,
+        4,
+        4,
+        4,
+        4,
+        5,
+        5,
+        5,
+        5,
+        6,
+        6,
+        6,
+        7,
+        7,
+        7,
+        8,
+        8,
+        9,
+        9,
+    ]
+    df = pd.DataFrame(d, columns=["test"])
+
+    res = benford_list_anomalies(df, "test", 1)
+
+    assert res[res["bf_exp_count"] > 0]["bf_diffperc"].sum() == 0
+
+
 if __name__ == "__main__":
     # execute only if run as a script
-    # test_check_benford()
-    # test_check_benford_wrong_inputs()
+    test_benford_chart()
     pass

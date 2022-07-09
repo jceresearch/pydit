@@ -18,6 +18,7 @@ there is a tendency to see higher number of transactions with high first digits
 
 """
 
+from fileinput import filename
 import logging
 import math
 
@@ -125,7 +126,7 @@ def benford_to_dataframe(obj, column_name="", first_n_digits=1):
     return dfres
 
 
-def benford_to_plot(df, column_name, first_n_digits=1):
+def benford_to_plot(df, column_name, first_n_digits=1, filename=None, show=True):
     """ Plots the histogram with Benford's Law expected and the actual frequencies.
     
     Parameters
@@ -136,6 +137,11 @@ def benford_to_plot(df, column_name, first_n_digits=1):
         The column name to be analyzed. Not needed for series or lists
     first_n_digits : int, optional, default: 1
         The number of first digits to be considered.
+    filename : str, optional, default: None
+        The filename to save the plot. If None, the plot is not saved.
+        example: "./output/benford_plot.png" or "./output/benford_plot.pdf"
+    show : bool, optional, default: True
+        If True, the plot is shown.
 
     Returns
     -------
@@ -155,7 +161,12 @@ def benford_to_plot(df, column_name, first_n_digits=1):
     plt.bar(x + width, y1, width, label="Benford")
     plt.xticks(x + width / 2, x)
     plt.legend(loc="upper right")
-    plt.show()
+
+    if filename:
+        plt.savefig(filename, bbox_inches="tight")
+    if show:
+        plt.show()
+
     return dfres
 
 
@@ -166,11 +177,17 @@ def benford_list_anomalies(
 
     Also adds an extra "flag_bf_anomaly" boolean column that is True for those
     records where the first n digits match those identified as top N anomalies
-    which, in turn, are those that have largest (absolute) percent variation 
+    which, in turn, are those that have largest (absolute) percent variation
     between actual and expected.
 
     Note that blanks and zeroes are not deemed anomalies, they are simply ignored
-    Those you need to analyse separately, as they are likely to be data quality anomalies
+    Those you need to analyse separately, as they are likely to be data quality
+    anomalies.
+    Also note that technically we are calculating the top rank of differences,
+    if they are insignificant or even zero the flag_anomalies will still yield
+    True for the top N "anomalies".
+    Possibly something to improve on in the future.
+
 
     Parameters
     ----------
