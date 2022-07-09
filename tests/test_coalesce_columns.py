@@ -39,14 +39,15 @@ def df_text():
     )
 
 
-def test_coalesce_with_nans(df, target_column_name="result"):
+def test_coalesce_with_nans(df):
     """Test output if `default_value` is not provided."""
-    result = coalesce_columns(df, "a", "b", "c", target_column_name="result")
-    expected = [1, 3, 3]
+    result = coalesce_columns(df, "a", "b", "c", target_column_name="result",)
+    expected = [1, 3, 3]  # first valid value remains, the rest ignored
     assert list(result["result"]) == expected
 
 
 def test_concat_all_texts(df_text):
+    """ testing concatenation of all text columns"""
     expected = [
         "bird_falcon",
         "bird_falcon",

@@ -1,4 +1,5 @@
 """Functions to sweep a dataframe for keywords and return a matrix of matches.
+
 """
 
 import logging
@@ -63,7 +64,7 @@ def _keyword_search_re(keywords, df, case_sensitive):
 
 
 def _keyword_search_str(keywords, df, case_sensitive):
-    """Internal function to do a simpler keyword search with no regular expressions
+    """Internal function to do a simple string search, no regular expressions used.
 
     While less powerful it could be faster if we wish to do lots of keywords on a
     large file, normally regexp are fine and can take normal keywords too, use
@@ -100,10 +101,11 @@ def keyword_search(
     obj,
     keywords,
     columns=None,
-    return_hit_columns_only=False,
+    return_data="full",
     regexp=True,
     case_sensitive=False,
     labels=None,
+    key_column=None,
 ):
     """
     Searches the keywords in a dataframe or series and returns a matrix of matches
@@ -121,9 +123,11 @@ def keyword_search(
         The list of regular expressions or string keywords to search for.
     columns : list
         The list of columns to search in, if None then all columns are searched
-    return_hit_columns_only : bool, optional, default=False
-        If True then it only returns the boolean columns created, by default
-        it will return the dataframe with the boolean columns added.
+    return_data : str, optional default="full"
+        If "full" then the dataframe is returned,
+        If "target" then the target columns and hits are returned,
+        If "hits" then only the boolean columns will be returned
+        if "details" then a dataframe with a hit per row is returned
     regexp : bool, default True
         If True then the keywords are treated as regular expressions, otherwise
         a simpler string search is performed.
@@ -137,6 +141,9 @@ def keyword_search(
         The list of labels to use for the columns, if None then the labels are
         kw_match_NN. Labels must be the same length as the number of keywords.
         But they could be repeated and automagically will be grouped/rolled up.
+    key_column : str, optional, default=None
+        If return_data="detail", this is the column to use as the key for
+        the returned dataframe
 
     Returns
     -------
@@ -147,6 +154,7 @@ def keyword_search(
 
     """
 
+    # Various input validation
     if not isinstance(keywords, (list, str)):
         raise ValueError("keywords must be a list of strings or a string")
     if isinstance(keywords, str):
@@ -156,18 +164,21 @@ def keyword_search(
     if columns:
         try:
             df = obj[columns].copy()
+            dffull = obj.copy()
         except Exception as e:
             raise ValueError("Columns not found in dataframe") from e
 
     else:
         if isinstance(obj.Series):
             df = obj.to_frame()
+            dffull = df.copy()
 
         elif isinstance(obj, DataFrame):
             df = obj.copy()
+            dffull = obj.copy()
         elif isinstance(obj, list):
             df = pd.DataFrame(obj, columns="text_data")
-
+            dffull = df.copy()
         else:
             raise TypeError("Type not recognised")
 
@@ -187,8 +198,26 @@ def keyword_search(
             logger.info(
                 "Labels provided are repeated, so they will be rolled up using OR logical operator"
             )
-    if return_hit_columns_only:
-        logger.info("Returning only the results columns")
+    return_data = return_data.lower()
+    if return_data not in ["full", "target", "hits", "details"]:
+        raise ValueError("return_data must be one of full, target, hits or details")
+
+    if return_data == "full":
+        logger.info("Returning full dataframe")
+    if return_data == "hits":
+        logger.info("Returning hits only")
+    if return_data == "details":
+        logger.info("Returning details")
+    if return_data == "targets":
+        logger.info("Returning targets columns and hits")
+
+    if return_data == "details":
+        if key_column is None:
+            raise ValueError("Must provide a key column if return_details is True")
+        if key_column not in dffull.columns:
+            raise ValueError("Key column %s not found in dataframe" % key_column)
+
+    # Here the main part of the function starts
     df.fillna("", inplace=True)
     if len(columns) > 1:
         df["dummy_keyword_search"] = df[columns].astype(str).T.agg(" ".join)
@@ -201,25 +230,59 @@ def keyword_search(
         dfres = _keyword_search_str(keywords, df, case_sensitive)
 
     if labels:
-        if len(set(labels)) == len(dfres.columns):
-            dfres.columns = labels
+        dfres_labelled = dfres.copy()
+        if len(set(labels)) == len(dfres_labelled.columns):
+            dfres_labelled.columns = labels
         else:
             # we are dealing with multiple labels to group
-
             dfresg = pd.DataFrame()
             for l in set(labels):
                 cols = []
-                for i, c in enumerate(dfres.columns):
+                for i, c in enumerate(dfres_labelled.columns):
                     if l == labels[i]:
                         cols.append(c)
-                dfresg[l] = np.logical_or.reduce(dfres[cols], axis=1)
-            dfres = dfresg.copy()
+                dfresg[l] = np.logical_or.reduce(dfres_labelled[cols], axis=1)
+            dfres_labelled = dfresg.copy()
+        dfres_labelled["kw_match_all"] = dfres.apply(any, axis=1)
+        # we are using the original dfres here on purpose, the test suite needs
+        # to test that they match against the grouped columns
 
+    # we add the combined any() (ie. or) column to dfres after we processed the
+    # labels because otherwise the list of labels and hits wouldnt match
     dfres["kw_match_all"] = dfres.apply(any, axis=1)
-    if return_hit_columns_only:
-        logger.info("Returning %s columns", dfres.columns)
-        return dfres
 
-    df = df.join(dfres)
-    logger.info("Returning %s columns", df.columns)
-    return df
+    if return_data == "details":
+        df = dffull.join(dfres)
+        zeroes = max(math.ceil(math.log10(len(keywords))), 2)
+        list_hits = []
+        for i, kw in enumerate(keywords):
+            hit_field = "kw_match" + str.zfill(str(i + 1), zeroes)
+            if labels:
+                label = labels[i]
+            else:
+                label = kw
+            dftemp = df[df[hit_field] == True][[key_column]].copy()
+            dftemp["labels"] = label
+            dftemp["keyword"] = kw
+            list_hits.append(dftemp)
+        dfd = pd.concat(list_hits)
+        logger.info("Returning search hits details in %s rows", dfd.shape[0])
+        return dfd
+
+    if labels:
+        df_hits = dfres_labelled
+    else:
+        df_hits = dfres
+
+    if return_data == "hits":
+        logger.info("Returning hit columns %s", df_hits.columns)
+        return df_hits
+
+    if return_data == "targets":
+        df = df.join(df_hits)
+        logger.info("Returning target columns: %s", df.columns)
+        return df
+
+    dffull = dffull.join(df_hits)
+    logger.info("Returning all columns: %s", dffull.columns)
+    return dffull
