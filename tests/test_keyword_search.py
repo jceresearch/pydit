@@ -129,5 +129,35 @@ def test_keyword_search_labels():
     assert list(res["south_west"]) == [True, False, True, True, True, False]
 
 
+def test_keyword_search_details():
+    """test that it processes labels correctly"""
+    data = {
+        "col1": ["january", "february", "march", "april", "may", "june"],
+        "col2": [" Jan", " Feb", "Mar", "Apr", np.nan, "Feb"],
+        "col3": ["dec", "jan", "feb", "mar", 0, "may"],
+        "col4": [
+            "Hello world",
+            "Hello\nworld",
+            "Hello world\n",
+            "Hello world ",
+            " Hello world",
+            "Hi, \nhello world",
+        ],
+        "col6": [1, 2, 3, 4, 5, 6],
+        "col7": ["South", "North", "East-West", "West-South", "West", "North"],
+    }
+    df = pd.DataFrame(data)
+    res = keyword_search(
+        df,
+        [r"west$", "north"],
+        columns=["col7"],
+        labels=["West", "North"],
+        return_data="details",
+        key_column="col1",
+    )
+    res_list = list(res["col1"])
+    assert res_list == ["march", "may", "february", "june"]
+
+
 if __name__ == "__main__":
-    test_keyword_search_labels()
+    test_keyword_search_details()

@@ -31,8 +31,10 @@ def coalesce_columns(
     default_value : int, float, str, optional, default None
         The default value to use if the target column is empty.
     operation : str, optional, "concatenate" or None, default None
-        If None, the first non nan will prevail, from left to right
-        If "concatenate", the values will be concatenated
+        If None, the first non nan value will prevail, from left to right, 
+        ignoring the rest of the row.
+        If "concatenate", all values will be converted to text and concatenated
+        together, nans will be replaced with nullstring.
     separator : str, optional, default " "
         The separator to use when concatenating values
 
