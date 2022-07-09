@@ -1,30 +1,46 @@
 
 Pydit is a library of useful data munging tools that a typical internal auditor may need to apply.  
 
-Note: this library is for my own use, and it my first time creating a proper package, so if you wish to use/collaborate pls get in touch, or use at your own peril
+Note: I am building this library as learning exercise on how to create a package, build documentation and tests and publish it, the code quality is low, marginally better than pasting from SO as I add tests and use it in real life ocassionally, but be warned that it has not been peer reviewed and I keep finding bugs :), use it at your own peril.
+
+If you wish to contribute pls get in touch
 
 ## Introduction 
 
-Typically the features in pydit could be done with a short snippet of code using
-pandas, numpy or standard python libraries. 
-E.g. to cleanup data or to do some duplicates checks, Benford, etc.
-But, those accumulate in the code. Either we need to put it in reusable functions or we start to
-see them everywhere, possibly with slightly different code and bugs. 
-Plus we need to keep evidence of the tests done and results, so we end up adding print() statements
-everywhere, with intermediate .to_excel() exports.
+Pydit packages data cleansing and integrity checks tasks that typically could be done with a short snippet of code using pandas, numpy or standard python libraries.
+E.g. to cleanup field names or to do some duplicates checks, Benford, etc.
+
+These snippets tend to accumulate in the code making things difficutl to read and often may have some limitations/bugs that never get to retrofix.
+
+On top, the scripts we run for audit tests need a lot of "audit trails" in line
+to allow reviewers to follow the logic and actual execution outcomes, leading
+to loads of print() everywhere.
+
 All that gets messy. 
 
-Pydit attempts to standardise several checks and cleanup routines with the specific
-internal audit test use case in mind. 
+Pydit attempts to standardise several checks and cleanup routines with the specific internal audit test use case in mind. 
 Btw, Pydit takes a lot of inspiration (and code) from Pyjanitor, an awesome library!
 
-These are the main design principles that differentiates pydit from other tools:
-- dropping pyjanitor method chaining approach from pyjanitor in interest of source code
-readability. Pyjanitor is great and its chaining approach is super elegant. Definitely one to have in the toolbox. However, auditors are typically less skilled in python than data scientists, work is tends to be one off and we have high turnover. To encourage simple and step by step documented code in the audit test and the simplest modular codebase in pydit itself, I made the hard choice of dropping the chaining.
--  functions are self standing, minimising imports/dependencies. The auditor should be able to import a individual modules from pydit to use that functionatliy directly in the audit test, making it easier to undertand it, document the test and peer review. 
+These are the main design principles:
+
+- no method chaining, in interest of source code readability. 
+
+Pyjanitor is great and its chaining approach is super elegant. Definitely one to have in the toolbox. However, auditors are typically less skilled in python than data scientists, and the code tends to be ad hoc/one of, with little time for deep review. Therefore, code readability is top priority. 
+Method chaining does pack a lot but I find very simple step by step is easier
+to peer review.
+
+-  functions should be self standing, minimising imports/dependencies. 
+
+The auditor should be able to import an individual module from pydit to use only that functionatliy directly in the audit test, making it easier to undertand it, document the test and peer review. 
+
 - functions include verbose logging to explain what is going on under the hood.
-- a focus on robust documentation, tests, and ease of read, and less on performance/smarts. 
-Auditors most of the time work on relatively small datasets and we can afford some performance penalty if the code is trasparent and easy to follow. Most of the time we don't have a large teams or the time to develop extensive test suites on the audit tests themselves, so the code needs to be low complexity across the board and pydit needs to be almost as readable as snippets from stackoverflow.
+
+
+- focus on documentation, tests, and simple code, less on performance
+
+Auditors most of the time work on relatively small datasets (or one off runs)
+and we can afford some performance penalty if the code is very easy to follow. Most of the time we don't have a large teams or the time to do extensive peer review or develop test suites on the audit tests themselves, so the code needs to be low complexity across the board.
+
 - The default behaviour is to return a new or a transformed copy of the object and not to mutate the input object(s). The "inplace=True" option may be available.
 
 
