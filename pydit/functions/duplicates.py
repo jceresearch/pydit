@@ -11,6 +11,7 @@ import logging
 from typing import Union
 
 import pandas as pd
+import numpy as np
 from pandas.api.types import is_string_dtype, is_numeric_dtype
 
 
@@ -26,7 +27,7 @@ def check_duplicates(
     keep=False,
     ascending=None,
     indicator=False,
-    return_non_duplicates=False,
+    also_return_non_duplicates=False,
     inplace=False,
 ):
     """Check for duplicates in a dataframe.
@@ -46,8 +47,10 @@ def check_duplicates(
         Argument for DataFrame.value_counts().
         Defaults to None.
     indicator: bool, optional
-        If True, a column is added to the dataframe.
+        If True, a boolean column is added to the dataframe to flag duplicate rows.
         Defaults to False
+    also_return_non_duplicates: bool, optional
+        If True, the return values will include non-duplicate rows too.
     inplace: bool, optional
         If True, the dataframe is modified in place.
         For Series a new dataframe is created and this parameter is ignored.
@@ -56,6 +59,8 @@ def check_duplicates(
     -------
     pandas.DataFrame
         Returns the DataFrame with the duplicates or None if no duplicates found.
+        If also_return_non_duplicates is True, the return values will include
+        non-duplicate rows too.
 
     """
 
@@ -97,23 +102,21 @@ def check_duplicates(
 
     fields = ",".join(cols)
 
+    # Boolean series with the results of all duplicated() method
     ser_duplicates = df.duplicated(cols, keep=False)
-    if keep == "first" or keep == "last":
-        ser_duplicates_keep = df.duplicated(cols, keep=keep)
-        df["_duplicates_keep"] = ser_duplicates_keep
-    else:
-        # even if we want the total we do a keep=first to tally the unique instances
-        ser_duplicates_keep = df.duplicated(cols, keep="first")
-        df["_duplicates_keep"] = ser_duplicates_keep
-    df["_duplicates"] = ser_duplicates
-
+    ser_duplicates_first = df.duplicated(cols, keep="first")
+    if keep == "last":
+        ser_duplicates_last = df.duplicated(cols, keep="last")
+    ser_duplicates_unique = np.logical_and(ser_duplicates, ~ser_duplicates_first)
     logger.info("Duplicates in fields: %s", fields)
 
-    if df["_duplicates"].any():
+    if ser_duplicates.any():
         logger.info("(using keep=%s)", keep)
-        logger.info("Found %s instances of duplication", df["_duplicates_keep"].sum())
-        logger.info("Totalling %s rows", df["_duplicates"].sum())
-        logger.info("of population %s", len(df))
+        logger.info(
+            "Found %s unique duplication instances", ser_duplicates_unique.sum()
+        )
+        logger.info("Totalling %s rows", ser_duplicates.sum())
+        logger.info("of a population of %s", len(df))
         blanks_acum = 0
         for c in cols:
             if is_numeric_dtype(df[c]):
@@ -139,40 +142,32 @@ def check_duplicates(
             # Descending
             df = df.sort_values(cols, ascending=False)
 
-        if return_non_duplicates is False:
-            # we just return the duplicates
-            dfres = df[df["_duplicates"] == True].copy()
-            if keep:
-                dfres = dfres[dfres["_duplicates_keep"] == False].copy()
-                if indicator:
-                    dfres.drop("_duplicates", axis=1, inplace=True)
-                else:
-                    dfres.drop("_duplicates_keep", axis=1, inplace=True)
-                    dfres.drop("_duplicates", axis=1, inplace=True)
-            else:
-                if indicator:
-                    dfres.drop("_duplicates_keep", axis=1, inplace=True)
-                else:
-                    dfres.drop("_duplicates_keep", axis=1, inplace=True)
-                    dfres.drop("_duplicates", axis=1, inplace=True)
-
-        else:
+        if also_return_non_duplicates:
             # we return the non duplicates and follow the keep argument
             # for which duplicates to keep
-            dfres = df.copy()
-            if keep:
-                dfres = dfres[dfres["_duplicates_keep"] == False].copy()
-                if indicator:
-                    dfres.drop(columns=["_duplicates"], inplace=True)
-                else:
-                    # If the user doesnt want the indicators we drop them
-                    dfres.drop(columns=["_duplicates_keep"], inplace=True)
-                    dfres.drop(columns=["_duplicates"], inplace=True)
-
+            logger.info(
+                "Returning non-duplicates and records we kept with keep=%s", keep
+            )
+            if indicator:
+                df["_duplicates"] = ser_duplicates
+            if keep == "first":
+                dfres = df[(~ser_duplicates) | ~ser_duplicates_first].copy()
+            elif keep == "last":
+                dfres = df[(~ser_duplicates) | ~ser_duplicates_last].copy()
             else:
-                # regardless of the indicator flag, if we bring all records
-                # and keep=False we somehow need to flag the duplicates
-                dfres.drop(columns=["_duplicates_keep"], inplace=True)
+                dfres = df.copy()
+
+        else:
+            # we just return the duplicates
+            logger.info("Returning duplicates applying pandas keep=%s", keep)
+            if indicator:
+                df["_duplicates"] = ser_duplicates
+            if keep == "first":
+                dfres = df[ser_duplicates_first].copy()
+            elif keep == "last":
+                dfres = df[ser_duplicates_last].copy()
+            else:
+                dfres = df[ser_duplicates].copy()
 
         return dfres
 
