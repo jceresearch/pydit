@@ -14,8 +14,8 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from pydit import coalesce_columns
 
 
-@pytest.fixture
-def df():
+@pytest.fixture(name="df")
+def df_fixture():
     """Base DataFrame fixture"""
     return pd.DataFrame({"a": [1, np.nan, 3], "b": [2, 3, 1], "c": [3, np.nan, 9]})
 
@@ -41,13 +41,19 @@ def df_text():
 
 def test_coalesce_with_nans(df):
     """Test output if `default_value` is not provided."""
-    result = coalesce_columns(df, "a", "b", "c", target_column_name="result",)
+    result = coalesce_columns(
+        df,
+        "a",
+        "b",
+        "c",
+        target_column_name="result",
+    )
     expected = [1, 3, 3]  # first valid value remains, the rest ignored
     assert list(result["result"]) == expected
 
 
 def test_concat_all_texts(df_text):
-    """ testing concatenation of all text columns"""
+    """testing concatenation of all text columns"""
     expected = [
         "bird_falcon",
         "bird_falcon",
@@ -62,7 +68,6 @@ def test_concat_all_texts(df_text):
         target_column_name="result",
         separator="_",
     )
-    print(result)
     assert list(result["result"]) == expected
 
 
@@ -83,7 +88,9 @@ def test_concat_some_empty(df_text):
         separator=" ",
         default_value="",
     )
-    print(result)
+    # TODO For some reason it doesnt work if I provide individual columns names
+    #  comma separated rather than in a list the other tests seem to pass
+    #  but this one not, no idea why
     assert list(result["result"]) == expected
 
 

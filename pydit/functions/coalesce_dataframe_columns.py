@@ -31,7 +31,7 @@ def coalesce_columns(
     default_value : int, float, str, optional, default None
         The default value to use if the target column is empty.
     operation : str, optional, "concatenate" or None, default None
-        If None, the first non nan value will prevail, from left to right, 
+        If None, the first non nan value will prevail, from left to right,
         ignoring the rest of the row.
         If "concatenate", all values will be converted to text and concatenated
         together, nans will be replaced with nullstring.
@@ -89,6 +89,8 @@ def coalesce_columns(
             fillna_value = default_value
         dftemp = df[column_names].fillna(fillna_value).astype("str", copy=True)
         outcome = dftemp.T.agg(separator.join)
+    elif operation == "last":
+        outcome = df[column_names].apply(lambda r: r[r.last_valid_index()], axis=1)
     if outcome.hasnans and (default_value is not None):
         outcome = outcome.fillna(default_value)
     return df.assign(**{target_column_name: outcome})
