@@ -28,7 +28,9 @@ class FileManager:
             FileManager()
         return FileManager.__instance
 
-    def __init__(self,):
+    def __init__(
+        self,
+    ):
         """Virtually private constructor."""
         if FileManager.__instance is not None:
             return None
@@ -113,16 +115,26 @@ class FileManager:
         s = str.lower(p.stem)
         return s
 
-    def _save_to_excel(self, obj, file_name, sheet_name=None):
+    def _save_to_excel(self, obj, file_name, sheet_name=None, dest="auto"):
         """Internal routine to save a dataframe to excel with sensible options"""
         stem_name = self._stem_name(file_name)
+        if dest == "auto":
+            output_path = self.output_path
+        elif dest == "temp":
+            output_path = self.temp_path
+        elif dest == "output":
+            output_path = self.output_path
+        elif dest == "input":
+            output_path = self.input_path
+        else:
+            raise ValueError("dest must be auto, output, temp or input")
 
-        if self.output_path[-1] == "/" or self.output_path[-1] == "\\":
+        if output_path[-1] == "/" or output_path[-1] == "\\":
             separator = ""
         else:
             separator = "\\"
 
-        full_file_name = self.output_path + separator + stem_name + ".xlsx"
+        full_file_name = output_path + separator + stem_name + ".xlsx"
         if not sheet_name:
             sheet_name = file_name
         sheet_name = sheet_name[:30]  # truncating to meet Excel max tab lenght
@@ -138,22 +150,33 @@ class FileManager:
 
         return full_file_name
 
-    def _save_to_csv(self, df, file_name):
+    def _save_to_csv(self, df, file_name, dest="auto"):
         """Internal routine to save a dataframe to a csv with sensible options"""
         stem_name = self._stem_name(file_name)
 
-        if self.output_path[-1] == "/" or self.output_path[-1] == "\\":
+        if dest == "auto":
+            output_path = self.temp_path
+        elif dest == "temp":
+            output_path = self.temp_path
+        elif dest == "output":
+            output_path = self.output_path
+        elif dest == "input":
+            output_path = self.input_path
+        else:
+            raise ValueError("dest must be auto, output, temp or input")
+
+        if output_path[-1] == "/" or output_path[-1] == "\\":
             separator = ""
         else:
             separator = "\\"
-            logger.debug(
-                "Output path does not end in backslash, add it in the config for stability"
-            )
 
-        full_file_name = self.temp_path + separator + stem_name + ".csv"
+        full_file_name = output_path + separator + stem_name + ".csv"
         try:
             df.to_csv(
-                full_file_name, index=False, quotechar='"', quoting=csv.QUOTE_ALL,
+                full_file_name,
+                index=False,
+                quotechar='"',
+                quoting=csv.QUOTE_ALL,
             )
         except Exception as e:
             raise RuntimeError(
@@ -162,19 +185,27 @@ class FileManager:
 
         return full_file_name
 
-    def _save_to_pickle(self, obj, file_name):
+    def _save_to_pickle(self, obj, file_name, dest="auto"):
         """Internal routine to save a dataframe to a pickle with sensible options"""
         stem_name = self._stem_name(file_name)
 
-        if self.output_path[-1] == "/" or self.output_path[-1] == "\\":
+        if dest == "auto":
+            output_path = self.temp_path
+        elif dest == "temp":
+            output_path = self.temp_path
+        elif dest == "output":
+            output_path = self.output_path
+        elif dest == "input":
+            output_path = self.input_path
+        else:
+            raise ValueError("dest must be auto, output, temp or input")
+
+        if output_path[-1] == "/" or output_path[-1] == "\\":
             separator = ""
         else:
             separator = "\\"
-            logger.debug(
-                "Output path does not end in backslash, add it in the config for stability"
-            )
 
-        full_file_name = self.temp_path + separator + stem_name + ".pickle"
+        full_file_name = output_path + separator + stem_name + ".pickle"
         try:
             with open(full_file_name, "wb") as handle:
                 pickle.dump(obj, handle, protocol=pickle.HIGHEST_PROTOCOL)
@@ -276,7 +307,7 @@ class FileManager:
                 logger.debug("Object doesnt have len()")
         return obj
 
-    def save(self, obj, filename, also_pickle=False):
+    def save(self, obj, filename, also_pickle=False, dest="auto"):
         """Save the dataframe in excel, pickle or csv with some extra audit trails
         as well as choosing the destination based on size
 
@@ -288,7 +319,8 @@ class FileManager:
             The file name with extension, no path
         also_pickle : bool, optional, default False
             If true, will save the object to a pickle file too, to the temp folder
-
+        dest : str, optional, default "auto"
+            auto, temp, input, output: as per the paths set in the config
         Returns
         -------
             True if successful, False if not
@@ -323,7 +355,7 @@ class FileManager:
             if ".xlsx" in filename:
                 if obj.shape[0] < self._max_rows_to_excel:
                     logger.info("Saving to excel format")
-                    output = self._save_to_excel(obj, stem_name)
+                    output = self._save_to_excel(obj, stem_name, dest=dest)
                     if output:
                         logger.info("Saved to %s", output)
                 else:
@@ -331,7 +363,7 @@ class FileManager:
                     logger.warning("Too big for excel, saving to csv instead")
             if ".csv" in filename or flag_to_csv_instead:
                 logger.debug("Saving to csv")
-                output = self._save_to_csv(obj, stem_name)
+                output = self._save_to_csv(obj, stem_name, dest=dest)
                 if output:
                     logger.info("Saved to %s", output)
         else:
@@ -339,7 +371,7 @@ class FileManager:
 
         if ".pickle" in filename or also_pickle or flag_other_type:
             logger.info("Saving to pickle format")
-            output = self._save_to_pickle(obj, stem_name)
+            output = self._save_to_pickle(obj, stem_name, dest=dest)
             if output:
                 logger.info("Saved to %s", output)
 
