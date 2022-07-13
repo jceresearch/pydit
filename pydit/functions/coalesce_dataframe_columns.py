@@ -30,11 +30,12 @@ def coalesce_columns(
         If None, the values will be stored in the first column.
     default_value : int, float, str, optional, default None
         The default value to use if the target column is empty.
-    operation : str, optional, "concatenate" or None, default None
-        If None, the first non nan value will prevail, from left to right, 
+    operation : str, optional, "concatenate","last" or None, default None
+        If None, the first non nan value will prevail, from left to right,
         ignoring the rest of the row.
         If "concatenate", all values will be converted to text and concatenated
         together, nans will be replaced with nullstring.
+        If "last", the last non nan value will prevail, from right to left,
     separator : str, optional, default " "
         The separator to use when concatenating values
 
@@ -46,7 +47,7 @@ def coalesce_columns(
 
     if not column_names:
         return df
-    print(column_names)
+    logger.info("Coalescing columns: %s", column_names)
     if len(column_names) < 2:
         if isinstance(column_names[0], list) and len(column_names[0]) > 1:
             column_names = column_names[0]
@@ -73,7 +74,7 @@ def coalesce_columns(
 
     if target_column_name is None:
         target_column_name = column_names[0]
-    print("Target column name:", target_column_name)
+    logger.info("Target column name: %s", target_column_name)
     # bfill/ffill combo is faster than combine_first
     if operation is None:
         outcome = (
@@ -89,6 +90,8 @@ def coalesce_columns(
             fillna_value = default_value
         dftemp = df[column_names].fillna(fillna_value).astype("str", copy=True)
         outcome = dftemp.T.agg(separator.join)
+    elif operation == "last":
+        outcome = df[column_names].apply(lambda r: r[r.last_valid_index()], axis=1)
     if outcome.hasnans and (default_value is not None):
         outcome = outcome.fillna(default_value)
     return df.assign(**{target_column_name: outcome})
