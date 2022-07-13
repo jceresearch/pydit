@@ -49,18 +49,23 @@ def test_save():
     # We ensure the output path exists, this needs to be put into a fixture
     path = pathlib.Path("./tests/output/")
     path.mkdir(parents=True, exist_ok=True)
+    path = pathlib.Path("./tests/temp/")
+    path.mkdir(parents=True, exist_ok=True)
+
     fm.output_path = "./tests/output/"
-    fm.temp_path = "./tests/output/"
-    assert fm.save(s2, "test_zero_len.xlsx") is False
-    assert fm.save(df1, "test_zero_len.xlsx") is False
-    assert fm.save(t1, "test_zero_len.pickle") is False
-    assert fm.save(l1, "test_zero_len.pickle") is False
-    assert fm.save(s1, "test_nonzero_len.xlsx") is True
-    assert fm.save(s1, "test_nonzero_len.csv") is True
-    assert fm.save(d1, "test_zero_len.xlsx") is False
-    assert fm.save(df, "test_zero_len.xlsx") is True
+    fm.temp_path = "./tests/temp/"
+    assert not fm.save(s2, "test_zero_len.xlsx")
+    assert not fm.save(df1, "test_zero_len.xlsx")
+    assert not fm.save(t1, "test_zero_len.pickle")
+    assert not fm.save(l1, "test_zero_len.pickle")
+    assert fm.save(s1, "test_nonzero_len.xlsx")
+    assert fm.save(s1, "test_nonzero_len.csv")
+    assert not fm.save(d1, "test_zero_len.xlsx")
+    assert fm.save(df, "test_non_zero_len_df.xlsx")
+    path_saved = fm.save(df, "test_non_zero_len_df.xlsx")
+    assert path_saved == "./tests/output/test_non_zero_len_df.xlsx"
 
 
 if __name__ == "__main__":
     # execute only if run as a script
-    pass
+    test_save()

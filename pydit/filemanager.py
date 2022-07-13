@@ -291,18 +291,19 @@ class FileManager:
 
         Returns
         -------
-            True if successful, False if not
+            Path of the file saved if successfull
+            None if unsuccessful or Empty data
 
         """
 
         try:
             if len(obj) == 0:
                 logger.warning("Nothing to save to %s, length zero object", filename)
-                return False
+                return None
             else:
                 if obj.empty:
                     logger.warning("Nothing to save to %s, empty object", filename)
-                    return False
+                    return None
                 else:
                     # object not empty, we continue
                     # logger.debug("Non empty object, will proceed")
@@ -311,7 +312,7 @@ class FileManager:
         except Exception:
             # we failed somehow to check the len(), probably None object
             logger.warning("Nothing to save to %s, empty object", filename)
-            return False
+            return None
 
         flag_to_csv_instead = False
         filename = str.lower(str.strip(filename))
@@ -360,4 +361,4 @@ class FileManager:
             str(round((datetime.now() - start_time).total_seconds() / 60.0, 2)),
         )
 
-        return True
+        return output
