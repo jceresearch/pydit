@@ -1,14 +1,33 @@
 # Changelog
 
-<!--next-version-placeholder-->
-## v0.0.7
+## V0.0.8 (16/07/2022)
+
+### Features
+
+- keyword_search allows columns with labels and rollups for multiple patterns for variations of a single conceptual keyword
+- keyword_search can bring individual hits as a "thin and long" table
+
+### Tweaks
+- coalesce_dataframe_columns supports "last" value to keep
+- group_by_text concatenates better, and also added option unique=True to restrieve only unique instances
+- save() now can direct to one of the channels
+
+### Fixes
+- Lots
+
+
+## v0.0.7 (3/07/2022)
+
+### Features
+
+- Fillna_smart() improved 
+- Implemented a count_values_in_col(), can do combined columns
+- Implemented merge_smart() to improve handling of suffixes
 
 ### Fix
-- Worked on the load and save , as well as logger functions to refine messages.
-### Feature
 
-- Added merge_force_suffix() which ensures columns have suffixes even if they dont collide
-
+- Many fixes and refactoring, most notably logging when saving and load files
+- renamed count_related()
 
 ## v0.0.6 (19/06/2022)
 
