@@ -1,9 +1,9 @@
 
 Pydit is a library of useful data munging tools that a typical internal auditor may need to apply.  
 
-Note: I am building this library as learning exercise on how to create a package, build documentation and tests and publish it, the code quality is low, marginally better than pasting from SO as I add tests and use it in real life ocassionally, but be warned that it has not been peer reviewed and I keep finding bugs :), use it at your own peril.
+Note: I am building this library as learning exercise on how to create a package, build documentation and tests and publish it, the code quality is low, marginally better than pasting from SO as I add tests and use it in real life ocassionally, but be warned that it has not been peer reviewed and I keep finding and fixing bugs :), use it at your own peril.
 
-If you wish to contribute pls get in touch
+If you wish to contribute pls get in touch.
 
 ## Introduction 
 

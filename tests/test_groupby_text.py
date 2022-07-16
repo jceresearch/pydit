@@ -13,8 +13,8 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from pydit import groupby_text
 
 
-@pytest.fixture
-def df():
+@pytest.fixture(name="df")
+def df_fixture():
     """Base DataFrame fixture"""
     data = {
         "team": ["teamA", "teamA", "teamA", "teamA", "teamA", "teamB", "teamC"],
@@ -84,6 +84,22 @@ def test_groupby_text(df):
     res = groupby_text(df, "purid", value_cols="appr", row_separator="|")
     exp = ["ok|ok|rejected", "ok|", "Error|ok"]
     assert list(res["groupby_text"]) == exp
+
+def test_groupby_text_unique_vs_non_unique():
+    d = {
+        "col1": [1, 1, 1, 2, 3, 3, 4],
+        "col2": ["a", "a", "a", "b", "c", "c", "e"],
+        "col3": ["jan", "jan", "feb", "apr", "may", "jun", "jul"],
+    }
+    df = pd.DataFrame(d)
+    print(df)
+    res = groupby_text(df, "col2", value_cols=["col3"], row_separator=" ")
+    list_res=list(res["groupby_text"])
+    exp=["jan jan feb","apr","may jun","jul"]
+    assert list_res == exp
+    res = groupby_text(df, "col1", value_cols=["col3"], row_separator=" ")
+    list_res=list(res["groupby_text"])
+    assert list_res == exp
 
 
 if __name__ == "__main__":
