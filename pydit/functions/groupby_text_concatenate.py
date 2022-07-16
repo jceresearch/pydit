@@ -15,6 +15,7 @@ def groupby_text(
     target_col_name="groupby_text",
     field_separator=" ",
     row_separator="\n",
+    unique=False,
 ):
     """Groupby text column into concatenated text
 
@@ -32,6 +33,8 @@ def groupby_text(
         If multiple value_cols provided then how to concatenate.
     row_separator : str, optional, default newline
         Separator for the rows.
+    unique : bool, optional, default False
+        If True, concatenate only unique values.
 
 
     Returns
@@ -69,19 +72,34 @@ def groupby_text(
         raise TypeError("value_cols must be a string or list of strings")
 
     # pick just the columns we need, remove nans and convert to string
-    df = (
-        df[key_cols + value_cols].fillna("").astype(str).copy()
-    )  # copy() to avoid mutating original df
-
-    df = df.apply(lambda x: x.str.strip())  # remove leading and trailing whitespace
+    dfkeys = df[key_cols].copy()
+    dfvalues = df[value_cols].fillna("").astype(str).copy()
+    dfvalues = dfvalues.apply(
+        lambda x: x.str.strip()
+    )  # remove leading and trailing whitespace
     # here we join the value columns if we need to
-    joined_col = df[value_cols].stack().groupby(level=0).agg(field_separator.join)
-    df = df.assign(**{target_col_name: joined_col})
+    if len(dfvalues.columns) > 1:
+        dfvalues = dfvalues.apply(lambda x: str.strip(field_separator.join(x)), axis=1)
+        # dfvalues = dfvalues.stack().groupby(level=0).agg(field_separator.join)
+
+    dfjoined = dfkeys.assign(**{target_col_name: dfvalues})
 
     # here is where the true row concatenation happens, reset_index() makes in to a flat dataframe
-    df_groupby = (
-        df.groupby(key_cols)[target_col_name].apply(row_separator.join).reset_index()
-    )
+    if unique:
+        df_groupby = (
+            dfjoined.groupby(key_cols)[target_col_name]
+            .apply(set)
+            .apply(lambda s: row_separator.join(sorted(list(s))))
+            .reset_index()
+        )
+
+    else:
+        df_groupby = (
+            dfjoined.groupby(key_cols)[target_col_name]
+            .apply(row_separator.join)
+            .reset_index()
+        )
+
     # possibly not needed, but just in case we trim the whitespaces
     df_groupby[target_col_name] = df_groupby[target_col_name].str.strip()
     return df_groupby

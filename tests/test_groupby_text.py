@@ -53,14 +53,8 @@ def test_groupby_bad_formed(df):
     print("Wrong value column name, value error")
     with pytest.raises(ValueError):
         groupby_text(df, "team", "purid2")
-
-
-def test_groupby_text(df):
-    """Test ouptut with exmples that should work, various aggregation options"""
-
-    res = groupby_text(df, "purid", value_cols=["appr", "user"])
-    exp = ["ok user1\nok user2\nrejected user1", "ok user2", "Error \nok user3"]
-    assert list(res["groupby_text"]) == exp
+def test_groupby_text_trim(df):
+    """Test that trimming works"""
     res = groupby_text(df, ["team", "purid"], value_cols=["apprid", "appr", "user"])
     exp = [
         "1 ok user1\n2 ok user2\n3 rejected user1",
@@ -68,6 +62,13 @@ def test_groupby_text(df):
         "6 Error",
         "7 ok user3",
     ]
+    assert list(res["groupby_text"]) == exp
+
+def test_groupby_text(df):
+    """Test ouptut with exmples that should work, various aggregation options"""
+
+    res = groupby_text(df, "purid", value_cols=["appr", "user"])
+    exp = ["ok user1\nok user2\nrejected user1", "ok user2", "Error\nok user3"]
     assert list(res["groupby_text"]) == exp
     res = groupby_text(df, ["team", "purid"], value_cols=["appr", "user"])
     exp = ["ok user1\nok user2\nrejected user1", "ok user2", "Error", "ok user3"]
@@ -84,23 +85,53 @@ def test_groupby_text(df):
     res = groupby_text(df, "purid", value_cols="appr", row_separator="|")
     exp = ["ok|ok|rejected", "ok|", "Error|ok"]
     assert list(res["groupby_text"]) == exp
-
+    
+    
+    
+    
 def test_groupby_text_unique_vs_non_unique():
+    """Test that unique values are returned when unique=True"""
     d = {
         "col1": [1, 1, 1, 2, 3, 3, 4],
         "col2": ["a", "a", "a", "b", "c", "c", "e"],
         "col3": ["jan", "jan", "feb", "apr", "may", "jun", "jul"],
     }
     df = pd.DataFrame(d)
-    print(df)
+
+    res = groupby_text(df, "col2", value_cols=["col3"], row_separator=" ", unique=True)
+    list_res = list(res["groupby_text"])
+    exp = ["feb jan", "apr", "jun may", "jul"] #testing unique results, note it is sorted alphabetically ascending
+    assert list_res == exp
+    
+    res = groupby_text(df, "col1", value_cols=["col3"], row_separator=" ", unique=True)
+    list_res = list(res["groupby_text"])
+    assert list_res == exp
+    assert res[res["col1"]==1]["groupby_text"].values[0] == "feb jan" #testing the key is integer
+
+
+
+
+  
     res = groupby_text(df, "col2", value_cols=["col3"], row_separator=" ")
-    list_res=list(res["groupby_text"])
-    exp=["jan jan feb","apr","may jun","jul"]
+    list_res = list(res["groupby_text"])
+    exp = ["jan jan feb", "apr", "may jun", "jul"]
     assert list_res == exp
     res = groupby_text(df, "col1", value_cols=["col3"], row_separator=" ")
-    list_res=list(res["groupby_text"])
-    assert list_res == exp
+    list_res = list(res["groupby_text"])
+    assert list_res == exp  #testing the results is the same if key is integer
+
+    assert res[res["col1"]==1]["groupby_text"].values[0] == "jan jan feb" #testing the key is integer
+
+
+
 
 
 if __name__ == "__main__":
-    pass
+    d = {
+        "col1": [1, 1, 1, 2, 3, 3, 4],
+        "col2": ["a", "a", "a", "b", "c", "c", "e"],
+        "col3": ["jan", "jan", "feb", "apr", "may", "jun", "jul"],
+        }
+    df = pd.DataFrame(d)
+    dfg=df.groupby(["col1"])["col3"].apply(set).apply(" ".join).reset_index()
+    print(dfg)
