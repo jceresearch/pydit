@@ -1,12 +1,19 @@
 # Changelog
 
-## v0.0.8 (Unreleased)
+## V0.0.8 (16/07/2022)
 
 ### Features
 
-### Fix
+- keyword_search allows columns with labels and rollups for multiple patterns for variations of a single conceptual keyword
+- keyword_search can bring individual hits as a "thin and long" table
 
+### Tweaks
+- coalesce_dataframe_columns supports "last" value to keep
+- group_by_text concatenates better, and also added option unique=True to restrieve only unique instances
+- save() now can direct to one of the channels
 
+### Fixes
+- Lots
 
 
 ## v0.0.7 (3/07/2022)
@@ -24,13 +31,13 @@
 
 ## v0.0.6 (19/06/2022)
 
-### Fix
 
+### Fix
 - Refactoring check_blanks() to be cleaner how it does the summary, better tests and a change in the default behaviour (by default is restricted to just nans)
 
 ## v0.0.5 (4/06/2022)
 
-### Fix
+## Fix
 
 - Lots of refactoring. Generally ensuring that using inplace=True returns True to avoid confusion.
 - Also working on test suite to improve it
