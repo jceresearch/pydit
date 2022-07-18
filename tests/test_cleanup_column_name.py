@@ -18,8 +18,9 @@ logger = setup_logging()
 
 
 def test_clean_column_names_1():
-    """ testing the function for cleaning column names
+    """testing the function for cleaning column names
     Basic cleanup and handling of duplicate resulting names
+    Testing with and without inplace
     """
     d = {
         "Col1!": [1, 2, 3],
@@ -29,13 +30,18 @@ def test_clean_column_names_1():
         "col  3": [1, 2, 3],
     }
     df = pd.DataFrame(data=d)
-    cleanup_column_names(df,inplace=True)
+    cleanup_column_names(df, inplace=True)
     print(df.columns)
     assert list(df.columns) == ["col1", "col2", "col_3", "col3", "col_3_2"]
 
+    df2 = pd.DataFrame(data=d)
+    res = cleanup_column_names(df2, inplace=False)
+    assert list(df2.columns) == ["Col1!", "Col2", "col_   3", "col3 ", "col  3"]
+    assert list(res.columns) == ["col1", "col2", "col_3", "col3", "col_3_2"]
+
 
 def test_clean_column_names_2():
-    """ testing the function for cleaning column names
+    """testing the function for cleaning column names
     Case 2: Special characters
     """
     d = {
@@ -49,7 +55,7 @@ def test_clean_column_names_2():
         1: [1, 2, 3],
     }
     df = pd.DataFrame(data=d)
-    cleanup_column_names(df,inplace=True)
+    cleanup_column_names(df, inplace=True)
     print(df.columns)
     assert list(df.columns) == [
         "col1",
@@ -62,3 +68,51 @@ def test_clean_column_names_2():
         "1",
     ]
 
+
+def test_clean_column_names_list():
+    """testing the function for cleaning column names
+    Testing for list of strings instead of a dataframe
+    """
+    l = [
+        "Col1!",
+        "Col2@",
+        "col3%",
+        "col4!\n(extra)",
+        "col5\n",
+        "(col6)",
+        "aaaaaaaaaabbbbbbbbbbccccccccccddddddddddz",
+        1,
+    ]
+    cleanup_column_names(l, inplace=True)
+    assert l == [
+        "col1",
+        "col2",
+        "col3pc",
+        "col4_extra",
+        "col5",
+        "col6",
+        "aaaaaaaaaabbbbbbbbbbccccccccccdddddddddd",
+        "1",
+    ]
+    l = [
+        "Col1!",
+        "Col2@",
+        "col3%",
+        "col4!\n(extra)",
+        "col5\n",
+        "(col6)",
+        "aaaaaaaaaabbbbbbbbbbccccccccccddddddddddz",
+        1,
+    ]
+    res = cleanup_column_names(l, inplace=False)
+
+    assert res == [
+        "col1",
+        "col2",
+        "col3pc",
+        "col4_extra",
+        "col5",
+        "col6",
+        "aaaaaaaaaabbbbbbbbbbccccccccccdddddddddd",
+        "1",
+    ]

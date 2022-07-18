@@ -4,6 +4,8 @@ import logging
 import string
 import re
 import random
+import pandas as pd
+
 
 logger = logging.getLogger(__name__)
 
@@ -87,7 +89,7 @@ def _deduplicate_list(
     return new_list
 
 
-def cleanup_column_names(df, max_field_name_len=40, inplace=False):
+def cleanup_column_names(obj, max_field_name_len=40, inplace=False):
     """Cleanup the column names of a Pandas dataframe.
 
     e.g. removes non alphanumeric chars, _ instead of space, perc instead
@@ -95,8 +97,8 @@ def cleanup_column_names(df, max_field_name_len=40, inplace=False):
 
     Parameters
     ----------
-    df : pandas.DataFrame
-        The dataframe to clean up
+    obj : pandas.DataFrame or list of strings
+        The dataframe or a list of strings to clean up.
     max_field_name_len : int, optional, default 40
         The maximum length of the field name
     inplace : bool, optional, default False
@@ -108,7 +110,11 @@ def cleanup_column_names(df, max_field_name_len=40, inplace=False):
         Pandas DataFrame with cleaned column names
 
     """
-    prev_cols = list(df.columns)
+    if isinstance(obj, list):
+        prev_cols = obj
+    elif isinstance(obj, pd.DataFrame):
+        prev_cols = list(obj.columns)
+
     new_cols = []
     for e in prev_cols:
         try:
@@ -128,14 +134,19 @@ def cleanup_column_names(df, max_field_name_len=40, inplace=False):
     # other systems, for example PowerBI has a limit of 80 charts for importing column
     # names, just in case keeping this quite low, feel free to increase or remove
     new_cols = _deduplicate_list(new_cols)
+
     if not inplace:
-        df = df.copy()
-    df.columns = new_cols
-    logger.debug("Previous column names:%s", prev_cols)
-    logger.info("New columns names:%s", list(df.columns))
-    if len(df.columns) != len(set(df.columns)):
+        obj = obj.copy()
+    if isinstance(obj, list):
+        for i in range(len(obj)):
+            obj[i]=new_cols[i]
+    else:
+        obj.columns = new_cols
+    logger.debug("Previous names:%s", prev_cols)
+    logger.info("New names:%s", list(new_cols))
+    if len(new_cols) != len(set(new_cols)):
         raise ValueError("Duplicated column names remain!!! check what happened")
     if inplace:
         return True
     else:
-        return df
+        return obj
