@@ -3,6 +3,8 @@ pandas==1.2.1
 openpyxl
 matplotlib
 myst-parser
-sphinx
+sphinx>=5.0.0
 pytest
 pytest-coverage
+sphinx-book-theme==0.1.7
+pydata-sphinx-theme==0.7.2
