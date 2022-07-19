@@ -1,5 +1,16 @@
 # Changelog
 
+## V0.0.9 (Unreleased)
+
+### Features
+
+
+### Tweaks
+
+- cleanup_column_names() now accepts a list in addition to a dataframe
+
+### Fixes
+
 ## V0.0.8 (16/07/2022)
 
 ### Features
