@@ -21,7 +21,7 @@ fm = FileManager().getInstance()
 
 
 def test_stem_name():
-    """ test the internal function to find the stemp of a filename"""
+    """test the internal function to find the stemp of a filename"""
     assert fm._stem_name("Test.xlsx") == "test"
     assert fm._stem_name(r"c:\test\test.xlsx") == "test"
     assert fm._stem_name(r".\Test.xls") == "test"
@@ -34,7 +34,7 @@ def test_load():
 
 
 def test_save():
-    """ test for saving objects"""
+    """test for saving objects"""
     d = {
         "col1": [1, 2, 3, 5, 6],
         "col2": [1, 2, 3, 4, 5],
@@ -64,6 +64,26 @@ def test_save():
     assert fm.save(df, "test_non_zero_len_df.xlsx")
     path_saved = fm.save(df, "test_non_zero_len_df.xlsx")
     assert path_saved == "./tests/output/test_non_zero_len_df.xlsx"
+
+
+def test_save_big():
+    """test for saving objects bigger than Excel limit"""
+    list_big = list(range(1, 400000))
+    d = {
+        "col1": list_big,
+        "col2": list_big,
+    }
+    df = pd.DataFrame(data=d)
+    # We ensure the output path exists, this needs to be put into a fixture
+    path = pathlib.Path("./tests/output/")
+    path.mkdir(parents=True, exist_ok=True)
+    path = pathlib.Path("./tests/temp/")
+    path.mkdir(parents=True, exist_ok=True)
+
+    fm.output_path = "./tests/output/"
+    fm.temp_path = "./tests/temp/"
+    fm.max_rows_to_excel = 100000
+    assert fm.save(df, "big.xlsx", also_pickle=True)
 
 
 if __name__ == "__main__":

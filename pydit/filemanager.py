@@ -354,7 +354,7 @@ class FileManager:
 
         if isinstance(obj, pd.DataFrame) or isinstance(obj, pd.Series):
             if ".xlsx" in filename:
-                if obj.shape[0] < self._max_rows_to_excel:
+                if obj.shape[0] < self.max_rows_to_excel:
                     logger.info("Saving to excel format")
                     output = self._save_to_excel(obj, stem_name, dest=dest)
                     if output:
