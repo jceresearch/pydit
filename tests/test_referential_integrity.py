@@ -2,9 +2,6 @@
 import os
 import sys
 
-import numpy as np
-import pandas as pd
-
 # import numpy as np
 # from datetime import datetime, date, timedelta
 # pylint: disable=import-error disable=wrong-import-position
@@ -17,7 +14,7 @@ logger = setup_logging()
 
 
 def test_check_referential_integrity():
-    """ test for the referencial integrity checker"""
+    """test for the referencial integrity checker"""
     A = [10, 20, 30, 40, 50]
     Ax = [10, 10, 20, 30, 40, 50]
     B = [10, 20, 30, 40, 50, 60, 70]
@@ -56,10 +53,10 @@ def test_check_referential_integrity():
 
 
 def test_check_referential_integrity_load():
-    """ Load test for referential integrity checker
+    """Load test for referential integrity checker
     now the arrays are generated dynamically based on n
     the number of elements from the initial A array
-    
+
     """
     n = 10000
     n80 = int(n * 0.8)
@@ -101,4 +98,3 @@ def test_check_referential_integrity_load():
     assert check(Dx, Ax) == "disjoint - both have duplicates"
     assert check(Ax, Dx) == "disjoint - both have duplicates"
     assert check(D, Dx) == "1:m"
-

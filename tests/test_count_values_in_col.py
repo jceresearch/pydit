@@ -61,6 +61,35 @@ def test_count_values_in_col_combined():
     assert list(res["count_combined"]) == exp
 
 
+def test_count_values_in_col_perc():
+    """test count returning percentages"""
+    df = pd.DataFrame(
+        {
+            "class": ["bird", "bird", "bird", "mammal", "mammal", "insect"],
+            "max_speed": [389, 389, 0, 0, np.nan, np.nan],
+            "country": ["UK", " ", "", "", np.nan, np.nan],
+            "type": ["Falcon", "falcon", "parrot", "Lion", "Monkey", "Bee"],
+            "type_lower": ["falcon", "falcon", "parrot", "lion", "monkey", "bee"],
+        }
+    )
+    res = count_values_in_col(df, "class", "count", percentage=True)
+    print(list(res["count"]))
+    exp = [0.5, 0.5, 0.5, 0.3333333333333, 0.3333333333333, 0.1666666666666]
+    np.testing.assert_almost_equal(list(res["count"]), exp, decimal=5)
+
+    res = count_values_in_col(df, "max_speed", "count", percentage=True)
+    print(list(res["count"]))
+    exp = [
+        0.33333333,
+        0.33333333,
+        0.33333333,
+        0.33333333,
+        0.33333333,
+        0.33333333,
+    ]
+    np.testing.assert_almost_equal(list(res["count"]), exp, decimal=4)
+
+
 if __name__ == "__main__":
     # test_count_values_in_col_combined()
     pass

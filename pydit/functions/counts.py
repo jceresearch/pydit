@@ -9,7 +9,9 @@ import pandas as pd
 logger = logging.getLogger(__name__)
 
 
-def count_values_in_col(df, col, column_name=None, combined=False, inplace=False):
+def count_values_in_col(
+    df, col, column_name=None, combined=False, percentage=False, inplace=False
+):
     """Generates a column counting occurrence of values in a given column.
 
     If several columns provided, it will generate a column for each of them, but
@@ -28,8 +30,11 @@ def count_values_in_col(df, col, column_name=None, combined=False, inplace=False
             If None, the column name will be "count_[col]".
         combined : bool, optional, default False
             Whether or not compute the counts combining all the columns provided
+        percentage: bool, optional, default False
+            Whether to return percentage over total count
         inplace : bool, optional, default False
             Whether or not to mutate the original DataFrame
+
 
 
         Returns
@@ -60,7 +65,9 @@ def count_values_in_col(df, col, column_name=None, combined=False, inplace=False
         cols_list = col
         if isinstance(column_name, list):
             if len(column_name) != len(cols_list):
-                raise ValueError("column_name must be the same length as col")
+                raise ValueError(
+                    "column_name, if a list must be the same length as the col list"
+                )
         else:
             flag_auto_name = True  # ignore whatever we put there
     else:
@@ -83,13 +90,17 @@ def count_values_in_col(df, col, column_name=None, combined=False, inplace=False
         df[cn] = count_list
     else:
         for i, c in enumerate(cols_list):
-            count_summary = df[c].value_counts(dropna=False)
-            count_list = [count_summary[val] for index, val in enumerate(df[c])]
+            # count_summary = df[c].value_counts(dropna=False)
+            # count_list = [count_summary[val] for index, val in enumerate(df[c])]
             if flag_auto_name:
                 cn = "count_" + c
             else:
                 cn = column_name[i]
-            df[cn] = count_list
+            # df[cn] = count_list
+            df[cn] = df[c].map(df[c].value_counts(dropna=False))
+            if percentage:
+                count_records = float(df.shape[0])
+                df[cn] = df[cn] / count_records
 
     if inplace:
         return True
