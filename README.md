@@ -1,7 +1,9 @@
 
 Pydit is a library of useful data munging tools that a typical internal auditor may need to apply.  
 
-Note: I am building this library as learning exercise on how to create a package, build documentation and tests and publish it, the code quality is low, marginally better than pasting from SO as I add tests and use it in real life ocassionally, but be warned that it has not been peer reviewed and I keep finding and fixing bugs :), use it at your own peril.
+Note: I am building this library as learning exercise on how to create a package, build documentation and tests and publish it, the code quality is low, marginally better than pasting from SO.
+
+That said, I have added tests and use it in real life ocassionally, but be warned that it has not been peer reviewed and I keep finding and fixing bugs :), use it at your own peril.
 
 If you wish to contribute pls get in touch.
 
@@ -21,7 +23,7 @@ All that gets messy.
 Pydit attempts to standardise several checks and cleanup routines with the specific internal audit test use case in mind. 
 Btw, Pydit takes a lot of inspiration (and code) from Pyjanitor, an awesome library!
 
-These are the main design principles:
+These are the main design principles and highlights:
 
 - no method chaining, in interest of source code readability. 
 
@@ -29,17 +31,19 @@ Pyjanitor is great and its chaining approach is super elegant. Definitely one to
 Method chaining does pack a lot but I find very simple step by step is easier
 to peer review.
 
--  functions should be self standing, minimising imports/dependencies. 
+-  functions are self standing, minimising imports/dependencies. 
 
-The auditor should be able to import an individual module from pydit to use only that functionatliy directly in the audit test, making it easier to undertand it, document the test and peer review. 
+The auditor should be able to import an individual module from pydit to use only that functionatliy directly in the audit test, making it easier to undertand it, document the test and peer review. No dependencies on future versions of the library breaking the code (which happens a lot)
 
-- functions include verbose logging to explain what is going on under the hood.
+- functions include verbose logging to explain what is going on.
+
+Another feature specific for Audit, lots of logging entries.
 
 
-- focus on documentation, tests, and simple code, less on performance
+- focus on documentation, tests, and simple code, less concern on performance
 
-Auditors most of the time work on relatively small datasets (or one off runs)
-and we can afford some performance penalty if the code is very easy to follow. Most of the time we don't have a large teams or the time to do extensive peer review or develop test suites on the audit tests themselves, so the code needs to be low complexity across the board.
+Auditors mostly work on relatively small datasets and one off processing.
+We can afford some performance penalty if the code is very easy to follow. Most of the time we don't have a large teams or the time to do extensive peer review or develop test suites on the audit tests themselves, so the code needs to be low complexity across the board.
 
 - The default behaviour is to return a new or a transformed copy of the object and not to mutate the input object(s). The "inplace=True" option may be available.
 
