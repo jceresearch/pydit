@@ -23,7 +23,7 @@ def coalesce_values(
     cols : list
         The column names to coalesce
     top_n_values_to_keep : int, optional, default 10
-        The number of top values to keep. 
+        The number of top values to keep.
     translation_dict : dict, optional, default None
         A dictionary to use for manual translation/coalescing.
     other_label : str or int, optional, default "OTHER"
@@ -60,7 +60,7 @@ def coalesce_values(
             def concat_categories(r, cols):
                 try:
                     v = "_".join([str(v) for v in r[cols].values])
-                except Exception as e:
+                except Exception:
                     v = np.NAN
                 return v
 
@@ -71,13 +71,11 @@ def coalesce_values(
             return "empty list"
 
     if isinstance(other_label, str):
-        flag_str_label=True
+        flag_str_label = True
     elif isinstance(other_label, int):
-        flag_str_label=False
+        flag_str_label = False
     else:
         raise TypeError("other_label must be a string or an integer")
-
-
 
     if top_n_values_to_keep <= 0:
         raise ValueError("top_n_values_to_keep must be greater than 0")
@@ -109,9 +107,7 @@ def coalesce_values(
         )
     else:
         df[col + "_collapsed"] = df.apply(
-            lambda r: r[col]
-            if r[col] in value_counts_topN
-            else other_label,
+            lambda r: r[col] if r[col] in value_counts_topN else other_label,
             axis=1,
         )
     logger.info("Unique values after: %s", len(df[col + "_collapsed"].unique()))
