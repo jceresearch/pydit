@@ -1,0 +1,6 @@
+input_path: /Users/juanespasandin/github/pydit/input/
+max_rows_to_excel: 100000
+output_path: ./tests/output/
+project_name: test
+project_path: /Users/juanespasandin/github/pydit/
+temp_path: ./tests/temp/

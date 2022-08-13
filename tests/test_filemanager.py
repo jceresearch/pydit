@@ -8,7 +8,15 @@ import pandas as pd
 
 # pylint: disable=import-error disable=wrong-import-position
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from pydit import FileManager, setup_logging
+from pydit import (
+    setup_logging,
+    load,
+    save,
+    _stem_name,
+    load_config,
+    set_config,
+    setup_project,
+)
 
 
 # import numpy as np
@@ -17,19 +25,19 @@ from pydit import FileManager, setup_logging
 
 
 logger = setup_logging()
-fm = FileManager().getInstance()
 
 
 def test_stem_name():
     """test the internal function to find the stemp of a filename"""
-    assert fm._stem_name("Test.xlsx") == "test"
-    assert fm._stem_name(r"c:\test\test.xlsx") == "test"
-    assert fm._stem_name(r".\Test.xls") == "test"
+    assert _stem_name("Test.xlsx") == "test"
+    assert _stem_name(r"c:\test\test.xlsx") == "test"
+    assert _stem_name(r".\Test.xls") == "test"
 
 
 def test_load():
-    fm.input_path = "./tests/test_data/"
-    df = fm.load("test_data.xlsx")
+    """test of basic loading"""
+    set_config("input_path", "./tests/test_data/")
+    df = load("test_data.xlsx")
     assert df.shape[0] == 10
 
 
@@ -47,22 +55,19 @@ def test_save():
     l1 = []
     d1 = {}
     # We ensure the output path exists, this needs to be put into a fixture
-    path = pathlib.Path("./tests/output/")
-    path.mkdir(parents=True, exist_ok=True)
-    path = pathlib.Path("./tests/temp/")
-    path.mkdir(parents=True, exist_ok=True)
+    setup_project("test")
+    set_config("output_path", "./tests/output/")
+    set_config("temp_path", "./tests/temp/")
 
-    fm.output_path = "./tests/output/"
-    fm.temp_path = "./tests/temp/"
-    assert not fm.save(s2, "test_zero_len.xlsx")
-    assert not fm.save(df1, "test_zero_len.xlsx")
-    assert not fm.save(t1, "test_zero_len.pickle")
-    assert not fm.save(l1, "test_zero_len.pickle")
-    assert fm.save(s1, "test_nonzero_len.xlsx")
-    assert fm.save(s1, "test_nonzero_len.csv")
-    assert not fm.save(d1, "test_zero_len.xlsx")
-    assert fm.save(df, "test_non_zero_len_df.xlsx")
-    path_saved = fm.save(df, "test_non_zero_len_df.xlsx")
+    assert not save(s2, "test_zero_len.xlsx")
+    assert not save(df1, "test_zero_len.xlsx")
+    assert not save(t1, "test_zero_len.pickle")
+    assert not save(l1, "test_zero_len.pickle")
+    assert save(s1, "test_nonzero_len.xlsx")
+    assert save(s1, "test_nonzero_len.csv")
+    assert not save(d1, "test_zero_len.xlsx")
+    assert save(df, "test_non_zero_len_df.xlsx")
+    path_saved = save(df, "test_non_zero_len_df.xlsx")
     assert path_saved == "./tests/output/test_non_zero_len_df.xlsx"
 
 
@@ -80,10 +85,10 @@ def test_save_big():
     path = pathlib.Path("./tests/temp/")
     path.mkdir(parents=True, exist_ok=True)
 
-    fm.output_path = "./tests/output/"
-    fm.temp_path = "./tests/temp/"
-    fm.max_rows_to_excel = 100000
-    assert fm.save(df, "big.xlsx", also_pickle=True)
+    set_config("output_path", "./tests/output/")
+    set_config("temp_path", "./tests/temp/")
+    set_config("max_rows_to_excel", 100000)
+    assert save(df, "big.xlsx", also_pickle=True)
 
 
 if __name__ == "__main__":

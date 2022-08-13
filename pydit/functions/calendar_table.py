@@ -39,7 +39,8 @@ def create_calendar(start="1975-01-01", end="2050-12-31"):
     df = pd.DataFrame({"date": pd.date_range(start, end)})
     df["day"] = df.date.dt.day
     df["month"] = df["date"].dt.month
-    df["week"] = df["date"].dt.week
+    df["week"] = df["date"].dt.isocalendar().week
+
     df["quarter"] = df.date.dt.quarter
     df["year"] = df.date.dt.year
     df["weekend"] = df.date.dt.weekday >= 5
@@ -77,7 +78,7 @@ def create_calendar(start="1975-01-01", end="2050-12-31"):
         if d.week == 52 and d.dayofyear < 8:
             return (d.year - 1) * 100 + d.week
         else:
-            return (d.year * 100 )+ d.week
+            return (d.year * 100) + d.week
 
     df["yyyyww"] = df.apply(lambda r: _calculate_week_number(r["date"]), axis=1)
 
