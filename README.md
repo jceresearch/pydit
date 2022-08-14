@@ -1,51 +1,50 @@
 
+## Introduction to Pydit 
+
 Pydit is a library of useful data munging tools that a typical internal auditor may need to apply.  
 
-Note: I am building this library as learning exercise on how to create a package, build documentation and tests and publish it, the code quality is low, marginally better than pasting from SO.
+I am building this library as learning exercise on how to create a package, build documentation and tests and publish it, the code quality is still low, marginally better than pasting from SO.
 
-That said, I have added tests and use it in real life ocassionally, but be warned that it has not been peer reviewed and I keep finding and fixing bugs :), use it at your own peril.
+Use it at your own peril.
 
 If you wish to contribute pls get in touch.
 
-## Introduction 
 
-Pydit packages data cleansing and integrity checks tasks that typically could be done with a short snippet of code using pandas, numpy or standard python libraries.
-E.g. to cleanup field names or to do some duplicates checks, Benford, etc.
-
-These snippets tend to accumulate in the code making things difficutl to read and often may have some limitations/bugs that never get to retrofix.
-
-On top, the scripts we run for audit tests need a lot of "audit trails" in line
-to allow reviewers to follow the logic and actual execution outcomes, leading
-to loads of print() everywhere.
-
-All that gets messy. 
-
-Pydit attempts to standardise several checks and cleanup routines with the specific internal audit test use case in mind. 
+Pydit is a collection of functions for data cleansing and integrity checks tasks.
+Most can be done with a short snippet of code using pandas, numpy or standard python libraries, or using one of the many libraries out there.
+E.g. cleanup field names or to do some duplicates checks, Benford, etc.
 Btw, Pydit takes a lot of inspiration (and code) from Pyjanitor, an awesome library!
+
+
+The problem I am tackling is:
+- These snippets tend to accumulate in the code making it difficult to review 
+and often may have some limitations/bugs that I never get to retrofix.
+- While most implementations go for speed and elegance, in an Audit context the 
+most important points are accuracy, legibility, reproducibility and generating lots of audit trails of what is going on.
 
 These are the main design principles and highlights:
 
-- no method chaining, in interest of source code readability. 
-
-Pyjanitor is great and its chaining approach is super elegant. Definitely one to have in the toolbox. However, auditors are typically less skilled in python than data scientists, and the code tends to be ad hoc/one of, with little time for deep review. Therefore, code readability is top priority. 
-Method chaining does pack a lot but I find very simple step by step is easier
-to peer review.
-
 -  functions are self standing, minimising imports/dependencies. 
 
-The auditor should be able to import an individual module from pydit to use only that functionatliy directly in the audit test, making it easier to undertand it, document the test and peer review. No dependencies on future versions of the library breaking the code (which happens a lot)
+The auditor should be able to import an individual module from pydit to use only those functions directly in the audit test, making it easier to undertand it, document the test and peer review. No dependencies on future versions of the library breaking the code (which happens a lot)
 
 - functions include verbose logging to explain what is going on.
 
-Another feature specific for Audit, lots of logging entries.
+Another feature specifically useful for Internal Audit, lots of logging entries.
 
 
 - focus on documentation, tests, and simple code, less concern on performance
 
-Auditors mostly work on relatively small datasets and one off processing.
-We can afford some performance penalty if the code is very easy to follow. Most of the time we don't have a large teams or the time to do extensive peer review or develop test suites on the audit tests themselves, so the code needs to be low complexity across the board.
+Auditors mostly work on relatively small datasets and/or one-off processing.
+We can afford some performance penalty if the code is very easy to follow. Most of the time we don't have a large teams or the time to do extensive peer review or develop test suites for the audit tests themselves, so the code needs to be low complexity across the board.
 
-- The default behaviour is to return a new or a transformed copy of the object and not to mutate the input object(s). The "inplace=True" option may be available.
+- no method chaining, in interest of source code readability. 
+
+Pyjanitor is great and its chaining approach is super elegant. Definitely one to have in the toolbox. However, auditors are typically less skilled in python than data scientists, and the code tends to be ad hoc/one-off, with little time for deep review. Therefore, code readability is top priority and I prefer more step by step 
+approach to coding with no method chaining.
+
+In any case the default behaviour is to return a new or a transformed copy of the object and not mutate the input object(s). The "inplace=True" option may be available.
+
 
 
 ## Quick start:
@@ -56,8 +55,7 @@ logger.info("Started")
 
 ```
 
-The logger feature is used extensively by default, aiming to generate a human readable audit log to be included in workpapers that will satisfy QA. 
-
+The logger feature is used extensively by default, aiming to generate a human readable audit log to be included in workpapers.
 
 The functions perform common transformations and checks on data -typically 
 a pandas DataFrame or Series object- such as checking for blanks, or adding 
