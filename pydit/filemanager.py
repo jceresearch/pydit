@@ -1,4 +1,11 @@
 """Module for dealing with opening and saving files within the project
+
+This module is still highly experimental and unstable
+
+
+Usage:
+
+
 """
 
 import logging
@@ -9,8 +16,6 @@ import pathlib
 from pathlib import Path, PureWindowsPath
 import csv
 import pandas as pd
-
-from sqlalchemy import false
 import yaml
 
 # pylint: disable=logging-fstring-interpolation
@@ -18,6 +23,12 @@ import yaml
 
 
 logger = logging.getLogger(__name__)
+
+
+def _save_yaml(data, file_name):
+    """Save the data to a yaml file"""
+    with open(file_name, "w", encoding="utf-8") as f:
+        yaml.safe_dump(data, f)
 
 
 def _fix_path_name(path=None):
@@ -43,7 +54,7 @@ def _stem_name(file_name):
     return s
 
 
-def setup_project(project_name, project_path="."):
+def setup_project(project_name="my_project", project_path="."):
     """Setup the project directory and log file"""
     logger.info(f"Setting up project {project_name}")
     if project_path == ".":
@@ -53,18 +64,18 @@ def setup_project(project_name, project_path="."):
     if not _project_path.exists():
         _project_path.mkdir()
 
-    conf = {}
-    conf["project_name"] = project_name
-    conf["project_path"] = str(_project_path)
-    conf["temp_path"] = conf["project_path"] + "/temp"
-    conf["output_path"] = conf["project_path"] + "/output"
-    conf["input_path"] = conf["project_path"] + "/input"
-    conf["max_rows_to_excel"] = 200000
-    pathlib.Path(conf["temp_path"]).mkdir(parents=True, exist_ok=True)
-    pathlib.Path(conf["output_path"]).mkdir(parents=True, exist_ok=True)
-    pathlib.Path(conf["input_path"]).mkdir(parents=True, exist_ok=True)
-    yaml.safe_dump(conf, open(conf["project_path"] + "/conf.yaml", "w"))
-    return conf
+    config = {}
+    config["project_name"] = project_name
+    config["project_path"] = str(_project_path)
+    config["temp_path"] = config["project_path"] + "/temp"
+    config["output_path"] = config["project_path"] + "/output"
+    config["input_path"] = config["project_path"] + "/input"
+    config["max_rows_to_excel"] = 200000
+    pathlib.Path(config["temp_path"]).mkdir(parents=True, exist_ok=True)
+    pathlib.Path(config["output_path"]).mkdir(parents=True, exist_ok=True)
+    pathlib.Path(config["input_path"]).mkdir(parents=True, exist_ok=True)
+    _save_yaml(config, config["project_path"] + "/conf.yaml")
+    return config
 
 
 def set_config(key, value, config=None):
@@ -84,7 +95,7 @@ def set_config(key, value, config=None):
                 raise ValueError("Error saving back the config with key/value provided")
         else:
             raise ValueError("Error validating the configuration file")
-    return false
+    return False
 
 
 def check_config(config, fix=False):
@@ -126,7 +137,8 @@ def check_config(config, fix=False):
         else:
             return False
     if fix:
-        yaml.safe_dump(config, open(config["project_path"] + "/conf.yaml", "w"))
+        _save_yaml(config, config["project_path"] + "/conf.yaml")
+
     return True
 
 
@@ -135,7 +147,7 @@ def load_config(project_path="."):
     conf_file = Path(project_path + "/conf.yaml")
     if not conf_file.exists():
         setup_project("untitled")
-    config = yaml.safe_load(open(conf_file))
+    config = yaml.safe_load(open(conf_file, "r", encoding="utf-8"))
     if not config:
         raise ValueError("Could not load the conf file")
     if not check_config(config, fix=True):
@@ -202,7 +214,10 @@ def _save_to_csv(df, file_name, dest="auto", config=None):
     full_file_name = output_path + separator + stem_name + ".csv"
     try:
         df.to_csv(
-            full_file_name, index=False, quotechar='"', quoting=csv.QUOTE_ALL,
+            full_file_name,
+            index=False,
+            quotechar='"',
+            quoting=csv.QUOTE_ALL,
         )
     except Exception as e:
         raise RuntimeError("Failed to save to CSV file to  %s" % full_file_name) from e

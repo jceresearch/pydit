@@ -175,3 +175,4 @@ poetry.lock
 .icloud
 docs/source/_autosummary/
 tests/*.log
+conf.yaml

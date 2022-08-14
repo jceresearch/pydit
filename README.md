@@ -93,7 +93,8 @@ pip install -e .
 This project uses:
 - ```pylint```and  ```black``` for linting/style
 - ```pytest``` for testing.
-- ```sphinx``` and RTD for documentation 
+- ```sphinx``` for documentation in RTD
+- ```myst_parser``` is a requirement for RTD too 
 - ```poetry``` for packaging.
 
 
