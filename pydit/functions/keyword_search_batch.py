@@ -112,8 +112,10 @@ def keyword_search(
 
     Creates a boolean column in the dataframe, one per keyword
     and a combined column that is True if any of the other columns is True.
-    For simplicity we name columns sequentially as pushing keywords straight
-    as columns may yield error with special characters or duplicated/banned names
+    For simplicity by default we name columns sequentially, pushing keywords
+    straight away as columns may yield error with special characters or
+    duplicated/banned names.
+    If you need labels there is an option to provide them.
 
     Parameters
     ----------
@@ -124,10 +126,11 @@ def keyword_search(
     columns : list
         The list of columns to search in, if None then all columns are searched
     return_data : str, optional default="full"
-        If "full" then the dataframe is returned,
+        If "full" then the full dataframe is returned, plus hit columns
         If "target" then the target columns and hits are returned,
-        If "hits" then only the boolean columns will be returned
-        if "details" then a dataframe with a hit per row is returned
+        If "result" then only the boolean result columns will be returned,
+        If "detail" then a dataframe with a hit per row is returned
+        If you use "full_hits", "target_hits" or "result_hits" then only hit rows are returned
     regexp : bool, default True
         If True then the keywords are treated as regular expressions, otherwise
         a simpler string search is performed.
@@ -150,7 +153,7 @@ def keyword_search(
     DataFrame
         A copy of the dataframe with the new hit columns added or just
         the boolean columns for each keyword (depending on return_hit_columns_only)
-        Plus a combined column that is true if any of the other columns is true.
+        Plus a column kw_match_all that is True if any of the other columns is True.
 
     """
 
@@ -199,19 +202,29 @@ def keyword_search(
                 "Labels provided are repeated, so they will be rolled up using OR logical operator"
             )
     return_data = return_data.lower()
-    if return_data not in ["full", "target", "hits", "details"]:
-        raise ValueError("return_data must be one of full, target, hits or details")
+    if return_data not in [
+        "full",
+        "target",
+        "result",
+        "detail",
+        "full_hits",
+        "target_hits",
+        "result_hits",
+    ]:
+        raise ValueError(
+            "return_data must be one of full, target, result or detail or ending with _hits"
+        )
 
     if return_data == "full":
         logger.info("Returning full dataframe")
-    if return_data == "hits":
-        logger.info("Returning hits only")
-    if return_data == "details":
+    if return_data == "result":
+        logger.info("Returning results (boolean) columns only")
+    if return_data == "detail":
         logger.info("Returning details")
-    if return_data == "targets":
-        logger.info("Returning targets columns and hits")
+    if return_data == "target":
+        logger.info("Returning target and boolean columns")
 
-    if return_data == "details":
+    if return_data == "detail":
         if key_column is None:
             raise ValueError("Must provide a key column if return_details is True")
         if key_column not in dffull.columns:
@@ -229,29 +242,7 @@ def keyword_search(
     else:
         dfres = _keyword_search_str(keywords, df, case_sensitive)
 
-    if labels:
-        dfres_labelled = dfres.copy()
-        if len(set(labels)) == len(dfres_labelled.columns):
-            dfres_labelled.columns = labels
-        else:
-            # we are dealing with multiple labels to group
-            dfresg = pd.DataFrame()
-            for l in set(labels):
-                cols = []
-                for i, c in enumerate(dfres_labelled.columns):
-                    if l == labels[i]:
-                        cols.append(c)
-                dfresg[l] = np.logical_or.reduce(dfres_labelled[cols], axis=1)
-            dfres_labelled = dfresg.copy()
-        dfres_labelled["kw_match_all"] = dfres.apply(any, axis=1)
-        # we are using the original dfres here on purpose, the test suite needs
-        # to test that they match against the grouped columns
-
-    # we add the combined any() (ie. or) column to dfres after we processed the
-    # labels because otherwise the list of labels and hits wouldnt match
-    dfres["kw_match_all"] = dfres.apply(any, axis=1)
-
-    if return_data == "details":
+    if "detail" in return_data:
         df = dffull.join(dfres)
         zeroes = max(math.ceil(math.log10(len(keywords))), 2)
         list_hits = []
@@ -270,19 +261,37 @@ def keyword_search(
         return dfd
 
     if labels:
-        df_hits = dfres_labelled
-    else:
-        df_hits = dfres
+        if len(set(labels)) == len(dfres.columns):
+            dfres.columns = labels
+        else:
+            # we are dealing with multiple labels to group
+            dfresg = pd.DataFrame()
+            for l in set(labels):
+                cols = []
+                for i, c in enumerate(dfres.columns):
+                    if l == labels[i]:
+                        cols.append(c)
+                dfresg[l] = np.logical_or.reduce(dfres[cols], axis=1)
+            dfres = dfresg.copy()
 
-    if return_data == "hits":
-        logger.info("Returning hit columns %s", df_hits.columns)
-        return df_hits
+    # we add the combined any() (ie. or) column to dfres after we processed the
+    # labels because otherwise the list of labels and hits wouldnt match
+    dfres["kw_match_all"] = dfres.apply(any, axis=1)
+    # we add a hit count column for convenience
+    dfres["kw_match_count"] = dfres.apply(sum, axis=1)
 
-    if return_data == "targets":
-        df = df.join(df_hits)
+    if "_hits" in return_data:
+        dfres = dfres[dfres["kw_match_all"] == True].copy()
+
+    if "result" in return_data:
+        logger.info("Returning hit columns %s", dfres.columns)
+        return dfres
+
+    if "target" in return_data:
+        df = df[columns].join(dfres).copy()
         logger.info("Returning target columns: %s", df.columns)
         return df
 
-    dffull = dffull.join(df_hits)
+    dffull = dffull.join(dfres).copy()
     logger.info("Returning all columns: %s", dffull.columns)
     return dffull

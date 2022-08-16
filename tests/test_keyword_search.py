@@ -152,7 +152,7 @@ def test_keyword_search_details():
         [r"west$", "north"],
         columns=["col7"],
         labels=["West", "North"],
-        return_data="details",
+        return_data="detail",
         key_column="col1",
     )
     res_list = list(res["col1"])
