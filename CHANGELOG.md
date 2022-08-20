@@ -1,15 +1,21 @@
 # Changelog
 
-## V0.0.9 (Unreleased)
+## V0.0.9 (20/08/2022)
 
 ### Features
 
+- filemanager now has yaml instead of singleton object, full rewrite 
 
 ### Tweaks
 
-- cleanup_column_names() now accepts a list in addition to a dataframe
+- cleanup_column_names() now accepts a list in addition to a dataframe and cleans unicode accents
+- keyword_search accepts labels including rollup columns
+- logger now in colour and to stdout
+- count_values_in_col() has percentage option
 
 ### Fixes
+
+- keyword_search() refactoring and some bug fixes
 
 ## V0.0.8 (16/07/2022)
 
