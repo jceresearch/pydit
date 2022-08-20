@@ -48,14 +48,6 @@ def add_percentile(df, col, col_group=None, inplace=False):
         If inplace=False, returns a copy of the dataframe with the new columns added.
         If inplace=True, it will return True, and mutate the original dataframes.
 
-    Examples
-    --------
-    >>> import pydit
-    >>> pydit.start_logging_info()
-    >>> df = pydit.create_test_df()
-    >>> df = pydit.add_percentile(df, "col1")
-    >>> print(list(df("percentile_in_col1")))
-
     """
 
     if not isinstance(df, pd.DataFrame):

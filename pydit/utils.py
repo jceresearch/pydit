@@ -4,7 +4,7 @@ The functions below can be used directly.
 However, when needed for a specific core function, instead of importing them, 
 we would create a copy of the function and rename it with an _ prefix.
 This is to ensure that a core function's module is self-standing, ie can be
-used/imported independently of pydit.
+used/imported with no other dependencies.
 
 """
 import random

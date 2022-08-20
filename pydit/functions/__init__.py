@@ -1,8 +1,5 @@
 """ 
-Sub-package (./functions) containing the core functionality of pydit.
-
-Functions are imported individually so they can be used from pydit directly:
-e.g. pydit.create_calendar()
+Sub-package (./functions) containing the core functionality.
 
 The modules are also self standing, you should be able to copy any .py file
 and import it in your script to use it with no dependencies on other modules.
