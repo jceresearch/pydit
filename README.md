@@ -5,7 +5,7 @@ Pydit is a library of useful data munging tools that a typical internal auditor 
 
 I am building this library as learning exercise on how to create a package, build documentation and tests and publish it, the code quality is still low, marginally better than pasting from SO.
 
-Use it at your own peril.
+Use it at your own peril :)
 
 If you wish to contribute pls get in touch.
 
@@ -16,34 +16,22 @@ E.g. cleanup field names or to do some duplicates checks, Benford, etc.
 Btw, Pydit takes a lot of inspiration (and code) from Pyjanitor, an awesome library!
 
 
-The problem I am tackling is:
-- These snippets tend to accumulate in the code making it difficult to review 
-and often may have some limitations/bugs that I never get to retrofix.
-- While most implementations go for speed and elegance, in an Audit context the 
-most important points are accuracy, legibility, reproducibility and generating lots of audit trails of what is going on.
-
-These are the main design principles and highlights:
-
--  functions are self standing, minimising imports/dependencies. 
-
-The auditor should be able to import an individual module from pydit to use only those functions directly in the audit test, making it easier to undertand it, document the test and peer review. No dependencies on future versions of the library breaking the code (which happens a lot)
-
-- functions include verbose logging to explain what is going on.
-
-Another feature specifically useful for Internal Audit, lots of logging entries.
+The problem Pydit tries to solve is that all these cleanup and checks snippets start to crop up everywhere, pasted with no great consistency, often with barebones print() to document what was going on. Audit tests need 
+to be easy to review and these checks (e.g. no dupicates, number of blanks) are crucial as checkpoints and they 
+deserve good/verbose logging entries.
+Libraries like pyjanitor do a great job but tend to be compact and non verbose, for audit tests we want super 
+verbose and very easy to read.
 
 
-- focus on documentation, tests, and simple code, less concern on performance
+So for pydit I follow the following principles:
 
-Auditors mostly work on relatively small datasets and/or one-off processing.
-We can afford some performance penalty if the code is very easy to follow. Most of the time we don't have a large teams or the time to do extensive peer review or develop test suites for the audit tests themselves, so the code needs to be low complexity across the board.
+1.  functions are self standing, minimising imports/dependencies. The auditor should be able to import an individual module from pydit to use only those functions directly in the audit test, making it easier to undertand it, document the test and peer review. No dependencies on future versions of the library breaking the code (which happens a lot)
 
-- no method chaining, in interest of source code readability. 
+2. functions include verbose logging to explain what is going on. Another feature specifically useful for Internal Audit, lots of logging entries.
 
-Pyjanitor is great and its chaining approach is super elegant. Definitely one to have in the toolbox. However, auditors are typically less skilled in python than data scientists, and the code tends to be ad hoc/one-off, with little time for deep review. Therefore, code readability is top priority and I prefer more step by step 
-approach to coding with no method chaining.
+3. focus on documentation, tests, and simple code, less concern on performance
 
-In any case the default behaviour is to return a new or a transformed copy of the object and not mutate the input object(s). The "inplace=True" option may be available.
+4. no method chaining, in interest of source code readability. Pyjanitor is great and its chaining approach is super elegant and compact. Definitely one to have in the toolbox. However, I have found I always need to split the steps to do/evidence data integrity checks on the intermediate results, and I find it easier to have it all step by step split, with comments, for easier peer review. In any case the default behaviour is to return a new or a transformed copy of the object and not mutate the input object(s). The "inplace=True" option may be available.
 
 
 

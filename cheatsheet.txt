@@ -21,3 +21,9 @@ poetry publish --build
 # git push origin master
 
 
+Ensure you have 
+$ cat .condarc
+channel_priority: strict
+channels:
+  - conda-forge
+  - defaults
