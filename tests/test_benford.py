@@ -23,10 +23,8 @@ logger = setup_logging()
 
 def test_check_benford_wrong_inputs():
     """ testing the benford checker"""
-    d = [
-        np.nan,
-        " ",
-        " ",
+    # fmt: off
+    d = [np.nan," ", " ",
         0,
         0,
         0,
@@ -82,6 +80,7 @@ def test_check_benford_wrong_inputs():
         9,
         9,
     ]
+    # fmt: on
     df = pd.DataFrame(d, columns=["test"])
     # This list should match exactly the expected count, i.e. 14,8,6,4,4,3,3,2,2
     with pytest.raises(ValueError):

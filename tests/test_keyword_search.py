@@ -7,6 +7,7 @@ import sys
 
 import numpy as np
 import pandas as pd
+import pytest
 
 # pylint: disable=redefined-outer-name
 # pylint: disable=import-error
@@ -15,8 +16,10 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from pydit import keyword_search
 
 
-def test_keyword_search_re_with_string():
-    "Test that it behaves correctly when just strings are given"
+@pytest.fixture(name="df")
+def fixture_df():
+    """Base DataFrame fixture"""
+    # fmt: off
     data = {
         "col1": ["january", "february", "march", "april", "may", "june"],
         "col2": [" Jan", " Feb", "Mar", "Apr", np.nan, "Feb"],
@@ -30,12 +33,21 @@ def test_keyword_search_re_with_string():
             "Hi, \nhello world",
         ],
         "col6": [1, 2, 3, 4, 5, 6],
+        "col7": ["South", "North", "South-East", "South-West", "West", "North"],
     }
+    # fmt: on
     df = pd.DataFrame(data)
+    return df
+
+
+def test_keyword_search_re_with_string(df):
+    """test that it behaves correctly when strings are given"""
+
     res = keyword_search(df, ["feb", "mar"], columns=["col1", "col2", "col3"])
     assert list(res["kw_match01"]) == [False, True, True, False, False, True]
     assert list(res["kw_match02"]) == [False, False, True, True, False, False]
     assert list(res["kw_match_all"]) == [False, True, True, True, False, True]
+
     res = keyword_search(df, ["hello"], columns="col4")
     assert list(res["kw_match01"]) == [True, True, True, True, True, True]
     assert list(res["kw_match_all"]) == [True, True, True, True, True, True]
@@ -43,82 +55,36 @@ def test_keyword_search_re_with_string():
     assert list(res["kw_match01"]) == [True, False, False, False, False, False]
 
 
-def test_keyword_search_re():
+def test_keyword_search_re(df):
     """test that it behaves correctly when given RE"""
-    data = {
-        "col1": ["january", "february", "march", "april", "may", "june"],
-        "col2": [" Jan", " Feb", "Mar", "Apr", np.nan, "Feb"],
-        "col3": ["dec", "jan", "feb", "mar", 0, "may"],
-        "col4": [
-            "Hello world",
-            "Hello\nworld",
-            "Hello world\n",
-            "Hello world ",
-            " Hello world",
-            "Hi, \nhello world",
-        ],
-        "col6": [1, 2, 3, 4, 5, 6],
-        "col7": ["South", "North", "East-West", "West-South", "West", "North"],
-    }
-    df = pd.DataFrame(data)
     res = keyword_search(df, [r"west$"], columns=["col7"])
-    assert list(res["kw_match01"]) == [False, False, True, False, True, False]
+    assert list(res["kw_match01"]) == [False, False, False, True, True, False]
 
 
-def test_keyword_search_str():
+def test_keyword_search_str(df):
     """Test for simpler keyword search"""
 
-    """Base DataFrame fixture"""
-    data = {
-        "col1": ["january", "february", "march", "april", "may", "june"],
-        "col2": [" Jan", " Feb", "Mar", "Apr", np.nan, "Feb"],
-        "col3": ["dec", "jan", "feb", "mar", 0, "may"],
-        "col4": [
-            "Hello world",
-            "Hello\nworld",
-            "Hello world\n",
-            "Hello world ",
-            " Hello world",
-            "Hi, \nhello world",
-        ],
-        "col6": [1, 2, 3, 4, 5, 6],
-    }
-    df = pd.DataFrame(data)
     res = keyword_search(
-        df, ["feb", "mar"], columns=["col1", "col2", "col3"], regexp=False
+        df, ["feb", "mar"], columns=["col1", "col2", "col3"], regexp=False,
     )
     assert list(res["kw_match01"]) == [False, True, True, False, False, True]
     assert list(res["kw_match02"]) == [False, False, True, True, False, False]
     assert list(res["kw_match_all"]) == [False, True, True, True, False, True]
+
     res = keyword_search(df, ["hello"], columns="col4", regexp=False)
     assert list(res["kw_match01"]) == [True, True, True, True, True, True]
     assert list(res["kw_match_all"]) == [True, True, True, True, True, True]
 
 
-def test_keyword_search_labels():
+def test_keyword_search_labels(df):
     """test that it processes labels correctly"""
-    data = {
-        "col1": ["january", "february", "march", "april", "may", "june"],
-        "col2": [" Jan", " Feb", "Mar", "Apr", np.nan, "Feb"],
-        "col3": ["dec", "jan", "feb", "mar", 0, "may"],
-        "col4": [
-            "Hello world",
-            "Hello\nworld",
-            "Hello world\n",
-            "Hello world ",
-            " Hello world",
-            "Hi, \nhello world",
-        ],
-        "col6": [1, 2, 3, 4, 5, 6],
-        "col7": ["South", "North", "East-West", "West-South", "West", "North"],
-    }
-    df = pd.DataFrame(data)
+
     res = keyword_search(
         df, [r"west$", "north"], columns=["col7"], labels=["West", "North"]
     )
 
-    assert list(res["West"]) == [False, False, True, False, True, False]
-    assert list(res["kw_match_all"]) == [False, True, True, False, True, True]
+    assert list(res["West"]) == [False, False, False, True, True, False]
+    assert list(res["kw_match_all"]) == [False, True, False, True, True, True]
 
     res = keyword_search(
         df,
@@ -129,24 +95,22 @@ def test_keyword_search_labels():
     assert list(res["south_west"]) == [True, False, True, True, True, False]
 
 
-def test_keyword_search_details():
+def test_keyword_search_labels_rollup(df):
+    """test that it processes labels rollups correctly"""
+
+    res = keyword_search(
+        df,
+        ["south-east", "south", "north"],
+        columns=["col7"],
+        labels=["South", "South", "North"],
+    )
+
+    assert list(res["South"]) == [True, False, True, True, False, False]
+
+
+def test_keyword_search_details(df):
     """test that it processes labels correctly"""
-    data = {
-        "col1": ["january", "february", "march", "april", "may", "june"],
-        "col2": [" Jan", " Feb", "Mar", "Apr", np.nan, "Feb"],
-        "col3": ["dec", "jan", "feb", "mar", 0, "may"],
-        "col4": [
-            "Hello world",
-            "Hello\nworld",
-            "Hello world\n",
-            "Hello world ",
-            " Hello world",
-            "Hi, \nhello world",
-        ],
-        "col6": [1, 2, 3, 4, 5, 6],
-        "col7": ["South", "North", "East-West", "West-South", "West", "North"],
-    }
-    df = pd.DataFrame(data)
+
     res = keyword_search(
         df,
         [r"west$", "north"],
@@ -156,8 +120,8 @@ def test_keyword_search_details():
         key_column="col1",
     )
     res_list = list(res["col1"])
-    assert res_list == ["march", "may", "february", "june"]
+    assert res_list == ["april", "may", "february", "june"]
 
 
 if __name__ == "__main__":
-    test_keyword_search_details()
+    pass
