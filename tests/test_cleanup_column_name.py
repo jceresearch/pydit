@@ -53,6 +53,7 @@ def test_clean_column_names_2():
         "(col6)": [1, 2, 3],
         "aaaaaaaaaabbbbbbbbbbccccccccccddddddddddz": [1, 2, 3],
         1: [1, 2, 3],
+        "maría josé nuñez": [1, 2, 3],
     }
     df = pd.DataFrame(data=d)
     cleanup_column_names(df, inplace=True)
@@ -66,6 +67,7 @@ def test_clean_column_names_2():
         "col6",
         "aaaaaaaaaabbbbbbbbbbccccccccccdddddddddd",
         "1",
+        "maria_jose_nunez",
     ]
 
 

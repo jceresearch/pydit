@@ -4,18 +4,17 @@ import logging
 import string
 import re
 import random
-import pandas as pd
 import unicodedata
+
+import pandas as pd
+
 
 logger = logging.getLogger(__name__)
 
 
-
 def _strip_accents(text: str) -> str:
-    """Remove accents from a DataFrame column name.
-
+    """Remove accents from an unicode text.
     Inspired from [StackOverflow][so].
-
     [so]: https://stackoverflow.com/questions/517923/what-is-the-best-way-to-remove-accents-in-a-python-unicode-strin
     """  # noqa: E501
 
@@ -33,7 +32,7 @@ def _deduplicate_list(
 
     Uses enumerate and a loop, so it is not good for very long lists.
     This function is meant to be used for header/field names, where performance
-    is not a concern given the size of the list being on the 10s.
+    is not a concern given the size of the list to deduplicate.
 
     This is a copy of the corresponding function in the utility module
     V0.1 - 14 May 2022
@@ -139,7 +138,7 @@ def cleanup_column_names(obj, max_field_name_len=40, inplace=False):
             logger.exception(e)
             new = "unnamed"
             continue
-        new = _strip_accents(new) 
+        new = _strip_accents(new)
         new = re.sub("%", "pc", new)
         new = re.sub(r"[^a-zA-Z0-9£$€]", " ", new)
         new = re.sub(" +", " ", new)
@@ -156,8 +155,8 @@ def cleanup_column_names(obj, max_field_name_len=40, inplace=False):
     if not inplace:
         obj = obj.copy()
     if isinstance(obj, list):
-        for i in range(len(obj)):
-            obj[i]=new_cols[i]
+        for i, v in enumerate(obj):
+            obj[i] = new_cols[i]
     else:
         obj.columns = new_cols
     logger.debug("Previous names:%s", prev_cols)
