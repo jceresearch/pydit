@@ -5,9 +5,25 @@ import string
 import re
 import random
 import pandas as pd
-
+import unicodedata
 
 logger = logging.getLogger(__name__)
+
+
+
+def _strip_accents(text: str) -> str:
+    """Remove accents from a DataFrame column name.
+
+    Inspired from [StackOverflow][so].
+
+    [so]: https://stackoverflow.com/questions/517923/what-is-the-best-way-to-remove-accents-in-a-python-unicode-strin
+    """  # noqa: E501
+
+    return "".join(
+        letter
+        for letter in unicodedata.normalize("NFD", text)
+        if not unicodedata.combining(letter)
+    )
 
 
 def _deduplicate_list(
@@ -121,7 +137,9 @@ def cleanup_column_names(obj, max_field_name_len=40, inplace=False):
             new = str(e)
         except Exception as e:
             logger.exception(e)
-            new = ""
+            new = "unnamed"
+            continue
+        new = _strip_accents(new) 
         new = re.sub("%", "pc", new)
         new = re.sub(r"[^a-zA-Z0-9£$€]", " ", new)
         new = re.sub(" +", " ", new)
