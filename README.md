@@ -1,31 +1,26 @@
 
 ## Introduction to Pydit 
 
-Pydit is a library of useful data munging tools that a typical internal auditor may need to apply.  
+Pydit is a library of common data munging tools that an internal auditor may need to apply. 
 
 I am building this library as learning exercise on how to create a package, build documentation and tests and publish it, the code quality is still low, marginally better than pasting from SO.
 
-Use it at your own peril :)
-
-If you wish to contribute pls get in touch.
+Use it at your own peril :) . If you wish to contribute pls get in touch.
 
 
-Pydit is a collection of functions for data cleansing and integrity checks tasks.
-Most can be done with a short snippet of code using pandas, numpy or standard python libraries, or using one of the many libraries out there.
-E.g. cleanup field names or to do some duplicates checks, Benford, etc.
+
+Most of these functions boil down to short(ish) snippet of code using some more or less obscure existing feature in pandas, numpy or standard python libraries). E.g. cleanup field names or to do some duplicates checks, Benford, etc.
 Btw, Pydit takes a lot of inspiration (and code) from Pyjanitor, an awesome library!
 
 
-The problem Pydit tries to solve is that all these cleanup and checks snippets start to crop up everywhere, pasted with no great consistency, often with barebones print() to document what was going on. Audit tests need 
-to be easy to review and these checks (e.g. no dupicates, number of blanks) are crucial as checkpoints and they 
-deserve good/verbose logging entries.
+The problem Pydit tries to solve is that all these cleanup and checks snippets start to crop up everywhere, pasted from recent ones (may or may not be buggy) with no great consistency, with the most laconic use of 
+print() to explain what was going on. 
 Libraries like pyjanitor do a great job but tend to be compact and non verbose, for audit tests we want super 
-verbose and very easy to read.
-
+verbose and very easy to understand, code and read. 
 
 So for pydit I follow the following principles:
 
-1.  functions are self standing, minimising imports/dependencies. The auditor should be able to import an individual module from pydit to use only those functions directly in the audit test, making it easier to undertand it, document the test and peer review. No dependencies on future versions of the library breaking the code (which happens a lot)
+1.  functions are self standing, minimising imports/dependencies. The auditor should be able to pluck and import an individual module from pydit to use only those functions directly in the audit test, making it easier to undertand it, document the test and peer review. Also, that means no dependencies on future versions of the library breaking the code (which happens a lot).
 
 2. functions include verbose logging to explain what is going on. Another feature specifically useful for Internal Audit, lots of logging entries.
 
