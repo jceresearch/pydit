@@ -1,3 +1,5 @@
+""" Calculate basic dataframe metrics on data completion/quality/uniqueness
+"""
 import logging
 
 import numpy as np
@@ -7,7 +9,7 @@ from pandas.api.types import is_datetime64_any_dtype as is_datetime
 logger = logging.getLogger(__name__)
 
 
-def profile_dataframe(df, return_dict=False):
+def profile_dataframe(obj, return_dict=False, unique_min=10):
     """Create a summary of a DataFrame with various statistics.
 
     Returns a DataFrame or a dict with common statistics to profile the data.
@@ -15,19 +17,25 @@ def profile_dataframe(df, return_dict=False):
 
     Parameters
     ----------
-    df : pandas.DataFrame
+    obj : pandas.DataFrame
         DataFrame to profile.
     return_dict : bool, optional, default=False
         If True, return a dict instead of a DataFrame.
 
+    unique_min : int, optional, default=10
+    
     Returns
     -------
     DataFrame
         DataFrame with various statistics.
 
     """
-    # df=in_df.copy() # if we needed to do transformations create a copy
-    if isinstance(df, pd.DataFrame):
+
+    if isinstance(obj, pd.DataFrame):
+        df = obj.copy()
+        df.reset_index(
+            inplace=True
+        )  # this moves the index as a column so we can profile it too
         dtypes = df.dtypes.to_dict()
     else:
         raise TypeError("df must be a pandas.DataFrame")
@@ -41,7 +49,7 @@ def profile_dataframe(df, return_dict=False):
         metrics["records"] = len(df[col])
         metrics["count_unique"] = len(set(df[pd.notna(df[col])][col]))
         metrics["nans"] = len(df[pd.isnull(df[col])])
-        if metrics["count_unique"] < 5:
+        if metrics["count_unique"] <= unique_min:
             value_counts_series = df[col].value_counts(dropna=False)
             metrics["value_counts"] = value_counts_series.to_dict()
         else:
@@ -80,5 +88,20 @@ def profile_dataframe(df, return_dict=False):
     df_metrics["cardinality_perc"] = df_metrics["count_unique"] / df_metrics["records"]
     if return_dict:
         return df_metrics.set_index("column").T.to_dict()
-
-    return df_metrics
+    cols = [
+        "column",
+        "dtype",
+        "records",
+        "count_unique",
+        "nans",
+        "zeroes",
+        "empty_strings",
+        "cardinality_perc",
+        "max",
+        "min",
+        "sum",
+        "sum_abs",
+        "std",
+        "value_counts",
+    ]
+    return df_metrics[cols]
