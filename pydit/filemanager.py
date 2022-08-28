@@ -12,11 +12,10 @@ import logging
 from datetime import datetime
 import pickle
 import os
-import pathlib
 from pathlib import Path, PureWindowsPath
 import csv
 import pandas as pd
-import yaml
+import json
 
 # pylint: disable=logging-fstring-interpolation
 # pylint: disable=logging-not-lazy
@@ -25,11 +24,10 @@ import yaml
 logger = logging.getLogger(__name__)
 
 
-def _save_yaml(data, file_name):
-    """Save the data to a yaml file"""
+def _save_conf(data, file_name):
+    """Save the data to a conf file"""
     with open(file_name, "w", encoding="utf-8") as f:
-        yaml.safe_dump(data, f)
-
+        json.dump(data, f)
 
 def _fix_path_name(path=None):
     """Internal routine to fix the path to a file"""
@@ -57,13 +55,10 @@ def _stem_name(file_name):
 def setup_project(project_name="my_project", project_path="."):
     """Setup the project directory and log file"""
     logger.info(f"Setting up project {project_name}")
-    if project_path == ".":
-        _project_path = Path(os.getcwd())
-    else:
-        _project_path = Path(project_path)
-    if not _project_path.exists():
-        _project_path.mkdir()
-
+    project_path = _fix_path_name(project_path)
+    _project_path = Path(project_path)
+    if not _project_path.exists ():
+        _project_path.mkdir(exist_ok=True)
     config = {}
     config["project_name"] = project_name
     config["project_path"] = str(_project_path)
@@ -71,10 +66,25 @@ def setup_project(project_name="my_project", project_path="."):
     config["output_path"] = config["project_path"] + "/output"
     config["input_path"] = config["project_path"] + "/input"
     config["max_rows_to_excel"] = 200000
-    pathlib.Path(config["temp_path"]).mkdir(parents=True, exist_ok=True)
-    pathlib.Path(config["output_path"]).mkdir(parents=True, exist_ok=True)
-    pathlib.Path(config["input_path"]).mkdir(parents=True, exist_ok=True)
-    _save_yaml(config, config["project_path"] + "/conf.yaml")
+    Path(config["temp_path"]).mkdir(parents=True, exist_ok=True)
+    Path(config["output_path"]).mkdir(parents=True, exist_ok=True)
+    Path(config["input_path"]).mkdir(parents=True, exist_ok=True)
+    _save_conf(config, config["project_path"] + "/conf.yaml")
+    return config
+
+
+
+def load_config(project_path="."):
+    """Load the configuration file for the project"""
+    conf_file = Path(project_path + "/conf.json")
+    if not conf_file.exists():
+        setup_project("untitled")
+    config = json.load(open(conf_file, "r", encoding="utf-8"))
+    if not config:
+        raise ValueError("Could not load the conf file")
+    if not check_config(config, fix=True):
+        raise ValueError("Config file is not valid")
+
     return config
 
 
@@ -137,23 +147,9 @@ def check_config(config, fix=False):
         else:
             return False
     if fix:
-        _save_yaml(config, config["project_path"] + "/conf.yaml")
+        _save_conf(config, config["project_path"] + "/conf.json")
 
     return True
-
-
-def load_config(project_path="."):
-    """Load the configuration file for the project"""
-    conf_file = Path(project_path + "/conf.yaml")
-    if not conf_file.exists():
-        setup_project("untitled")
-    config = yaml.safe_load(open(conf_file, "r", encoding="utf-8"))
-    if not config:
-        raise ValueError("Could not load the conf file")
-    if not check_config(config, fix=True):
-        raise ValueError("Config file is not valid")
-
-    return config
 
 
 def _save_to_excel(obj, file_name, sheet_name=None, dest="auto", config=None):
