@@ -29,6 +29,7 @@ def _save_conf(data, file_name):
     with open(file_name, "w", encoding="utf-8") as f:
         json.dump(data, f)
 
+
 def _fix_path_name(path=None):
     """Internal routine to fix the path to a file"""
     if not path:
@@ -57,7 +58,7 @@ def setup_project(project_name="my_project", project_path="."):
     logger.info(f"Setting up project {project_name}")
     project_path = _fix_path_name(project_path)
     _project_path = Path(project_path)
-    if not _project_path.exists ():
+    if not _project_path.exists():
         _project_path.mkdir(exist_ok=True)
     config = {}
     config["project_name"] = project_name
@@ -69,9 +70,8 @@ def setup_project(project_name="my_project", project_path="."):
     Path(config["temp_path"]).mkdir(parents=True, exist_ok=True)
     Path(config["output_path"]).mkdir(parents=True, exist_ok=True)
     Path(config["input_path"]).mkdir(parents=True, exist_ok=True)
-    _save_conf(config, config["project_path"] + "/conf.yaml")
+    _save_conf(config, config["project_path"] + "/conf.json")
     return config
-
 
 
 def load_config(project_path="."):
