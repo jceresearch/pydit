@@ -32,7 +32,7 @@ from .merge import merge_force_suffix
 from .counts import count_related_key
 from .counts import count_values_in_col
 from .charts import chart_bar
-
+from date_time_calculations import business_hours
 
 # Here we import each of the functions in the functions/ directory to have them
 # available in the functions namespace.
