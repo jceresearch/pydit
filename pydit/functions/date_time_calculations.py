@@ -1,6 +1,10 @@
-# Function specific imports, better have here closer to the code
-import pandas as pd
+""" Module with niche functions for date and time calculations. """
+
+# pylint: disable=unexpected-keyword-arg
+# pylint: disable=bare-except
 from datetime import datetime, date, timedelta
+
+import pandas as pd
 from pandas.tseries.offsets import CDay
 from pandas.tseries.holiday import (
     AbstractHolidayCalendar,
@@ -13,8 +17,10 @@ from pandas.tseries.holiday import (
     next_monday_or_tuesday,
 )
 
-# we calculate the date series with all the business days in the period we are interested on
+
 class EnglandAndWalesHolidayCalendar(AbstractHolidayCalendar):
+    """Calendar class for England and Wales."""
+
     rules = [
         Holiday("New Years Day", month=1, day=1, observance=next_monday),
         GoodFriday,
@@ -39,14 +45,29 @@ class business_calendar:
     def __init__(
         self, start_date=None, end_date=None, bus_start_time=9, bus_end_time=17
     ):
-        self.start_date = start_date
         if start_date is None:
-            self.start_date = date(2020, 1, 1)
+            self.start_date = date(2010, 1, 1)
+        else:
+            if isinstance(start_date, date):
+                try:
+                    self.start_date = start_date.date()
+                except:
+                    self.start_date = start_date
+            else:
+                raise TypeError("start_date must be a date/datetime object")
         if end_date is None:
             self.end_date = datetime.now().date()
-        self.cal = EnglandAndWalesHolidayCalendar()
+        else:
+            if isinstance(end_date, date):
+                try:
+                    self.end_date = end_date.date()
+                except:
+                    self.end_date = end_date
+            else:
+                raise TypeError("end_date must be a date/datetime object")
+        self._cal = EnglandAndWalesHolidayCalendar()
         self._dayindex = pd.bdate_range(
-            start_date, end_date, freq=CDay(calendar=self.cal)
+            start=self.start_date, end=self.end_date, freq=CDay(calendar=self._cal)
         )
         self.bus_start_time = bus_start_time
         self.bus_end_time = bus_end_time
@@ -56,12 +77,11 @@ class business_calendar:
         mins_in_working_day = (self.bus_end_time - self.bus_start_time) * 60
         day_series = self._dayindex.to_series()
 
-        days = day_series[datetime_start.date() : datetime_end.date()].copy()
         # will return  dates found between the dates we provide
+        d = day_series[datetime_start.date() : datetime_end.date()]
+        daycount = len(d)
 
-        daycount = len(days)
-
-        if len(days) == 0:
+        if len(d) == 0:
             if datetime_start < datetime_end:
                 effective_start = max(datetime_start, self.bus_start_time)
                 effective_end = min(datetime_end, self.bus_end_time)
@@ -69,8 +89,9 @@ class business_calendar:
             else:
                 return 0
         else:
-            first_day_start = days[0].replace(hour=self.bus_start_time, minute=0)
-            first_day_end = days[0].replace(hour=self.bus_end_time, minute=0)
+
+            first_day_start = d[0].replace(hour=self.bus_start_time, minute=0)
+            first_day_end = d[0].replace(hour=self.bus_end_time, minute=0)
             first_period_start = max(first_day_start, datetime_start)
             first_period_end = min(first_day_end, datetime_end)
             if first_period_end <= first_period_start:
@@ -81,10 +102,10 @@ class business_calendar:
             if daycount == 1:
                 return first_day_mins
             else:
-                last_period_start = days[-1].replace(
+                last_period_start = day_series[-1].replace(
                     hour=self.bus_start_time, minute=0
                 )  # we know it will always start in the bus_start_time
-                last_day_end = days[-1].replace(hour=self.bus_end_time, minute=0)
+                last_day_end = d[-1].replace(hour=self.bus_end_time, minute=0)
                 last_period_end = min(last_day_end, datetime_end)
                 if last_period_end <= last_period_start:
                     last_day_mins = 0
@@ -104,10 +125,45 @@ class business_calendar:
                 self.business_mins(
                     datetime_start,
                     datetime_end,
-                    self.bus_start_time,
-                    self.bus_end_time,
                 )
                 / 60,
                 0,
             )
         )
+
+
+def calculate_business_hours(df, start_col, end_col, bus_start_time=9, bus_end_time=17):
+    """Calculate the number of business hours between two datetimes."""
+    df = df.copy()
+    df["business_hours"] = df.apply(
+        lambda x: business_calendar(
+            bus_start_time=bus_start_time, bus_end_time=bus_end_time
+        ).business_hours(x[start_col], x[end_col]),
+        axis=1,
+    )
+    return df
+
+
+def calculate_business_hours_fast(
+    df, start_col, end_col, bus_start_time=9, bus_end_time=17
+):
+    """Calculate the number of business hours between two datetimes."""
+    df = df.copy()
+    cal = business_calendar(bus_start_time=bus_start_time, bus_end_time=bus_end_time)
+    df["business_hours"] = df.apply(
+        lambda x: cal.business_hours(x[start_col], x[end_col]),
+        axis=1,
+    )
+    return df
+
+
+if __name__ == "__main__":
+    calendar = business_calendar(
+        start_date=date(2020, 1, 1),
+        end_date=date(2022, 12, 31),
+        bus_start_time=9,
+        bus_end_time=17,
+    )
+
+    res = calendar.business_hours(datetime.now() - timedelta(days=7), datetime.now())
+    print("Working hours in the last 7 days:", res)
