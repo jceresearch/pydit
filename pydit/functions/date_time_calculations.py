@@ -1,8 +1,10 @@
-""" Module with niche functions for date and time calculations. """
+""" Module with functions for date and time calculations.
+IMPORTANT: adapted to England and Wales only, edit the calendar class to regional specs. """
 
 # pylint: disable=unexpected-keyword-arg
 # pylint: disable=bare-except
-from datetime import datetime, date, timedelta
+import logging
+from datetime import datetime, date
 
 import pandas as pd
 from pandas.tseries.offsets import CDay
@@ -16,6 +18,8 @@ from pandas.tseries.holiday import (
     next_monday,
     next_monday_or_tuesday,
 )
+
+logger = logging.getLogger(__name__)
 
 
 class EnglandAndWalesHolidayCalendar(AbstractHolidayCalendar):
@@ -56,7 +60,7 @@ class business_calendar:
             else:
                 raise TypeError("start_date must be a date/datetime object")
         if end_date is None:
-            self.end_date = datetime.now().date()
+            self.end_date = datetime.now().date().replace(year=datetime.now().year + 1)
         else:
             if isinstance(end_date, date):
                 try:
@@ -76,18 +80,11 @@ class business_calendar:
         """Calculate the business minutes between two datetimes"""
         mins_in_working_day = (self.bus_end_time - self.bus_start_time) * 60
         day_series = self._dayindex.to_series()
-
         # will return  dates found between the dates we provide
         d = day_series[datetime_start.date() : datetime_end.date()]
         daycount = len(d)
-
         if len(d) == 0:
-            if datetime_start < datetime_end:
-                effective_start = max(datetime_start, self.bus_start_time)
-                effective_end = min(datetime_end, self.bus_end_time)
-                return (effective_end - effective_start).seconds / 60
-            else:
-                return 0
+            return 0
         else:
 
             first_day_start = d[0].replace(hour=self.bus_start_time, minute=0)
@@ -102,7 +99,8 @@ class business_calendar:
             if daycount == 1:
                 return first_day_mins
             else:
-                last_period_start = day_series[-1].replace(
+                # we calculate last day
+                last_period_start = d[-1].replace(
                     hour=self.bus_start_time, minute=0
                 )  # we know it will always start in the bus_start_time
                 last_day_end = d[-1].replace(hour=self.bus_end_time, minute=0)
@@ -112,10 +110,12 @@ class business_calendar:
                 else:
                     last_day_sec = last_period_end - last_period_start
                     last_day_mins = last_day_sec.seconds / 60
-
-                middle_days_mins = 0
                 if daycount > 2:
+                    # we calculate middle days if appropriate
                     middle_days_mins = (daycount - 2) * mins_in_working_day
+                else:
+                    middle_days_mins = 0
+
                 return first_day_mins + last_day_mins + middle_days_mins
 
     def business_hours(self, datetime_start, datetime_end):
@@ -165,5 +165,8 @@ if __name__ == "__main__":
         bus_end_time=17,
     )
 
-    res = calendar.business_hours(datetime.now() - timedelta(days=7), datetime.now())
-    print("Working hours in the last 7 days:", res)
+    res = calendar.business_hours(
+        datetime(year=2022, month=8, day=28, hour=9),
+        datetime(year=2022, month=8, day=29, hour=17),
+    )
+    print("Working hours:", res)
