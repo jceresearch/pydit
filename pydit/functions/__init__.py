@@ -12,7 +12,7 @@ from .calendar_table import create_calendar
 from .percentile import add_percentile
 from .profile_dataframe_statistics import profile_dataframe
 from .duplicates import check_duplicates
-from .sequence import check_sequence
+from .sequence import check_sequence, group_gaps
 from .referential_integrity_check import check_referential_integrity
 from .fillna import fillna_smart
 from .blanks import check_blanks
