@@ -44,7 +44,26 @@ class EnglandAndWalesHolidayCalendar(AbstractHolidayCalendar):
 
 
 class business_calendar:
-    """Class to calculate the business hours between datetimes"""
+    """Class to calculate the business hours between datetimes
+
+    Parameters
+    ----------
+    start_date : date, optional
+        start date of the business calendar, by default 1st Jan 2010
+    end_date : date, optional
+        end date of the business calendar, by default one year from current date
+
+    bus_start_time : int, optional
+        start time of the business day, defaults to 9 (9am)
+    bus_end_time : int, optional
+        end time of the business day, defaults to 17 (5pm)
+
+    returns
+    -------
+    object with methods to calculate business hours and minutes between two datetimes
+
+
+    """
 
     def __init__(
         self, start_date=None, end_date=None, bus_start_time=9, bus_end_time=17

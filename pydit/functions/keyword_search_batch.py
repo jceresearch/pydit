@@ -229,7 +229,6 @@ def keyword_search(
             raise ValueError("Must provide a key column if return_details is True")
         if key_column not in dffull.columns:
             raise ValueError("Key column %s not found in dataframe" % key_column)
-
     # Here the main part of the function starts
     df.fillna("", inplace=True)
     if len(columns) > 1:
