@@ -2,11 +2,9 @@
 import os
 import sys
 
-import numpy as np
+import pytest
 import pandas as pd
 
-# import numpy as np
-# from datetime import datetime, date, timedelta
 # pylint: disable=import-error disable=wrong-import-position
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from pydit import check_sequence, setup_logging
@@ -15,9 +13,8 @@ from pydit import check_sequence, setup_logging
 logger = setup_logging()
 
 
-
 def test_check_sequence():
-    """ testing the numerical sequence checker"""
+    """testing the numerical sequence checker"""
     d = {
         "col1": [1, 2, 3, 5, 6],
         "col2": ["Id1", "ID2", "ID3", "ID-4", "ID 5"],
@@ -45,5 +42,5 @@ def test_check_sequence():
         14,
     ]
     assert check_sequence(pd.Series([1, 2, 3, 5])) == [4]
-    assert check_sequence("1 2 3 4 5") is None
-
+    with pytest.raises(TypeError):
+        check_sequence("1 2 3 4 5")

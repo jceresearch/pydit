@@ -279,7 +279,7 @@ def keyword_search(
     dfres["kw_match_all"] = dfres.apply(any, axis=1)
     # we add a hit count column for convenience
     dfres["kw_match_count"] = dfres.apply(sum, axis=1)
-
+    logger.info("Count of all hits: %s", dfres["kw_match_count"].sum())
     if "_hits" in return_data:
         dfres = dfres[dfres["kw_match_all"] == True].copy()
 
