@@ -52,7 +52,7 @@ df_profile=pydit.profile_dataframe(df) #will return a df with summary statistics
 
 
 ## Requires
-- Python >= 3.8
+- Python >= 3.9
 - Pandas >= 1.2.1
 - Numpy >= 1.22
 - openpyxl

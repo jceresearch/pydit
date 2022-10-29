@@ -1,12 +1,15 @@
 # Changelog
 
-## V0.0.10 (UNRELEASED)
+## V0.0.10
 
 ### Features
+- Added business hours calculator module
+- Upgraded filemanager, now it uses a json file to store config check the docs 
 
+### Tweaks
+- Refactored sequence checks and added grouping in output
 ### Fixes
-
-
+- profile_dataframe() fixes
 
 
 ## V0.0.9 (20/08/2022)
