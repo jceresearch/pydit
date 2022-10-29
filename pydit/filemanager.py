@@ -12,10 +12,12 @@ import logging
 from datetime import datetime
 import pickle
 import os
+import json
+
 from pathlib import Path, PureWindowsPath
 import csv
 import pandas as pd
-import json
+
 
 # pylint: disable=logging-fstring-interpolation
 # pylint: disable=logging-not-lazy
@@ -78,24 +80,21 @@ def load_config(project_path="."):
     """Load the configuration file for the project"""
     conf_file = Path(project_path + "/conf.json")
     if not conf_file.exists():
-        setup_project("untitled")
+        raise ValueError("Could not find the conf file, run setup_project first")
     config = json.load(open(conf_file, "r", encoding="utf-8"))
     if not config:
         raise ValueError("Could not load the conf file")
-    if not check_config(config, fix=True):
+    if not check_config(config, fix=False):
         raise ValueError("Config file is not valid")
-
     return config
 
 
-def set_config(key, value, config=None):
+def set_config(key, value, config=None, project_path="."):
     """Set a configuration value"""
     if not config:
-        config = load_config()
-    if isinstance(config, str):
-        config = load_config(config)
+        config = load_config(project_path)
         if not config:
-            raise ValueError("Error loading configuration file")
+            raise ValueError("Could not load the conf file")
     if isinstance(config, dict):
         if check_config(config):
             config[key] = value
@@ -110,10 +109,8 @@ def set_config(key, value, config=None):
 
 def check_config(config, fix=False):
     """Check the configuration file is valid"""
-    if not config:
-        config = load_config()
-        if not config:
-            raise ValueError("Could not load config")
+    if not isinstance(config, dict) :
+        raise ValueError("Config must be a dictionary")
     if not config["project_name"]:
         return False
     if fix:
@@ -296,17 +293,16 @@ def load(file_name, source="auto", config=None):
                 raise ValueError("Config file is not valid")
         else:
             raise ValueError("config must be a path to a yaml file or a dict")
-    obj = None
     if source == "input":
         if os.path.isfile(config["input_path"] + file_name):
             full_name = config["input_path"] + file_name
-    if source == "output":
+    elif source == "output":
         if os.path.isfile(config["output_path"] + file_name):
             full_name = config["output_path"] + file_name
-    if source == "temp":
+    elif source == "temp":
         if os.path.isfile(config["temp_path"] + file_name):
             full_name = config["temp_path"] + file_name
-    if source == "auto":
+    elif source == "auto":
         if os.path.isfile(config["temp_path"] + file_name):
             full_name = config["temp_path"] + file_name
         elif os.path.isfile(config["input_path"] + file_name):
@@ -314,9 +310,10 @@ def load(file_name, source="auto", config=None):
         elif os.path.isfile(config["output_path"] + file_name):
             full_name = config["output_path"] + file_name
         else:
-            logger.error("No file found in any of the possible sources")
-            return obj
-
+            raise FileNotFoundError("File not found")
+    else:
+        raise ValueError(r"source must be 'auto', 'input', 'output' or 'temp'  ") 
+    obj=None
     if ".pickle" in full_name:
         try:
             with open(full_name, "rb") as handle:

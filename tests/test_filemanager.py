@@ -36,10 +36,16 @@ def test_stem_name():
 
 def test_load():
     """test of basic loading"""
-    set_config("input_path", "./tests/test_data/")
-    print("Input path set to :", load_config("input_path"))
-    df = load("test_data.xlsx")
-    assert df.shape[0] == 10
+    setup_project("test",project_path="./tests/")
+    set_config("input_path", "./tests/test_data/", project_path="./tests/")
+    config=load_config(project_path="./tests/")
+    print("Input path set to :",config["input_path"] )
+    df = load("test_data.xlsx",config=config)
+    if df is not None:
+        print("Dataframe loaded")
+        assert df.shape[0] == 10
+    else:
+        raise ValueError("Dataframe not loaded")
 
 
 def test_save():
