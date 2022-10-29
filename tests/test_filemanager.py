@@ -37,6 +37,7 @@ def test_stem_name():
 def test_load():
     """test of basic loading"""
     set_config("input_path", "./tests/test_data/")
+    print("Input path set to :", load_config("input_path"))
     df = load("test_data.xlsx")
     assert df.shape[0] == 10
 
