@@ -1,5 +1,21 @@
 # Changelog
 
+## V0.0.11 
+
+### Features
+
+
+### Tweaks
+
+
+### Fixes
+- Improving tests and dosctrings
+- cleanup_dataframe_columns_names now replaces $ £ € with usd, gbp and eur respectively
+- requirements.txt has lifted specific version requirement for sphinx (for the documentation), otherwise it doesnt install in gitpod, no impact on main library
+
+
+
+
 ## V0.0.10
 
 ### Features

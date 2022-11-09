@@ -1,4 +1,4 @@
-"""Cleanup the dataframes wrapping around and improving on fillna().
+"""Improving on fillna() with customaisable options for various types and opinionated defaults.
 
 """
 
@@ -21,7 +21,7 @@ def fillna_smart(
     include_spaces=False,
     inplace=False,
 ):
-    """Cleanup the values of the dataframe with sensible nulls handling.
+    """Cleanup the values of the dataframe with opinionated nulls handling.
 
     Parameters
     ----------
@@ -29,14 +29,14 @@ def fillna_smart(
         The dataframe to clean up
     cols : list, optional, default None
         The columns to clean up. If None, will clean up all columns.
-    numeric_fillna : int, optional, default 0
-        The value to fill in for int columns.
+    numeric_fillna : int/float, optional, default 0
+        The value to fill in for numeric columns.
     date_fillna : str or datetime or date, optional, default "latest"
         The date to use for the nulls in the date columns.
         If "latest", will use the latest date in the column.
         If "first", will use the minimum date in the column.
         if "today", will use today's date.
-        If date or datetime, will use that date.
+        If date or datetime provided, will use that date.
         If str, will attempt to parse the date using "%Y-%m-%d" format.
     text_fillna : str, optional, default ""
         The text to use for the nulls in the text columns.
@@ -102,7 +102,7 @@ def fillna_smart(
                     val = datetime.strptime(date_fillna, "%Y-%m-%d")
                 except Exception as e:
                     raise ValueError(
-                        "Could not parse date_fillna parameter %s" % date_fillna
+                        "Could not parse date_fillna parameter, expected Y-m-d and provided %s" % date_fillna
                     ) from e
             else:
                 val = pd.NaT
