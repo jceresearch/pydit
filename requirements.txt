@@ -1,10 +1,10 @@
-numpy==1.22.0
-pandas==1.2.1
+numpy>=1.22.0
+pandas>=1.2.1
 openpyxl
 matplotlib
 myst-parser
-sphinx>=5.0.0
+sphinx
 pytest
 pytest-cov
-sphinx-book-theme==0.1.7
-pydata-sphinx-theme==0.7.2
+pydata-sphinx-theme
+sphinx-book-theme
