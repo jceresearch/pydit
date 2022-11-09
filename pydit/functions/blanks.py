@@ -22,7 +22,7 @@ def check_blanks(
 ):
     """
     Reports on blanks in the Dataframe, one boolean column per input columns,
-    plus a summary column that is True if any column has blanks.
+    plus a summary boolean column showing (True for each record if any column has blanks.
 
     It can optionally return a summary dataframe.
     Check out https://github.com/ResidentMario/missingno library for
