@@ -31,7 +31,6 @@ from .truncate_datetime import truncate_datetime_dataframe
 from .merge import merge_force_suffix
 from .counts import count_related_key
 from .counts import count_values_in_col
-from .charts import chart_bar
 from .date_time_calculations import business_calendar
 from .date_time_calculations import calculate_business_hours_fast
 from .date_time_calculations import calculate_business_hours

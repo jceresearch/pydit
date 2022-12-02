@@ -102,7 +102,9 @@ def _deduplicate_list(
                 if new_value in new_list:
                     new_value = el + "_" + _get_random_string(8)
                     if new_value in new_list:
-                        raise ValueError("Failed to create a unique value, failed at: "+new_value)
+                        raise ValueError(
+                            "Failed to create a unique value, failed at: " + new_value
+                        )
         new_list.append(new_value)
     return new_list
 
@@ -111,13 +113,13 @@ def cleanup_column_names(obj, max_field_name_len=40, inplace=False):
     """Cleanup the column names of a Pandas dataframe.
 
     e.g. removes non alphanumeric chars, replaces _ instead of space, perc instead
-    of %, converts main currency signs (usd, gpb, eur), strips trailing spaces, 
+    of %, converts main currency signs (usd, gpb, eur), strips trailing spaces,
     converts to lowercase.
-    
+
 
 
     It also ensures that the resulting list doesn't have duplicates or nulls, in
-    which case it would fix. 
+    which case it would fix.
 
     Parameters
     ----------
@@ -150,7 +152,7 @@ def cleanup_column_names(obj, max_field_name_len=40, inplace=False):
         new = _strip_accents(new)
         new = re.sub("%", "pc", new)
         new = re.sub("£", "gbp", new)
-        new = re.sub("$", "usd", new)
+        new = re.sub("\$", "usd", new)
         new = re.sub("€", "eur", new)
         new = re.sub(r"[^a-zA-Z0-9]", " ", new)
         new = re.sub(" +", " ", new)
