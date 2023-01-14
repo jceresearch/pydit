@@ -22,6 +22,11 @@ numpy = "^1.22"
 openpyxl="^3.0.0"
 matplotlib="*"
 myst-parser ="*"
+pytest="*"
+pytest-cov="*"
+sphinx="*"
+pydata-sphinx-theme="*"
+sphinx-book-theme="*"
 
 
 [tool.poetry.dev-dependencies]
