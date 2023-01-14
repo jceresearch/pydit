@@ -13,7 +13,7 @@ from pydit import coalesce_values, start_logging_info
 
 
 def test_coalesce_values():
-    """ test the coalesce_values function"""
+    """test the coalesce_values function"""
     data = {
         "a": [
             "Label 1",
@@ -71,4 +71,3 @@ def test_coalesce_values():
 if __name__ == "__main__":
     """Run the tests"""
     test_coalesce_values()
-

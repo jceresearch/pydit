@@ -43,4 +43,3 @@ def test_deduplicate_list():
         "2_7",
         "2_8",
     ]
-

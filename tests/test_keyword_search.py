@@ -65,7 +65,10 @@ def test_keyword_search_str(df):
     """Test for simpler keyword search"""
 
     res = keyword_search(
-        df, ["feb", "mar"], columns=["col1", "col2", "col3"], regexp=False,
+        df,
+        ["feb", "mar"],
+        columns=["col1", "col2", "col3"],
+        regexp=False,
     )
     assert list(res["kw_match01"]) == [False, True, True, False, False, True]
     assert list(res["kw_match02"]) == [False, False, True, True, False, False]

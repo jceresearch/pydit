@@ -19,8 +19,8 @@ def anonymise_key(
     hash_list_size=1000000,
 ):
     """Anonymise a column of one or many dataframes with a scrambled list of integers.
-    
-    Will persist across the list and it will return the translation table used. 
+
+    Will persist across the list and it will return the translation table used.
 
     Parameters
     ----------
@@ -39,7 +39,7 @@ def anonymise_key(
 
     Returns
     -------
-    tuple 
+    tuple
         A tuple of the translation table and the hash list.
     """
 

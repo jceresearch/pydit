@@ -102,7 +102,8 @@ def fillna_smart(
                     val = datetime.strptime(date_fillna, "%Y-%m-%d")
                 except Exception as e:
                     raise ValueError(
-                        "Could not parse date_fillna parameter, expected Y-m-d and provided %s" % date_fillna
+                        "Could not parse date_fillna parameter, expected Y-m-d and provided %s"
+                        % date_fillna
                     ) from e
             else:
                 val = pd.NaT

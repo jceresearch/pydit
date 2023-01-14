@@ -104,7 +104,7 @@ def check_sequence(obj_in, col=None):
 
 
 def group_gaps(gap_list):
-    """ Groups a list of gaps into a list of lists of consecutive gaps
+    """Groups a list of gaps into a list of lists of consecutive gaps
 
     Parameters
     ----------
@@ -115,9 +115,10 @@ def group_gaps(gap_list):
     -------
     list
         A list of lists of consecutive gaps
-        
+
     """
     try:
+
         def to_ranges(iterable):
             iterable = sorted(set(iterable))
             for key, group in itertools.groupby(

@@ -7,6 +7,6 @@ EXAMPLES_DIR = "examples/"
 
 
 def pytest_configure():
-    """ pytest configuration """
+    """pytest configuration"""
     pytest.TEST_DATA_DIR = TEST_DATA_DIR
     pytest.EXAMPLES_DIR = EXAMPLES_DIR

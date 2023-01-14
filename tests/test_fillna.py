@@ -16,7 +16,7 @@ logger = setup_logging()
 
 
 def test_fillna_smart():
-    """ testing the blanks checker"""
+    """testing the blanks checker"""
     d = {
         "col1": [1, 2, 3, 4, 5],
         "col2": ["Value 1", "Value 2", "", " ", "Value 5"],
@@ -39,5 +39,5 @@ def test_fillna_smart():
 
 if __name__ == "__main__":
     # execute only if run as a script
-    #print(test_fillna_smart())
+    # print(test_fillna_smart())
     pass

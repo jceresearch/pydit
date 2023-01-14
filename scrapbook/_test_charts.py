@@ -18,5 +18,5 @@ logger = setup_logging()
 
 if __name__ == "__main__":
     df = pd.DataFrame(np.random.randn(1000, 4), columns=list("ABCD"))
-    #print(df.head())
-    #chart_bar(df, "Test", "A", "B")
+    # print(df.head())
+    # chart_bar(df, "Test", "A", "B")

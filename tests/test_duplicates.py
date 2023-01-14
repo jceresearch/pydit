@@ -62,7 +62,7 @@ def test_check_duplicates_dataframe_no_dupes(df):
 
 
 def test_check_duplicates_dataframe_keep_false(df):
-    """ test get full population"""
+    """test get full population"""
 
     dfdupes = check_duplicates(
         df, ["col2"], keep=False, indicator=True, also_return_non_duplicates=True
@@ -86,7 +86,7 @@ def test_check_duplicates_dataframe_keep_false(df):
 
 
 def test_check_duplicates_dataframe(df):
-    """ Detailed  sport tests for check_duplicates """
+    """Detailed  sport tests for check_duplicates"""
 
     dfdupes = check_duplicates(df, ["col2"], keep="first")
     assert len(dfdupes) == 1

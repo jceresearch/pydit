@@ -50,7 +50,7 @@ def _benford(rawdata, digit=1):
             len(data),
         )
     rng = range(
-        10 ** (digit - 1), 10 ** digit
+        10 ** (digit - 1), 10**digit
     )  # fancy way to calculate ranges for whatever first x digits
     BFD = [math.log10(1.0 + 1.0 / n) for n in rng]  # this is the actual benford law
     data_count = {}
@@ -112,7 +112,7 @@ def benford_to_dataframe(obj, column_name="", first_n_digits=1):
     dfres = pd.DataFrame(
         tuple(
             zip(
-                range(10 ** (first_n_digits - 1), 10 ** first_n_digits),
+                range(10 ** (first_n_digits - 1), 10**first_n_digits),
                 np.around(e),
                 c,
                 p,
@@ -127,8 +127,8 @@ def benford_to_dataframe(obj, column_name="", first_n_digits=1):
 
 
 def benford_to_plot(df, column_name, first_n_digits=1, filename=None, show=True):
-    """ Plots the histogram with Benford's Law expected and the actual frequencies.
-    
+    """Plots the histogram with Benford's Law expected and the actual frequencies.
+
     Parameters
     ----------
     obj : DataFrame or Series or list
@@ -154,7 +154,7 @@ def benford_to_plot(df, column_name, first_n_digits=1, filename=None, show=True)
     dfres = benford_to_dataframe(df, column_name, first_n_digits)
     y1 = dfres["bf_exp_count"]
     y2 = dfres["bf_act_count"]
-    x = np.arange(10 ** (first_n_digits - 1), 10 ** first_n_digits)
+    x = np.arange(10 ** (first_n_digits - 1), 10**first_n_digits)
     width = 0.35
     plt.figure(figsize=(20, 8), dpi=80)
     plt.bar(x, y2, width, label="Actual")
@@ -171,7 +171,11 @@ def benford_to_plot(df, column_name, first_n_digits=1, filename=None, show=True)
 
 
 def benford_list_anomalies(
-    df, column_name, top_n_digits=3, first_n_digits=1, return_anomalies_only=False,
+    df,
+    column_name,
+    top_n_digits=3,
+    first_n_digits=1,
+    return_anomalies_only=False,
 ):
     """Returns the Benford's Law frequencies expected and actual for a column of values.
 
@@ -196,7 +200,7 @@ def benford_list_anomalies(
         column_name : str
             The column name to be analyzed.
         top_n_digits : int, optional, default: 3
-            Threshold for when we consider an anomaly, based on rank of abs difference. 
+            Threshold for when we consider an anomaly, based on rank of abs difference.
         first_n_digits : int, optional, default: 1
             The number of first digits to be considered Typically first 1 and 2 digits are enough.
         only_anomalies : boolean, optional, default: False

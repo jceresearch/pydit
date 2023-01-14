@@ -66,7 +66,11 @@ def test_check_blanks():
     assert d["has_blanks"][3] is False
     assert d["has_blanks"][4] is False
 
-    dfx = check_blanks(df, include_zeroes=True, include_nullstrings_and_spaces=True,)
+    dfx = check_blanks(
+        df,
+        include_zeroes=True,
+        include_nullstrings_and_spaces=True,
+    )
     d = dfx.to_dict()
     print(d)
     assert d["has_blanks"][0] is True

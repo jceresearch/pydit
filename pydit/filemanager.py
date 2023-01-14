@@ -109,7 +109,7 @@ def set_config(key, value, config=None, project_path="."):
 
 def check_config(config, fix=False):
     """Check the configuration file is valid"""
-    if not isinstance(config, dict) :
+    if not isinstance(config, dict):
         raise ValueError("Config must be a dictionary")
     if not config["project_name"]:
         return False
@@ -312,8 +312,8 @@ def load(file_name, source="auto", config=None):
         else:
             raise FileNotFoundError("File not found")
     else:
-        raise ValueError(r"source must be 'auto', 'input', 'output' or 'temp'  ") 
-    obj=None
+        raise ValueError(r"source must be 'auto', 'input', 'output' or 'temp'  ")
+    obj = None
     if ".pickle" in full_name:
         try:
             with open(full_name, "rb") as handle:

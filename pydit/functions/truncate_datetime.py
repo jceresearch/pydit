@@ -41,7 +41,10 @@ def _truncate_datetime(timestamp: dt.datetime, datepart: str) -> dt.datetime:
     return dt.datetime(*recurrence)
 
 
-def truncate_datetime_dataframe(df: pd.DataFrame, datepart: str,) -> pd.DataFrame:
+def truncate_datetime_dataframe(
+    df: pd.DataFrame,
+    datepart: str,
+) -> pd.DataFrame:
     """Truncate times down to a user-specified precision of
     year, month, day, hour, minute, or second.
 
@@ -82,4 +85,3 @@ def truncate_datetime_dataframe(df: pd.DataFrame, datepart: str,) -> pd.DataFram
     )
 
     return df
-

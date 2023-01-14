@@ -29,7 +29,7 @@ def collapse_levels(obj: pd.DataFrame, sep: str = "_") -> pd.DataFrame:
         The DataFrame to flatten.
     sep : str, optional, default "_"
         The separator to use when joining the column names.
-    
+
     Returns
     -------
     pandas.DataFrame

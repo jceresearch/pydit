@@ -23,7 +23,7 @@ def profile_dataframe(obj, return_dict=False, unique_min=10):
         If True, return a dict instead of a DataFrame.
 
     unique_min : int, optional, default=10
-    
+
     Returns
     -------
     DataFrame

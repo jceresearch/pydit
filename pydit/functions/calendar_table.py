@@ -4,11 +4,11 @@ import pandas as pd
 
 
 def create_calendar(start="1975-01-01", end="2050-12-31"):
-    """ Function to create a calendar DataFrame to be used as a lookup table
+    """Function to create a calendar DataFrame to be used as a lookup table
 
     This can be used when doing facets/aggregation, similar to the usual
     calendar table in in PowerBI.
-    
+
     Parameters
     ----------
     start : str, optional, default: "1975-01-01"
