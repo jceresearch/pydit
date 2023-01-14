@@ -15,11 +15,10 @@ jobs:
       with:
         python-version: "3.10"
         
-    - name: Install poetry
+    - name: Install poetry and basic tools
       run: |
         python -m pip install --upgrade pip
-        pip install poetry
-        pip install sphinx
+        pip install poetry sphinx pytest pytest-cov pydata-sphinx-theme sphinx-book-theme
     - name: Configure poetry
       run: |
         python -m poetry config virtualenvs.in-project true    
