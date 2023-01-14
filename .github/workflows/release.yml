@@ -44,4 +44,4 @@ jobs:
         PYPI_TOKEN: ${{ secrets.PYPI_PASSWORD }}
       run: |
         poetry config pypi-token.pypi $PYPI_TOKEN
-        poetry publish --build
+        poetry build
