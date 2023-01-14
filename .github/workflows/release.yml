@@ -35,7 +35,7 @@ jobs:
 
     - name: Run tests
       run: |
-        python -m pytest -sxv
+        python -m poetry run python -m pytest -sxv
     - name: Build docs
       run: |
         sphinx-build ./docs/source ./docs/build -a
