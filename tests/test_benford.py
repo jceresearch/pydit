@@ -236,7 +236,7 @@ def test_benford_chart():
     ]
     df = pd.DataFrame(d, columns=["test"])
 
-    res = benford_to_plot(df, "test", 1, show=False, filename="./tests/output/test.png")
+    res = benford_to_plot(df, "test", 1, show=False, filename="")
     assert res.shape == (9, 7)
 
 
