@@ -2,6 +2,7 @@
 import os
 import sys
 import pytest
+import pathlib
 
 import numpy as np
 import pandas as pd
@@ -17,12 +18,14 @@ from pydit import (
     benford_list_anomalies,
 )
 
+# create the output folder for the png if it does not exist
+pathlib.Path("./tests/output").mkdir(parents=True, exist_ok=True)
 
 logger = setup_logging()
 
 
 def test_check_benford_wrong_inputs():
-    """ testing the benford checker"""
+    """testing the benford checker"""
     # fmt: off
     d = [np.nan," ", " ",
         0,
@@ -88,7 +91,7 @@ def test_check_benford_wrong_inputs():
 
 
 def test_check_benford():
-    """ testing the benford checker"""
+    """testing the benford checker"""
     d = [
         np.nan,
         " ",
@@ -174,7 +177,7 @@ def test_check_benford():
 
 
 def test_benford_chart():
-    """ testing the benford chart"""
+    """testing the benford chart"""
     d = [
         np.nan,
         " ",
@@ -236,11 +239,14 @@ def test_benford_chart():
     ]
     df = pd.DataFrame(d, columns=["test"])
 
-    res = benford_to_plot(df, "test", 1, show=False, filename="")
+    res = benford_to_plot(
+        df, "test", 1, show=False, filename="./tests/output/benford.png"
+    )
     assert res.shape == (9, 7)
 
 
 def test_benford_list_anomalies():
+    """testing the benford list anomalies"""
     d = [
         np.nan,
         " ",
