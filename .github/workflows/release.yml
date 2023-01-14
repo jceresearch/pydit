@@ -10,6 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
+    - name: run black
+      uses: psf/black@stable
+      with:
+        options: "--check --verbose"
+        jupyter: false
+        src: "./pydit"
     - name: Set up Python 3.10
       uses: actions/setup-python@v3
       with:
