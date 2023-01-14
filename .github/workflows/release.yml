@@ -38,7 +38,7 @@ jobs:
         python -m poetry run python -m pytest -sxv
     - name: Build docs
       run: |
-        python -m poetry run python -m sphinx-build ./docs/source ./docs/build -a
+        python -m poetry run sphinx-build ./docs/source ./docs/build -a
     - name: Build and publish
       env:
         PYPI_TOKEN: ${{ secrets.PYPI_PASSWORD }}
