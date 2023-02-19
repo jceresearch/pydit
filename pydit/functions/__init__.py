@@ -8,6 +8,7 @@ There are currently no exceptions to this design principle.
 
 """
 
+
 from .calendar_table import create_calendar
 from .percentile import add_percentile
 from .profile_dataframe_statistics import profile_dataframe
@@ -34,6 +35,7 @@ from .counts import count_values_in_col
 from .date_time_calculations import business_calendar
 from .date_time_calculations import calculate_business_hours_fast
 from .date_time_calculations import calculate_business_hours
+from .map_common_values import map_values
 
 # Here we import each of the functions in the functions/ directory to have them
 # available in the functions namespace.

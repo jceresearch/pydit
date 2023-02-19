@@ -1,19 +1,17 @@
 # Changelog
-
-## V0.0.11 
+## V0.0.12
 
 ### Features
+- Added map_values() function to map common values to numbers and the  
+  other way around. e.g. 1,2,3 to "red","amber","green" and so on.
 
 
-### Tweaks
-
+## V0.0.11
 
 ### Fixes
 - Improving tests and dosctrings
 - cleanup_dataframe_columns_names now replaces $ £ € with usd, gbp and eur respectively
 - requirements.txt has lifted specific version requirement for sphinx (for the documentation), otherwise it doesnt install in gitpod, no impact on main library
-
-
 
 ## V0.0.10
 

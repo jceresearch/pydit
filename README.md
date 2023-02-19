@@ -3,30 +3,42 @@
 
 Pydit is a library of common data munging tools that an internal auditor may need to apply. 
 
-I am building this library as learning exercise on how to create a package, build documentation and tests and publish it, the code quality is still low, marginally better than pasting from SO.
+This library is (also) a learning exercise for me on how to create a package, build documentation & tests, and publish it
 
-Use it at your own peril :) . If you wish to contribute pls get in touch.
+The code quality is still low, marginally better than pasting from SO.
+Use it at your own peril :) 
+
+If you wish to contribute pls get in touch.
 
 
+Most of these functions boil down to short(ish) snippet of code using existing feature in pandas, numpy or standard python libraries. 
+E.g. cleanup field names or to do some duplicates checks, Benford, etc. 
 
-Most of these functions boil down to short(ish) snippet of code using some more or less obscure existing feature in pandas, numpy or standard python libraries). E.g. cleanup field names or to do some duplicates checks, Benford, etc.
 Btw, Pydit takes a lot of inspiration (and code) from Pyjanitor, an awesome library!
 
 
-The problem Pydit tries to solve is that all these cleanup and checks snippets start to crop up everywhere, pasted from recent ones (may or may not be buggy) with no great consistency, with the most laconic use of 
-print() to explain what was going on. 
-Libraries like pyjanitor do a great job but tend to be compact and non verbose, for audit tests we want super 
-verbose and very easy to understand, code and read. 
+The problem Pydit tries to solve is that all these cleanup and checks snippets start to crop up everywhere, often pasted from internet or from recent version used in another script with no consistency or tests.
+
+Libraries like pyjanitor do a great job but tend to be compact and non verbose, for interal audit tests, we really want super-verbose and very easy to understand code and outputs. 
 
 So for pydit I follow the following principles:
 
-1.  functions are self standing, minimising imports/dependencies. The auditor should be able to pluck and import an individual module from pydit to use only those functions directly in the audit test, making it easier to undertand it, document the test and peer review. Also, that means no dependencies on future versions of the library breaking the code (which happens a lot).
+1.  functions are self standing, minimising imports/dependencies. 
 
-2. functions include verbose logging to explain what is going on. Another feature specifically useful for Internal Audit, lots of logging entries.
+The auditor should be able to pluck and import an individual module from pydit to use only those functions directly in the audit test, making it easier to undertand it, document the test done and peer-review the whole thing.
+Also, that means no dependencies on future versions of the pydit library breaking the code (an audit test may be only revisited one or two years from now).
 
-3. focus on documentation, tests, and simple code, less concern on performance
+2. functions include verbose logging to explain what is going on. Another feature specifically useful for the Internal Audit use case.
 
-4. no method chaining, in interest of source code readability. Pyjanitor is great and its chaining approach is super elegant and compact. Definitely one to have in the toolbox. However, I have found I always need to split the steps to do/evidence data integrity checks on the intermediate results, and I find it easier to have it all step by step split, with comments, for easier peer review. In any case the default behaviour is to return a new or a transformed copy of the object and not mutate the input object(s). The "inplace=True" option may be available.
+3. focus on documentation, tests, and simple code, less concern on performance.
+
+4. no method chaining, in interest of source code readability.  
+
+Pyjanitor is great and its chaining approach is elegant and compact. Definitely one to have in the toolbox. 
+
+However, I have found it better for documenting the audit test, to check and show all the intermediate steps/results. 
+
+5. Default behaviour is to return a new or a transformed copy of the object and not mutate the input object(s). The "inplace=True" option should be available if feasible.
 
 
 
