@@ -1,4 +1,4 @@
-""" pytest version of tests - WIP"""
+""" Test check_blanks.py"""
 import os
 import sys
 
