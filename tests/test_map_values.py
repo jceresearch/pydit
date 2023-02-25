@@ -6,7 +6,9 @@ import numpy as np
 import pandas as pd
 import pytest
 
-# type: ignore
+# pyright: reportUndefinedVariable=false, reportMissingImports=false,
+# pyright: reportOptionalSubscript=false, reportInvalidStringEscapeSequence=false
+# pyright: reportGeneralTypeIssues=false, reportUnknownMemberType=false
 
 
 # import numpy as np
