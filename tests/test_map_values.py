@@ -105,8 +105,9 @@ def test_check_map_values_advanced_cases():
         output_column="col_output",
         na_action="ignore",
     )
-    print(
+    assert (
         res["col_output"].equals(pd.Series(["red", "amber", "green", np.nan, np.nan]))
+        is True
     )
 
     res = map_values(
@@ -116,4 +117,4 @@ def test_check_map_values_advanced_cases():
         output_column="col_output",
         na_action="ignore",
     )
-    print(res["col_output"].equals(pd.Series([1, 2, 3, np.nan, np.nan])))
+    assert res["col_output"].equals(pd.Series([1, 2, 3, np.nan, np.nan])) is True

@@ -36,6 +36,7 @@ from .date_time_calculations import business_calendar
 from .date_time_calculations import calculate_business_hours_fast
 from .date_time_calculations import calculate_business_hours
 from .map_common_values import map_values
+from .fuzzy_matching import create_fuzzy_key
 
 # Here we import each of the functions in the functions/ directory to have them
 # available in the functions namespace.
