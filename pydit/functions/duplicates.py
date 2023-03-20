@@ -151,9 +151,9 @@ def check_duplicates(
             if indicator:
                 df["_duplicates"] = ser_duplicates
             if keep == "first":
-                dfres = df[(~ser_duplicates) | ~ser_duplicates_first].copy()
+                dfres = df.loc[(~ser_duplicates) | ~ser_duplicates_first].copy()
             elif keep == "last":
-                dfres = df[(~ser_duplicates) | ~ser_duplicates_last].copy()
+                dfres = df.loc[(~ser_duplicates) | ~ser_duplicates_last].copy()
             else:
                 dfres = df.copy()
 
@@ -163,14 +163,15 @@ def check_duplicates(
             if indicator:
                 df["_duplicates"] = ser_duplicates
             if keep == "first":
-                dfres = df[ser_duplicates_first].copy()
+                dfres = df.loc[ser_duplicates_first].copy()
             elif keep == "last":
-                dfres = df[ser_duplicates_last].copy()
+                dfres = df.loc[ser_duplicates_last].copy()
             else:
-                dfres = df[ser_duplicates].copy()
+                dfres = df.loc[ser_duplicates].copy()
 
         return dfres
 
     else:
+        print("No duplicates found")
         logger.info("No duplicates found")
         return None
