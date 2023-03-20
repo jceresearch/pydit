@@ -8,13 +8,11 @@ as we tend to have to do a lot of duplicate checks in intermediate files.
 
 
 import logging
-from typing import Union
 
 import pandas as pd
 import numpy as np
-from pandas.api.types import is_string_dtype, is_numeric_dtype
-
-
+from pandas.api.types import is_string_dtype
+from pandas.api.types import is_numeric_dtype
 logger = logging.getLogger(__name__)
 
 # pylint: disable=logging-not-lazy
@@ -22,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 
 def check_duplicates(
-    obj: Union[pd.DataFrame, pd.Series],
+    obj,
     columns=None,
     keep=False,
     ascending=None,
