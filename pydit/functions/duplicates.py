@@ -13,6 +13,7 @@ import pandas as pd
 import numpy as np
 from pandas.api.types import is_string_dtype
 from pandas.api.types import is_numeric_dtype
+
 logger = logging.getLogger(__name__)
 
 # pylint: disable=logging-not-lazy
@@ -118,9 +119,12 @@ def check_duplicates(
         blanks_acum = 0
         for c in cols:
             if is_numeric_dtype(df[c]):
-                blanks = ((pd.isna(df[c])) | (df[c] == 0)).sum()
+                blanks = (pd.isna(df[c])).sum()
                 if blanks > 0:
-                    logger.warning(f"{blanks} rows with zeroes or nan in {c}")
+                    logger.warning(f"{blanks} rows with nan in {c}")
+                zeroes = (df[c] == 0).sum()
+                if zeroes > 0:
+                    logger.warning(f"{zeroes} rows with zeroes in {c}")
             elif is_string_dtype(df[c]):
                 blanks = ((pd.isna(df[c])) | (df[c].str.strip() == "")).sum()
                 if blanks > 0:
