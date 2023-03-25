@@ -281,16 +281,19 @@ def keyword_search(
     logger.info("Count of all hits: %s", dfres["kw_match_count"].sum())
     if "_hits" in return_data:
         dfres = dfres[dfres["kw_match_all"] == True].copy()
+        logger.info("Returning just hit rows: %s", dfres.shape[0])
+
+    if "full" in return_data:
+        
+        dffull = dffull.join(dfres, how="inner").copy()
+        logger.info("Returning all columns %s", dffull.columns)
+        return dffull
 
     if "result" in return_data:
         logger.info("Returning hit columns %s", dfres.columns)
         return dfres
 
     if "target" in return_data:
-        df = df[columns].join(dfres).copy()
+        df = df[columns].join(dfres, how="inner").copy()
         logger.info("Returning target columns: %s", df.columns)
         return df
-
-    dffull = dffull.join(dfres).copy()
-    logger.info("Returning all columns: %s", dffull.columns)
-    return dffull

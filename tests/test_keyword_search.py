@@ -40,6 +40,21 @@ def fixture_df():
     return df
 
 
+def test_keyword_search_hits_only(df):
+    """test that it behaves correctly when hits_ is True"""
+    res = keyword_search(
+        df, ["feb", "mar"], columns=["col1", "col2", "col3"], return_data="full_hits"
+    )
+    
+    assert list(res["kw_match01"]) == [True, True, False,True]
+    assert list(res["kw_match_all"]) == [True, True, True,True]
+    
+    assert list(res["col1"]) == ["february", "march","april","june"]
+    assert list(res["col6"]) == [2,3,4,6] # col6 is not a hit column but full_hits asks to bring it along
+    
+    
+
+
 def test_keyword_search_re_with_string(df):
     """test that it behaves correctly when strings are given"""
 
