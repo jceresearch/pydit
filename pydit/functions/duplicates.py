@@ -100,12 +100,13 @@ def check_duplicates(
             cols = df.columns
 
     fields = ",".join(cols)
-
+    '''has_nans= df[cols].isnull().values.all()
+    dfnotnans=df[cols].dropna(subset=cols)'''
     # Boolean series with the results of all duplicated() method
-    ser_duplicates = df.duplicated(cols, keep=False)
+    ser_duplicates = dfnotnans.duplicated(cols, keep=False)
     ser_duplicates_first = df.duplicated(cols, keep="first")
     if keep == "last":
-        ser_duplicates_last = df.duplicated(cols, keep="last")
+        ser_duplicates_last = df.duplicated(cols, keep="last",)
     ser_duplicates_unique = np.logical_and(ser_duplicates, ~ser_duplicates_first)
     logger.info("Duplicates in fields: %s", fields)
 
@@ -174,6 +175,8 @@ def check_duplicates(
         return dfres
 
     else:
-        print("No duplicates found")
         logger.info("No duplicates found")
+        print("No duplicates found")
+        if not inplace and also_return_non_duplicates:
+            return df
         return None
