@@ -65,7 +65,13 @@ def test_check_duplicates_dataframe_keep_false(df):
     """test get full population"""
 
     dfdupes = check_duplicates(
-        df, ["col2"], keep=False, indicator=True, also_return_non_duplicates=True
+        df, ["col1"], keep=False, add_indicator_column=True, also_return_non_duplicates=True
+    )
+    assert len(dfdupes) == 8  # we should get all the population even if there are no dupes
+    
+
+    dfdupes = check_duplicates(
+        df, ["col2"], keep=False, add_indicator_column=True, also_return_non_duplicates=True
     )
     assert len(dfdupes) == 8  # we should get all the population
     assert sum(dfdupes["_duplicates"]) == 2
@@ -77,41 +83,62 @@ def test_check_duplicates_dataframe_keep_false(df):
     # Getting the entire population of non dupes and only first occurrence of dupes
 
     dfdupes = check_duplicates(
-        df, ["col2"], keep="first", indicator=True, also_return_non_duplicates=True
+        df, ["col2"], keep="first", add_indicator_column=True, also_return_non_duplicates=True
     )
     assert len(dfdupes) == 7
+    
+    
+
+    dfdupes = check_duplicates(
+        df, ["col2"], keep="first", dropna=False, add_indicator_column=True, also_return_non_duplicates=True
+    )
+    assert len(dfdupes) == 7
+    
+    
+    
     assert (
         dfdupes["_duplicates"].sum() == 1
     )  # we get the first record flagged as having duplicates
 
 
 def test_check_duplicates_dataframe(df):
-    """Detailed  sport tests for check_duplicates"""
+    """Detailed tests for check_duplicates"""
 
     dfdupes = check_duplicates(df, ["col2"], keep="first")
     assert len(dfdupes) == 1
     assert (
         dfdupes["col1"].iloc[0] == 2
     )  # the first record is kept it returns the second
-
     dfdupes = check_duplicates(df, ["col2"], keep=False)
     assert len(dfdupes) == 2
 
     # Getting just dupes, with the indicator of being a dupe, somewhat useless
     # but tests the passthrough of keep=False
     dfdupes = check_duplicates(
-        df, ["col2"], keep=False, indicator=True, also_return_non_duplicates=False
+        df, ["col2"], keep=False, add_indicator_column=True, also_return_non_duplicates=False
     )
     assert len(dfdupes) == 2
     assert dfdupes["_duplicates"].sum() == 2
 
     dfdupes = check_duplicates(
-        df, ["col4"], keep=False, indicator=True, also_return_non_duplicates=False
+        df, ["col4"], keep=False, dropna=False, add_indicator_column=True, also_return_non_duplicates=False
     )
     assert len(dfdupes) == 7
+    
+    dfdupes = check_duplicates(
+        df, ["col4"], keep=False, dropna=False, add_indicator_column=True, also_return_non_duplicates=True
+    )
+    assert len(dfdupes) == 8
+    
+    dfdupes = check_duplicates(
+        df, ["col4"], keep='first', dropna=False, add_indicator_column=True, also_return_non_duplicates=True
+    )
+    assert len(dfdupes) == 4
+    
+    
     assert (
-        dfdupes["_duplicates"].sum() == 7
-    )  # we should get the duplicates and the two nans
+        dfdupes["_duplicates"].sum() == 3
+    )  # we should get the duplicates and the nans as dupes
 
 
 def test_check_duplicates_series():

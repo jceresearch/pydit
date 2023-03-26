@@ -25,8 +25,9 @@ def check_duplicates(
     columns=None,
     keep=False,
     ascending=None,
-    indicator=False,
+    add_indicator_column=False,
     also_return_non_duplicates=False,
+    dropna=True,
     inplace=False,
 ):
     """Check for duplicates in a dataframe.
@@ -50,6 +51,9 @@ def check_duplicates(
         Defaults to False
     also_return_non_duplicates: bool, optional
         If True, the return values will include non-duplicate rows too.
+    dropna: bool, optional
+        If True, the check will ignore NaN values.
+        Defaults to True.
     inplace: bool, optional
         If True, the dataframe is modified in place.
         For Series a new dataframe is created and this parameter is ignored.
@@ -100,13 +104,37 @@ def check_duplicates(
             cols = df.columns
 
     fields = ",".join(cols)
-    '''has_nans= df[cols].isnull().values.all()
-    dfnotnans=df[cols].dropna(subset=cols)'''
+
+    has_all_nans = df[cols].isnull().apply(lambda x: all(x), axis=1)
+    has_any_nans = df[cols].isnull().apply(lambda x: any(x), axis=1)
+    all_nans_count = sum(has_all_nans)
+    any_nans_count = sum(has_any_nans)
+    not_all_nans_count = sum(has_any_nans) - all_nans_count
+
+    if dropna:
+        if all_nans_count > 0:
+            df = df.dropna(subset=cols, how="all")
+            logger.info("Dropping %s records with all nan:", all_nans_count)
+            if not_all_nans_count > 0:
+                logger.info(
+                    "Of the remaining %s records, %s has some nans",
+                    df.shape[0],
+                    not_all_nans_count,
+                )
+    else:
+        if all_nans_count > 0:
+            logger.info("Dataframe includes %s records with all nan:", all_nans_count)
+        if not_all_nans_count > 0:
+            logger.info("and %s records with some nan:", not_all_nans_count)
+
     # Boolean series with the results of all duplicated() method
-    ser_duplicates = dfnotnans.duplicated(cols, keep=False)
+    ser_duplicates = df.duplicated(cols, keep=False)
     ser_duplicates_first = df.duplicated(cols, keep="first")
     if keep == "last":
-        ser_duplicates_last = df.duplicated(cols, keep="last",)
+        ser_duplicates_last = df.duplicated(
+            cols,
+            keep="last",
+        )
     ser_duplicates_unique = np.logical_and(ser_duplicates, ~ser_duplicates_first)
     logger.info("Duplicates in fields: %s", fields)
 
@@ -117,6 +145,10 @@ def check_duplicates(
         )
         logger.info("Totalling %s rows", ser_duplicates.sum())
         logger.info("of a population of %s", len(df))
+        if not dropna:
+            if all_nans_count > 0:
+                logger.info("Remember, duplicates count include 1 for the nan rows")
+
         blanks_acum = 0
         for c in cols:
             if is_numeric_dtype(df[c]):
@@ -151,7 +183,7 @@ def check_duplicates(
             logger.info(
                 "Returning non-duplicates and records we kept with keep=%s", keep
             )
-            if indicator:
+            if add_indicator_column:
                 df["_duplicates"] = ser_duplicates
             if keep == "first":
                 dfres = df.loc[(~ser_duplicates) | ~ser_duplicates_first].copy()
@@ -163,7 +195,7 @@ def check_duplicates(
         else:
             # we just return the duplicates
             logger.info("Returning duplicates applying pandas keep=%s", keep)
-            if indicator:
+            if add_indicator_column:
                 df["_duplicates"] = ser_duplicates
             if keep == "first":
                 dfres = df.loc[ser_duplicates_first].copy()
