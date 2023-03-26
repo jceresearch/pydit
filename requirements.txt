@@ -6,5 +6,5 @@ myst-parser
 sphinx
 pytest
 pytest-cov
-pydata-sphinx-theme
+pydata-sphinx-theme>=0.13.0
 sphinx-book-theme

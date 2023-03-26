@@ -29,7 +29,7 @@ myst-parser ="*"
 pytest="*"
 pytest-cov="*"
 sphinx="*"
-pydata-sphinx-theme="*"
+pydata-sphinx-theme="0.13.0"
 sphinx-book-theme="*"
 
 [build-system]
