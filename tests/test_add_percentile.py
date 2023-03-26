@@ -61,7 +61,6 @@ def test_add_percentile_categories():
 
 
 if __name__ == "__main__":
-
     test_add_percentile_categories()
 
     # import scipy.stats

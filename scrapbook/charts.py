@@ -1,6 +1,6 @@
 """ Generate audit specific charts.
 """
-#%%
+# %%
 import logging
 import pandas as pd
 import numpy as np
@@ -37,7 +37,7 @@ def chart_bar(df, title, x_axis, y_axis, output_path=None):
     # plt.close(fig)
 
 
-#%%
+# %%
 if __name__ == "__main__":
     df = pd.DataFrame(np.random.randn(1000, 4), columns=list("ABCD"))
 

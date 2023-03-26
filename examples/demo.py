@@ -1,6 +1,6 @@
 """Example of using pydit"""
 
-#%%
+# %%
 import sys
 import os
 import pandas as pd
@@ -45,7 +45,7 @@ df = pd.DataFrame(
     columns=["id", "ref", "date_trans", "status", "amount", "notes"],
 )
 
-#%%
+# %%
 
 col1 = range(1, 100)
 col2 = [1] * 30 + [2] * 50 + [3] * 20
@@ -57,7 +57,7 @@ for i, r in df.iterrows():
     print(i, r)
 
 
-#%%
+# %%
 
 print(pydit.add_percentile(df, "col1", ["col2", "col3"]))
 

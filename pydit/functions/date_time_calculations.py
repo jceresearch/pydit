@@ -105,7 +105,6 @@ class business_calendar:
         if len(d) == 0:
             return 0
         else:
-
             first_day_start = d[0].replace(hour=self.bus_start_time, minute=0)
             first_day_end = d[0].replace(hour=self.bus_end_time, minute=0)
             first_period_start = max(first_day_start, datetime_start)

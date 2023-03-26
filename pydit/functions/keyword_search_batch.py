@@ -284,7 +284,6 @@ def keyword_search(
         logger.info("Returning just hit rows: %s", dfres.shape[0])
 
     if "full" in return_data:
-        
         dffull = dffull.join(dfres, how="inner").copy()
         logger.info("Returning all columns %s", dffull.columns)
         return dffull

@@ -7,6 +7,7 @@ from pandas.api.types import is_list_like, is_scalar, is_categorical_dtype
 
 from janitor.functions.utils import _computations_expand_grid
 
+
 def complete(
     df: pd.DataFrame,
     *columns,
@@ -232,9 +233,7 @@ def _computations_complete(
     if fill_value is not None:
         if is_scalar(fill_value):
             # faster when fillna operates on a Series basis
-            fill_value = {
-                col: fill_value for col in columns if df[col].hasnans
-            }
+            fill_value = {col: fill_value for col in columns if df[col].hasnans}
         if explicit:
             df = df.fillna(fill_value, downcast="infer")
         else:
@@ -263,9 +262,7 @@ def _computations_complete(
                 for column_name, value in fill_value.items():
                     # for categorical dtypes, set the categories first
                     if is_categorical_dtype(df[column_name]):
-                        df[column_name] = df[column_name].cat.add_categories(
-                            [value]
-                        )
+                        df[column_name] = df[column_name].cat.add_categories([value])
                     df.loc[boolean_filter, column_name] = value
 
     if not df.columns.equals(columns):
@@ -273,9 +270,7 @@ def _computations_complete(
     return df
 
 
-def _generic_complete(
-    df: pd.DataFrame, columns: list, all_strings: bool, sort: bool
-):
+def _generic_complete(df: pd.DataFrame, columns: list, all_strings: bool, sort: bool):
     """
     Generate cartesian product for `_computations_complete`.
 
@@ -390,8 +385,7 @@ def _sub_complete_column(column, df, sort):  # noqa: F811
 
         if not arr.size > 0:
             raise ValueError(
-                f"Kindly ensure the provided array for {key} "
-                "has at least one value."
+                f"Kindly ensure the provided array for {key} " "has at least one value."
             )
 
         if isinstance(arr, pd.Index):
@@ -445,8 +439,7 @@ def _data_checks_complete(
         raise ValueError("`complete` does not support MultiIndex columns.")
 
     columns = [
-        [*grouping] if isinstance(grouping, tuple) else grouping
-        for grouping in columns
+        [*grouping] if isinstance(grouping, tuple) else grouping for grouping in columns
     ]
     column_checker = []
     for grouping in columns:
@@ -480,15 +473,11 @@ def _data_checks_complete(
 
     fill_value_check = is_scalar(fill_value), isinstance(fill_value, dict)
     if not any(fill_value_check):
-        raise TypeError(
-            "`fill_value` should either be a dictionary or a scalar value."
-        )
+        raise TypeError("`fill_value` should either be a dictionary or a scalar value.")
     if fill_value_check[-1]:
         check_column(df, fill_value)
         for column_name, value in fill_value.items():
             if not is_scalar(value):
-                raise ValueError(
-                    f"The value for {column_name} should be a scalar."
-                )
+                raise ValueError(f"The value for {column_name} should be a scalar.")
 
     return columns, column_checker, sort, by, fill_value, explicit

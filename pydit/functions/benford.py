@@ -99,7 +99,6 @@ def benford_to_dataframe(obj, column_name="", first_n_digits=1):
     if isinstance(obj, (pd.Series, list, tuple)):
         data = obj
     elif isinstance(obj, pd.DataFrame):
-
         if column_name in obj.columns:
             data = obj[column_name]
         else:
