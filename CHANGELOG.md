@@ -1,6 +1,14 @@
 # Changelog
 ## V0.0.12
 
+### Fixes
+- Fixed duplicates to return all values if there are no duplicates and 
+  to have clearer logging of various cases with nan.
+  BREAKING CHANGES: New parameter dropna=True introduced and 
+  add_indicator_column=False replaces indicator=False
+- keyword_search_batch() fixed to work better when limiting the output
+  to hits.
+
 ### Features
 - Added map_values() function to map common values to numbers and the  
   other way around. e.g. 1,2,3 to "red","amber","green" and so on.
