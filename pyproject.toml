@@ -25,7 +25,7 @@ matplotlib="*"
 
 
 [tool.poetry.dev-dependencies]
-myst-parser >="1.0.0"
+myst-parser="*"
 pytest="*"
 pytest-cov="*"
 sphinx="*"
