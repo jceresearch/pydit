@@ -20,17 +20,15 @@ python = "^3.10"
 pandas = "^1.5.0"
 numpy = "^1.24"
 openpyxl="^3.0.0"
-matplotlib="*"
-
-
+matplotlib = "*"
 
 [tool.poetry.dev-dependencies]
-myst-parser="*"
-pytest="*"
-pytest-cov="*"
-sphinx="*"
-pydata-sphinx-theme="0.13.0"
-sphinx-book-theme="*"
+myst-parser = "*"
+pytest = "*"
+pytest-cov = "*"
+sphinx = "*"
+pydata-sphinx-theme = "0.13.0"
+sphinx-book-theme = "*"
 
 [build-system]
 requires = ["poetry-core>=1.0.0","setuptools","myst-parser>=1.0.0"]
