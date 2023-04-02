@@ -1,4 +1,20 @@
 # Changelog
+
+## V0.0.13
+
+### Features
+
+
+### Fixes
+
+
+### Tweaks
+- Duplicates returns a log warning if there are no duplicates so it is visible
+
+
+
+
+
 ## V0.0.12
 
 ### Fixes

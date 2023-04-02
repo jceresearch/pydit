@@ -1,4 +1,4 @@
-"""Module to merge dataframes
+"""Module to merge dataframes with suffixes for non key fields not just collissions.
 
 """
 
@@ -10,7 +10,8 @@ logger = logging.getLogger(__name__)
 
 
 def merge_force_suffix(left, right, **kwargs):
-    """Merge two dataframes, forcing the suffix of the left dataframe to the right dataframe.
+    """Merge two dataframes, forcing the suffix of the left dataframe
+    to the right dataframe.
 
     This is useful when merging two dataframes with the same column names,
     to ensure all columns are tagged with suffixes, even if they don't have
@@ -30,7 +31,6 @@ def merge_force_suffix(left, right, **kwargs):
         The right dataframe
     kwargs : the keyword arguments to pass to pandas.DataFrame.merge()
 
-    Note: left_on and right_on are not supported by this function.
 
     Returns
     -------
@@ -51,21 +51,21 @@ def merge_force_suffix(left, right, **kwargs):
             left_on = kwargs["left_on"]
             right_on = kwargs["right_on"]
         except Exception:
-            pass
+            raise ValueError("You must specify either on or left_on and right_on")
 
-    left_cols = [*on_col, *left_on]
-    right_cols = [*on_col, *right_on]
+    left_keys = [*on_col, *left_on]
+    right_keys = [*on_col, *right_on]
 
     suffix_tuple = kwargs["suffixes"]
 
     def _left_suffix_col(col, suffix):
-        if col not in left_cols:
+        if col not in left_keys:
             return str(col) + suffix
         else:
             return col
 
     def _right_suffix_col(col, suffix):
-        if col not in right_cols:
+        if col not in right_keys:
             return str(col) + suffix
         else:
             return col

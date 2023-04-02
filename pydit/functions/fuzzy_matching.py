@@ -6,7 +6,6 @@ from functools import lru_cache
 import pandas as pd
 import numpy as np
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -18,9 +17,7 @@ logger = logging.getLogger(__name__)
 
 def token_set_sort(s):
     """Create a fuzzy key for a string using token set sort method
-
     set sort method is described here: https://en.wikipedia.org/wiki/Jaccard_index
-
 
     Parameters
     ----------
@@ -33,6 +30,7 @@ def token_set_sort(s):
         The fuzzy key
 
     """
+
     s = str(s)
     s = s.translate(str.maketrans("", "", string.punctuation))
     sl = list(set(str.split(s)))
@@ -44,7 +42,9 @@ def token_set_sort(s):
 def create_fuzzy_key(
     df, input_col, output_col="fuzzy_key", disable_set_sort=False, inplace=False
 ):
-    """Create a fuzzy key for a dataframe
+    """
+    Create a fuzzy key for a dataframe
+
     Parameters
     ----------
     df : pd.DataFrame
@@ -66,6 +66,7 @@ def create_fuzzy_key(
             The fuzzy key
 
     """
+
     if not inplace:
         df = df.copy()
 
@@ -102,7 +103,7 @@ def create_fuzzy_key(
         .str.strip()
     )
     if not disable_set_sort:
-        df[output_col] = df[output_col].apply(lambda x: token_set_sort(x))
+        df[output_col] = df[output_col].apply(token_set_sort())
     if not inplace:
         return df
     return None

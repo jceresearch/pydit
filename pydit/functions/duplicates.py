@@ -108,7 +108,6 @@ def check_duplicates(
     has_all_nans = df[cols].isnull().apply(lambda x: all(x), axis=1)
     has_any_nans = df[cols].isnull().apply(lambda x: any(x), axis=1)
     all_nans_count = sum(has_all_nans)
-    any_nans_count = sum(has_any_nans)
     not_all_nans_count = sum(has_any_nans) - all_nans_count
 
     if dropna:
@@ -207,8 +206,8 @@ def check_duplicates(
         return dfres
 
     else:
-        logger.info("No duplicates found")
-        print("No duplicates found")
+        logger.warning("No duplicates found")
         if not inplace and also_return_non_duplicates:
             return df
+
         return None

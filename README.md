@@ -1,15 +1,15 @@
 
 ## Introduction to Pydit 
 
-Pydit is a library of common data munging tools that an internal auditor may need to apply. 
+Pydit is a library of common data wrangling tools that an internal auditor may need to apply. 
 
 This library is (also) a learning exercise for me on how to create a package, build documentation & tests, and publish it
 
-The code quality is still low, marginally better than pasting from SO.
-Use it at your own peril :) 
+The code quality is low, marginally better than pasting from Stack Overflow, in 
+fact many come from there, plus experience plus a bit of copilot.
+So, use it at your own peril! :) 
 
-If you wish to contribute pls get in touch.
-
+If you wish to contribute, get in touch.
 
 Most of these functions boil down to short(ish) snippet of code using existing feature in pandas, numpy or standard python libraries. 
 E.g. cleanup field names or to do some duplicates checks, Benford, etc. 
@@ -19,14 +19,17 @@ Btw, Pydit takes a lot of inspiration (and code) from Pyjanitor, an awesome libr
 
 The problem Pydit tries to solve is that all these cleanup and checks snippets start to crop up everywhere, often pasted from internet or from recent version used in another script with no consistency or tests.
 
-Libraries like pyjanitor do a great job but tend to be compact and non verbose, for interal audit tests, we really want super-verbose and very easy to understand code and outputs. 
+On the other hand libraries like pyjanitor do a great job but a) require installation that often is not allowed in your environment b) tend to be compact and non verbose (method chaining) and c) difficult to verify given the high complexity of the library overall.
 
-So for pydit I follow the following principles:
+For interal audit tests, what we really need is super-verbose and very easy to understand/verify code and outputs, to follow step by step. Most of the time, for 
+a one/few time/s use.
 
-1.  functions are self standing, minimising imports/dependencies. 
+So pydit follows the following principles:
+
+1.  functions are self-standing, minimising imports/dependencies. 
 
 The auditor should be able to pluck and import an individual module from pydit to use only those functions directly in the audit test, making it easier to undertand it, document the test done and peer-review the whole thing.
-Also, that means no dependencies on future versions of the pydit library breaking the code (an audit test may be only revisited one or two years from now).
+Also, that means no dependencies on future versions of the pydit library breaking the code (an audit test may be only revisited one or two years thereafter). 
 
 2. functions include verbose logging to explain what is going on. Another feature specifically useful for the Internal Audit use case.
 
@@ -64,9 +67,9 @@ df_profile=pydit.profile_dataframe(df) #will return a df with summary statistics
 
 
 ## Requires
-- Python >= 3.9
-- Pandas >= 1.2.1
-- Numpy >= 1.22
+- Python >= 3.10
+- Pandas >= 1.5.0
+- Numpy >= 1.24
 - openpyxl
 - Matplotlib (for the ocassional plot, e.g. Benford)
 
@@ -86,10 +89,11 @@ git clone https://github.com/jceresearch/pydit.git
 pip install -e .
 ```
 This project uses:
-- ```pylint```and  ```black``` for linting/style
-- ```pytest``` for testing.
-- ```sphinx``` for documentation in RTD
+- ```pylint``` for linting 
+- ```black``` for style 
+- ```pytest``` for testing 
+- ```sphinx``` for documentation in RTD 
 - ```myst_parser``` is a requirement for RTD too 
-- ```poetry``` for packaging.
+- ```poetry``` for packaging. 
 
 

@@ -18,7 +18,6 @@ poetry publish --build
 Update RTD
 https://readthedocs.org/projects/pydit/builds/17220399/
 
-
 # To remove a folder from git
 # git commit -m "Removed folder from repository"
 # git rm -r --cached _autosummary

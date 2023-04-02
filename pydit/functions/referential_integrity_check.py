@@ -43,7 +43,8 @@ def check_referential_integrity(a1, a2, verbose=False):
     def explain(*args, verbose=verbose):
         """' Prints/logs these messages if verbose is True"""
         if verbose:
-            print(*args)
+            text=" ".join(args)
+            logger.info(text)
 
     expl = ""
     key1_nans = np.count_nonzero(pd.isna(a1))
