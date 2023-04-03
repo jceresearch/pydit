@@ -1,0 +1,41 @@
+{
+	// Place your pydit workspace snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and 
+	// description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope 
+	// is left empty or omitted, the snippet gets applied to all languages. The prefix is what is 
+	// used to trigger the snippet and the body will be expanded and inserted. Possible variables are: 
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. 
+	// Placeholders with the same ids are connected.
+	// Example:
+	// "Print to console": {
+	// 	"scope": "javascript,typescript",
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+	"Pydit module header": {
+		"scope": "python",
+		"prefix": "pydit",
+		"body": [
+			"''' Module Description '''",
+			"",
+			"import pandas as pd",
+			"import numpy as np",
+			"from pandas.api.types import is_string_dtype",
+			"from pandas.api.types import is_numeric_dtype",
+			"from pandas.api.types import is_datetime64_any_dtype",
+			"import logging",
+			"import os",
+			"import sys",
+			"from datetime import datetime, date, timedelta",
+			"logger = logging.getLogger(__name__)",
+			"",
+			"# pylint: disable=logging-not-lazy",
+			"# pylint: disable=logging-fstring-interpolation",
+			"# pylint: disable=import-error disable=wrong-import-position",
+		],
+		"description": "Pydit module header"
+	},
+}

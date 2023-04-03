@@ -1,13 +1,11 @@
 """ Checks for various types of nulls/blanks in a dataframe and returns counts.
 """
 
-import logging
-
 import pandas as pd
-
 from pandas.api.types import is_string_dtype, is_numeric_dtype
 import numpy as np
 
+import logging
 
 logger = logging.getLogger(__name__)
 
