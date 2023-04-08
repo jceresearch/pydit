@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 # marginally faster in some conditions.
 
 
-def token_set_sort(s):
+def token_set_sort(s=None):
     """Create a fuzzy key for a string using token set sort method
     set sort method is described here: https://en.wikipedia.org/wiki/Jaccard_index
 
@@ -30,8 +30,13 @@ def token_set_sort(s):
         The fuzzy key
 
     """
-
+    if s is np.nan:
+        return ""
+    if s is None:
+        return ""
     s = str(s)
+    if s == "" or str.strip(s) == "":
+        return ""
     s = s.translate(str.maketrans("", "", string.punctuation))
     sl = list(set(str.split(s)))
     sl.sort()
@@ -103,7 +108,7 @@ def create_fuzzy_key(
         .str.strip()
     )
     if not disable_set_sort:
-        df[output_col] = df[output_col].apply(token_set_sort())
+        df[output_col] = df[output_col].apply(token_set_sort)
     if not inplace:
         return df
     return None
