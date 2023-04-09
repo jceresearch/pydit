@@ -5,6 +5,31 @@ This module is still highly experimental and unstable
 
 Usage:
 
+setup_project(project_name="my_project", project_path=".")
+    Creates the project directory and log file using a few opinionated defaults
+    
+load_config(project_path=".")
+    Loads the configuration file for the project into a dictionary
+save_config(config, project_path=".")
+    Saves the configuration file for the project from a dictionary
+set_config(key, value, config=None, project_path=".")
+    Sets a key value pair in the configuration file
+check_config(config, fix=False)
+    Checks the configuration file is valid
+    
+Once we have the project setup and the config loaded we can use the following:
+
+    load()
+        Loads a file into a pandas dataframe
+    save()
+        Saves a pandas dataframe to a file which can be a pickle or excel or csv
+
+The benefit of these methods is that they will automatically save to the correct 
+folder, and use the correct file name, and will also log the file name and generate
+some info on fields and size etc.
+
+
+
 
 """
 
@@ -13,6 +38,7 @@ from datetime import datetime
 import pickle
 import os
 import json
+
 
 from pathlib import Path, PureWindowsPath
 import csv
@@ -449,3 +475,39 @@ def save(obj, filename, also_pickle=False, dest="auto", config=None):
     )
 
     return output
+
+
+def get_latest_modif_file_from(folder_path, pattern="*"):
+    """Returns the latest file from a folder, based on last modified date
+
+    Uses Pathlib to search recursively and to get the last modified date
+    using the stat() method
+
+
+    Parameters
+    ----------
+    folder_path : str
+        The folder path to search
+    pattern : str, optional
+        The pattern to search for, by default "*"
+
+    Returns
+    -------
+
+    latest_file : pathlib.Path
+        The latest file found
+    latest_file_md : datetime.datetime
+        The last modified date of the latest file as a bonus
+
+    """
+    list_of_files_recursive = Path(folder_path).rglob(pattern)
+    if not list_of_files_recursive:
+        raise ValueError("No files found in folder: " + folder_path+ " with pattern: " + pattern)
+    
+    latest_file = list_of_files_recursive[0]
+    latest_file_md = 0
+    for f in list_of_files_recursive:
+        if f.stat().st_mtime > latest_file_md:
+            latest_file_md = f.stat().st_mtime
+            latest_file = f
+    return latest_file, datetime.fromtimestamp(latest_file_md)
