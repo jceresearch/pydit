@@ -1,16 +1,19 @@
 conda activate pydit
 
-# To build the documentation 
+# To build the documentation locally
 rm -r ./docs/source/_autosummary/*   #delete the content of ./docs/source/_autosummary
 sphinx-build ./docs/source ./docs/build  -a
 
 # Manual steps to publish to pypi
 # update version in pyproject.toml
+# run Black . from the terminal to reformat everything
+
 # update version in ./setup.cfg
 # update version in ./CHANGELOG.md
 # update version in ./docs/source/conf.py
 # update version in ./pydit/__init__.py
-# update any change in requirements in the README.md
+# update any change in requirements in the README.md3
+
 
 poetry publish --build
 # or poetry build and then poetry publish

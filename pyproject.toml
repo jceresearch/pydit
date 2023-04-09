@@ -1,9 +1,10 @@
 [tool.poetry]
 name = "pydit-jceresearch"
+readme="README.md"
 packages = [
 	{ include = "pydit" }
 ]
-version = "0.0.13"
+version = "0.0.14"
 description = "Data cleansing tools for Internal Auditors"
 authors = ["jceresearch <jceresearch@users.noreply.github.com>"]
 keywords=["internal audit", "munging", "cleansing", "audit"]
@@ -21,7 +22,6 @@ pandas = "^1.5.0"
 numpy = "^1.24"
 openpyxl="^3.0.0"
 matplotlib = "*"
-#myst-parser = "1.0.0"
 
 [tool.poetry.dev-dependencies]
 myst-parser = "1.0.0"
