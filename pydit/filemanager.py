@@ -502,8 +502,10 @@ def get_latest_modif_file_from(folder_path, pattern="*"):
     """
     list_of_files_recursive = Path(folder_path).rglob(pattern)
     if not list_of_files_recursive:
-        raise ValueError("No files found in folder: " + folder_path+ " with pattern: " + pattern)
-    
+        raise ValueError(
+            "No files found in folder: " + folder_path + " with pattern: " + pattern
+        )
+
     latest_file = list_of_files_recursive[0]
     latest_file_md = 0
     for f in list_of_files_recursive:

@@ -1,4 +1,4 @@
-''' Module Description '''
+""" Module Description """
 
 import pandas as pd
 import numpy as np
@@ -9,6 +9,7 @@ import logging
 import os
 import sys
 from datetime import datetime, date, timedelta
+
 logger = logging.getLogger(__name__)
 
 # pylint: disable=logging-not-lazy
