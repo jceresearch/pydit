@@ -43,8 +43,8 @@ def check_duplicates(
     keep: 'first','last' or False, optional
         Argument for pandas df.duplicated() method.
         Defaults to 'first'.
-    ascending: True, False or None, optional
-        Argument for DataFrame.value_counts().
+    ascending: True, False, boolean list with same len() as columns, or None, optional
+        Sorting criteria to provide to DataFrame.sort_values() which runs just before the duplicates check.
         Defaults to None.
     indicator: bool, optional
         If True, a boolean column is added to the dataframe to flag duplicate rows.
@@ -169,12 +169,10 @@ def check_duplicates(
         if blanks_acum == 0:
             logger.info("No blanks found in the key column(s) provided")
 
-        if ascending is True:
+        if ascending is not None:
             # Ascending
-            df = df.sort_values(cols, ascending=True)
-        elif ascending is False:
-            # Descending
-            df = df.sort_values(cols, ascending=False)
+            df = df.sort_values(cols, ascending=asc_params)
+            logger.info("Sorting by %s with params: %s ", cols, asc_params)
 
         if also_return_non_duplicates:
             # we return the non duplicates and follow the keep argument
