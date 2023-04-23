@@ -109,7 +109,7 @@ def _deduplicate_list(
     return new_list
 
 
-def cleanup_column_names(obj, max_field_name_len=40, inplace=False):
+def cleanup_column_names(obj, max_field_name_len=40, inplace=False, silent=False):
     """Cleanup the column names of a Pandas dataframe.
 
     e.g. removes non alphanumeric chars, replaces _ instead of space, perc instead
@@ -173,8 +173,9 @@ def cleanup_column_names(obj, max_field_name_len=40, inplace=False):
             obj[i] = new_cols[i]
     else:
         obj.columns = new_cols
-    logger.debug("Previous names:%s", prev_cols)
-    logger.info("New names:%s", list(new_cols))
+    if not silent:
+        logger.debug("Previous names:%s", prev_cols)
+        logger.info("New names:%s", list(new_cols))
     if len(new_cols) != len(set(new_cols)):
         raise ValueError("Duplicated column names remain!!! check what happened")
     if inplace:

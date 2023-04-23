@@ -17,7 +17,9 @@ from pydit import coalesce_columns
 @pytest.fixture(name="df")
 def df_fixture():
     """Base DataFrame fixture"""
-    return pd.DataFrame({"a": [1, np.nan, 3], "b": [2, 3, 1], "c": [3, np.nan, 9]})
+    return pd.DataFrame(
+        {"a": [1, np.nan, 3], "b": [2, 3, 1], "c": [3, np.nan, 9], "d": [1, 2, 3]}
+    )
 
 
 @pytest.fixture
@@ -97,7 +99,7 @@ def test_concat_some_empty(df_text):
 def test_wrong_column_names(df):
     """Raise Error if wrong columns is provided for `column_names`."""
     with pytest.raises(ValueError):
-        coalesce_columns(df, "a", "d")
+        coalesce_columns(df, "z", "f")
 
 
 def test_wrong_type_column_names(df):
@@ -127,15 +129,16 @@ def test_wrong_type_default_value(df):
         )
 
 
-def test_len_column_names_less_than_2(df):
-    """Raise Error if column_names length is less than 2."""
-    with pytest.raises(ValueError):
-        coalesce_columns(df, "a")
-
-
 def test_empty_column_names(df):
     """Return dataframe if `column_names` is empty."""
-    assert_frame_equal(coalesce_columns(df), df)
+    with pytest.raises(ValueError):
+        coalesce_columns(df)
+
+
+def test_len_column_names_less_than_2(df):
+    """Raise Error if column_names length is less than 2."""
+    result=coalesce_columns(df, "a")
+    assert_frame_equal(result, df)
 
 
 def test_coalesce_without_target(df):

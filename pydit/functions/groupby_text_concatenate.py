@@ -57,8 +57,8 @@ def groupby_text(
         value_cols = [
             x for x in df.columns if x not in key_cols and df[x].dtype == "object"
         ]
-        logger.info(
-            "No value columns provided, using all object columns: %s", value_cols
+        logger.debug(
+            "No value columns provided, using all columns: %s", value_cols
         )
     elif isinstance(value_cols, str):
         if value_cols in df.columns:
