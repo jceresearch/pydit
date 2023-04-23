@@ -137,7 +137,7 @@ def test_empty_column_names(df):
 
 def test_len_column_names_less_than_2(df):
     """Raise Error if column_names length is less than 2."""
-    result=coalesce_columns(df, "a")
+    result = coalesce_columns(df, "a")
     assert_frame_equal(result, df)
 
 
