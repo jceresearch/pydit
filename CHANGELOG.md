@@ -2,7 +2,13 @@
 
 ## V0.0.14
 
-
+### Tweaks
+  - added silent=False option in the cleanup, groupby and coalesce functions
+    to reduce the logging when used within other functions
+### Fixes
+  - refactored coalesce columns to add more input validation but also accept
+    columns that may not be in the dataframe, for cases where we are looping
+    disparate dataframes
 
 ## V0.0.13
 ### Features 
