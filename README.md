@@ -44,24 +44,43 @@ Pyjanitor is great and its chaining approach is elegant and compact. Definitely 
 
 ## Quick start:
 ```
-import pydit
-logger = pydit.start_logging_info()
+import pandas as pd
+from pydit import start_logging_info # sets up nice logging params with rotation
+from pydit import profile_dataframe  # runs a few descriptive analysis on a df
+from pydit import cleanup_column_names # opinionated cleanup of column names
+
+
+logger = start_logging_info()
 logger.info("Started")
 
 ```
 
-The logger feature is used extensively by default, aiming to generate a human readable audit log to be included in workpapers.
+The logger feature is used extensively by default, aiming to generate a human 
+readable audit log to be included in workpapers.
 
-The functions perform common transformations and checks on data -typically 
-a pandas DataFrame or Series object- such as checking for blanks, or adding 
-counters to check if two tables are plausibly in a 1:n or a n:n or a 1:1 
-relationship. 
+I recommend importing individual functions so you can copy them locally to your
+project folder and just change the import command to point to the local module,
+that way you freeze the version and reduce dependencies.
 
 ```
-import pandas as pd
-df_profile=pydit.profile_dataframe(df) #will return a df with summary statistics
-```
+df=pd.read_excel("mydata.xlsx")
 
+df_profile= profile_dataframe(df) # will return a df with summary statistics
+
+# you may realise the columns from excel are all over the place with cases and
+# special chars
+
+cleanup_column_names(df,inplace=True) # much better!!!
+
+df_deduped=check_duplicates(df, columns=["customer_id","last_update_date"],ascending=[True,False],keep="first",indicator=True, also_return_non_duplicates=True)
+
+# you will get a nice output with the report on duplicates, retaining the last
+# modification entry (via the pre-sort descending by date) and returning 
+# the non-duplicates,  
+# It also brings a boolean column flagging those that had a duplication removed.
+
+
+```
 
 ## Requires
 - Python >= 3.10
