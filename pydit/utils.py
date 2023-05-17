@@ -12,7 +12,7 @@ import string
 import logging
 import re
 from datetime import datetime
-
+import unicodedata
 import pandas as pd
 import numpy as np
 
@@ -109,10 +109,13 @@ def dataframe_to_code(df):
     return f"""df = pd.DataFrame({data}, columns={cols})"""
 
 
-def clean_string(t=None, keep_dot=False, space_to_underscore=True, case="lower"):
+def clean_string(
+    t=None, keep_dot=False, keep_dash=False, space_to_underscore=True, to_case="lower"
+):
     """Sanitising a string
 
     Cleans the strings applying the following transformations:
+    - Normalises unicode to remove accents and other symbols
     - Keeps only [a-zA-Z0-9]
     - Optional to retain dot
     - Spaces to underscore
@@ -130,9 +133,11 @@ def clean_string(t=None, keep_dot=False, space_to_underscore=True, case="lower")
         String to clean
     keep_dot : bool, optional, default False
         Whether to keep the dot in the string
+    keep_dash : bool, optional, default False
+        Whether to keep the dash in the string (useful for names)
     space_to_underscore : bool, optional, default True
         Whether to replace spaces with underscores
-    case : str, optional, default "lower", choices=["lower", "upper", "keep"]
+    case : str, optional, default "lower", choices=["lower", "upper"]
         Whether to lowercase the string
 
     Returns
@@ -149,20 +154,32 @@ def clean_string(t=None, keep_dot=False, space_to_underscore=True, case="lower")
         except TypeError:
             return ""
 
-    r = ""
-    if case == "lower":
-        r = str.lower(str(t))
-    elif case == "upper":
-        str.upper(str(t))
-    elif case == "keep":
-        r = str(t)
+    # we are going to normalize using NFKD
+    # this will convert characters to their closest ASCII equivalent
+    # e.g. é will become e
+    # https://stackoverflow.com/questions/517923/what-is-the-best-way-to-remove-accents-normalize-in-a-python-unicode-string
+    r = (
+        unicodedata.normalize("NFKD", t)
+        .encode("ascii", errors="ignore")
+        .decode("utf-8")
+    )
+    if to_case == "lower":
+        r = str.lower(r)
+    elif to_case == "upper":
+        r = str.upper(r)
+    else:
+        pass
+
     if t:
-        if keep_dot is True:
+        if keep_dot:
             r = re.sub(r"[^a-zA-Z0-9.]", " ", r)
         else:
-            r = re.sub(r"[^a-zA-Z0-9]", " ", r)
+            if keep_dash:
+                r = re.sub(r"[^a-zA-Z0-9-]", " ", r)
+            else:
+                r = re.sub(r"[^a-zA-Z0-9]", " ", r)
         r = r.strip()
-        if space_to_underscore is True:
+        if space_to_underscore:
             r = re.sub(" +", "_", r)
         else:
             r = re.sub(" +", " ", r)
