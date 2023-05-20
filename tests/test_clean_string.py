@@ -33,7 +33,11 @@ def test_clean_string():
     assert clean_string() == ""
     assert clean_string("  ") == ""
     assert clean_string("Iñaqui") == "inaqui"
-    assert clean_string("Fermín Puñales-Horta", to_case="upper",keep_dash=True) == "FERMIN_PUNALES-HORTA"
+    assert (
+        clean_string("Fermín Puñales-Horta", to_case="upper", keep_dash=True)
+        == "FERMIN_PUNALES-HORTA"
+    )
+
 
 if __name__ == "__main__":
     # test_clean_string

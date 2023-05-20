@@ -5,6 +5,8 @@
 ### Tweaks
   - added silent=False option in the cleanup, groupby and coalesce functions
     to reduce the logging when used within other functions
+  - improved clean_text function to do unicode decoding and preserve dashes
+  
 ### Fixes
   - refactored coalesce columns to add more input validation but also accept
     columns that may not be in the dataframe, for cases where we are looping

@@ -4,31 +4,38 @@
 Pydit is a library of data wrangling tools for use by internal auditors 
 specifically for our typical use cases, see below explanation.
 
-This library is also a learning exercise for me on how to create a package, build documentation & tests, and publish it. The code quality is marginally better than pasting from Stack Overflow.
-So, use it at your own peril! :) 
-If you wish to contribute, get in touch.
+This library is also a learning exercise for me on how to create a package, build documentation & tests, and publish it. 
+Code quality varies, and I don't commit to keep backward compatibility (see below)
+So, use it at your own peril! but if you wish to contribute, get in touch.
 
-Most of these tools could be done as short/obscure code snippets using existing feature in pandas, numpy or standard python libraries. 
-E.g. cleanup field names or to do some duplicates checks, or apply Benford law.
+Shout out: Pydit takes ideas (and some code) from Pyjanitor, an awesome library, check it out!
 
-Btw, Pydit takes inspiration (and some code) from Pyjanitor, an awesome library, check it out!
+### Why a dedicated library for auditors?
 
-Why a dedicated library for auditors?
+The problem Pydit tries to solve is that all these cleanup and checks (e.g. extract 
+duplicates) snippets are quite important for our work and start to crop up everywhere, 
+often pasted from internet or from recent version used in another script with no 
+consistency or tests.
 
-The problem Pydit tries to solve is that all these cleanup and checks (e.g. extract duplicates) snippets are quite important for our work and start to crop up everywhere, often pasted from internet or from recent version used in another script with no consistency or tests.
+On the other hand, libraries like pyjanitor do a great job but 
+  a) require installation that often is not allowed in your environment 
+  b) tend to be compact and non verbose (and use method chaining) and 
+  c) are difficult to verify given the high complexity of the library overall. 
 
-On the other hand, libraries like pyjanitor do a great job but a) require installation that often is not allowed in your environment b) tend to be compact and non verbose (and use method chaining) and c) are difficult to verify given the high complexity of the library overall.
+For internal audit tests, what we really need is very verbose and easy to 
+understand code and outputs, so it is almost self explanatory and easy 
+to review. 
+Most of the time, performance is secondary. We just need it to run a 
+few times for the duration of the audit.
 
-For interal audit tests, what we really need is super-verbose and very easy to understand/verify code and outputs, to follow step by step. 
-Most of the time, for a one/few time/s use and performance is secondary.
+This leads to Pydit following these principles:
 
-So, Pydit follows the following principles:
+1.  Functions should be self-standing with minimal imports/dependencies. 
 
-1.  Functions are self-standing, minimal imports/dependencies. 
-
-The auditor should be able to import any pydit's individual module and use only those functions in the audit test. That makes it easier to undertand, document the test done and peer-review.
-Also, reduces dependencies of future versions of pydit. For better or 
-worse, you file the code used as it was ran during the audit.
+The auditor should be able to import any individual module to use only those 
+functions in the audit test. That makes it easier to undertand, document and 
+peer-review. Also, it reduces dependencies of future versions of pydit. 
+Typically, we need file the code used as it was ran during the audit.
 
 2. Functions include verbose logging to explain what is going on. Another feature specifically useful for the Internal Audit use case.
 
