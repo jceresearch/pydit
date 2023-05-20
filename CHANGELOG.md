@@ -1,11 +1,16 @@
 # Changelog
 
+
+## V0.0.15
+
+
+
 ## V0.0.14
 
 ### Tweaks
   - added silent=False option in the cleanup, groupby and coalesce functions
     to reduce the logging when used within other functions
-  - improved clean_text function to do unicode decoding and preserve dashes
+  - improved clean_string function to do unicode decoding and preserve dashes
   
 ### Fixes
   - refactored coalesce columns to add more input validation but also accept

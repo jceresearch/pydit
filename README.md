@@ -49,7 +49,7 @@ Pyjanitor is great and its chaining approach is elegant and compact. Definitely 
 
 
 
-## Quick start:
+## Quick start
 ```
 import pandas as pd
 from pydit import start_logging_info # sets up nice logging params with rotation

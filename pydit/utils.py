@@ -115,16 +115,17 @@ def clean_string(
     """Sanitising a string
 
     Cleans the strings applying the following transformations:
-    - Normalises unicode to remove accents and other symbols
-    - Keeps only [a-zA-Z0-9]
-    - Optional to retain dot
-    - Spaces to underscore
-    - Removes multiple spaces , trims
-    - Optional to lowercase
+    - Normalises unicode to remove accents and other symbols 
+    - Keeps only [a-zA-Z0-9] 
+    - Optional to retain dot 
+    - Spaces to underscore 
+    - Removes multiple spaces, strips 
+    - Optional to lowercase 
 
-    This is a very naive/slow implementation, useful for sanitising things like
-    a filename or titles etc. If you need to cleanup large datasets,
-    you need to look into pandas/numpy tools, and vectorised functions.
+    This is a naive/slow implementation, useful for sanitising things like
+    a filename or column headers or small datasets. If you need to cleanup 
+    large datasets, you need to look into pandas/numpy tools, and vectorised 
+    functions. 
 
 
     Parameters
