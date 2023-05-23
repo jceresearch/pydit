@@ -45,7 +45,7 @@ def test_clean_column_names_2():
     Case 2: Special characters
     """
     d = {
-        "Col1!": [1, 2, 3],
+        "Col1!:": [1, 2, 3],
         "Col2@": [1, 2, 3],
         "col3%": [1, 2, 3],
         "col4!\n(extra)": [1, 2, 3],
@@ -53,7 +53,7 @@ def test_clean_column_names_2():
         "(col6)": [1, 2, 3],
         "aaaaaaaaaabbbbbbbbbbccccccccccddddddddddz": [1, 2, 3],
         1: [1, 2, 3],
-        "maría josé nuñez": [1, 2, 3],
+        "maría josé-nuñez": [1, 2, 3],
     }
     df = pd.DataFrame(data=d)
     cleanup_column_names(df, inplace=True)

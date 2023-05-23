@@ -15,7 +15,10 @@ from datetime import datetime
 import unicodedata
 import pandas as pd
 import numpy as np
+import math
 
+# pylint: disable=W0702
+# pylint: disable=W0613
 
 logger = logging.getLogger()
 
@@ -110,22 +113,27 @@ def dataframe_to_code(df):
 
 
 def clean_string(
-    t=None, keep_dot=False, keep_dash=False, space_to_underscore=True, to_case="lower"
+    t=None,
+    keep_dot=False,
+    keep_dash=False,
+    keep_apostrophe=False,
+    space_to_underscore=True,
+    to_case="lower",
 ):
     """Sanitising a string
 
     Cleans the strings applying the following transformations:
-    - Normalises unicode to remove accents and other symbols 
-    - Keeps only [a-zA-Z0-9] 
-    - Optional to retain dot 
-    - Spaces to underscore 
-    - Removes multiple spaces, strips 
-    - Optional to lowercase 
+    - Normalises unicode to remove accents and other symbols
+    - Keeps only [a-zA-Z0-9]
+    - Optional to retain dot
+    - Spaces to underscore
+    - Removes multiple spaces, strips
+    - Optional to lowercase
 
     This is a naive/slow implementation, useful for sanitising things like
-    a filename or column headers or small datasets. If you need to cleanup 
-    large datasets, you need to look into pandas/numpy tools, and vectorised 
-    functions. 
+    a filename or column headers or small datasets. If you need to cleanup
+    large datasets, you need to look into pandas/numpy tools, and vectorised
+    functions.
 
 
     Parameters
@@ -136,6 +144,8 @@ def clean_string(
         Whether to keep the dot in the string
     keep_dash : bool, optional, default False
         Whether to keep the dash in the string (useful for names)
+    keep_aphostrophe : bool, optional, default False
+        Whether to keep the apostrophe in the string (useful for names)
     space_to_underscore : bool, optional, default True
         Whether to replace spaces with underscores
     case : str, optional, default "lower", choices=["lower", "upper"]
@@ -147,13 +157,13 @@ def clean_string(
         Cleaned string
 
     """
-    if pd.isna(t):
+    if t != t or t is None:
         return ""
-    if not isinstance(t, str):
-        try:
-            t = str(t)
-        except TypeError:
-            return ""
+
+    try:
+        t = str(t)
+    except Exception as e:
+        return ""
 
     # we are going to normalize using NFKD
     # this will convert characters to their closest ASCII equivalent
@@ -171,19 +181,18 @@ def clean_string(
     else:
         pass
 
-    if t:
-        if keep_dot:
-            r = re.sub(r"[^a-zA-Z0-9.]", " ", r)
-        else:
-            if keep_dash:
-                r = re.sub(r"[^a-zA-Z0-9-]", " ", r)
-            else:
-                r = re.sub(r"[^a-zA-Z0-9]", " ", r)
-        r = r.strip()
-        if space_to_underscore:
-            r = re.sub(" +", "_", r)
-        else:
-            r = re.sub(" +", " ", r)
+    if not keep_dot:
+        r = re.sub(r"[\.]", " ", r)
+    if not keep_dash:
+        r = re.sub(r"[-]", " ", r)
+    if not keep_apostrophe:
+        r = re.sub(r"[']", " ", r)
+    r = re.sub(r"[^a-zA-Z0-9.\-']", " ", r)
+    r = r.strip()
+    if space_to_underscore:
+        r = re.sub(" +", "_", r)
+    else:
+        r = re.sub(" +", " ", r)
     return r
 
 

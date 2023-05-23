@@ -23,7 +23,7 @@ def _strip_accents(text: str) -> str:
 
     return "".join(
         letter
-        for letter in unicodedata.normalize("NFD", text)
+        for letter in unicodedata.normalize("NFKD", text)
         if not unicodedata.combining(letter)
     )
 
