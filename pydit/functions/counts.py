@@ -88,6 +88,9 @@ def count_values_in_col(
         else:
             cn = column_name[0]
         df[cn] = count_list
+        if percentage:
+            count_records = float(df.shape[0])
+            df[cn] = df[cn] / count_records
     if detailed:
         for i, c in enumerate(cols_list):
             # count_summary = df[c].value_counts(dropna=False)
@@ -173,7 +176,7 @@ def count_related_key(df1, df2, left_on="", right_on="", on="", inplace=False):
     if not inplace:
         df1 = df1.copy()
         df2 = df2.copy()
-    
+
     df1["count_fk_" + right_on] = df1[left_on].map(df2[right_on].value_counts())
     df1["count_" + left_on] = df1[left_on].map(df1[left_on].value_counts())
 
