@@ -221,4 +221,3 @@ def check_referential_integrity(a1, a2, verbose=False):
                     )
 
                     return "partial overlap and both have duplicates"
-
