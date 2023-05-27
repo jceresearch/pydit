@@ -10,7 +10,13 @@ logger = logging.getLogger(__name__)
 
 
 def count_values_in_col(
-    df, col, column_name=None, combined=False, percentage=False, inplace=False
+    df,
+    col,
+    column_name=None,
+    combined=True,
+    percentage=False,
+    detailed=False,
+    inplace=False,
 ):
     """Generates a column counting occurrence of values in a given column.
 
@@ -28,10 +34,12 @@ def count_values_in_col(
         column_name : str or list of str, optional, default None
             Name of the columns to be created containing the count of values
             If None, the column name will be "count_[col]".
-        combined : bool, optional, default False
+        combined : bool, optional, default True
             Whether or not compute the counts combining all the columns provided
         percentage: bool, optional, default False
             Whether to return percentage over total count
+        detailed: bool, optional, default False
+            Whether to return only the combined count and drop the extra details
         inplace : bool, optional, default False
             Whether or not to mutate the original DataFrame
 
@@ -46,35 +54,27 @@ def count_values_in_col(
     """
     if not isinstance(df, pd.DataFrame):
         raise TypeError("Expecting a dataframe")
-    if not column_name:
+    if not column_name or column_name == "" or column_name != column_name:
         column_name = ""
         flag_auto_name = True
     else:
         flag_auto_name = False
-    if isinstance(col, str):
-        cols_list = [col]
-        if isinstance(column_name, str) and str.strip(column_name) != "":
-            column_name = [column_name]
-        elif isinstance(column_name, list) and len(column_name) > 1:
-            raise ValueError("column_name must be same length as col")
-        elif not isinstance(column_name, (list, str)):
-            raise TypeError("column_name must be a string or list of strings")
+
+    if isinstance(col, (str, list)):
+        if isinstance(col, list):
+            cols_list = col
         else:
-            flag_auto_name = True  # we ignore the column_name
-    elif isinstance(col, list):
-        cols_list = col
-        if isinstance(column_name, list):
-            if len(column_name) != len(cols_list):
-                raise ValueError(
-                    "column_name, if a list must be the same length as the col list"
-                )
-        else:
-            flag_auto_name = True  # ignore whatever we put there
+            cols_list = [col]
     else:
-        raise TypeError("Expecting a string or list of strings")
+        raise TypeError("Expecting a string or list/tuple of strings")
     for c in cols_list:
         if c not in df.columns:
             raise ValueError("Column not found in dataframe")
+    if isinstance(column_name, str) and not flag_auto_name:
+        column_name = [column_name]
+    if isinstance(column_name, list) and len(column_name) != len(cols_list):
+        raise ValueError("column_name must be same length as col")
+
     if not inplace:
         df = df.copy()
 
@@ -88,7 +88,7 @@ def count_values_in_col(
         else:
             cn = column_name[0]
         df[cn] = count_list
-    else:
+    if detailed:
         for i, c in enumerate(cols_list):
             # count_summary = df[c].value_counts(dropna=False)
             # count_list = [count_summary[val] for index, val in enumerate(df[c])]
@@ -173,7 +173,7 @@ def count_related_key(df1, df2, left_on="", right_on="", on="", inplace=False):
     if not inplace:
         df1 = df1.copy()
         df2 = df2.copy()
-
+    
     df1["count_fk_" + right_on] = df1[left_on].map(df2[right_on].value_counts())
     df1["count_" + left_on] = df1[left_on].map(df1[left_on].value_counts())
 

@@ -2,7 +2,7 @@
 
 import os
 import sys
-
+import pytest
 import pandas as pd
 import numpy as np
 
@@ -48,9 +48,14 @@ def test_count_values_in_col_combined():
             "type_lower": ["falcon", "falcon", "parrot", "lion", "monkey", "bee"],
         }
     )
-    res = count_values_in_col(df, ["class", "type"], "count", combined=True)
+    res = count_values_in_col(df, ["class", "type"], combined=True)
     exp = [1, 1, 1, 1, 1, 1]
     assert list(res["count_combined"]) == exp
+
+    with pytest.raises(ValueError):
+        res = count_values_in_col(
+            df, ["class", "type"], column_name="dummy", combined=True
+        )
 
     res = count_values_in_col(df, ["class", "type_lower"], combined=True)
     exp = [2, 2, 1, 1, 1, 1]

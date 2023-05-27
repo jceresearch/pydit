@@ -187,7 +187,7 @@ def clean_string(
         r = re.sub(r"[-]", " ", r)
     if not keep_apostrophe:
         r = re.sub(r"[']", " ", r)
-    r = re.sub(r"[^a-zA-Z0-9.\-']", " ", r)
+    r = re.sub(r"[^a-zA-Z0-9\.\-']", " ", r)
     r = r.strip()
     if space_to_underscore:
         r = re.sub(" +", "_", r)
