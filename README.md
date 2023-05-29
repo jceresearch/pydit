@@ -5,10 +5,12 @@ Pydit is a library of data wrangling tools for use by internal auditors
 specifically for our typical use cases, see below explanation.
 
 This library is also a learning exercise for me on how to create a package, build documentation & tests, and publish it. 
-Code quality varies, and I don't commit to keep backward compatibility (see below)
-So, use it at your own peril! but if you wish to contribute, get in touch.
+Code quality varies, and due to its main use case I don't commit to keep backward 
+compatibility (see below) So, use it at your own peril! 
+If, despite all that, you wish to contribute, feel free to get in touch.
 
-Shout out: Pydit takes ideas (and some code) from Pyjanitor, an awesome library, check it out!
+Shout out: Pydit takes ideas (and some code) from Pyjanitor, an awesome library. 
+check it out!
 
 ### Why a dedicated library for auditors?
 

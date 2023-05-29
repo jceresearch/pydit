@@ -32,7 +32,3 @@ def test_merge_basic():
     )
     assert list(res3.columns) == ["a", "b_1", "c_1", "c_2", "d_2"]
     assert res3.shape == (3, 5)
-
-
-if __name__ == "__main__":
-    test_merge_basic()
