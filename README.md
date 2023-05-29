@@ -9,8 +9,8 @@ Code quality varies, and due to its main use case I don't commit to keep backwar
 compatibility (see below) So, use it at your own peril! 
 If, despite all that, you wish to contribute, feel free to get in touch.
 
-Shout out: Pydit takes ideas (and some code) from Pyjanitor, an awesome library. 
-check it out!
+Shout out: Pydit takes ideas (and some code) from Pyjanitor, an awesome library.  
+Check it out!
 
 ### Why a dedicated library for auditors?
 

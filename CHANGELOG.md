@@ -3,7 +3,13 @@
 
 ## V0.0.15
 
+### Features
+  - adding merge_outer_and_split to the library, which generates inner join and 
+    extractions for the nans and non matches. 
 
+### Fixes
+  - fix bug in clean string
+  - fixed percertage count option in count function
 
 ## V0.0.14
 
