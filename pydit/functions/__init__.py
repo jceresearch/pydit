@@ -38,6 +38,7 @@ from .date_time_calculations import calculate_business_hours
 from .map_common_values import map_values
 from .fuzzy_matching import create_fuzzy_key
 from .merge import merge_outer_and_split
+from .merge import merge_smart
 
 # Here we import each of the functions in the functions/ directory to have them
 # available in the functions namespace.

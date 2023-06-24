@@ -22,17 +22,18 @@ def fixture_df():
     data = {
         "col1": [1, 2, 3, 4, 5, 6, 7, 8],
         "col2": [
-            "Value 1",
-            "Value 1",
+            "V1",
+            "V1",
             "",
             " ",
-            "Value 5",
-            "Value 6",
-            "Value 7",
-            "Value 8",
+            "V5",
+            "V6",
+            "V7",
+            "V8",
         ],
         "col4": [1, 1, 1, 4, 4, np.nan, np.nan, 5],
         "col5": [1, 2, 3, 4, 4, 5, 5, 5],
+        "col6": [1, 3, 5, 7, 11, 13, 17, 19],
     }
 
     return pd.DataFrame(data)
@@ -172,6 +173,27 @@ def test_check_duplicates_dataframe(df):
         dfdupes["_duplicates"].sum() == 3
     )  # we should get the duplicates and the nans as dupes
 
+    dfdupes = check_duplicates(
+        df,
+        ["col5"],
+        keep="first",
+        dropna=False,
+        add_indicator_column=True,
+        also_return_non_duplicates=True,
+    )
+    assert len(dfdupes) == 5
+    assert dfdupes["col6"].sum() == 29
+    
+    dfdupes = check_duplicates(
+        df,
+        ["col5"],
+        keep="last",
+        dropna=False,
+        add_indicator_column=True,
+        also_return_non_duplicates=True,
+    )
+    assert len(dfdupes) == 5
+    assert dfdupes["col6"].sum() == 39
 
 def test_check_duplicates_series():
     """test check duplicates"""
