@@ -29,7 +29,6 @@ from .collapse_dataframe_levels import collapse_levels
 from .groupby_text_concatenate import groupby_text
 from .keyword_search_batch import keyword_search
 from .truncate_datetime import truncate_datetime_dataframe
-from .merge import merge_force_suffix
 from .counts import count_related_key
 from .counts import count_values_in_col
 from .date_time_calculations import business_calendar

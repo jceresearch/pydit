@@ -183,7 +183,7 @@ def test_check_duplicates_dataframe(df):
     )
     assert len(dfdupes) == 5
     assert dfdupes["col6"].sum() == 29
-    
+
     dfdupes = check_duplicates(
         df,
         ["col5"],
@@ -194,6 +194,7 @@ def test_check_duplicates_dataframe(df):
     )
     assert len(dfdupes) == 5
     assert dfdupes["col6"].sum() == 39
+
 
 def test_check_duplicates_series():
     """test check duplicates"""
