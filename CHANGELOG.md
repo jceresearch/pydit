@@ -1,5 +1,10 @@
 # Changelog
 
+## V0.0.16
+
+### Features
+  - added merge_smart() replacing merge_force_suffix , offering more functionality, such as prefix and optionally renaming keys or preserving them
+  
 
 ## V0.0.15
 
