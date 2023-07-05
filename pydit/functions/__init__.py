@@ -13,14 +13,14 @@ from .calendar_table import create_calendar
 from .percentile import add_percentile
 from .profile_dataframe_statistics import profile_dataframe
 from .duplicates import check_duplicates
-from .sequence import check_sequence, group_gaps
+from .sequence import check_sequence
+from .sequence import group_gaps
 from .referential_integrity_check import check_referential_integrity
 from .fillna import fillna_smart
 from .blanks import check_blanks
 from .coalesce_dataframe_values import coalesce_values
 from .cleanup_dataframe_columns_names import cleanup_column_names
 from .anonymise import anonymise_key
-from .counts import count_cumulative_unique
 from .coalesce_dataframe_columns import coalesce_columns
 from .benford import benford_to_dataframe
 from .benford import benford_to_plot
@@ -29,8 +29,12 @@ from .collapse_dataframe_levels import collapse_levels
 from .groupby_text_concatenate import groupby_text
 from .keyword_search_batch import keyword_search
 from .truncate_datetime import truncate_datetime_dataframe
+from .counts import count_cumulative_unique
 from .counts import count_related_key
 from .counts import count_values_in_col
+from .counts import count_isna
+from .counts import count_notna
+from .counts import has_different_values
 from .date_time_calculations import business_calendar
 from .date_time_calculations import calculate_business_hours_fast
 from .date_time_calculations import calculate_business_hours

@@ -264,3 +264,46 @@ def count_cumulative_unique(
     )
 
     return df
+
+
+def count_isna(df, cols):
+    """Returns the number of null values in the columns specified in cols
+    Parameters
+    ----------
+    df : pd.DataFrame
+        Dataframe to be analyzed
+    cols : list
+        List of columns to be analyzed
+
+    Returns
+    -------
+    pd.Series
+        Series with the number of null values in the columns specified in cols
+
+    """
+    if not isinstance(df, pd.DataFrame):
+        raise TypeError("Expecting a dataframe")
+    if not isinstance(cols, list):
+        raise TypeError("Expecting a list")
+
+    res = df[cols].apply(lambda r: sum([True for v in r.values if pd.isna(v)]), axis=1)
+    return res
+
+
+def count_notna(df, cols):
+    res = df[cols].apply(lambda r: sum([True for v in r.values if pd.notna(v)]), axis=1)
+    return res
+
+
+def has_different_values(df, cols):
+    vals = df[cols].apply(lambda r: [v for v in r.values if pd.notna(v)], axis=1)
+    print(vals)
+
+    def array_eq(a):
+        if a:
+            array1 = np.array(a)
+            return (array1 == array1[0]).all()
+        return False
+
+    res = [array_eq(v) for v in vals]
+    return res
