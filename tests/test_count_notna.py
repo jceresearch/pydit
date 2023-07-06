@@ -35,14 +35,14 @@ def test_count_isna():
     res = count_isna(df, ["F", "G", "H"])
     exp = [0, 1, 3, 0, 0]
     assert list(res) == exp
-    res = count_isna(df, ["B", "C", "D","E"])
+    res = count_isna(df, ["B", "C", "D", "E"])
     exp = [0, 1, 3, 0, 0]
     assert list(res) == exp
 
     with pytest.raises(TypeError):
         res = count_isna(df, "H")
-        
-        
+
+
 def test_count_notna():
     """test count"""
     df = pd.DataFrame(
@@ -62,13 +62,14 @@ def test_count_notna():
     res = count_notna(df, ["F", "G", "H"])
     exp = [3, 2, 0, 3, 3]
     assert list(res) == exp
-    res = count_notna(df, ["B", "C", "D","E"])
+    res = count_notna(df, ["B", "C", "D", "E"])
     exp = [4, 3, 1, 4, 4]
     assert list(res) == exp
 
     with pytest.raises(TypeError):
         res = count_notna(df, "H")
-    
+
+
 def test_has_diferent_value():
     """test count"""
     df = pd.DataFrame(
@@ -86,12 +87,10 @@ def test_has_diferent_value():
     )
 
     res = has_different_values(df, ["F", "G", "H"])
-    exp = [3, 2, 0, 3, 3]
+    exp = [True, True, False, False, False]
     assert list(res) == exp
-    res = count_notna(df, ["B", "C", "D","E"])
-    exp = [4, 3, 1, 4, 4]
+    res = has_different_values(df, ["B", "C", "D", "E"])
+    exp = [True, True, True, False, False]
     assert list(res) == exp
-
     with pytest.raises(TypeError):
         res = count_notna(df, "H")
-    

@@ -8,3 +8,4 @@ pytest-cov
 pydata-sphinx-theme>=0.13.0
 sphinx-book-theme
 myst-parser>=1.0.0
+poetry

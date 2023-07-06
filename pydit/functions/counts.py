@@ -1,10 +1,11 @@
 """Add a cumulative count of unique keys, does not mutates the dataframe
 """
 
-from typing import Hashable
 import logging
 
 import pandas as pd
+import numpy as np
+
 
 logger = logging.getLogger(__name__)
 
@@ -217,12 +218,8 @@ def count_related_key(df1, df2, left_on="", right_on="", on="", inplace=False):
 
 
 def count_cumulative_unique(
-    df: pd.DataFrame,
-    column_name: Hashable,
-    dest_column_name: str,
-    case_sensitive: bool = True,
-    inplace=False,
-) -> pd.DataFrame:
+    df, column_name, dest_column_name, case_sensitive=True, inplace=False
+):
     """Generates a running total of cumulative unique values in a given column.
 
     Parameters
@@ -285,19 +282,61 @@ def count_isna(df, cols):
         raise TypeError("Expecting a dataframe")
     if not isinstance(cols, list):
         raise TypeError("Expecting a list")
-
+    if not all([c in df.columns for c in cols]):
+        raise ValueError("Column not in DataFrame")
     res = df[cols].apply(lambda r: sum([True for v in r.values if pd.isna(v)]), axis=1)
     return res
 
 
 def count_notna(df, cols):
+    """Returns the number of non-null values in the columns specified in cols
+    Parameters
+    ----------
+    df : pd.DataFrame
+        Dataframe to be analyzed
+    cols : list
+        List of columns to be analyzed
+
+    Returns
+    -------
+    pd.Series
+        Series with the number of non-null values in the columns specified in cols
+
+    """
+    if not isinstance(df, pd.DataFrame):
+        raise TypeError("Expecting a dataframe")
+    if not isinstance(cols, list):
+        raise TypeError("Expecting a list")
+    if not all([c in df.columns for c in cols]):
+        raise ValueError("Column not in DataFrame")
+
     res = df[cols].apply(lambda r: sum([True for v in r.values if pd.notna(v)]), axis=1)
     return res
 
 
 def has_different_values(df, cols):
+    """Returns True if the values in the columns specified in cols are different
+    Parameters
+    ----------
+    df : pd.DataFrame
+        Dataframe to be analyzed
+    cols : list
+        List of columns to be analyzed
+
+    Returns
+    -------
+    pd.Series
+        Series with True if the values in the columns specified in cols are different
+
+    """
+    if not isinstance(df, pd.DataFrame):
+        raise TypeError("Expecting a dataframe")
+    if not isinstance(cols, list):
+        raise TypeError("Expecting a list")
+    if not all([c in df.columns for c in cols]):
+        raise ValueError("Column not in DataFrame")
+
     vals = df[cols].apply(lambda r: [v for v in r.values if pd.notna(v)], axis=1)
-    print(vals)
 
     def array_eq(a):
         if a:
@@ -306,4 +345,26 @@ def has_different_values(df, cols):
         return False
 
     res = [array_eq(v) for v in vals]
+    print(vals)
     return res
+
+
+if __name__ == "__main__":
+    df = pd.DataFrame(
+        {
+            "K": ["K0", "K1", "K2", "K3", "K4"],
+            "B": ["A", np.nan, "C", "D1", "E1"],
+            "C": ["A", "B", np.nan, "D1", "E2"],
+            "D": ["A", "B", np.nan, "D", "E3"],
+            "E": ["A", "B", np.nan, "D", ""],
+            "F": [1, 2, np.nan, 4, 5],
+            "G": [1, np.nan, np.nan, 5, 6],
+            "H": [1, 2, np.nan, 6, 6],
+        },
+        index=[0, 1, 2, 3, 4],
+    )
+
+    res = has_different_values(df, ["B", "C", "D", "E"])
+    print(res)
+    res = has_different_values(df, ["F", "G", "H"])
+    print(res)
