@@ -105,8 +105,8 @@ def check_duplicates(
 
     fields = ",".join(cols)
 
-    has_all_nans = df[cols].isnull().apply(lambda x: all(x), axis=1)
-    has_any_nans = df[cols].isnull().apply(lambda x: any(x), axis=1)
+    has_all_nans = df[cols].isnull().apply(all, axis=1)
+    has_any_nans = df[cols].isnull().apply(any, axis=1)
     all_nans_count = sum(has_all_nans)
     not_all_nans_count = sum(has_any_nans) - all_nans_count
 

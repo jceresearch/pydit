@@ -79,7 +79,7 @@ df_profile= profile_dataframe(df) # will return a df with summary statistics
 # you may realise the columns from excel are all over the place with cases and
 # special chars
 
-cleanup_column_names(df,inplace=True) # much better!!!
+cleanup_column_names(df,inplace=True) # use of inplace, otherwise it returns a new copy
 
 df_deduped=check_duplicates(df, columns=["customer_id","last_update_date"],ascending=[True,False],keep="first",indicator=True, also_return_non_duplicates=True)
 

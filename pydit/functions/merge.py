@@ -1,4 +1,4 @@
-"""Module to merge dataframes with suffixes for non key fields not just collissions.
+"""Module to merge dataframes with prefixes or suffixes for all fields not just collissions.
 
 """
 
@@ -9,73 +9,88 @@ import pandas as pd
 logger = logging.getLogger(__name__)
 
 
-def merge_force_suffix(left, right, **kwargs):
-    """Merge two dataframes, forcing the suffix of the left dataframe
-    to the right dataframe.
-
-    This is useful when merging two dataframes with the same column names,
-    to ensure all columns are tagged with suffixes, even if they don't have
-    collissions. This is particularly important when merging many dataframes,
-    to keep track of columns.
-    The normal behaviour of merge would add suffixes just on collission.
-    There is a feature in pandas to .add_suffix() to all columns but that
-    also renames the key columns and you need to do it before merging.
-    This function does not add suffixes to the key columns.
-
+def merge_smart(df1, df2, rename_merge_key=False, **kwargs):
+    """Merge two dataframes, with prefixes or suffixes for all fields not just collissions.
 
     Parameters
     ----------
-    left : pandas.DataFrame
+    df1 : pandas.DataFrame
         The left dataframe
-    right : pandas.DataFrame
+    df2 : pandas.DataFrame
         The right dataframe
+    rename_merge_key : bool, optional, default False
+        If True, the key columns will be renamed with the suffixes or prefixes
     kwargs : the keyword arguments to pass to pandas.DataFrame.merge()
-
+        See https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.merge.html
 
     Returns
     -------
     pandas.DataFrame
         A new merged dataframe
 
-
-
     """
-    left_on = []
-    right_on = []
 
-    try:
-        on_col = kwargs["on"]
-    except Exception:
-        on_col = []
-        try:
-            left_on = kwargs["left_on"]
-            right_on = kwargs["right_on"]
-        except Exception:
-            raise ValueError("You must specify either on or left_on and right_on")
+    merge_args = kwargs.copy()
+    dfa = df1.copy()
+    dfb = df2.copy()
+    if on := merge_args.pop("on", None):
+        left_on = on
+        right_on = on
+    else:
+        left_on = merge_args.pop("left_on", None)
+        right_on = merge_args.pop("right_on", None)
+    if not (left_on and right_on):
+        raise ValueError("Missing: on, left_on or right_on")
 
-    left_keys = [*on_col, *left_on]
-    right_keys = [*on_col, *right_on]
+    left_on = [*left_on]
+    right_on = [*right_on]
 
-    suffix_tuple = kwargs["suffixes"]
+    if suff := merge_args.pop("suffixes", None):
+        if suff[0]:
+            cols = []
+            for c in dfa.columns:
+                if not rename_merge_key and c in left_on:
+                    cols.append(c)
+                else:
+                    cols.append(str(c) + str(suff[0]))
+            if rename_merge_key:
+                left_on = [v + str(suff[0]) for v in left_on]
+            dfa.columns = cols
+        if suff[1]:
+            cols = []
+            for c in dfb.columns:
+                if (not rename_merge_key) and (c in right_on):
+                    cols.append(c)
+                else:
+                    cols.append(str(c) + str(suff[1]))
+            if rename_merge_key:
+                right_on = [v + str(suff[1]) for v in right_on]
+            dfb.columns = cols
 
-    def _left_suffix_col(col, suffix):
-        if col not in left_keys:
-            return str(col) + suffix
-        else:
-            return col
+    if pref := merge_args.pop("prefixes", None):
+        if pref[0]:
+            cols = []
+            for c in dfa.columns:
+                if (not rename_merge_key) and (c in left_on):
+                    cols.append(c)
+                else:
+                    cols.append(str(pref[0] + str(c)))
 
-    def _right_suffix_col(col, suffix):
-        if col not in right_keys:
-            return str(col) + suffix
-        else:
-            return col
-
-    left_suffixed = left.rename(columns=lambda x: _left_suffix_col(x, suffix_tuple[0]))
-    right_suffixed = right.rename(
-        columns=lambda x: _right_suffix_col(x, suffix_tuple[1])
-    )
-    del kwargs["suffixes"]
-    return pd.merge(left_suffixed, right_suffixed, **kwargs)
+            if rename_merge_key:
+                left_on = [str(pref[0]) + str(v) for v in left_on]
+            dfa.columns = cols
+        if pref[1]:
+            cols = []
+            for c in dfb.columns:
+                if (not rename_merge_key) and (c in right_on):
+                    cols.append(c)
+                else:
+                    cols.append(str(pref[1]) + str(c))
+            if rename_merge_key:
+                right_on = [str(pref[1]) + str(v) for v in right_on]
+            dfb.columns = cols
+    dfres = pd.merge(dfa, dfb, left_on=left_on, right_on=right_on, **merge_args)
+    return dfres
 
 
 def merge_outer_and_split(
