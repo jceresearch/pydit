@@ -1,5 +1,4 @@
 """ Module for cleaning up column names of a DataFrame
-This is by far the most used module.
 
 """
 

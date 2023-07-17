@@ -1,6 +1,16 @@
 # Changelog
 
 
+## V0.0.16
+
+### Features
+
+ - added merge_smart 
+ - added counting notna()
+
+
+
+
 ## V0.0.15
 
 ### Features
