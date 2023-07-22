@@ -133,6 +133,9 @@ def cleanup_column_names(obj, max_field_name_len=40, inplace=False, silent=False
     -------
     pandas.DataFrame
         Pandas DataFrame with cleaned column names
+        
+    list
+        List of strings with cleaned column names if the input was a list 
 
     """
     if isinstance(obj, list):
