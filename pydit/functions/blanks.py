@@ -89,20 +89,19 @@ def check_blanks(
     total_results = {}
 
     for c in cols:
-        if is_numeric_dtype(df[c]) and include_zeroes:
-            s = (pd.isna(df[c])) | (df[c] == 0)
-            if not totals_only:
-                df[c + "_blanks"] = s
-            total_results[c] = s.sum()
-        elif is_string_dtype(df[c]) and include_nullstrings_and_spaces:
-            s = ~df[c].fillna("").astype(str).str.strip().astype(bool)
-            if not totals_only:
-                df[c + "_blanks"] = s
-            total_results[c] = s.sum()
+        s1 = pd.isna(df[c])
+        if include_zeroes:
+            s2 = df[c] == 0
         else:
-            if not totals_only:
-                df[c + "_blanks"] = pd.isna(df[c])
-            total_results[c] = df[c].isnull().sum()
+            s2 = pd.Series(False, index=df.index)
+        if include_nullstrings_and_spaces:
+            s3 = ~df[c].fillna("").astype(str).str.strip().astype(bool)
+        else:
+            s3 = pd.Series(False, index=df.index)
+        s = s1 | s2 | s3
+        if not totals_only:
+            df[c + "_blanks"] = s
+        total_results[c] = s.sum()
 
     if not totals_only:
         new_cols = [c + "_blanks" for c in cols]
