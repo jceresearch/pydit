@@ -8,7 +8,9 @@ logger = logging.getLogger(__name__)
 
 
 def coalesce_values(
-    df_in, cols, top_n_values_to_keep=10, translation_dict=None, other_label="OTHER"
+    df_in, cols, top_n_values_to_keep=10, translation_dict=None, 
+    other_label="OTHER", 
+    case_insensitive=True
 ):
     """
     Creates a new column with the top N most frequent values and the rest are replaced by Other.
@@ -28,6 +30,8 @@ def coalesce_values(
         A dictionary to use for manual translation/coalescing.
     other_label : str or int, optional, default "OTHER"
         The label to use for the other values.
+    case_insensitive : bool, optional, default True
+        Whether to do a case insensitive comparison.
 
     Returns
     -------
@@ -96,8 +100,16 @@ def coalesce_values(
         top_n_values_to_keep,
         df[col].value_counts().nlargest(top_n_values_to_keep).index,
     )
-    value_counts = df[col].value_counts().reset_index()
-    value_counts_topN = list(value_counts[0:top_n_values_to_keep]["index"])
+
+    if case_insensitive:
+        try:
+            df[col] = df[col].str.upper()
+        except Exception:
+            pass
+    value_counts = df[col].value_counts().reset_index(name="index")
+
+
+    value_counts_topN = list(value_counts[0:top_n_values_to_keep][col])
     if flag_str_label:
         df[col + "_collapsed"] = df.apply(
             lambda r: str.strip(str.upper(str(r[col])))

@@ -3,7 +3,7 @@ import os
 import sys
 
 import pandas as pd
-
+import numpy as np
 
 # pylint: disable=import-error disable=wrong-import-position
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -27,8 +27,42 @@ def test_coalesce_values():
         "b": [1, 2, 2, 3, 3, 3, 4],
         "c": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
         "d": [1, 2, 3, 4, 5, 6, 7],
+        "e": ["Red", "Red", "Red", "Red", "Red", "Red", "Red"],
+        "f": ["a", "b", "c", "d", "e", "f", "g"],
+        "g": ["a", "a", "a", "b", "b","c", np.nan],
+        "h": [np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan],
     }
     df = pd.DataFrame(data)
+
+    result = coalesce_values(df, "h", top_n_values_to_keep=2)
+    assert list(result["h_collapsed"]) == ["OTHER", "OTHER", "OTHER", "OTHER", "OTHER", "OTHER", "OTHER"]
+
+
+    result = coalesce_values(df, "e", top_n_values_to_keep=2)
+    assert list(result["e_collapsed"]) == [
+        "RED",
+        "RED",
+        "RED",
+        "RED",
+        "RED",
+        "RED",
+        "RED",
+    ]
+
+    result = coalesce_values(df, "f", top_n_values_to_keep=2, other_label="OTHER")
+    assert list(result["f_collapsed"]) == [
+        "A",
+        "B",
+        "OTHER",
+        "OTHER",
+        "OTHER",
+        "OTHER",
+        "OTHER",
+    ]
+
+    result = coalesce_values(df, "g", top_n_values_to_keep=2, other_label="OTHER")
+    assert list(result["g_collapsed"]) == ["A", "A", "A", "B", "B", "OTHER", "OTHER"]
+
     result = coalesce_values(df, "a", top_n_values_to_keep=2)
     assert list(result["a_collapsed"]) == [
         "OTHER",
@@ -66,8 +100,3 @@ def test_coalesce_values():
         "JUN",
         "JUL",
     ]
-
-
-if __name__ == "__main__":
-    """Run the tests"""
-    test_coalesce_values()
