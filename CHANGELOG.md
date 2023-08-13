@@ -1,5 +1,12 @@
 # Changelog
 
+## V0.0.18
+
+### Fixes
+
+- Fixed check_blanks() and coalesce_values(), some small refactoring and enhancing there too
+
+
 ## V0.0.17
 
 ### Features

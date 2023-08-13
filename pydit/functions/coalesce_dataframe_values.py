@@ -8,8 +8,11 @@ logger = logging.getLogger(__name__)
 
 
 def coalesce_values(
-    df_in, cols, top_n_values_to_keep=10, translation_dict=None, 
-    other_label="OTHER", 
+    df_in,
+    cols,
+    top_n_values_to_keep=10,
+    translation_dict=None,
+    other_label="OTHER",
     case_insensitive=True,
     dropna=True,
 ):
@@ -109,12 +112,11 @@ def coalesce_values(
             df[col] = df[col].str.upper()
         except Exception:
             pass
-    
+
     if not dropna:
         df[col] = df[col].fillna("N/A")
 
     value_counts = df[col].value_counts().reset_index(name="index")
-
 
     value_counts_topN = list(value_counts[0:top_n_values_to_keep][col])
     if flag_str_label:
