@@ -37,7 +37,8 @@ def coalesce_values(
     case_insensitive : bool, optional, default True
         Whether to do a case insensitive comparison.
     dropna : bool, optional, default True
-        Whether to drop NA values. If False, NA values will be treated as a category with "N/A" as the label.
+        Whether to ignore np.nan values.
+        If False, NA values will be treated as a category with "N/A" as the label.
 
     Returns
     -------

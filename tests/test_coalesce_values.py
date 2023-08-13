@@ -31,12 +31,13 @@ def test_coalesce_values():
         "f": ["a", "b", "c", "d", "e", "f", "g"],
         "g": ["a", "a", "a", "b", "b", "c", np.nan],
         "h": [np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan],
-        "k": [np.nan, np.nan, np.nan, "b", "b", "c", "d"],
+        "i": [np.nan, np.nan, np.nan, "b", "b", "c", "d"],
     }
     df = pd.DataFrame(data)
 
-    result = coalesce_values(df, "k", top_n_values_to_keep=2, dropna=False)
-    assert list(result["k_collapsed"]) == [
+    result_dummy=coalesce_values(df, "i", top_n_values_to_keep=2)
+    result = coalesce_values(df, "i", top_n_values_to_keep=2, dropna=False)
+    assert list(result["i_collapsed"]) == [
         "N/A",
         "N/A",
         "N/A",
