@@ -10,7 +10,8 @@ logger = logging.getLogger(__name__)
 def coalesce_values(
     df_in, cols, top_n_values_to_keep=10, translation_dict=None, 
     other_label="OTHER", 
-    case_insensitive=True
+    case_insensitive=True,
+    dropna=True,
 ):
     """
     Creates a new column with the top N most frequent values and the rest are replaced by Other.
@@ -32,6 +33,8 @@ def coalesce_values(
         The label to use for the other values.
     case_insensitive : bool, optional, default True
         Whether to do a case insensitive comparison.
+    dropna : bool, optional, default True
+        Whether to drop NA values. If False, NA values will be treated as a category with "N/A" as the label.
 
     Returns
     -------
@@ -106,6 +109,10 @@ def coalesce_values(
             df[col] = df[col].str.upper()
         except Exception:
             pass
+    
+    if not dropna:
+        df[col] = df[col].fillna("N/A")
+
     value_counts = df[col].value_counts().reset_index(name="index")
 
 

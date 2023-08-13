@@ -31,8 +31,12 @@ def test_coalesce_values():
         "f": ["a", "b", "c", "d", "e", "f", "g"],
         "g": ["a", "a", "a", "b", "b","c", np.nan],
         "h": [np.nan, np.nan, np.nan, np.nan, np.nan, np.nan, np.nan],
+        "i": [np.nan, np.nan, np.nan, "b", "b", "c", "d"],
     }
     df = pd.DataFrame(data)
+
+    result = coalesce_values(df, "i", top_n_values_to_keep=2,dropna=False)
+    assert list(result["i_collapsed"]) == ["N/A", "N/A", "N/A", "B", "B", "OTHER", "OTHER"]
 
     result = coalesce_values(df, "h", top_n_values_to_keep=2)
     assert list(result["h_collapsed"]) == ["OTHER", "OTHER", "OTHER", "OTHER", "OTHER", "OTHER", "OTHER"]
