@@ -35,54 +35,6 @@ def test_coalesce_values():
     }
     df = pd.DataFrame(data)
 
-    result_dummy=coalesce_values(df, "i", top_n_values_to_keep=2)
-    result = coalesce_values(df, "i", top_n_values_to_keep=2, dropna=False)
-    assert list(result["i_collapsed"]) == [
-        "N/A",
-        "N/A",
-        "N/A",
-        "B",
-        "B",
-        "OTHER",
-        "OTHER",
-    ]
-
-    result = coalesce_values(df, "h", top_n_values_to_keep=2)
-    assert list(result["h_collapsed"]) == [
-        "OTHER",
-        "OTHER",
-        "OTHER",
-        "OTHER",
-        "OTHER",
-        "OTHER",
-        "OTHER",
-    ]
-
-    result = coalesce_values(df, "e", top_n_values_to_keep=2)
-    assert list(result["e_collapsed"]) == [
-        "RED",
-        "RED",
-        "RED",
-        "RED",
-        "RED",
-        "RED",
-        "RED",
-    ]
-
-    result = coalesce_values(df, "f", top_n_values_to_keep=2, other_label="OTHER")
-    assert list(result["f_collapsed"]) == [
-        "A",
-        "B",
-        "OTHER",
-        "OTHER",
-        "OTHER",
-        "OTHER",
-        "OTHER",
-    ]
-
-    result = coalesce_values(df, "g", top_n_values_to_keep=2, other_label="OTHER")
-    assert list(result["g_collapsed"]) == ["A", "A", "A", "B", "B", "OTHER", "OTHER"]
-
     result = coalesce_values(df, "a", top_n_values_to_keep=2)
     assert list(result["a_collapsed"]) == [
         "OTHER",
@@ -119,4 +71,51 @@ def test_coalesce_values():
         "MAY",
         "JUN",
         "JUL",
+    ]
+
+    result = coalesce_values(df, "e", top_n_values_to_keep=2)
+    assert list(result["e_collapsed"]) == [
+        "RED",
+        "RED",
+        "RED",
+        "RED",
+        "RED",
+        "RED",
+        "RED",
+    ]
+
+    result = coalesce_values(df, "f", top_n_values_to_keep=2, other_label="OTHER")
+    assert list(result["f_collapsed"]) == [
+        "A",
+        "B",
+        "OTHER",
+        "OTHER",
+        "OTHER",
+        "OTHER",
+        "OTHER",
+    ]
+
+    result = coalesce_values(df, "g", top_n_values_to_keep=2, other_label="OTHER")
+    assert list(result["g_collapsed"]) == ["A", "A", "A", "B", "B", "OTHER", "OTHER"]
+
+    result = coalesce_values(df, "h", top_n_values_to_keep=2)
+    assert list(result["h_collapsed"]) == [
+        "OTHER",
+        "OTHER",
+        "OTHER",
+        "OTHER",
+        "OTHER",
+        "OTHER",
+        "OTHER",
+    ]
+
+    result = coalesce_values(df, "i", top_n_values_to_keep=2, dropna=False)
+    assert list(result["i_collapsed"]) == [
+        "N/A",
+        "N/A",
+        "N/A",
+        "B",
+        "B",
+        "OTHER",
+        "OTHER",
     ]
