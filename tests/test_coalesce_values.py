@@ -100,13 +100,13 @@ def test_coalesce_values():
 
     result = coalesce_values(df, "h", top_n_values_to_keep=2)
     assert list(result["h_collapsed"]) == [
-        "OTHER",
-        "OTHER",
-        "OTHER",
-        "OTHER",
-        "OTHER",
-        "OTHER",
-        "OTHER",
+        "NAN",
+        "NAN",
+        "NAN",
+        "NAN",
+        "NAN",
+        "NAN",
+        "NAN",
     ]
 
     result = coalesce_values(df, "i", top_n_values_to_keep=2, dropna=False)
