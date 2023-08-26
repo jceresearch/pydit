@@ -1,7 +1,13 @@
 # Changelog
 
-## V0.0.18
+## V0.1.01
 
+- Changed requirements to the latest version of everything (pandas etc). 
+This is due to Github actions not passing the test there while it is passing 
+locally, so I will try to run in latest version and fix whatever GH doesn't like.
+As soon as I sort out why I will pin a particular version.
+
+## V0.0.18
 ### Fixes
 
 - Fixed check_blanks() and coalesce_values(), some small refactoring and enhancing there too

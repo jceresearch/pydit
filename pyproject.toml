@@ -4,7 +4,7 @@ readme="README.md"
 packages = [
 	{ include = "pydit" }
 ]
-version = "0.0.18"
+version = "0.1.01"
 description = "Data cleansing tools for Internal Auditors"
 authors = ["jceresearch <jceresearch@users.noreply.github.com>"]
 keywords=["internal audit", "munging", "cleansing", "audit","wrangling","pandas"]
@@ -18,19 +18,19 @@ documentation="https://pydit.readthedocs.io/en/latest/"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-pandas = "^1.5.2"
-numpy = "^1.24.1"
-openpyxl="^3.0.0"
+pandas = "*"
+numpy = "*"
+openpyxl="*"
 matplotlib = "*"
 
 [tool.poetry.dev-dependencies]
-myst-parser = "1.0.0"
+myst-parser = "2.0.0"
 pytest = "*"
 pytest-cov = "*"
 sphinx = "*"
-pydata-sphinx-theme = "0.13.0"
+pydata-sphinx-theme = "0.13.3"
 sphinx-book-theme = "*"
 
 [build-system]
-requires = ["poetry","poetry-core>=1.0.0","setuptools","myst-parser>=1.0.0"]
+requires = ["poetry","poetry-core>=1.0.0","setuptools","myst-parser>=2.0.0"]
 build-backend = "poetry.core.masonry.api"
