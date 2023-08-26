@@ -1,5 +1,7 @@
 # Changelog
 
+## V0.1.02
+
 ## V0.1.01
 
 - Changed requirements to the latest version of everything (pandas etc). 
