@@ -17,28 +17,28 @@ license = "MIT"
 documentation="https://pydit.readthedocs.io/en/latest/"
 
 [tool.poetry.dependencies]
-python = "^3.11"
-numpy==1.25.2
-openpyxl==3.1.2
-pandas==2.0.3
-matplotlib==3.7.2
+python="3.11"
+numpy="1.25.2"
+openpyxl="3.1.2"
+pandas="2.0.3"
+matplotlib="3.7.2"
 
 [tool.poetry.dev-dependencies]
-pydata-sphinx-theme==0.13.3
-pytest==7.4.0
-pytest-cov==4.1.0
-pytest-cover==3.0.0
-pytest-coverage==0.0
-coverage==7.3.0
-Sphinx==6.2.1
-sphinx-book-theme==1.0.1
-sphinxcontrib-applehelp==1.0.7
-sphinxcontrib-devhelp==1.0.5
-sphinxcontrib-htmlhelp==2.0.4
-sphinxcontrib-jsmath==1.0.1
-sphinxcontrib-qthelp==1.0.6
-sphinxcontrib-serializinghtml==1.1.8
-myst-parser==2.0.0
+pydata-sphinx-theme="0.13.3"
+pytest="7.4.0"
+pytest-cov="4.1.0"
+pytest-cover="3.0.0"
+pytest-coverage="0.0"
+coverage="7.3.0"
+Sphinx="6.2.1"
+sphinx-book-theme="1.0.1"
+sphinxcontrib-applehelp="1.0.7"
+sphinxcontrib-devhelp="1.0.5"
+sphinxcontrib-htmlhelp="2.0.4"
+sphinxcontrib-jsmath="1.0.1"
+sphinxcontrib-qthelp="1.0.6"
+sphinxcontrib-serializinghtml="1.1.8"
+myst-parser="2.0.0"
 
 [build-system]
 requires = ["poetry==1.6.1","poetry-core>=1.7.0","poetry-plugin-export==1.5.0","setuptools","myst-parser>=2.0.0"]
