@@ -111,13 +111,11 @@ def coalesce_values(
 
     if flag_str_label:
         df[col_output] = df[col_output].astype(str).str.strip().str.upper()
-    
+
     val_counts = df[col_output].value_counts().reset_index()
     val_counts_top_n = list(val_counts[0:top_n_values_to_keep][col_output])
     df[col_root + "_collapsed"] = df.apply(
-        lambda r: r[col_output]
-        if r[col_output] in val_counts_top_n
-        else other_label,
+        lambda r: r[col_output] if r[col_output] in val_counts_top_n else other_label,
         axis=1,
     )
     logger.info("Unique values after: %s", len(df[col_root + "_collapsed"].unique()))
@@ -151,7 +149,6 @@ if __name__ == "__main__":
     print(vc)
     value_counts_topN = list(vc[0:2]["a"])
     print(value_counts_topN)
-
 
     result = coalesce_values(df, "a", top_n_values_to_keep=2)
     print(result)
