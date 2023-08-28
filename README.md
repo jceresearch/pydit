@@ -92,16 +92,16 @@ df_deduped=check_duplicates(df, columns=["customer_id","last_update_date"],ascen
 ```
 
 ## Requires
-- Python >= 3.10
-- Pandas >= 1.5.0
-- Numpy >= 1.24
+- python >=3.11 (Should work by and large in 3.10, but tests pass on 3.11)
+- pandas
+- numpy
 - openpyxl
-- Matplotlib (for the ocassional plot, e.g. Benford)
+- matplotlib (for the ocassional plot, e.g. Benford)
 
 
 ## Installation
 ```bash
-pip install pydit
+pip install pydit-jceresearch
 ```
 (not available in anaconda yet)
 
