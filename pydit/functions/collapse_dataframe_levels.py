@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 def collapse_levels(obj: pd.DataFrame, sep: str = "_") -> pd.DataFrame:
     """Flatten multi-level column dataframe to a single level.
 
-    This method mutates the original DataFrame.
+    This method does not mutate the original DataFrame.
 
     Given a DataFrame containing multi-level columns, flatten to single-level
     by string-joining the column labels in each level.
@@ -33,7 +33,7 @@ def collapse_levels(obj: pd.DataFrame, sep: str = "_") -> pd.DataFrame:
     Returns
     -------
     pandas.DataFrame
-        A pandas DataFrame with single-level column index
+        A new pandas DataFrame with single-level column index
 
     """
     # noqa: E501
