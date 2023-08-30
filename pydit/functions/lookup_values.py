@@ -91,13 +91,4 @@ def lookup_values(df,key,df_ref, key_ref,return_column, flatten_list=True, filln
 
 
 if __name__ == "__main__":
-    df=pd.DataFrame(
-        {'a':[[1,2],2,3,np.nan,5,6,7,8,9,10,11,[1,11],[12,13],[1,2,3,22]]})
-    df_ref=pd.DataFrame(
-        {'ref':[1,1,2,3,4,5,6,7,8,9,10],
-        'val_1':[1,2,3,4,5,6,7,8,9,10,11],
-        'val_2':["a","b","c","d","e","f","g","h","i","j","k"],
-        }
-    )    
-    print(lookup_values (df,'a',df_ref,'ref',"val_1",flatten_list=True,fillna="NA"))
-
+    pass
