@@ -27,7 +27,7 @@ jobs:
         pip install poetry
 
     - run: poetry env use ${pythonLocation}/bin/python
-        working-directory: ./pyproject.toml
+        working-directory:"./pyproject.toml"
     
         
     - name: Install dependencies
