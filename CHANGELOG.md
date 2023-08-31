@@ -2,6 +2,11 @@
 
 ## V0.1.02
 
+### Features
+
+- Added lookup_values() , a sort of xlookup() for odd use cases e.g. Airtables  
+which includes linked tables as list with one (or more) elements
+
 ## V0.1.01
 
 - Changed requirements to the latest version of everything (pandas etc). 

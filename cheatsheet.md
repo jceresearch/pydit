@@ -44,3 +44,8 @@ channel_priority: strict
 channels:
   - conda-forge
   - defaults
+
+
+## To check the latest version in pypi
+
+pip index versions pydit-jceresearch
