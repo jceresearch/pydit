@@ -1,11 +1,25 @@
 import pandas as pd
 import numpy as np
 from datetime import datetime,date
+import logging
 
-def lookup_values(df,key,df_ref, key_ref,return_column, flatten_list=True, fillna=None):
+logger = logging.getLogger(__name__)
+
+# pylint: disable=bare-except
+
+def lookup_values(df,key,df_ref, key_ref,return_column, flatten_list=True, fillna=None, dropna=True):
     """
-    Lookup values from a reference dataframe and return a list of values.
+    Lookup values from a reference dataframe and return values from a column
     If the key is a list, it will return a list of values
+
+    Use case: the equivalent to a xlookup in MS Excel, but supporting multiple keys.
+    It is useful for Airtables where external references come as lists of one element
+    or even can have multiple values in the cell/field.
+    It is also more flexible than using pandas.merge as it deals with duplicates in the 
+    reference table and NaNs, without creating a cartesian product.
+    (it will return the first value found). It will warn about this case, but will not fail.
+
+    
 
 
     Parameters
@@ -23,10 +37,14 @@ def lookup_values(df,key,df_ref, key_ref,return_column, flatten_list=True, filln
     flatten_list : bool, optional
         If True, it will return a string with the values separated by a comma. 
         The default is True.
-    fillna : str, optional
+    fillna : str or int, optional
         If not None, it will replace the NaN values with the value provided. 
         The default is None.
-
+    dropna: bool, optional
+        If True, it will ignore the NaN values when looking up multiple keys.
+            Only if none of the keys are found, it will return NaN.
+        If False, it will bring every single NaN value to the result.
+        The default is True.
     Returns
     -------
     res_series : pandas.Series
@@ -55,21 +73,20 @@ def lookup_values(df,key,df_ref, key_ref,return_column, flatten_list=True, filln
 
     def aux_lookup(keys):
         res_list=[]
-        if isinstance(keys,(int,str,float,date)):
-            if pd.notna(keys):
-                try:
-                    res_list= [df_ref.loc[df_ref[key_ref] == keys, return_column].values[0]]
-                except:
-                    res_list=[np.nan]
-            else:
-                res_list=[np.nan]
-        elif isinstance(keys,(list,tuple)): 
+        if isinstance(keys,(int,str,float,date,datetime)):
+            keys=[keys]
+        if isinstance(keys,(list,tuple)): 
             for element in keys:
                 try:
-                    res_list.append(df_ref.loc[df_ref[key_ref] == element, return_column].values[0])
+                    res=df_ref.loc[df_ref[key_ref] == element, return_column].values
+                    if len(res)>1:
+                        logger.warning("Multiple results found in reference table for key %s, taking the first one",element)
+                    res_list.append(res[0])
+
                 except IndexError:
-                    pass
-            if res_list==[]:
+                    if not dropna:
+                        res_list.append(np.nan)
+            if not res_list:
                 res_list=[np.nan]
 
         else:
