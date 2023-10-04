@@ -5,20 +5,20 @@ pandas
 matplotlib
 poetry
 poetry-core
-myst-parser==2.0.0
+myst-parser
 poetry-plugin-export
-pydata-sphinx-theme==0.13.3
+pydata-sphinx-theme
 pytest
 pytest-cov
 pytest-cover
 pytest-coverage
-Sphinx==6.2.1
-sphinx-book-theme==1.0.1
-sphinxcontrib-applehelp==1.0.7
-sphinxcontrib-devhelp==1.0.5
-sphinxcontrib-htmlhelp==2.0.4
-sphinxcontrib-jsmath==1.0.1
-sphinxcontrib-qthelp==1.0.6
-sphinxcontrib-serializinghtml==1.1.8
+Sphinx
+sphinx-book-theme
+sphinxcontrib-applehelp
+sphinxcontrib-devhelp
+sphinxcontrib-htmlhelp
+sphinxcontrib-jsmath
+sphinxcontrib-qthelp
+sphinxcontrib-serializinghtml
 
 
