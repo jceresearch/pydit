@@ -1,16 +1,16 @@
-coverage==7.3.0
+coverage
 myst-parser==2.0.0
-numpy==1.25.2
-openpyxl==3.1.2
-pandas==2.0.3
+numpy
+openpyxl
+pandas
 poetry
 poetry-core
 poetry-plugin-export
 pydata-sphinx-theme==0.13.3
-pytest==7.4.0
-pytest-cov==4.1.0
-pytest-cover==3.0.0
-pytest-coverage==0.0
+pytest
+pytest-cov
+pytest-cover
+pytest-coverage
 Sphinx==6.2.1
 sphinx-book-theme==1.0.1
 sphinxcontrib-applehelp==1.0.7
@@ -19,5 +19,5 @@ sphinxcontrib-htmlhelp==2.0.4
 sphinxcontrib-jsmath==1.0.1
 sphinxcontrib-qthelp==1.0.6
 sphinxcontrib-serializinghtml==1.1.8
-matplotlib==3.7.2
+matplotlib
 
