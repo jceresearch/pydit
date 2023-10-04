@@ -1,10 +1,11 @@
 coverage
-myst-parser==2.0.0
 numpy
 openpyxl
 pandas
+matplotlib
 poetry
 poetry-core
+myst-parser==2.0.0
 poetry-plugin-export
 pydata-sphinx-theme==0.13.3
 pytest
@@ -19,5 +20,5 @@ sphinxcontrib-htmlhelp==2.0.4
 sphinxcontrib-jsmath==1.0.1
 sphinxcontrib-qthelp==1.0.6
 sphinxcontrib-serializinghtml==1.1.8
-matplotlib
+
 
