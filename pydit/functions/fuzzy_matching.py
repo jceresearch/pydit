@@ -9,39 +9,101 @@ import numpy as np
 logger = logging.getLogger(__name__)
 
 
-@lru_cache(maxsize=3000)
-# we enable the caching in this small piece, maxsize can be set to None=unlimited,
-# but we could add a limit , apparently having an actual limit makes it
-# marginally faster in some conditions.
 
+def clean_string(
+    t=None,
+    keep_dot=False,
+    keep_dash=False,
+    keep_apostrophe=False,
+    keep_ampersand=False,
+    space_to_underscore=True,
+    to_case="lower",
+):
+    """Sanitising a string
 
-def token_set_sort(s=None):
-    """Create a fuzzy key for a string using token set sort method
-    set sort method is described here: https://en.wikipedia.org/wiki/Jaccard_index
+    Cleans the strings applying the following transformations:
+    - Normalises unicode to remove accents and other symbols
+    - Keeps only [a-zA-Z0-9]
+    - Optional to retain dot
+    - Spaces to underscore
+    - Removes multiple spaces, strips
+    - Optional to lowercase
+
+    This is a naive/slow implementation, useful for sanitising things like
+    a filename or column headers or small datasets. If you need to cleanup
+    large datasets, you need to look into pandas/numpy tools, and vectorised
+    functions.
+
 
     Parameters
     ----------
-    s : str
-        The string to create the fuzzy key from
+    t : str
+        String to clean
+    keep_dot : bool, optional, default False
+        Whether to keep the dot in the string
+    keep_dash : bool, optional, default False
+        Whether to keep the dash in the string (useful for names)
+    keep_aphostrophe : bool, optional, default False
+        Whether to keep the apostrophe in the string (useful for names)
+    keep_ampersand : True, False, "expand", default False
+        Whether to keep the & or not, or expand to "and" 
+    space_to_underscore : bool, optional, default True
+        Whether to replace spaces with underscores
+    case : str, optional, default "lower", choices=["lower", "upper"]
+        Whether to lowercase the string
 
     Returns
     -------
     str
-        The fuzzy key
+        Cleaned string
 
     """
-    if s is np.nan:
+    if t != t or t is None:
         return ""
-    if s is None:
+
+    try:
+        t = str(t)
+    except Exception as e:
         return ""
-    s = str(s)
-    if s == "" or str.strip(s) == "":
-        return ""
-    s = s.translate(str.maketrans("", "", string.punctuation))
-    sl = list(set(str.split(s)))
-    sl.sort()
-    s = "".join(sl)
-    return s
+
+    # we are going to normalize using NFKD
+    # this will convert characters to their closest ASCII equivalent
+    # e.g. é will become e
+    # https://stackoverflow.com/questions/517923/what-is-the-best-way-to-remove-accents-normalize-in-a-python-unicode-string
+    r = (
+        unicodedata.normalize("NFKD", t)
+        .encode("ascii", errors="ignore")
+        .decode("utf-8")
+    )
+    if to_case == "lower":
+        r = str.lower(r)
+    elif to_case == "upper":
+        r = str.upper(r)
+    else:
+        pass
+
+    if not keep_dot:
+        r = re.sub(r"[\.]", " ", r)
+    if not keep_dash:
+        r = re.sub(r"[-]", " ", r)
+    if not keep_apostrophe:
+        r = re.sub(r"[']", " ", r)
+    if not keep_ampersand:
+        r = re.sub(r"[&]"," ",r)
+    elif keep_ampersand=="expand":
+        r = re.sub(r"[&]","and",r)
+    r = re.sub(r"[^a-zA-Z0-9\.\-\&']", " ", r)
+    r = r.strip()
+    if space_to_underscore:
+        r = re.sub(" +", "_", r)
+    else:
+        r = re.sub(" +", " ", r)
+    return r
+
+
+# we enable the caching in this small piece, maxsize can be set to None=unlimited,
+# but we could add a limit , apparently having an actual limit makes it
+# marginally faster in some conditions.
 
 
 def create_fuzzy_key(
@@ -77,32 +139,11 @@ def create_fuzzy_key(
 
     # First we are going to deal with the new lines and tabs and empty strings
     df[output_col] = (
-        df[input_col]
-        .str.lower()
-        .replace("'", "", regex=True)
-        .replace(r"\s", " ", regex=True)
-        .replace("", np.nan, regex=True)
+        df[input_col].fillna("")
     )
-    # Now we are going to deal with non standar chars
-    #
-    # This version directly removes accented chars and spanish enie
-    # df['fuzzy'] = df['fuzzy'].str.encode('ascii', 'ignore').str.decode('ascii')
-
-    # This will also remove accented chars
-    # from string import printable
-    # st = set(printable)
-    # df["fuzzy"] = df["fuzzy"].apply(lambda x: ''.join([" " if  i not in  st else i for i in x]))
-
-    # This will retain the characters but standardise for compatibility, there are various
-    # libraries that do that too. I would use other versions if performance is a concern
     df[output_col] = (
         df[output_col]
-        .str.normalize("NFKD")
-        .str.encode("ascii", errors="ignore")
-        .str.decode("utf-8")
-        .replace("[^a-z1-9 &]", " ", regex=True)
         .replace(" (ltd|plc|inc|llp|limited)", " ", regex=True)
-        .replace(" (&)", " and ", regex=True)
         .replace("(mr|mrs|miss) ", " ", regex=True)
         .replace(" +", " ", regex=True)
         .str.strip()
