@@ -1,5 +1,10 @@
 # Changelog
 
+## V0.1.03
+
+No changes, tweaking versions in pyproject.toml and requirements.txt due to dependabot warning
+
+
 ## V0.1.02
 
 ### Features
