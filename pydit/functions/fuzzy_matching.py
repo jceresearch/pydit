@@ -9,7 +9,6 @@ import numpy as np
 logger = logging.getLogger(__name__)
 
 
-
 def clean_string(
     t=None,
     keep_dot=False,
@@ -46,7 +45,7 @@ def clean_string(
     keep_aphostrophe : bool, optional, default False
         Whether to keep the apostrophe in the string (useful for names)
     keep_ampersand : True, False, "expand", default False
-        Whether to keep the & or not, or expand to "and" 
+        Whether to keep the & or not, or expand to "and"
     space_to_underscore : bool, optional, default True
         Whether to replace spaces with underscores
     case : str, optional, default "lower", choices=["lower", "upper"]
@@ -89,9 +88,9 @@ def clean_string(
     if not keep_apostrophe:
         r = re.sub(r"[']", " ", r)
     if not keep_ampersand:
-        r = re.sub(r"[&]"," ",r)
-    elif keep_ampersand=="expand":
-        r = re.sub(r"[&]","and",r)
+        r = re.sub(r"[&]", " ", r)
+    elif keep_ampersand == "expand":
+        r = re.sub(r"[&]", "and", r)
     r = re.sub(r"[^a-zA-Z0-9\.\-\&']", " ", r)
     r = r.strip()
     if space_to_underscore:
@@ -104,7 +103,6 @@ def clean_string(
 # we enable the caching in this small piece, maxsize can be set to None=unlimited,
 # but we could add a limit , apparently having an actual limit makes it
 # marginally faster in some conditions.
-
 
 
 def create_fuzzy_key(
@@ -133,29 +131,27 @@ def create_fuzzy_key(
             The fuzzy key
 
     """
-    
+
     def token_set_sort(s):
-        s=str(s)
-        s=s.translate(str.maketrans('', '', string.punctuation))
-        sl=list(set(str.split(s)))
+        s = str(s)
+        s = s.translate(str.maketrans("", "", string.punctuation))
+        sl = list(set(str.split(s)))
         sl.sort()
-        s= " ".join(sl)
+        s = " ".join(sl)
         return s
-    
+
     def token_sort(s):
-        s=str(s)
-        s=s.translate(str.maketrans('', '', string.punctuation))
-        sl= str.split(s)
+        s = str(s)
+        s = s.translate(str.maketrans("", "", string.punctuation))
+        sl = str.split(s)
         sl.sort()
-        s= " ".join(sl)
+        s = " ".join(sl)
         return s
         if not inplace:
             df = df.copy()
 
     # First we are going to deal with the new lines and tabs and empty strings
-    df[output_col] = (
-        df[input_col].fillna("")
-    )
+    df[output_col] = df[input_col].fillna("")
     df[output_col] = (
         df[output_col]
         .replace(" (ltd|plc|inc|llp|limited)", " ", regex=True)
@@ -168,7 +164,7 @@ def create_fuzzy_key(
 
     if token_sort == "token_sort":
         df[output_col] = to[output_col].apply(token_sort)
-        
+
     if not inplace:
         return df
     return None
