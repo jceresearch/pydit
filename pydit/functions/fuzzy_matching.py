@@ -106,8 +106,9 @@ def clean_string(
 # marginally faster in some conditions.
 
 
+
 def create_fuzzy_key(
-    df, input_col, output_col="fuzzy_key", disable_set_sort=False, inplace=False
+    df, input_col, output_col="fuzzy_key", inplace=False, token_sort=None
 ):
     """
     Create a fuzzy key for a dataframe
@@ -120,10 +121,9 @@ def create_fuzzy_key(
         The column to create the fuzzy key from
     output_col : str, optional
         The column to create the fuzzy key to, by default "fuzzy_key"
-    disable_set_sort : bool, optional
-        Whether to disable the set sort method, by default False. This is faster
-        and should be used if we are going to feed into a fuzzy matching algorithm
-        that already does it (like fuzzywuzzy or similar)
+    token_sort : str, optional
+        Whether to use a token sorting algorithm or not and rely on other libraries.
+        Can be "token_set_sort", "token_sort" or None
     inplace : bool, optional
         Whether to create the fuzzy key inplace or not, by default False
 
@@ -133,9 +133,24 @@ def create_fuzzy_key(
             The fuzzy key
 
     """
-
-    if not inplace:
-        df = df.copy()
+    
+    def token_set_sort(s):
+        s=str(s)
+        s=s.translate(str.maketrans('', '', string.punctuation))
+        sl=list(set(str.split(s)))
+        sl.sort()
+        s= " ".join(sl)
+        return s
+    
+    def token_sort(s):
+        s=str(s)
+        s=s.translate(str.maketrans('', '', string.punctuation))
+        sl= str.split(s)
+        sl.sort()
+        s= " ".join(sl)
+        return s
+        if not inplace:
+            df = df.copy()
 
     # First we are going to deal with the new lines and tabs and empty strings
     df[output_col] = (
@@ -148,8 +163,12 @@ def create_fuzzy_key(
         .replace(" +", " ", regex=True)
         .str.strip()
     )
-    if not disable_set_sort:
-        df[output_col] = df[output_col].apply(token_set_sort)
+    if token_sort == "token_set_sort":
+        df[output_col] = to[output_col].apply(token_set_sort)
+
+    if token_sort == "token_sort":
+        df[output_col] = to[output_col].apply(token_sort)
+        
     if not inplace:
         return df
     return None
