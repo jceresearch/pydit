@@ -67,7 +67,7 @@ def clean_string(
 
     try:
         t = str(t)
-    except Exception as e:
+    except Exception:
         return ""
 
     # we are going to normalize using NFKD
@@ -117,7 +117,11 @@ def create_fuzzy_key(
     df, input_col, output_col="fuzzy_key", inplace=False, token_sort=None
 ):
     """
-    Create a fuzzy key for a dataframe
+    Create a fuzzy key for a dataframe, note that this key preserves the spaces
+    after tokenisation, thing this may work better when computing the lev
+    distance. If you want a more compact string you need to tweak the
+    code to set the clean_string function to remove spaces.
+
 
     Parameters
     ----------
