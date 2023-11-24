@@ -154,7 +154,7 @@ def cleanup_column_names(obj, max_field_name_len=40, inplace=False, silent=False
         new = _strip_accents(new)
         new = re.sub("%", "pc", new)
         new = re.sub("£", "gbp", new)
-        new = re.sub("\$", "usd", new)
+        new = re.sub(r"\$", "usd", new)
         new = re.sub("€", "eur", new)
         new = re.sub(r"[^a-zA-Z0-9]", " ", new)
         new = re.sub(" +", " ", new)

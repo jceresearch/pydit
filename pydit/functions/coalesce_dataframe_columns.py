@@ -1,4 +1,8 @@
-"""Function for performing coalesce."""
+"""Function for coalescing columns in a pandas DataFrame.
+Coalesce means to merge multiple columns together, taking the first non null value
+
+
+"""
 
 import logging
 from typing import Optional, Union
@@ -19,7 +23,9 @@ def coalesce_columns(
 ) -> pd.DataFrame:
     """Coalesce columns.
 
-    Coalesce columns together.
+    Coalesce means to merge multiple columns together. 
+    The first non null value prevails by default, but we can also set it to 
+    take the last, or concatenate all values.
 
     Parameters
     ----------
