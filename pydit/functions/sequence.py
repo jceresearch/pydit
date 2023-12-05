@@ -133,3 +133,4 @@ def group_gaps(gap_list):
     except TypeError as exc:
         raise TypeError("Grouping only works for integers for now") from exc
     return df_grouped
+
