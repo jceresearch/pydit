@@ -1,9 +1,8 @@
 """ Test of the benford checker"""
 import os
 import sys
-import pytest
 import pathlib
-
+import pytest
 import numpy as np
 import pandas as pd
 

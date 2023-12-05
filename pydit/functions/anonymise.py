@@ -27,7 +27,7 @@ def anonymise_key(
     df_list : list of pandas.DataFrame
         List of dataframes to anonymise.
     key_list : list of str
-        List of keys to anonymise.
+        List of key columns to anonymise, must align to the previous list of dataframes.
     map_table_or_dict : dict or pandas.DataFrame, optional, default None
         Dictionary or dataframe to use for the translation table.
     hash_list : list of int, optional, default None
@@ -50,7 +50,7 @@ def anonymise_key(
             keys = df[key_list[i]]
             master_list.extend(keys)
         unique_keys = set(master_list)
-        print(list(unique_keys))
+        logger.debug("Unique keys count:%s", len(unique_keys))
         if map_dict is None:
             logger.debug("Creating new mapping dictionary")
             map_dict_new = {}

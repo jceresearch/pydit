@@ -22,30 +22,30 @@ from pydit import create_fuzzy_key
 def df_fixture():
     """Base DataFrame fixture"""
     data = [
-        ["  New\rLine", "linenew"],
+        ["  New\rLine", "line new"],
         ["Iñaqui  ", "inaqui"],
-        ["Tab\tEntry", "entrytab"],
+        ["Tab\tEntry", "entry tab"],
         ["Lucía", "lucia"],
         ["", ""],
         [np.nan, ""],
-        ["Mr. Ryan     O'Neill", "oneillryan"],
-        ["Miss Ana-María", "anamaria"],
-        ["John Smith 2nd", "2ndjohnsmith"],
-        ["Peter\uFF3FDrücker", "druckerpeter"],
-        ["Emma\u005FWatson", "emmawatson"],
-        ["Jeff Bezos", "bezosjeff"],
-        ["  jeff   . Bezos  ", "bezosjeff"],
+        ["Mr. Ryan     O'Neill", "oneill ryan"],
+        ["Miss Ana-María", "ana maria"],
+        ["John Smith 2nd", "2nd john smith"],
+        ["Peter\uFF3FDrücker", "drucker peter"],
+        ["Emma\u005FWatson", "emma watson"],
+        ["Jeff Bezos", "bezos jeff"],
+        ["  jeff   . Bezos  ", "bezos jeff"],
         ["Amazon Ltd.", "amazon"],
-        ["Bezos, Jeff", "bezosjeff"],
-        ["Charlie, 2 Delta, 1 Alpha, ", "12alphacharliedelta"],
-        ["Emma Emma Hermione", "emmahermione"],
-        ["Marks & Spencer", "andmarksspencer"],
+        ["Bezos, Jeff", "bezos jeff"],
+        ["Charlie, 2 Delta, 1 Alpha, ", "1 2 alpha charlie delta"],
+        ["Emma Emma Hermione", "emma hermione"],
+        ["Marks & Spencer", "and marks spencer"],
     ]
     return pd.DataFrame(data, columns=["input", "expected"])
 
 
 def test_fuzzy_matching(df):
     """Test that fuzzy matching works"""
-    test_df = create_fuzzy_key(df, "input", "fuzzy")
+    test_df = create_fuzzy_key(df, "input", "fuzzy", token_sort="token_set_sort")
     test_df["test_check"] = test_df["expected"] == test_df["fuzzy"]
     assert len(test_df[test_df["test_check"] == False]) == 0

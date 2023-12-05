@@ -1,5 +1,10 @@
 # Changelog
 
+## V0.1.04
+
+No new features, some refactoring and bug fixes of fuzzy matching and clean_string()
+
+
 ## V0.1.03
 
 No changes, tweaking versions in pyproject.toml and requirements.txt due to dependabot warning

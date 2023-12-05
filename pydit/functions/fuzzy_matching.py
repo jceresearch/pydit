@@ -1,13 +1,12 @@
 """ Module with utility functions for fuzzy matching"""
-
+import unicodedata
+import re
 import string
 import logging
-from functools import lru_cache
-import pandas as pd
-import numpy as np
+
+# pylint disable=unused-variable
 
 logger = logging.getLogger(__name__)
-
 
 
 def clean_string(
@@ -16,6 +15,7 @@ def clean_string(
     keep_dash=False,
     keep_apostrophe=False,
     keep_ampersand=False,
+    keep_spaces=True,
     space_to_underscore=True,
     to_case="lower",
 ):
@@ -46,7 +46,11 @@ def clean_string(
     keep_aphostrophe : bool, optional, default False
         Whether to keep the apostrophe in the string (useful for names)
     keep_ampersand : True, False, "expand", default False
-        Whether to keep the & or not, or expand to "and" 
+        Whether to keep the & or not, or expand to "and"
+    keep_spaces: bool, optional, default True
+        Whether to keep the spaces in the string
+        If true we still remove double spaces, and by default we replace
+        spaces to underscores.
     space_to_underscore : bool, optional, default True
         Whether to replace spaces with underscores
     case : str, optional, default "lower", choices=["lower", "upper"]
@@ -63,7 +67,7 @@ def clean_string(
 
     try:
         t = str(t)
-    except Exception as e:
+    except Exception:
         return ""
 
     # we are going to normalize using NFKD
@@ -89,15 +93,18 @@ def clean_string(
     if not keep_apostrophe:
         r = re.sub(r"[']", " ", r)
     if not keep_ampersand:
-        r = re.sub(r"[&]"," ",r)
-    elif keep_ampersand=="expand":
-        r = re.sub(r"[&]","and",r)
+        r = re.sub(r"[&]", " ", r)
+    elif keep_ampersand == "expand":
+        r = re.sub(r"[&]", "and", r)
     r = re.sub(r"[^a-zA-Z0-9\.\-\&']", " ", r)
     r = r.strip()
-    if space_to_underscore:
-        r = re.sub(" +", "_", r)
+    if keep_spaces:
+        if space_to_underscore:
+            r = re.sub(" +", "_", r)
+        else:
+            r = re.sub(" +", " ", r)
     else:
-        r = re.sub(" +", " ", r)
+        r = re.sub(" +", "", r)
     return r
 
 
@@ -106,12 +113,15 @@ def clean_string(
 # marginally faster in some conditions.
 
 
-
 def create_fuzzy_key(
     df, input_col, output_col="fuzzy_key", inplace=False, token_sort=None
 ):
     """
-    Create a fuzzy key for a dataframe
+    Create a fuzzy key for a dataframe, note that this key preserves the spaces
+    after tokenisation, thing this may work better when computing the lev
+    distance. If you want a more compact string you need to tweak the
+    code to set the clean_string function to remove spaces.
+
 
     Parameters
     ----------
@@ -133,42 +143,53 @@ def create_fuzzy_key(
             The fuzzy key
 
     """
-    
-    def token_set_sort(s):
-        s=str(s)
-        s=s.translate(str.maketrans('', '', string.punctuation))
-        sl=list(set(str.split(s)))
+    if token_sort not in [None, "token_set_sort", "token_sort"]:
+        raise ValueError(
+            f"token_sort must be None, token_set_sort or token_sort, got {token_sort}"
+        )
+
+    def _token_set_sort(s):
+        s = str(s)
+        s = s.translate(str.maketrans("", "", string.punctuation))
+        sl = list(set(str.split(s)))
         sl.sort()
-        s= " ".join(sl)
+        s = " ".join(sl)
         return s
-    
-    def token_sort(s):
-        s=str(s)
-        s=s.translate(str.maketrans('', '', string.punctuation))
-        sl= str.split(s)
+
+    def _token_sort(s):
+        s = str(s)
+        s = s.translate(str.maketrans("", "", string.punctuation))
+        sl = str.split(s)
         sl.sort()
-        s= " ".join(sl)
+        s = " ".join(sl)
         return s
-        if not inplace:
-            df = df.copy()
+
+    if not inplace:
+        df = df.copy()
 
     # First we are going to deal with the new lines and tabs and empty strings
     df[output_col] = (
-        df[input_col].fillna("")
-    )
-    df[output_col] = (
-        df[output_col]
+        df[input_col]
+        .fillna("")
+        .str.lower()
         .replace(" (ltd|plc|inc|llp|limited)", " ", regex=True)
-        .replace("(mr|mrs|miss) ", " ", regex=True)
+        .replace(r"(mr\.?|mrs\.?|miss\.?) ", " ", regex=True)
+        .replace("o'", "o", regex=True)
         .replace(" +", " ", regex=True)
         .str.strip()
+        .apply(
+            lambda v: clean_string(
+                v, keep_spaces=True, space_to_underscore=False, keep_ampersand="expand"
+            )
+        )
     )
+
     if token_sort == "token_set_sort":
-        df[output_col] = to[output_col].apply(token_set_sort)
+        df[output_col] = df[output_col].apply(_token_set_sort)
 
     if token_sort == "token_sort":
-        df[output_col] = to[output_col].apply(token_sort)
-        
+        df[output_col] = df[output_col].apply(_token_sort)
+
     if not inplace:
         return df
     return None

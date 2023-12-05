@@ -19,10 +19,15 @@ logger = setup_logging()
 
 def test_clean_string():
     """test the clean string function"""
-    assert clean_string(" John Smith 123  456 .  ") == "john_smith_123_456"
+    assert (
+        clean_string(" John Smith 123  456 .  ", space_to_underscore=True)
+        == "john_smith_123_456"
+    )
 
     assert (
-        clean_string(" John Smith 123  456 .  ", space_to_underscore=False)
+        clean_string(
+            " John Smith 123  456 .  ", keep_spaces=True, space_to_underscore=False
+        )
         == "john smith 123 456"
     )
 

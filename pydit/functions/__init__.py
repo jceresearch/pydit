@@ -39,7 +39,7 @@ from .date_time_calculations import business_calendar
 from .date_time_calculations import calculate_business_hours_fast
 from .date_time_calculations import calculate_business_hours
 from .map_common_values import map_values
-from .fuzzy_matching import create_fuzzy_key
+from .fuzzy_matching import create_fuzzy_key, clean_string
 from .merge import merge_outer_and_split
 from .merge import merge_smart
 from .lookup_values import lookup_values

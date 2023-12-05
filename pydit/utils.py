@@ -112,8 +112,6 @@ def dataframe_to_code(df):
     return f"""df = pd.DataFrame({data}, columns={cols})"""
 
 
-
-
 def create_test_dataframe(dataset_name: str, n_rows: int = 10, n_cols: int = 10):
     """Create test dataframes
 
