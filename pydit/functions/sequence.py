@@ -1,16 +1,19 @@
 """ Module to check for numerical sequence of DataFrame column or Series
 """
 
-import logging
-from datetime import timedelta
-import itertools
+# pylint disable=import-error, bare-except, unu
 
+
+import logging
+from datetime import  date
+import itertools
 
 import pandas as pd
 from pandas.api.types import is_datetime64_any_dtype as is_datetime
 from pandas import Series
 
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 
 def check_sequence(obj_in, col=None):
@@ -35,7 +38,6 @@ def check_sequence(obj_in, col=None):
     """
 
     # TODO: #32 check_sequence() refactor to do better input validation and error handling and simpler flow control
-
     if col:
         try:
             obj = obj_in[col]
@@ -47,10 +49,9 @@ def check_sequence(obj_in, col=None):
         elif isinstance(obj_in, list):
             obj = pd.Series(obj_in)
         else:
-            raise TypeError("Input needs to be a DataFrame, List or Series")
-
-    typ = obj.dtype
-    if "int" in str(typ):
+            raise TypeError(f"Object type not supported, needs to be a list or series: {type(obj_in)}")
+    if "int" in str(obj.dtype):
+        logger.debug("Data is of type integers")
         unique = set([i for i in obj[pd.notna(obj)]])
         fullrng = set(range(min(unique), max(unique) + 1))
         diff = fullrng.difference(unique)
@@ -61,9 +62,19 @@ def check_sequence(obj_in, col=None):
         else:
             logger.info("Sequence provided is complete")
             return []
-    elif is_datetime(obj):
+    if "object" in str(obj.dtype):
+        try:
+            max_value = obj[obj.notnull()].max()
+            if isinstance(max_value, date):
+                obj = pd.to_datetime(obj, errors="coerce")
+                logger.debug("Converted to datetime")
+            else:
+                pass
+        except Exception as e:
+           raise ValueError("Multiple data types detected, please cleanup the column first") from e
+    if is_datetime(obj):
         unique = set([i.date() for i in obj[pd.notna(obj)]])
-        fullrng = pd.date_range(min(unique), max(unique) + timedelta(days=1), freq="d")
+        fullrng = pd.date_range(min(unique), max(unique), freq="d")
         fullrng = set([i.date() for i in fullrng])
         diff = fullrng.difference(unique)
         if diff:
@@ -76,30 +87,41 @@ def check_sequence(obj_in, col=None):
         else:
             logger.info("Sequence of dates is complete")
             return []
-    elif typ == "object":
-        values = obj[pd.notna(obj)]
-        numeric_chars = values.str.replace(r"[^0-9^-^.]+", "", regex=True)
-        numeric_chars_no_blank = numeric_chars[numeric_chars.str.len() > 0]
+    if "float" in str(obj.dtype):
+        logger.debug("Data is of type floats")
+        unique = set([int(i) for i in obj[pd.notna(obj)]])
+        fullrng = set(range(min(unique), max(unique)))
+        diff = fullrng.difference(unique)
+        if diff:
+            logger.info("Missing values: %s", len(diff))
+            logger.info("First 10 missing values: %s", list(diff)[:10])
+            return list(diff)
+        else:
+            logger.info("Sequence provided is complete")
+            return []
+
+    if "object" in str(obj.dtype):
+        logger.debug("Strings object as if they were dates we already processed")
+        numeric_chars = obj.fillna("").str.replace(r"[^0-9]", "", regex=True)
+        numeric_chars_no_blank = numeric_chars[numeric_chars != ""]
         numeric = pd.to_numeric(
             numeric_chars_no_blank, errors="coerce", downcast="integer"
         )
-        if pd.api.types.is_float_dtype(numeric):
-            # we have floats so it wont likely be a sequence
-            logger.warning("Column contains floats, will skip")
-        else:
-            unique = set(numeric)
-            if unique:
-                fullrng = set(range(min(unique), max(unique)))
-                diff = fullrng.difference(unique)
-                if diff:
-                    logger.info("Missing values: %s", len(diff))
-                    logger.info("Fist 10:%s", list(diff)[:10])
-                    return list(diff)
-                else:
-                    logger.info("Sequence is complete")
-                    return []
+        print("numeric_chars", numeric_chars)
+        print("numeric", numeric)
+        unique = set(numeric)
+        if unique:
+            fullrng = set(range(min(unique), max(unique)))
+            diff = fullrng.difference(unique)
+            if diff:
+                logger.info("Missing values: %s", len(diff))
+                logger.info("Fist 10:%s", list(diff)[:10])
+                return list(diff)
             else:
-                raise ValueError("No numeric values found")
+                logger.info("Sequence is complete")
+                return []
+        else:
+            raise ValueError("No numeric values found")
     return
 
 

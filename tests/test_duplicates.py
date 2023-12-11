@@ -13,25 +13,12 @@ import pytest
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from pydit import check_duplicates, start_logging_info
 
-logger = start_logging_info()
-"col1": [1, 2, 3, 5, 6],
-        "col2": ["Id1", "ID2", "ID3", "ID-4", "ID 5"],
-        "col3": [1, 2, 3, 4, 5],
-        "col4:": [
-            datetime(2023, 1, 1),
-            datetime(2023, 1, 2),
-            datetime(2023, 1, 3),
-            datetime(2023, 1, 10),
-            datetime(2023, 1, 11),
-        ],
-        "col5": [
-            date(2023, 1, 1),
-            date(2023, 1, 2),
-            date(2023, 1, 3),
-            date(2023, 1, 10),
-            date(2023, 1, 11),
-        ],
-    """Base DataFrame fixture"""
+
+"""Base DataFrame fixture"""
+
+@pytest.fixture(name="df")
+def fixture_df():
+    """Fixture for duplicate testing"""
     data = {
         "col1": [1, 2, 3, 4, 5, 6, 7, 8],
         "col2": [
