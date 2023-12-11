@@ -75,7 +75,6 @@ def fixture_df_dates():
     return pd.DataFrame(data=d)
 
 
-
 def test_check_sequence_basics(df):
     """test sequence basics"""
     assert check_sequence(df, "col1") == [4]
@@ -110,6 +109,7 @@ def test_sequence_datetime(dfdt):
     """test sequence datetime"""
     assert check_sequence(dfdt, "col1") == [datetime(2023, 1, 5).date()]
     assert check_sequence(dfdt, "col2") == [datetime(2023, 1, 3).date()]
+
 
 def test_sequence_dates(dfd):
     """test sequence dates"""

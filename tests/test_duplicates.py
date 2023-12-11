@@ -16,6 +16,7 @@ from pydit import check_duplicates, start_logging_info
 
 """Base DataFrame fixture"""
 
+
 @pytest.fixture(name="df")
 def fixture_df():
     """Fixture for duplicate testing"""

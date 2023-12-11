@@ -1,5 +1,9 @@
 # Changelog
 
+## V0.1.05
+
+Fixing some bugs in check_sequence()
+
 ## V0.1.04
 
 No new features, some refactoring and bug fixes of fuzzy matching and clean_string()

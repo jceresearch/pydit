@@ -23,8 +23,8 @@ def coalesce_columns(
 ) -> pd.DataFrame:
     """Coalesce columns.
 
-    Coalesce means to merge multiple columns together. 
-    The first non null value prevails by default, but we can also set it to 
+    Coalesce means to merge multiple columns together.
+    The first non null value prevails by default, but we can also set it to
     take the last, or concatenate all values.
 
     Parameters

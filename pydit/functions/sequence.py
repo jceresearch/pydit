@@ -5,7 +5,7 @@
 
 
 import logging
-from datetime import  date
+from datetime import date
 import itertools
 
 import pandas as pd
@@ -49,7 +49,9 @@ def check_sequence(obj_in, col=None):
         elif isinstance(obj_in, list):
             obj = pd.Series(obj_in)
         else:
-            raise TypeError(f"Object type not supported, needs to be a list or series: {type(obj_in)}")
+            raise TypeError(
+                f"Object type not supported, needs to be a list or series: {type(obj_in)}"
+            )
     if "int" in str(obj.dtype):
         logger.debug("Data is of type integers")
         unique = set([i for i in obj[pd.notna(obj)]])
@@ -71,7 +73,9 @@ def check_sequence(obj_in, col=None):
             else:
                 pass
         except Exception as e:
-           raise ValueError("Multiple data types detected, please cleanup the column first") from e
+            raise ValueError(
+                "Multiple data types detected, please cleanup the column first"
+            ) from e
     if is_datetime(obj):
         unique = set([i.date() for i in obj[pd.notna(obj)]])
         fullrng = pd.date_range(min(unique), max(unique), freq="d")
@@ -155,4 +159,3 @@ def group_gaps(gap_list):
     except TypeError as exc:
         raise TypeError("Grouping only works for integers for now") from exc
     return df_grouped
-
