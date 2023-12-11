@@ -1,5 +1,13 @@
 # Changelog
 
+## V0.1.06
+
+TODO: Improve documentation and test coverage
+TODO: Review logging to make it more consistent
+TODO: Maybe remove some dead batteries
+
+
+
 ## V0.1.05
 
 Fixing some bugs in check_sequence()

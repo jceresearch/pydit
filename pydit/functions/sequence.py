@@ -13,7 +13,7 @@ from pandas.api.types import is_datetime64_any_dtype as is_datetime
 from pandas import Series
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+
 
 
 def check_sequence(obj_in, col=None):
