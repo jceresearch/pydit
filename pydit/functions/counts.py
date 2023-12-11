@@ -1,4 +1,14 @@
-"""Add a cumulative count of unique keys, does not mutates the dataframe
+"""Module that implements a few useful count related functions
+Takes inspiration on the usual counta and countif functions in Excel
+
+    * Add a column counting occurrence of values in a given column. Useful for sorting/grouping by frequency
+    * Add a cumulative count of unique keys in a given column
+    * Add a column counting the number of null values in a row
+    * Add a column counting the number of non-null values in a row
+    * Add a column checking if the values in a row are different
+    * Add a column counting related keys in another dataframe (e.g., countif)
+
+
 """
 
 import logging
