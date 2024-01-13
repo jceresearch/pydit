@@ -81,8 +81,8 @@ def fillna_smart(
     # Quick check of nans that will be filled
     na_counts = dict(df[cols].isnull().sum())
     logger.info("Quick check of nulls:")
-    for k,v in na_counts.items():
-        logger.info("%s has %s nulls", k ,v)
+    for k, v in na_counts.items():
+        logger.info("%s has %s nulls", k, v)
 
     dtypes = df.dtypes.to_dict()
     for col, typ in dtypes.items():
@@ -93,7 +93,8 @@ def fillna_smart(
         if ("int" in str(typ)) or ("float" in str(typ)):
             df[col].fillna(numeric_fillna, inplace=True)
             logger.info(
-                "Filling nulls in numeric column %s with %s",col, numeric_fillna)
+                "Filling nulls in numeric column %s with %s", col, numeric_fillna
+            )
         elif is_datetime(df[col]):
             if date_fillna == "latest":
                 val = max(df[col])
@@ -114,7 +115,9 @@ def fillna_smart(
                 val = pd.NaT
             logger.info(
                 "Filling nulls in datetime column %s with %s : %s ",
-                    col, date_fillna, val
+                col,
+                date_fillna,
+                val,
             )
             df[col].fillna(val, inplace=True)
         elif typ == "object":
@@ -131,8 +134,8 @@ def fillna_smart(
                     .replace("", np.nan)
                 )
             logger.info(
-                "Filling nulls in object/text type column %s with %s",
-                    col, text_fillna )
+                "Filling nulls in object/text type column %s with %s", col, text_fillna
+            )
             df[col].fillna(text_fillna, inplace=True)
         if inplace:
             return True
