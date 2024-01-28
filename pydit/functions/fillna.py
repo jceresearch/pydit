@@ -1,4 +1,4 @@
-"""Improving on fillna() with customaisable options for various types and opinionated defaults.
+"""Improving on fillna() with options for various data types and opinionated defaults.
 
 """
 
@@ -20,6 +20,7 @@ def fillna_smart(
     include_empty_string=False,
     include_spaces=False,
     inplace=False,
+    silent=False,
 ):
     """Cleanup the values of the dataframe with opinionated nulls handling.
 
@@ -46,6 +47,8 @@ def fillna_smart(
         Whether to consider spaces as nulls to fill.
     inplace: bool, optional, default False
         If True, the dataframe is modified in place.
+    silent: bool, optional, default False
+        If True, will not print any logs (other than critical)
 
     Returns
     -------
@@ -53,6 +56,10 @@ def fillna_smart(
         Returns a copy of the original dataframe with modifications
 
     """
+    if silent:
+        logger.setLevel(logging.CRITICAL)
+    else:
+        logger.setLevel(logging.INFO)
     if not isinstance(df, pd.DataFrame):
         raise TypeError("Expecting a dataframe")
     if not inplace:
@@ -65,7 +72,7 @@ def fillna_smart(
         else:
             cols = list(set(cols))
 
-    logger.info("Filling nulls in columns: {}".format(cols))
+    logger.info("Filling nulls in columns: %s", cols)
     if include_empty_string:
         logger.info("Will consider empty string as null")
     if include_spaces:
@@ -74,8 +81,8 @@ def fillna_smart(
     # Quick check of nans that will be filled
     na_counts = dict(df[cols].isnull().sum())
     logger.info("Quick check of nulls:")
-    for c in na_counts.keys():
-        logger.info("{} has {} nulls".format(c, na_counts[c]))
+    for k, v in na_counts.items():
+        logger.info("%s has %s nulls", k, v)
 
     dtypes = df.dtypes.to_dict()
     for col, typ in dtypes.items():
@@ -86,7 +93,7 @@ def fillna_smart(
         if ("int" in str(typ)) or ("float" in str(typ)):
             df[col].fillna(numeric_fillna, inplace=True)
             logger.info(
-                "Filling nulls in numeric column {} with {}".format(col, numeric_fillna)
+                "Filling nulls in numeric column %s with %s", col, numeric_fillna
             )
         elif is_datetime(df[col]):
             if date_fillna == "latest":
@@ -102,21 +109,21 @@ def fillna_smart(
                     val = datetime.strptime(date_fillna, "%Y-%m-%d")
                 except Exception as e:
                     raise ValueError(
-                        "Could not parse date_fillna parameter, expected Y-m-d and provided %s"
-                        % date_fillna
+                        f"Param date_fillna expects Y-m-d but got {date_fillna}"
                     ) from e
             else:
                 val = pd.NaT
             logger.info(
-                "Filling nulls in datetime column {} with {} : {} ".format(
-                    col, date_fillna, val
-                )
+                "Filling nulls in datetime column %s with %s : %s ",
+                col,
+                date_fillna,
+                val,
             )
             df[col].fillna(val, inplace=True)
         elif typ == "object":
             if not isinstance(text_fillna, str):
                 raise ValueError(
-                    "text_fillna needs to be a string, provided: %s" % text_fillna
+                    f"Param text_fillna expects string, got: {text_fillna}"
                 )
             if include_empty_string:
                 df[col] = df[col].replace("", np.nan)
@@ -127,11 +134,10 @@ def fillna_smart(
                     .replace("", np.nan)
                 )
             logger.info(
-                "Filling nulls in object/text type column {} with {}".format(
-                    col, text_fillna
-                )
+                "Filling nulls in object/text type column %s with %s", col, text_fillna
             )
             df[col].fillna(text_fillna, inplace=True)
         if inplace:
             return True
+    logger.setLevel(logging.INFO)
     return df

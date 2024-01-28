@@ -15,7 +15,6 @@ from pandas import Series
 logger = logging.getLogger(__name__)
 
 
-
 def check_sequence(obj_in, col=None):
     """Checks the numerical sequence of a series including dates
 

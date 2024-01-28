@@ -22,7 +22,8 @@ conda activate pydit
 * update version in pyproject.toml
 * run black . from the terminal to reformat everything
 * update version in ./setup.cfg
-* update version in ./CHANGELOG.md
+* run ./changelong.py to update the CHANGELOG_AUTO.md file 
+* update version in ./CHANGELOG.md based on the CHANGELOG_AUTO.md
 * update version in ./docs/source/conf.py
 * update version in ./pydit/__init__.py
 * update any change in requirements in the README.md
