@@ -1,5 +1,6 @@
 """ Calculate basic dataframe metrics on data completion/quality/uniqueness
 """
+
 import logging
 
 import numpy as np
@@ -75,8 +76,14 @@ def profile_dataframe(obj, return_dict=False, unique_min=10):
             values = df[col].fillna("").astype(str).str.strip()
             numeric_chars = values.str.replace(
                 r"[^0-9^-^.]+", "", regex=True
-            )  # TODO: refactor this regex for more general cases
+            )  # TODO: refactor this regex for more general cases, doesn't cover negative parentheses
             numeric_chars_no_blank = numeric_chars[numeric_chars.str.len() > 0]
+            numeric_chars_just_digits = numeric_chars.str.replace(r"[^0-9]+", "")
+            numeric_chars_zeroes = numeric_chars_just_digits[
+                numeric_chars_just_digits.str.contains("0+", regex=True)
+            ]
+
+            metrics["zeroes"] = len(numeric_chars_zeroes)
             numeric = pd.to_numeric(numeric_chars_no_blank, errors="coerce")
             if len(numeric) > 0:
                 metrics["max"] = max(numeric)

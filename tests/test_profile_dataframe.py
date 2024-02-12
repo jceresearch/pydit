@@ -27,7 +27,7 @@ def df1():
         "col1": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         "col2": [1, -2, -3, -4, -5, -6, -7, -8, -9, -10],
         "col3": ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"],
-        "col4": ["a",np.nan,np.nan,"","","",6,7,8,9]
+        "col4": ["a",np.nan,np.nan,"","","",0,"0.00","0.0",9]
     }
     df = pd.DataFrame(data)
     return df
@@ -116,6 +116,7 @@ def test_profile_dataframe(df1):
     assert res["col2"]["sum"] == -53
     assert res["col2"]["min"] == -10
     assert res["col4"]["nans"]==2
+    assert res["col4"]["zeroes"]==3
 
 if __name__ == "__main__":
     pass
