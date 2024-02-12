@@ -1,11 +1,12 @@
 
+# Cheat sheet vim motions
+
 Install vim plugin
 Change settings so that it starts in insert mode
 Option+. -  the equivalent to escape in IOS
 i -  to enter inster mode
 
-
-##vim motions cheasheet
+## vim motions cheasheet
 
     h - move left
     j - move down

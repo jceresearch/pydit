@@ -27,6 +27,7 @@ def df1():
         "col1": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         "col2": [1, -2, -3, -4, -5, -6, -7, -8, -9, -10],
         "col3": ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"],
+        "col4": ["a",np.nan,np.nan,"","","",6,7,8,9]
     }
     df = pd.DataFrame(data)
     return df
@@ -111,11 +112,10 @@ def test_profile_dataframe(df1):
     assert res["col1"]["dtype"] == np.dtype("int64")
     assert res["col1"]["std"] == pytest.approx(3.02765035)
     assert res["col1"]["sum_abs"] == 55
-    print(res["col2"])
     assert res["col2"]["sum_abs"] == 55
     assert res["col2"]["sum"] == -53
     assert res["col2"]["min"] == -10
-
+    assert res["col4"]["nans"]==2
 
 if __name__ == "__main__":
     pass

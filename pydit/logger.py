@@ -3,6 +3,10 @@ import logging
 import sys
 from logging.handlers import TimedRotatingFileHandler
 from typing import Optional, Dict
+##pylint: disable=unused-import
+##pylint: disable=missing-function-docstring
+##pylint: disable=missing-class-docstring
+
 
 # ANSI escape codes, picked from library Colorama to avoid dependency
 
@@ -28,6 +32,7 @@ def clear_line(mode=2):
 
 
 class AnsiCodes(object):
+    ''' object to contain ansi codes for the logger function to use'''
     def __init__(self):
         # the subclasses declare class attributes which are numbers.
         # Upon instantiation we define instance attributes, which are the same
