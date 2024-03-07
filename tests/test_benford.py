@@ -167,14 +167,19 @@ def test_check_benford():
     assert list(dfres["bf_act_count"]) == [14, 8, 6, 4, 4, 3, 3, 2, 2]
     assert list(dfres["bf_diff"]) == [0, 0, 0, 0, 0, 0, 0, 0, 0]
 
-    # Testing if we plug a list with some list as an element, does it
-    # fail gracefully or ignore (should ignore if we send a list as the
-    # to_numeric of the series will coerce errors and we fillna them to 0)
-    dfres = benford_to_dataframe(list(df["test"]) + [[1, 2, 3]], "", 1)
-    assert list(dfres["bf_act_count"]) == [14, 8, 6, 4, 4, 3, 3, 2, 2]
-    assert list(dfres["bf_diff"]) == [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    # Testing if we plug a list with some list as an element it would
+    # still work by flattening the list into string so it would be an
+    # extra 1
+    dfres = benford_to_dataframe(list(df["test"]) + [[1, 2, 3],1,2,3], "", 1)
+    assert list(dfres["bf_act_count"]) == [16, 9, 7, 4, 4, 3, 3, 2, 2]
+    print(list(dfres["bf_act_count"]))
+    print(list(dfres["bf_diff"]))
+    assert list(dfres["bf_diff"]) == [1, 0, 1, 1, 0, 0, 0, 1, 0]
 
-
+def test_check_benford_2():
+    d=["1","  2","003","0.4",-0.5,-6,7,800,"9000"," 1000","  002002"]
+    dfres=benford_to_dataframe(d, "", 1)
+    assert list(dfres["bf_act_count"]) == [2, 2, 1, 1, 1, 1, 1, 1, 1]
 def test_benford_chart():
     """testing the benford chart"""
     d = [

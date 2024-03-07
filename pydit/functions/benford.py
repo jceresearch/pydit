@@ -18,7 +18,6 @@ there is a tendency to see higher number of transactions with high first digits
 
 """
 
-from fileinput import filename
 import logging
 import math
 
@@ -37,10 +36,11 @@ def _benford(rawdata, digit=1):
     # we cleanup any string, any negative and also accept decimals up to 4 zeros, you could
     # remove it and let the astype(int) drop those if this computation gets too slow and you dont
     # care about small magnitudes.
-    data_clean = (
-        pd.to_numeric(s, errors="coerce").fillna(0).multiply(10000).astype(int).abs()
-    )
-    data = data_clean[data_clean != 0].astype(str).str[0:digit].astype(int)
+ 
+    data_clean= s.apply(lambda x: str(x)).str.replace(r'[^0-9]', '', regex=True).replace(r'^0+', '', regex=True)+"0"
+
+   
+    data = data_clean[data_clean != "0"].astype(str).str[0:digit].astype("int")
     invalid_count = len(rawdata) - len(data)
     if invalid_count > 0:
         logger.warning(
@@ -221,15 +221,11 @@ def benford_list_anomalies(
     dfres["flag_bf_anomaly"] = dfres.apply(
         lambda r: True if r["bf_digit"] in anomalies else False, axis=1
     )
-    df["bf_digit"] = (
-        pd.to_numeric(df[column_name], errors="coerce")
-        .fillna(0)
-        .multiply(10000)
-        .abs()
-        .astype(str)
-        .str[0:first_n_digits]
-        .astype(int)
-    )
+   
+
+    df["bf_digit"]= df[column_name].apply(lambda x: str(x)).str.replace(r'[^0-9]', '', regex=True).replace(r'^0+', '', regex=True)+"0"
+    df["bf_digit"]= df["bf_digit"].str[0:first_n_digits].astype(int)
+
 
     dfmerged = pd.merge(
         df,
