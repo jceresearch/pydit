@@ -25,6 +25,8 @@ from .coalesce_dataframe_columns import coalesce_columns
 from .benford import benford_to_dataframe
 from .benford import benford_to_plot
 from .benford import benford_list_anomalies
+from .benford import benford_probability
+from .benford import benford_mad
 from .collapse_dataframe_levels import collapse_levels
 from .groupby_text_concatenate import groupby_text
 from .keyword_search_batch import keyword_search

@@ -28,18 +28,64 @@ import matplotlib.pyplot as plt
 logger = logging.getLogger(__name__)
 
 
+def benford_probability(first_n_digits=1):
+    """Returns the Benford's Law probability for the first n digits provided
+
+    Parameters
+    ----------
+    first_n_digits : int, optional, default: 1
+        The number actual first n digits to be considered.
+
+
+    Returns
+    -------
+    float
+        The Benford's Law probability for that number to appear as first digits
+
+    Examples
+    --------
+    >>> benford_probability(1)
+    0.3010299956639812
+
+
+    """
+    try:
+        first_n_digits = abs(int(first_n_digits))
+    except Exception as exc:
+        raise ValueError("Argument must be convertible to an integerr") from exc
+    if first_n_digits == 0:
+        raise ValueError("Argument must be greater than 0")
+    return math.log10(1.0 + 1.0 / first_n_digits)
+
+
 def _benford(rawdata, digit=1):
     """
     Internal function to calculate the core Benford freq expectations vs actual count of values.
+
+    Parameters
+    ----------
+    rawdata : list
+        The data to be analyzed.
+    digit : int, optional, default: 1
+
+    Returns
+    -------
+    tuple
+        A tuple with the counts, expected counts and Benford's Law frequencies.
+
     """
     s = pd.Series(rawdata)
     # we cleanup any string, any negative and also accept decimals up to 4 zeros, you could
     # remove it and let the astype(int) drop those if this computation gets too slow and you dont
     # care about small magnitudes.
- 
-    data_clean= s.apply(lambda x: str(x)).str.replace(r'[^0-9]', '', regex=True).replace(r'^0+', '', regex=True)+"0"
 
-   
+    data_clean = (
+        s.apply(str)
+        .str.replace(r"[^0-9]", "", regex=True)
+        .replace(r"^0+", "", regex=True)
+        + "0"
+    )
+
     data = data_clean[data_clean != "0"].astype(str).str[0:digit].astype("int")
     invalid_count = len(rawdata) - len(data)
     if invalid_count > 0:
@@ -52,7 +98,9 @@ def _benford(rawdata, digit=1):
     rng = range(
         10 ** (digit - 1), 10**digit
     )  # fancy way to calculate ranges for whatever first x digits
-    BFD = [math.log10(1.0 + 1.0 / n) for n in rng]  # this is the actual benford law
+    BFD = [
+        math.log10(1.0 + 1.0 / n) for n in rng
+    ]  # this is the actual benford law probability
     data_count = {}
     bincounts = np.bincount(data)
     data_count = {}
@@ -120,9 +168,36 @@ def benford_to_dataframe(obj, column_name="", first_n_digits=1):
         columns=["bf_digit", "bf_exp_count", "bf_act_count", "bf_exp_freq"],
     )
     dfres["bf_act_freq"] = dfres["bf_act_count"] / ct
-    dfres["bf_diff"] = abs(dfres["bf_exp_count"] - dfres["bf_act_count"])
-    dfres["bf_diffperc"] = abs(dfres["bf_diff"] / dfres["bf_exp_count"])
+    dfres["bf_abs_diff"] = abs(dfres["bf_exp_count"] - dfres["bf_act_count"])
+    dfres["bf_diff"] = dfres["bf_exp_count"] - dfres["bf_act_count"]
+    dfres["bf_diff_sqr"] = dfres["bf_diff"].pow(2)
+    dfres["bf_diff_perc"] = dfres["bf_diff"] / dfres["bf_exp_count"]
+    dfres["bf_abs_diff_perc"] = abs(dfres["bf_diff_perc"])
     return dfres
+
+
+def benford_mad(obj, column_name="", first_n_digits=1):
+    """Returns the Mean Absolute Deviation (MAD) of the Benford's Law frequencies.
+
+    Parameters
+    ----------
+    obj : DataFrame or Series or list
+        The data to be analyzed.
+    column_name : str, optional, default: ""
+        The column name to be analyzed. Not needed for series or lists
+    first_n_digits : int, optional, default: 1
+        The number of first digits to be considered.
+
+    Returns
+    -------
+    float
+        The Mean Absolute Deviation (MAD) of the Benford's Law frequencies.
+        The result is a percentage of the expected frequency.
+
+    """
+
+    dfres = benford_to_dataframe(obj, column_name, first_n_digits)
+    return dfres["bf_abs_diff_perc"].mean()
 
 
 def benford_to_plot(df, column_name, first_n_digits=1, filename=None, show=True):
@@ -216,16 +291,22 @@ def benford_list_anomalies(
     """
     dfres = benford_to_dataframe(df, column_name, first_n_digits)
     anomalies = list(
-        dfres.sort_values("bf_diffperc", ascending=False).head(top_n_digits)["bf_digit"]
+        dfres.sort_values("bf_abs_diff_perc", ascending=False).head(top_n_digits)[
+            "bf_digit"
+        ]
     )
     dfres["flag_bf_anomaly"] = dfres.apply(
         lambda r: True if r["bf_digit"] in anomalies else False, axis=1
     )
-   
 
-    df["bf_digit"]= df[column_name].apply(lambda x: str(x)).str.replace(r'[^0-9]', '', regex=True).replace(r'^0+', '', regex=True)+"0"
-    df["bf_digit"]= df["bf_digit"].str[0:first_n_digits].astype(int)
-
+    df["bf_digit"] = (
+        df[column_name]
+        .apply(str)
+        .str.replace(r"[^0-9]", "", regex=True)
+        .replace(r"^0+", "", regex=True)
+        + "0"
+    )
+    df["bf_digit"] = df["bf_digit"].str[0:first_n_digits].astype(int)
 
     dfmerged = pd.merge(
         df,
@@ -236,6 +317,6 @@ def benford_list_anomalies(
     ).fillna(False)
 
     if return_anomalies_only:
-        return dfmerged[dfmerged["flag_bf_anomaly"] == True]
+        return dfmerged[dfmerged["flag_bf_anomaly"] == True]  # noqa: E712
 
     return dfmerged
