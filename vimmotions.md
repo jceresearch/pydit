@@ -4,7 +4,7 @@
 Install vim plugin
 Change settings so that it starts in insert mode
 Option+. -  the equivalent to escape in IOS
-i -  to enter inster mode
+i -  to enter insert mode
 
 ## vim motions cheasheet
 
