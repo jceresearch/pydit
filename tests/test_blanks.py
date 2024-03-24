@@ -1,4 +1,5 @@
 """ Test check_blanks.py"""
+
 import os
 import sys
 

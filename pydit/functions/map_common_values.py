@@ -1,6 +1,5 @@
 """Module to map/add various values like 1, 2, 3 to "High", "Medium", "Low"."""
 
-
 import logging
 
 import pandas as pd

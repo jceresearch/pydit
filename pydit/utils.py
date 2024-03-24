@@ -7,6 +7,7 @@ This is to ensure that a core function's module is self-standing, ie can be
 used/imported with no other dependencies.
 
 """
+
 import random
 import string
 import logging
@@ -60,9 +61,11 @@ def deduplicate_list(
     try:
         if force_lower_case:
             list_clean = [
-                str.lower(str.strip(str(x)))
-                if isinstance(x, str) or isinstance(x, int)
-                else ""
+                (
+                    str.lower(str.strip(str(x)))
+                    if isinstance(x, str) or isinstance(x, int)
+                    else ""
+                )
                 for x in list_to_deduplicate
             ]
         else:

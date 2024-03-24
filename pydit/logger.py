@@ -1,4 +1,5 @@
 """ Module to provide support for logging with typical parameters """
+
 import logging
 import sys
 from logging.handlers import TimedRotatingFileHandler

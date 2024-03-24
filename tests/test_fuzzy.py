@@ -1,4 +1,5 @@
 """ Test module for fuzzy.py """
+
 import os
 import sys
 

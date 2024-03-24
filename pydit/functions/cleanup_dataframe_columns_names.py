@@ -68,9 +68,11 @@ def _deduplicate_list(
     try:
         if force_lower_case:
             list_clean = [
-                str.lower(str.strip(str(x)))
-                if isinstance(x, str) or isinstance(x, int)
-                else ""
+                (
+                    str.lower(str.strip(str(x)))
+                    if isinstance(x, str) or isinstance(x, int)
+                    else ""
+                )
                 for x in list_to_deduplicate
             ]
         else:

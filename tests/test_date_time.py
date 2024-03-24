@@ -1,4 +1,5 @@
 """ Testing check_duplicates using pytest """
+
 import os
 import sys
 from datetime import datetime

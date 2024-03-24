@@ -1,4 +1,5 @@
 """ test fillna smart"""
+
 import os
 import sys
 

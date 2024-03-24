@@ -1,4 +1,5 @@
 """ pytest module for count_cumulative_unique function"""
+
 import os
 import sys
 import pandas as pd

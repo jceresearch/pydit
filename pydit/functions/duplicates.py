@@ -6,7 +6,6 @@ as we tend to have to do a lot of duplicate checks in intermediate files.
 
 """
 
-
 import logging
 
 import pandas as pd

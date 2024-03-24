@@ -1,4 +1,5 @@
 """Implementation of the `collapse_levels` function."""
+
 import logging
 import pandas as pd
 

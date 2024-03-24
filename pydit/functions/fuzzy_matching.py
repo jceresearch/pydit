@@ -1,4 +1,5 @@
 """ Module with utility functions for fuzzy matching"""
+
 import unicodedata
 import re
 import string

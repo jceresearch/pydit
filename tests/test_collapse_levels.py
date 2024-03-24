@@ -1,4 +1,5 @@
 """ test the collapse_levels function brought from pyjanitor"""
+
 import os
 import sys
 import pandas as pd
