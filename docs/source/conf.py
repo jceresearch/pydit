@@ -27,7 +27,7 @@ project = "pydit"
 author = "jceresearch"
 
 # The full version, including alpha/beta/rc tags
-release = "0.1.06"
+release = "0.1.07"
 
 
 # -- General configuration ---------------------------------------------------

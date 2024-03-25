@@ -1,12 +1,11 @@
 # Changelog
 
+## V0.1.07
+
+
 ## V0.1.06
 
-TODO: Improve documentation and test coverage
-TODO: Review logging to make it more consistent
-TODO: Maybe remove some dead batteries
-
-
+Small improvements in the Benford law tests
 
 ## V0.1.05
 
@@ -16,11 +15,9 @@ Fixing some bugs in check_sequence()
 
 No new features, some refactoring and bug fixes of fuzzy matching and clean_string()
 
-
 ## V0.1.03
 
 No changes, tweaking versions in pyproject.toml and requirements.txt due to dependabot warning
-
 
 ## V0.1.02
 
@@ -37,10 +34,10 @@ locally, so I will try to run in latest version and fix whatever GH doesn't like
 As soon as I sort out why I will pin a particular version.
 
 ## V0.0.18
+
 ### Fixes
 
 - Fixed check_blanks() and coalesce_values(), some small refactoring and enhancing there too
-
 
 ## V0.0.17
 
