@@ -44,6 +44,8 @@ from .fuzzy_matching import create_fuzzy_key, clean_string
 from .merge import merge_outer_and_split
 from .merge import merge_smart
 from .lookup_values import lookup_values
+from .split_transactions import check_for_split_transactions
+
 
 # Here we import each of the functions in the functions/ directory to have them
 # available in the functions namespace.
