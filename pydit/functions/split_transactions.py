@@ -136,9 +136,9 @@ if __name__ == "__main__":
         "supplier": ["A", "B", "B", "C", "C", "C", "D", "D", "D", "E"],
     }
     thresholds = [5000, 10000, 25000, 50000]
-    df = pd.DataFrame(data)
-    dfe = check_for_split_transactions(
-        df,
+    dfinput = pd.DataFrame(data)
+    dfoutput = check_for_split_transactions(
+        dfinput,
         limits=thresholds,
         days_horizon=30,
         tolerance_perc=0.01,
@@ -147,4 +147,4 @@ if __name__ == "__main__":
         categ_col="supplier",
         date_col="date",
     )
-    print(dfe)
+    print(dfoutput)

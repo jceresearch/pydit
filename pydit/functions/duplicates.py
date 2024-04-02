@@ -131,7 +131,7 @@ def check_duplicates(
             if not silent:
                 logger.info("Dataframe includes %s records with all nan:", all_nans_count)
         if not_all_nans_count > 0:
-            if not silent
+            if not silent:
                 logger.info("and %s records with some nan:", not_all_nans_count)
 
     # Boolean series with the results of all duplicated() method
