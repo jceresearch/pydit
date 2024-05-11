@@ -19,16 +19,16 @@ def check_blanks(
     inplace=False,
 ):
     """
-    Returns by default a summary dictionary with column names as key and 
+    Returns by default a summary dictionary with column names as key and
     count of blanks as value, for the columns selected (or all if no column
     list provided)
-    
+
     If "total_only" is False it would return detailed information of the blanks
      original/copied dataframe with
     a) one boolean column per input columns, True when there are blanks in that record
     b) a summary boolean column if any of the previous is true
-    
-    
+
+
     Check out https://github.com/ResidentMario/missingno library for
     a nice visualization (seems to come with Anaconda)
 
@@ -113,7 +113,9 @@ def check_blanks(
         new_cols = [c + "_blanks" for c in cols]
         df["has_blanks"] = np.any(df[new_cols], axis=1)
 
-    logger.info("Total blanks found in each column:\n%s", total_results)
+    logger.info(
+        "Blanks per column:%s", ",".join([f"{k}:{v}" for k, v in total_results.items()])
+    )
     if totals_only:
         return total_results
 
