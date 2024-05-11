@@ -71,7 +71,7 @@ def _benford(rawdata, digit=1):
     Returns
     -------
     tuple
-        A tuple with the counts, expected counts and Benford's Law frequencies.
+        A tuple with the counts, expected counts and Benford's Law expected frequencies.
 
     """
     s = pd.Series(rawdata)
@@ -154,22 +154,22 @@ def benford_to_dataframe(obj, column_name="", first_n_digits=1):
     else:
         raise TypeError("obj must be a DataFrame or Series or list or tuple")
 
-    c, e, p = _benford(data, first_n_digits)
-    ct = sum(c)
+    act_count, exp_count, exp_freq = _benford(data, first_n_digits)
+    total_count = sum(act_count)
     dfres = pd.DataFrame(
         tuple(
             zip(
                 range(10 ** (first_n_digits - 1), 10**first_n_digits),
-                np.around(e),
-                c,
-                p,
+                np.around(exp_count),
+                act_count,
+                exp_freq,
             )
         ),
         columns=["bf_digit", "bf_exp_count", "bf_act_count", "bf_exp_freq"],
     )
-    dfres["bf_act_freq"] = dfres["bf_act_count"] / ct
-    dfres["bf_abs_diff"] = abs(dfres["bf_exp_count"] - dfres["bf_act_count"])
-    dfres["bf_diff"] = dfres["bf_exp_count"] - dfres["bf_act_count"]
+    dfres["bf_act_freq"] = dfres["bf_act_count"] / total_count
+    dfres["bf_abs_diff"] = abs(dfres["bf_act_count"] - dfres["bf_exp_count"])
+    dfres["bf_diff"] =  dfres["bf_act_count"] - dfres["bf_exp_count"]
     dfres["bf_diff_sqr"] = dfres["bf_diff"].pow(2)
     dfres["bf_diff_perc"] = dfres["bf_diff"] / dfres["bf_exp_count"]
     dfres["bf_abs_diff_perc"] = abs(dfres["bf_diff_perc"])
@@ -255,7 +255,7 @@ def benford_list_anomalies(
 
     Also adds an extra "flag_bf_anomaly" boolean column that is True for those
     records where the first n digits match those identified as top N anomalies
-    which, in turn, are those that have largest (absolute) percent variation
+    which, in turn, are those that have largest percent variation
     between actual and expected.
 
     Note that blanks and zeroes are not deemed anomalies, they are simply ignored
@@ -274,7 +274,7 @@ def benford_list_anomalies(
         column_name : str
             The column name to be analyzed.
         top_n_digits : int, optional, default: 3
-            Threshold for when we consider an anomaly, based on rank of abs difference.
+            Threshold for when we consider an anomaly, based on rank of difference.
         first_n_digits : int, optional, default: 1
             The number of first digits to be considered Typically first 1 and 2 digits are enough.
         only_anomalies : boolean, optional, default: False
@@ -291,7 +291,7 @@ def benford_list_anomalies(
     """
     dfres = benford_to_dataframe(df, column_name, first_n_digits)
     anomalies = list(
-        dfres.sort_values("bf_abs_diff_perc", ascending=False).head(top_n_digits)[
+        dfres.sort_values("bf_diff_perc", ascending=False).head(top_n_digits)[
             "bf_digit"
         ]
     )
