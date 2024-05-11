@@ -15,14 +15,20 @@ def check_blanks(
     columns=None,
     include_zeroes=False,
     include_nullstrings_and_spaces=False,
-    totals_only=False,
+    totals_only=True,
     inplace=False,
 ):
     """
-    Reports on blanks in the Dataframe, one boolean column per input columns,
-    plus a summary boolean column showing (True for each record if any column has blanks.
-
-    It can optionally return a summary dataframe.
+    Returns by default a summary dictionary with column names as key and 
+    count of blanks as value, for the columns selected (or all if no column
+    list provided)
+    
+    If "total_only" is False it would return detailed information of the blanks
+     original/copied dataframe with
+    a) one boolean column per input columns, True when there are blanks in that record
+    b) a summary boolean column if any of the previous is true
+    
+    
     Check out https://github.com/ResidentMario/missingno library for
     a nice visualization (seems to come with Anaconda)
 
