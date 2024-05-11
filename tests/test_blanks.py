@@ -62,7 +62,7 @@ def test_check_blanks():
     assert totals["col5"] == 4
     assert totals["col6"] == 4
 
-    dfx = check_blanks(df)
+    dfx = check_blanks(df, totals_only=False)
     d = dfx.to_dict()
     print(dfx)
     assert d["has_blanks"][0] is True
@@ -72,9 +72,7 @@ def test_check_blanks():
     assert d["has_blanks"][4] is False
 
     dfx = check_blanks(
-        df,
-        include_zeroes=True,
-        include_nullstrings_and_spaces=True,
+        df, include_zeroes=True, include_nullstrings_and_spaces=True, totals_only=False
     )
     d = dfx.to_dict()
     print(d)
@@ -88,16 +86,4 @@ def test_check_blanks():
 if __name__ == "__main__":
     # execute only if run as a script
     # test_check_blanks()
-
-    d = {
-        "col1": [1, 2, 3, 4, 5],
-        "col2": ["Value 1", np.nan, "", " ", "Value 5"],
-        "col3": [np.nan, 2.0, 0.0, 4.0, 5.1],
-        "col4": [np.nan, 2, 0, 4, 5],
-        "col5": [np.nan, "    ", "  \t", "   \n", "Value 5"],
-    }
-
-    df = pd.DataFrame(data=d)
-    from pandas.api.types import is_string_dtype
-
-    print(is_string_dtype(df["col2"]))
+    pass
