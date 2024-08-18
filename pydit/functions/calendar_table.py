@@ -2,6 +2,60 @@
 """
 
 import pandas as pd
+from datetime import datetime, date, timedelta
+
+
+def fom_eom(d, return_datetime=True):
+    """Function to return the first and last day of a month
+
+    Parameters
+    ----------
+    d : datetime.date or datetime.datetime or str
+        The date to use as reference.
+
+    return_datetime : bool, optional, default: True
+        If True, returns datetime.datetime objects, else datetime.date objects
+
+    Returns
+    -------
+    tuple
+        A tuple with the first and last day of the month
+
+        Note that when returning datetimes, the last day will have the time set to 23:59:59
+        if you need something else as the last time, you can adjust it after calling this function.
+        e.g. fom_eom(date(2024, 8, 10))[1].replace(hour=0, minute=0, second=1) to be the very
+        first second of the day
+        of if we want it to be the first second of the following month:
+        fom_eom(date(2024, 8, 10))[1] + timedelta(seconds=1)
+
+    """
+
+    if isinstance(d, str):
+        try:
+            d = datetime.strptime(d, "%Y-%m-%d")
+        except ValueError:
+            try:
+                d = datetime.strptime(d, "%Y-%m-%d %H:%M:%S")
+            except ValueError as e:
+                raise ValueError(
+                    "Invalid date format, expecting YYYY-MM-DD or YYYY-MM-DD HH:MM:SS"
+                ) from e
+
+    if isinstance(d, date):
+        d = datetime(d.year, d.month, d.day)
+
+    start = d.replace(day=1)
+    next_month = d.replace(day=28) + timedelta(days=4)
+    end = (
+        next_month
+        - timedelta(days=next_month.day)
+        + timedelta(hours=23, minutes=59, seconds=59)
+    )
+
+    if return_datetime is False:
+        start = date(start.year, start.month, start.day)
+        end = date(end.year, end.month, end.day)
+    return (start, end)
 
 
 def create_calendar(start="1975-01-01", end="2050-12-31"):
@@ -27,7 +81,8 @@ def create_calendar(start="1975-01-01", end="2050-12-31"):
             - week, int
             - quarter, int
             - day_of_year, int
-            - weekday (0=Monday, 6=Sunday)
+            - weekday_index (0=Monday, 6=Sunday)
+            - weekday (1=Monday, 7=Sunday)
             - weekday_name, str
             - weekday_name_short, str
             - weekend (True/False), bool
@@ -35,6 +90,11 @@ def create_calendar(start="1975-01-01", end="2050-12-31"):
             - yyyymm (month number), int
             - yyyyww (week number), int
             - yyyyq (quarter), int
+            - bom (beginning of month), datetime
+            - eom (end of month), datetime
+            - date_date (date as datetime.date)
+            - is_bof (True/False), bool
+            - is_eom (True/False), bool
 
     """
     df = pd.DataFrame({"date": pd.date_range(start, end)})
@@ -45,8 +105,8 @@ def create_calendar(start="1975-01-01", end="2050-12-31"):
     df["quarter"] = df.date.dt.quarter
     df["year"] = df.date.dt.year
     df["weekend"] = df.date.dt.weekday >= 5
-    df["weekday"] = df.date.dt.weekday
-
+    df["weekday_index"] = df.date.dt.weekday #0=Monday, 6=Sunday
+    df["weekday"] = df.date.dt.weekday+1 #1=Monday, 7=Sunday
     df["weekday_name"] = df.date.dt.day_name()
     df["weekday_name_short"] = df.date.dt.day_name().str[0:3]
     df["day_of_year"] = df.date.dt.dayofyear
@@ -82,5 +142,17 @@ def create_calendar(start="1975-01-01", end="2050-12-31"):
             return (d.year * 100) + d.week
 
     df["yyyyww"] = df.apply(lambda r: _calculate_week_number(r["date"]), axis=1)
+    df["bom"] = df["date"].apply(lambda x: fom_eom(x)[0])
+    df["eom"] = df["date"].apply(lambda x: fom_eom(x)[1])
+    df["date_date"] = df["date"].dt.date
+    df["is_bof"]=df["date_date"]==df["bom"].dt.date
+    df["is_eom"]=df["date_date"]==df["eom"].dt.date
+
 
     return df
+
+if __name__ == "__main__":
+    cal=create_calendar("2024-08-01", "2024-09-02")
+    print(cal.dtypes)
+    #print first record fully
+    print(cal.iloc[0])

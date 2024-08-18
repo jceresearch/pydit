@@ -8,7 +8,7 @@ There are currently no exceptions to this design principle.
 
 """
 
-from .calendar_table import create_calendar
+from .calendar_table import create_calendar, fom_eom
 from .percentile import add_percentile
 from .profile_dataframe_statistics import profile_dataframe
 from .duplicates import check_duplicates

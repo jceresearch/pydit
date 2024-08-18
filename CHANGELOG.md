@@ -2,6 +2,12 @@
 
 ## V0.1.07
 
+### Features
+  Added a new function to generate first and last day of the month given a date or datetime or string
+  Added this to the calendar creation function too.
+
+### Fixes
+  Removed inplace=True across the library to align to pandas direction, so now everything returns a new object and we don't mutate anything
 
 ## V0.1.06
 

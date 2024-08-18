@@ -218,4 +218,4 @@ def check_duplicates(
         if also_return_non_duplicates:
             return df
         #return an empty dataframe
-        return pd.DataFrame()
+        return None

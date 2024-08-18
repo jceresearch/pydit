@@ -21,7 +21,7 @@ def test_deduplicate_list():
     assert deduplicate_list(["A", "B", "B"]) == ["a", "b", "b_2"]
     assert deduplicate_list([]) == []
     assert deduplicate_list([1, 2, 2]) == ["1", "2", "2_2"]
-    assert deduplicate_list(["a", np.NaN, "b", "a", np.NaN, " ", ""]) == [
+    assert deduplicate_list(["a", np.nan, "b", "a", np.nan, " ", ""]) == [
         "a",
         "column_2",
         "b",
