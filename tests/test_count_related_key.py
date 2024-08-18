@@ -33,7 +33,7 @@ def test_count_related_key():
     df2 = pd.DataFrame(data=d2)
 
     # testing basic results
-    count_related_key(df1, df2, on="mkey", inplace=True)
+    df1, df2 = count_related_key(df1, df2, on="mkey")
     assert df1["count_fk_mkey"].to_list() == [3, 1, 2, 0]
     assert df2["count_fk_mkey"].to_list() == [1, 1, 1, 1, 1, 1, 0]
 
@@ -46,7 +46,7 @@ def test_count_related_key():
     # testing left_on and right_on
     df1 = pd.DataFrame(data=d1)
     df2 = pd.DataFrame(data=d2)
-    count_related_key(df1, df2, left_on="mkey", right_on="mkey2", inplace=True)
+    df1, df2 = count_related_key(df1, df2, left_on="mkey", right_on="mkey2")
     assert df1["count_fk_mkey2"].to_list() == [3, 1, 2, 0]
     assert df2["count_fk_mkey"].to_list() == [1, 1, 1, 1, 1, 1, 0]
 

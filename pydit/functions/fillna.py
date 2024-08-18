@@ -19,7 +19,7 @@ def fillna_smart(
     text_fillna="",
     include_empty_string=False,
     include_spaces=False,
-    inplace=False,
+    inplace=False, # DEPRECATED treated as False
     silent=False,
 ):
     """Cleanup the values of the dataframe with opinionated nulls handling.
@@ -45,8 +45,6 @@ def fillna_smart(
         Whether to consider empty string as nulls to fill.
     include_spaces : bool, optional, default False
         Whether to consider spaces as nulls to fill.
-    inplace: bool, optional, default False
-        If True, the dataframe is modified in place.
     silent: bool, optional, default False
         If True, will not print any logs (other than critical)
 
@@ -62,8 +60,9 @@ def fillna_smart(
         logger.setLevel(logging.INFO)
     if not isinstance(df, pd.DataFrame):
         raise TypeError("Expecting a dataframe")
-    if not inplace:
-        df = df.copy(deep=True)
+
+    df = df.copy(deep=True)
+
     if cols is None:
         cols = df.columns
     else:
@@ -91,7 +90,8 @@ def fillna_smart(
             continue
 
         if ("int" in str(typ)) or ("float" in str(typ)):
-            df[col].fillna(numeric_fillna, inplace=True)
+
+            df[col] = df[col].fillna(numeric_fillna)
             logger.info(
                 "Filling nulls in numeric column %s with %s", col, numeric_fillna
             )
@@ -119,7 +119,8 @@ def fillna_smart(
                 date_fillna,
                 val,
             )
-            df[col].fillna(val, inplace=True)
+ 
+            df[col] = df[col].fillna(val)
         elif typ == "object":
             if not isinstance(text_fillna, str):
                 raise ValueError(
@@ -136,8 +137,7 @@ def fillna_smart(
             logger.info(
                 "Filling nulls in object/text type column %s with %s", col, text_fillna
             )
-            df[col].fillna(text_fillna, inplace=True)
-        if inplace:
-            return True
+       
+            df[col] = df[col].fillna(text_fillna)
     logger.setLevel(logging.INFO)
     return df

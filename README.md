@@ -41,7 +41,7 @@ The auditor should be able to import or copy paste only a specfic module into th
 
 While Pyjanitor is great and its method chaining approach is elegant, I've found the good old "step by step" works better for documenting the test, and explaining to reviewers or newbies.  
 
-5.By default return a new or a transformed copy of the object, do not mutate the input object(s). The "inplace=True" option should be available if feasible.
+5.Returns a new transformed copy of the object, code does not mutate the input object(s). Any previous inplace=True parameter is deprecated and I will remove in future versions.
 
 ## Quick start
 
@@ -69,9 +69,9 @@ df_profile= profile_dataframe(df) # will return a df with summary statistics
 # you may realise the columns from excel are all over the place with cases and
 # special chars
 
-cleanup_column_names(df,inplace=True) # use of inplace, otherwise it returns a new copy
+df_clean= cleanup_column_names(df) 
 
-df_deduped=check_duplicates(df, columns=["customer_id","last_update_date"],ascending=[True,False],keep="first",indicator=True, also_return_non_duplicates=True)
+df_deduped=check_duplicates(df_clean, columns=["customer_id","last_update_date"],ascending=[True,False],keep="first",indicator=True, also_return_non_duplicates=True)
 
 # you will get a nice output with the report on duplicates, retaining the last
 # modification entry (via the pre-sort descending by date) and returning 

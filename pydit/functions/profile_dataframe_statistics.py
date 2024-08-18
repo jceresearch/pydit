@@ -34,9 +34,7 @@ def profile_dataframe(obj, return_dict=False, unique_min=10):
 
     if isinstance(obj, pd.DataFrame):
         df = obj.copy()
-        df.reset_index(
-            inplace=True
-        )  # this moves the index as a column so we can profile it too
+        df=df.reset_index()
         dtypes = df.dtypes.to_dict()
     else:
         raise TypeError("df must be a pandas.DataFrame")

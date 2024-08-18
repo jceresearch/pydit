@@ -110,7 +110,9 @@ def _deduplicate_list(
     return new_list
 
 
-def cleanup_column_names(obj, max_field_name_len=40, inplace=False, silent=False):
+def cleanup_column_names(obj, max_field_name_len=40,
+                          inplace=False # DEPRECATED treated as False
+                         , silent=False):
     """Cleanup the column names of a Pandas dataframe.
 
     e.g. removes non alphanumeric chars, replaces _ instead of space, perc instead
@@ -128,16 +130,14 @@ def cleanup_column_names(obj, max_field_name_len=40, inplace=False, silent=False
         The dataframe or a list of strings to clean up.
     max_field_name_len : int, optional, default 40
         The maximum length of the field name
-    inplace : bool, optional, default False
-        If True, will modify the dataframe inplace
 
     Returns
     -------
     pandas.DataFrame
-        Pandas DataFrame with cleaned column names
+        A copy of the pandas DataFrame with cleaned column names
 
     list
-        List of strings with cleaned column names if the input was a list
+        A copy of the list of strings with cleaned column names if the input was a list
 
     """
     if isinstance(obj, list):
@@ -170,8 +170,7 @@ def cleanup_column_names(obj, max_field_name_len=40, inplace=False, silent=False
     # names, just in case keeping this quite low, feel free to increase or remove
     new_cols = _deduplicate_list(new_cols)
 
-    if not inplace:
-        obj = obj.copy()
+    obj = obj.copy()
     if isinstance(obj, list):
         for i, v in enumerate(obj):
             obj[i] = new_cols[i]
@@ -182,7 +181,5 @@ def cleanup_column_names(obj, max_field_name_len=40, inplace=False, silent=False
         logger.info("New names:%s", list(new_cols))
     if len(new_cols) != len(set(new_cols)):
         raise ValueError("Duplicated column names remain!!! check what happened")
-    if inplace:
-        return True
     else:
         return obj

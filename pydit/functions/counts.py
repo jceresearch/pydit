@@ -27,7 +27,7 @@ def count_values_in_col(
     combined=True,
     percentage=False,
     detailed=False,
-    inplace=False,
+    inplace=False # DEPRECATED treated as False
 ):
     """Generates a column counting occurrence of values in a given column.
 
@@ -51,16 +51,12 @@ def count_values_in_col(
             Whether to return percentage over total count
         detailed: bool, optional, default False
             Whether to return only the combined count and drop the extra details
-        inplace : bool, optional, default False
-            Whether or not to mutate the original DataFrame
-
 
 
         Returns
         -------
         pd.DataFrame
             New dataframe with a new column containing the count of values
-            If inplace is True, the original DataFrame is modified.
 
     """
     if not isinstance(df, pd.DataFrame):
@@ -86,8 +82,7 @@ def count_values_in_col(
     if isinstance(column_name, list) and len(column_name) != len(cols_list):
         raise ValueError("column_name must be same length as col")
 
-    if not inplace:
-        df = df.copy()
+    df = df.copy()
 
     if combined:
         s1 = df[cols_list].astype("str").T.agg("_".join)
@@ -115,13 +110,16 @@ def count_values_in_col(
             if percentage:
                 count_records = float(df.shape[0])
                 df[cn] = df[cn] / count_records
-
-    if inplace:
-        return True
     return df
 
 
-def count_related_key(df1, df2, left_on="", right_on="", on="", inplace=False):
+def count_related_key(df1, 
+                      df2,
+                    left_on="", 
+                    right_on="", 
+                    on="", 
+                    inplace=False # DEPRECATED treated as False 
+                    ):
     """Adds column in each df counting occurences of each key in the other dataframe
 
     This works similar to adding countif() in Excel to sense check if an
@@ -147,16 +145,13 @@ def count_related_key(df1, df2, left_on="", right_on="", on="", inplace=False):
         column to use as key for df2
     on : str, optional, default ""
         column to use as key for df1 and df2 if they are the same"
-    inplace : bool, optional, default False
-        If True the original dataframes will be mutated
 
     Returns
     -------
     DataFrame
-        If inplace = False, it returns a tuple of the two dataframes with a new
+        It returns a tuple of the two dataframes with a new
         column with the count of records found. In df1 it will be "count_[key2]"
         and in df2 it will be "count_[key1]".
-        If inplace = True it will return True, and mutate the original dataframes.
 
     """
 
@@ -184,9 +179,9 @@ def count_related_key(df1, df2, left_on="", right_on="", on="", inplace=False):
     else:
         if left_on == "" or right_on == "":
             raise ValueError("You must specify both left_on and right_on key to use")
-    if not inplace:
-        df1 = df1.copy()
-        df2 = df2.copy()
+
+    df1 = df1.copy()
+    df2 = df2.copy()
 
     df1["count_fk_" + right_on] = df1[left_on].map(df2[right_on].value_counts())
     df1["count_" + left_on] = df1[left_on].map(df1[left_on].value_counts())
@@ -221,14 +216,15 @@ def count_related_key(df1, df2, left_on="", right_on="", on="", inplace=False):
         "count_fk_" + left_on,
         sum(df2["count_fk_" + left_on]),
     )
-    if inplace:
-        return True
-    else:
-        return (df1, df2)
+
+    return (df1, df2)
 
 
 def count_cumulative_unique(
-    df, column_name, dest_column_name, case_sensitive=True, inplace=False
+    df, column_name, 
+        dest_column_name, 
+        case_sensitive=True,
+        inplace=False # DEPRECATED treated as False
 ):
     """Generates a running total of cumulative unique values in a given column.
 
@@ -252,13 +248,13 @@ def count_cumulative_unique(
         Dataframe with a new column containing the cumulative count of
         unique values in the given column.
 
-    This method does NOT mutate the original DataFrame by default.
+
 
     """
     if not isinstance(df, pd.DataFrame):
         raise TypeError("Expecting a dataframe")
-    if not inplace:
-        df = df.copy()
+
+    df = df.copy()
     if not case_sensitive:
         # Make it so that the the same uppercase and lowercase
         # letter are treated as one unique value
@@ -355,26 +351,4 @@ def has_different_values(df, cols):
         return False
 
     res = [array_eq(v) for v in vals]
-    print(vals)
     return res
-
-
-if __name__ == "__main__":
-    df = pd.DataFrame(
-        {
-            "K": ["K0", "K1", "K2", "K3", "K4"],
-            "B": ["A", np.nan, "C", "D1", "E1"],
-            "C": ["A", "B", np.nan, "D1", "E2"],
-            "D": ["A", "B", np.nan, "D", "E3"],
-            "E": ["A", "B", np.nan, "D", ""],
-            "F": [1, 2, np.nan, 4, 5],
-            "G": [1, np.nan, np.nan, 5, 6],
-            "H": [1, 2, np.nan, 6, 6],
-        },
-        index=[0, 1, 2, 3, 4],
-    )
-
-    res = has_different_values(df, ["B", "C", "D", "E"])
-    print(res)
-    res = has_different_values(df, ["F", "G", "H"])
-    print(res)

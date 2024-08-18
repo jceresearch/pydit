@@ -27,7 +27,7 @@ def check_duplicates(
     add_indicator_column=False,
     also_return_non_duplicates=False,
     dropna=True,
-    inplace=False,
+    inplace=False,  # DEPRECATED treated as False
     silent=False,
 ):
     """Check for duplicates in a dataframe.
@@ -44,7 +44,8 @@ def check_duplicates(
         Argument for pandas df.duplicated() method.
         Defaults to 'first'.
     ascending: True, False, boolean list with same len() as columns, or None, optional
-        Sorting criteria to provide to DataFrame.sort_values() which runs just before the duplicates check.
+        Sorting criteria to provide to DataFrame.sort_values()
+        which runs just before the duplicates check.
         Defaults to None.
     indicator: bool, optional
         If True, a boolean column is added to the dataframe to flag duplicate rows.
@@ -54,9 +55,6 @@ def check_duplicates(
     dropna: bool, optional
         If True, the check will ignore NaN values.
         Defaults to True.
-    inplace: bool, optional
-        If True, the dataframe is modified in place.
-        For Series a new dataframe is created and this parameter is ignored.
     silent: bool
         Minimises outputs
         Defaults to False.
@@ -84,13 +82,8 @@ def check_duplicates(
         df = obj.to_frame()
 
     else:
-        # If it is DataFrame we deal with the inplace options
-        if not inplace:
-            # this creates a new copy
-            df = obj.copy()
-        else:
-            # this is just referencing
-            df = obj
+
+        df = obj.copy()
 
     if isinstance(columns, str):
         if columns in df.columns:
@@ -129,7 +122,9 @@ def check_duplicates(
     else:
         if all_nans_count > 0:
             if not silent:
-                logger.info("Dataframe includes %s records with all nan:", all_nans_count)
+                logger.info(
+                    "Dataframe includes %s records with all nan:", all_nans_count
+                )
         if not_all_nans_count > 0:
             if not silent:
                 logger.info("and %s records with some nan:", not_all_nans_count)
@@ -183,8 +178,8 @@ def check_duplicates(
 
         if ascending is not None:
             # Ascending
-            df = df.sort_values(cols, ascending=asc_params)
-            logger.info("Sorting by %s with params: %s ", cols, asc_params)
+            df = df.sort_values(cols, ascending=ascending)
+            logger.info("Sorting by %s with params: %s ", cols, ascending)
 
         if also_return_non_duplicates:
             # we return the non duplicates and follow the keep argument
@@ -220,7 +215,7 @@ def check_duplicates(
             logger.info("No duplicates found")
         if add_indicator_column:
             df["_duplicates"] = False
-        if not inplace and also_return_non_duplicates:
+        if also_return_non_duplicates:
             return df
-
-        return None
+        #return an empty dataframe
+        return pd.DataFrame()

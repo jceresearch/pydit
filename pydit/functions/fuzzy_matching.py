@@ -115,7 +115,11 @@ def clean_string(
 
 
 def create_fuzzy_key(
-    df, input_col, output_col="fuzzy_key", inplace=False, token_sort=None
+    df,
+    input_col,
+    output_col="fuzzy_key",
+    inplace=False,  # DEPRECATED treated as False
+    token_sort=None,
 ):
     """
     Create a fuzzy key for a dataframe, note that this key preserves the spaces
@@ -135,8 +139,6 @@ def create_fuzzy_key(
     token_sort : str, optional
         Whether to use a token sorting algorithm or not and rely on other libraries.
         Can be "token_set_sort", "token_sort" or None
-    inplace : bool, optional
-        Whether to create the fuzzy key inplace or not, by default False
 
     Returns
     -------
@@ -165,8 +167,8 @@ def create_fuzzy_key(
         s = " ".join(sl)
         return s
 
-    if not inplace:
-        df = df.copy()
+
+    df = df.copy()
 
     # First we are going to deal with the new lines and tabs and empty strings
     df[output_col] = (
@@ -191,6 +193,6 @@ def create_fuzzy_key(
     if token_sort == "token_sort":
         df[output_col] = df[output_col].apply(_token_sort)
 
-    if not inplace:
-        return df
-    return None
+
+    return df
+

@@ -12,7 +12,7 @@ def map_values(
     input_column: str,
     output_column: str,
     mapping: str,
-    inplace: bool = False,
+    inplace: bool = False, # DEPRECATED treated as False
     na_action=None,
     case: str = "lower",
 ):
@@ -43,8 +43,6 @@ def map_values(
             e.g. "to_high_medium_low" will map 1, 2, 3 to "high", "medium", "low"
             e.g. "to_high_medium_low_r" will map 1, 2, 3 to "low", "medium", "high"
 
-    inplace : bool, optional, default False
-        Whether to modify the original dataframe or return a copy.
     na_action: str, optional, default None
         Parameter to pass to the pandas map function. See pandas documentation
     case : str, optional, default "lower"
@@ -57,8 +55,8 @@ def map_values(
         raise TypeError("Output column must be a string")
     if input_column not in df.columns:
         raise ValueError(f"Column {input_column} not found in DataFrame")
-    if inplace is False:
-        df = df.copy()
+
+    df = df.copy()
 
     MAPPINGS = {
         "to_red_yellow_green": {1: "red", 2: "yellow", 3: "green"},
@@ -103,6 +101,5 @@ def map_values(
         df[output_column] = (
             df[input_column].str.lower().map(TARGET, na_action=na_action)
         )
-    if inplace is False:
-        return df
-    return None
+
+    return df

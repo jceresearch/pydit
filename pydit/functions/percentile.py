@@ -7,7 +7,9 @@ import pandas as pd
 logger = logging.getLogger(__name__)
 
 
-def add_percentile(df, col, col_group=None, inplace=False):
+def add_percentile(
+    df, col, col_group=None, inplace=False  # DEPRECATED treated as False)
+):
     """
     Adds columns for percentile for a chosen column in a DataFrame
 
@@ -21,8 +23,6 @@ def add_percentile(df, col, col_group=None, inplace=False):
         The column to calculate the percentile for
     col_group : list, optional, default None
         The column to group by, by default None
-    inplace : bool, optional, default False
-        If True the original dataframes will be mutated, by default False
 
     See Also:
     ---------
@@ -45,8 +45,7 @@ def add_percentile(df, col, col_group=None, inplace=False):
     Returns
     -------
     pandas.DataFrame
-        If inplace=False, returns a copy of the dataframe with the new columns added.
-        If inplace=True, it will return True, and mutate the original dataframes.
+        Returns a copy of the dataframe with the new columns added.
 
     """
 
@@ -64,8 +63,8 @@ def add_percentile(df, col, col_group=None, inplace=False):
         raise ValueError("col not found in dataframe")
     if col_group and not set(col_group).issubset(set(df.columns)):
         raise ValueError("col_group has elements not found in dataframe")
-    if not inplace:
-        df = df.copy(deep=True)
+
+    df = df.copy(deep=True)
 
     logger.info("Adding percentile column based on column %s", col)
     if col_group:
@@ -80,7 +79,7 @@ def add_percentile(df, col, col_group=None, inplace=False):
         df["RANKTMP"] = df[col].rank(method="max")
         sz = df["RANKTMP"].size - 1
         df["percentile_in_" + col] = df["RANKTMP"].apply(lambda x: (x - 1) / sz)
-        df.drop("RANKTMP", inplace=True, axis=1)
-    if inplace:
-        return True
+
+        df = df.drop("RANKTMP", axis=1)
+
     return df

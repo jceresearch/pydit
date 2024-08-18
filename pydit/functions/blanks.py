@@ -16,7 +16,7 @@ def check_blanks(
     include_zeroes=False,
     include_nullstrings_and_spaces=False,
     totals_only=True,
-    inplace=False,
+    inplace=False, # DEPRECATED
 ):
     """
     Returns by default a summary dictionary with column names as key and
@@ -44,15 +44,13 @@ def check_blanks(
         If True, checks for null strings and spaces as blanks
     totals_only : bool, optional, default False
         If True, only the total counts are returned
-    inplace : bool, optional, default False
-        If True, the dataframe is modified in place. If False, a new dataframe is returned.
+
 
     Returns
     -------
     pandas.DataFrame
         A dataframe with the counts of blanks in each column.
         Or a summary dictionary with various counts.
-        If inplace is True, the dataframe is modified in place and returns True
 
     See also
     --------
@@ -70,10 +68,8 @@ def check_blanks(
             name = obj.name
 
         df = obj.to_frame(name=name)
-        inplace = False  # to ensure we return a dataframe
     else:
-        if not inplace:
-            df = obj.copy()
+        df = obj.copy()
 
     if isinstance(columns, list):
         cols = columns
@@ -119,7 +115,6 @@ def check_blanks(
     if totals_only:
         return total_results
 
-    if inplace:
-        return True
 
     return df
+
