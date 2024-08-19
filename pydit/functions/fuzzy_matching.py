@@ -167,7 +167,6 @@ def create_fuzzy_key(
         s = " ".join(sl)
         return s
 
-
     df = df.copy()
 
     # First we are going to deal with the new lines and tabs and empty strings
@@ -193,6 +192,4 @@ def create_fuzzy_key(
     if token_sort == "token_sort":
         df[output_col] = df[output_col].apply(_token_sort)
 
-
     return df
-

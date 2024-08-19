@@ -3,7 +3,7 @@
 """
 
 from .functions import *  # noqa: F403, F401
-from .utils import *
+from .statistics import *  # noqa: F403, F401
 from .filemanager import (
     load,
     save,

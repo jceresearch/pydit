@@ -16,7 +16,7 @@ def check_blanks(
     include_zeroes=False,
     include_nullstrings_and_spaces=False,
     totals_only=True,
-    inplace=False, # DEPRECATED
+    inplace=False,  # DEPRECATED
 ):
     """
     Returns by default a summary dictionary with column names as key and
@@ -115,6 +115,4 @@ def check_blanks(
     if totals_only:
         return total_results
 
-
     return df
-

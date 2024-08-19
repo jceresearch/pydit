@@ -9,8 +9,6 @@ There are currently no exceptions to this design principle.
 """
 
 from .calendar_table import create_calendar, fom_eom
-from .percentile import add_percentile
-from .profile_dataframe_statistics import profile_dataframe
 from .duplicates import check_duplicates
 from .sequence import check_sequence
 from .sequence import group_gaps
@@ -21,11 +19,6 @@ from .coalesce_dataframe_values import coalesce_values
 from .cleanup_dataframe_columns_names import cleanup_column_names
 from .anonymise import anonymise_key
 from .coalesce_dataframe_columns import coalesce_columns
-from .benford import benford_to_dataframe
-from .benford import benford_to_plot
-from .benford import benford_list_anomalies
-from .benford import benford_probability
-from .benford import benford_mad
 from .collapse_dataframe_levels import collapse_levels
 from .groupby_text_concatenate import groupby_text
 from .keyword_search_batch import keyword_search
@@ -45,6 +38,12 @@ from .merge import merge_outer_and_split
 from .merge import merge_smart
 from .lookup_values import lookup_values
 from .split_transactions import check_for_split_transactions
+from .various import print_red
+from .various import print_green
+from .various import deduplicate_list
+from .various import dataframe_to_code
+from .various import create_test_dataframe
+from ..logger import setup_logging, start_logging_debug, start_logging_info
 
 
 # Here we import each of the functions in the functions/ directory to have them

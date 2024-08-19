@@ -217,5 +217,5 @@ def check_duplicates(
             df["_duplicates"] = False
         if also_return_non_duplicates:
             return df
-        #return an empty dataframe
+        # return an empty dataframe
         return None

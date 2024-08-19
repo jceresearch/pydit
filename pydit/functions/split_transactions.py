@@ -25,7 +25,7 @@ def check_for_split_transactions(
 
     This function checks for transactions that are just below a threshold
     and returns a DataFrame with the original columns, sorted by category and
-    date, flagging those transactions that would have accumulated a hit just 
+    date, flagging those transactions that would have accumulated a hit just
     below the threshold or going over the threshold, within the specified
     tolerance and days horizon.
 
@@ -76,7 +76,7 @@ def check_for_split_transactions(
     df1 = df.sort_values([categ_col, date_col]).copy()
     categ = ""
     running_total = 0
-    running_total_counts=0
+    running_total_counts = 0
     date_back_bracket = df1[date_col].min()
     df1["highest_limit_hit_just_below"] = None
     df1["highest_limit_hit_above"] = None
@@ -87,12 +87,12 @@ def check_for_split_transactions(
         if categ != r[categ_col]:
             categ = r[categ_col]
             running_total = 0
-            running_total_counts =0
+            running_total_counts = 0
             date_back_bracket = r[date_col]
 
         if r[date_col] > date_back_bracket + timedelta(days=days_horizon):
             running_total = 0
-            running_total_counts =0
+            running_total_counts = 0
             date_back_bracket = r[date_col]
 
         running_total += r[amount_col]
@@ -111,8 +111,10 @@ def check_for_split_transactions(
         df1.loc[n, "highest_limit_hit_just_below"] = highest_limit_hit_just_below
         df1.loc[n, "highest_limit_hit_above"] = highest_limit_hit_above
         df1.loc[n, "running_total"] = running_total
-        df1.loc[n,"running_total_counts"]=running_total_counts
-        df1.loc[n,"split_transaction_hit_flag"]=any([highest_limit_hit_above,highest_limit_hit_just_below])
+        df1.loc[n, "running_total_counts"] = running_total_counts
+        df1.loc[n, "split_transaction_hit_flag"] = any(
+            [highest_limit_hit_above, highest_limit_hit_just_below]
+        )
 
     return df1
 

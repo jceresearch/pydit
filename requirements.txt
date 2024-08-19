@@ -12,6 +12,7 @@ pytest
 pytest-cov
 pytest-cover
 pytest-coverage
+scipy
 Sphinx
 sphinx-book-theme
 sphinxcontrib-applehelp

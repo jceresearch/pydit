@@ -34,7 +34,7 @@ def profile_dataframe(obj, return_dict=False, unique_min=10):
 
     if isinstance(obj, pd.DataFrame):
         df = obj.copy()
-        df=df.reset_index()
+        df = df.reset_index()
         dtypes = df.dtypes.to_dict()
     else:
         raise TypeError("df must be a pandas.DataFrame")

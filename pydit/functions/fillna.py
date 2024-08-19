@@ -19,7 +19,7 @@ def fillna_smart(
     text_fillna="",
     include_empty_string=False,
     include_spaces=False,
-    inplace=False, # DEPRECATED treated as False
+    inplace=False,  # DEPRECATED treated as False
     silent=False,
 ):
     """Cleanup the values of the dataframe with opinionated nulls handling.
@@ -119,7 +119,7 @@ def fillna_smart(
                 date_fillna,
                 val,
             )
- 
+
             df[col] = df[col].fillna(val)
         elif typ == "object":
             if not isinstance(text_fillna, str):
@@ -137,7 +137,7 @@ def fillna_smart(
             logger.info(
                 "Filling nulls in object/text type column %s with %s", col, text_fillna
             )
-       
+
             df[col] = df[col].fillna(text_fillna)
     logger.setLevel(logging.INFO)
     return df

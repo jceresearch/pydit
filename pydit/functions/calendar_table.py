@@ -105,8 +105,8 @@ def create_calendar(start="1975-01-01", end="2050-12-31"):
     df["quarter"] = df.date.dt.quarter
     df["year"] = df.date.dt.year
     df["weekend"] = df.date.dt.weekday >= 5
-    df["weekday_index"] = df.date.dt.weekday #0=Monday, 6=Sunday
-    df["weekday"] = df.date.dt.weekday+1 #1=Monday, 7=Sunday
+    df["weekday_index"] = df.date.dt.weekday  # 0=Monday, 6=Sunday
+    df["weekday"] = df.date.dt.weekday + 1  # 1=Monday, 7=Sunday
     df["weekday_name"] = df.date.dt.day_name()
     df["weekday_name_short"] = df.date.dt.day_name().str[0:3]
     df["day_of_year"] = df.date.dt.dayofyear
@@ -145,14 +145,14 @@ def create_calendar(start="1975-01-01", end="2050-12-31"):
     df["bom"] = df["date"].apply(lambda x: fom_eom(x)[0])
     df["eom"] = df["date"].apply(lambda x: fom_eom(x)[1])
     df["date_date"] = df["date"].dt.date
-    df["is_bof"]=df["date_date"]==df["bom"].dt.date
-    df["is_eom"]=df["date_date"]==df["eom"].dt.date
-
+    df["is_bof"] = df["date_date"] == df["bom"].dt.date
+    df["is_eom"] = df["date_date"] == df["eom"].dt.date
 
     return df
 
+
 if __name__ == "__main__":
-    cal=create_calendar("2024-08-01", "2024-09-02")
+    cal = create_calendar("2024-08-01", "2024-09-02")
     print(cal.dtypes)
-    #print first record fully
+    # print first record fully
     print(cal.iloc[0])

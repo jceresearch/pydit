@@ -110,9 +110,12 @@ def _deduplicate_list(
     return new_list
 
 
-def cleanup_column_names(obj, max_field_name_len=40,
-                          inplace=False # DEPRECATED treated as False
-                         , silent=False):
+def cleanup_column_names(
+    obj,
+    max_field_name_len=40,
+    inplace=False,  # DEPRECATED treated as False
+    silent=False,
+):
     """Cleanup the column names of a Pandas dataframe.
 
     e.g. removes non alphanumeric chars, replaces _ instead of space, perc instead

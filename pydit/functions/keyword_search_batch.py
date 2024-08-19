@@ -231,7 +231,7 @@ def keyword_search(
             raise ValueError("Key column %s not found in dataframe" % key_column)
     # Here the main part of the function starts
 
-    df=df.fillna("")
+    df = df.fillna("")
     if len(columns) > 1:
         df["dummy_keyword_search"] = df[columns].astype(str).T.agg(" ".join)
     else:

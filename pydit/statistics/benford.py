@@ -169,7 +169,7 @@ def benford_to_dataframe(obj, column_name="", first_n_digits=1):
     )
     dfres["bf_act_freq"] = dfres["bf_act_count"] / total_count
     dfres["bf_abs_diff"] = abs(dfres["bf_act_count"] - dfres["bf_exp_count"])
-    dfres["bf_diff"] =  dfres["bf_act_count"] - dfres["bf_exp_count"]
+    dfres["bf_diff"] = dfres["bf_act_count"] - dfres["bf_exp_count"]
     dfres["bf_diff_sqr"] = dfres["bf_diff"].pow(2)
     dfres["bf_diff_perc"] = dfres["bf_diff"] / dfres["bf_exp_count"]
     dfres["bf_abs_diff_perc"] = abs(dfres["bf_diff_perc"])

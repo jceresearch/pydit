@@ -27,7 +27,7 @@ def count_values_in_col(
     combined=True,
     percentage=False,
     detailed=False,
-    inplace=False # DEPRECATED treated as False
+    inplace=False,  # DEPRECATED treated as False
 ):
     """Generates a column counting occurrence of values in a given column.
 
@@ -113,13 +113,14 @@ def count_values_in_col(
     return df
 
 
-def count_related_key(df1, 
-                      df2,
-                    left_on="", 
-                    right_on="", 
-                    on="", 
-                    inplace=False # DEPRECATED treated as False 
-                    ):
+def count_related_key(
+    df1,
+    df2,
+    left_on="",
+    right_on="",
+    on="",
+    inplace=False,  # DEPRECATED treated as False
+):
     """Adds column in each df counting occurences of each key in the other dataframe
 
     This works similar to adding countif() in Excel to sense check if an
@@ -221,10 +222,11 @@ def count_related_key(df1,
 
 
 def count_cumulative_unique(
-    df, column_name, 
-        dest_column_name, 
-        case_sensitive=True,
-        inplace=False # DEPRECATED treated as False
+    df,
+    column_name,
+    dest_column_name,
+    case_sensitive=True,
+    inplace=False,  # DEPRECATED treated as False
 ):
     """Generates a running total of cumulative unique values in a given column.
 

@@ -12,7 +12,7 @@ def map_values(
     input_column: str,
     output_column: str,
     mapping: str,
-    inplace: bool = False, # DEPRECATED treated as False
+    inplace: bool = False,  # DEPRECATED treated as False
     na_action=None,
     case: str = "lower",
 ):

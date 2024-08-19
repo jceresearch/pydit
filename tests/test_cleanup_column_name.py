@@ -21,7 +21,7 @@ logger = setup_logging()
 def test_clean_column_names_1():
     """testing the function for cleaning column names
     Basic cleanup and handling of duplicate resulting names
- 
+
     """
     d = {
         "Col1!": [1, 2, 3],
@@ -31,7 +31,7 @@ def test_clean_column_names_1():
         "col  3": [1, 2, 3],
     }
     df = pd.DataFrame(data=d)
-    df=cleanup_column_names(df)
+    df = cleanup_column_names(df)
     print(df.columns)
     assert list(df.columns) == ["col1", "col2", "col_3", "col3", "col_3_2"]
 
@@ -58,7 +58,7 @@ def test_clean_column_names_2():
         "col1$": [1, 2, 3],
     }
     df = pd.DataFrame(data=d)
-    df= cleanup_column_names(df)
+    df = cleanup_column_names(df)
     print(df.columns)
     assert list(df.columns) == [
         "col1",
@@ -88,7 +88,7 @@ def test_clean_column_names_list():
         "aaaaaaaaaabbbbbbbbbbccccccccccddddddddddz",
         1,
     ]
-    l= cleanup_column_names(l)
+    l = cleanup_column_names(l)
     assert l == [
         "col1",
         "col2",
