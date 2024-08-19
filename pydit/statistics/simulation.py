@@ -1,5 +1,11 @@
 """ This module provides a class to generate
-    parametrised distributions for simulation purposes"""
+    parametrised distributions for simulation purposes
+    
+    It is still in experimental stage and may not be fully functional
+    or tested. Use at your own risk.
+    
+    
+    """
 
 import math
 import numpy as np
