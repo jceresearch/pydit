@@ -83,7 +83,7 @@ df_deduped=check_duplicates(df_clean, columns=["customer_id","last_update_date"]
 
 ## Requires
 
-- python >=3.11 (Should work by and large in 3.10, but tests pass on 3.11)
+- python >=3.12 (Should work by and large in 3.10, but I test for 3.12)
 - pandas
 - numpy
 - openpyxl

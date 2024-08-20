@@ -4,7 +4,7 @@ readme="README.md"
 packages = [
 	{ include = "pydit" }
 ]
-version = "0.1.07"
+version = "0.1.08"
 description = "Data cleansing tools for Internal Auditors"
 authors = ["jceresearch <jceresearch@users.noreply.github.com>"]
 keywords=["internal audit", "munging", "cleansing", "audit","wrangling","pandas"]
@@ -17,7 +17,7 @@ license = "MIT"
 documentation="https://pydit.readthedocs.io/en/latest/"
 
 [tool.poetry.dependencies]
-python="3.11"
+python="3.12"
 numpy="^1.25.2"
 openpyxl="^3.1.2"
 pandas="^2.0.3"
