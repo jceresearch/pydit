@@ -66,9 +66,9 @@ def create_calendar(start="1975-01-01", end="2050-12-31"):
 
     Parameters
     ----------
-    start : str, optional, default: "1975-01-01"
+    start : str or datelike  optional, default: "1975-01-01"
         The start date of the calendar.
-    end : str, optional, default: "2050-12-31"
+    end : str or datelike optional, default: "2050-12-31"
         The end date of the calendar (included).
 
     Returns
@@ -97,6 +97,22 @@ def create_calendar(start="1975-01-01", end="2050-12-31"):
             - is_eom (True/False), bool
 
     """
+    try:
+        if isinstance(start, str):
+            start = datetime.strptime(start, "%Y-%m-%d")
+        if isinstance(end, str):
+            end = datetime.strptime(end, "%Y-%m-%d")
+    except Exception as e:
+        raise ValueError(
+            "Unable to parse date format, expecting YYYY-MM-DD or YYYY-MM-DD HH:MM:SS"
+        ) from e
+
+    # if we have a datetime object, we need to convert it to date
+    if isinstance(start, datetime):
+        start = start.date()
+    if isinstance(end, datetime):
+        end = end.date()
+
     df = pd.DataFrame({"date": pd.date_range(start, end)})
     df["day"] = df.date.dt.day
     df["month"] = df["date"].dt.month
@@ -145,6 +161,7 @@ def create_calendar(start="1975-01-01", end="2050-12-31"):
     df["bom"] = df["date"].apply(lambda x: fom_eom(x)[0])
     df["eom"] = df["date"].apply(lambda x: fom_eom(x)[1])
     df["date_date"] = df["date"].dt.date
+    df["date_dt"] = pd.to_datetime(df["date_date"])
     df["is_bof"] = df["date_date"] == df["bom"].dt.date
     df["is_eom"] = df["date_date"] == df["eom"].dt.date
 
