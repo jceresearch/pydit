@@ -12,7 +12,13 @@
 	// "forwardPorts": [],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "pip3 install --user -r requirements.txt && pip3 install --user ipykernel"
+	"postCreateCommand": "pip3 install --user -r requirements.txt && pip3 install --user ipykernel",
+	"features": {
+		"ghcr.io/devcontainers/features/python:1": {
+			"installTools": true,
+			"version": "latest"
+		}
+	}
 
 	// Configure tool-specific properties.
 	// "customizations": {},
