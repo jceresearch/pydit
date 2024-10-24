@@ -16,10 +16,10 @@ jobs:
         options: "--check --verbose"
         jupyter: false
         src: "./pydit"
-    - name: Set up Python 3.12
+    - name: Set up Python 3.12.7
       uses: actions/setup-python@v3
       with:
-        python-version: "^3.12.0"
+        python-version: "3.12.7"
 
     - name: Install poetry and basic tools
       run: |
