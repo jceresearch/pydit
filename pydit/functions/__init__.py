@@ -8,7 +8,7 @@ There are currently no exceptions to this design principle.
 
 """
 
-from .calendar_table import create_calendar, fom_eom
+from .calendar_table import create_calendar
 from .duplicates import check_duplicates
 from .sequence import check_sequence
 from .sequence import group_gaps
@@ -32,6 +32,7 @@ from .counts import has_different_values
 from .date_time_calculations import business_calendar
 from .date_time_calculations import calculate_business_hours_fast
 from .date_time_calculations import calculate_business_hours
+from .date_time_calculations import first_and_end_of_month
 from .map_common_values import map_values
 from .fuzzy_matching import create_fuzzy_key, clean_string
 from .merge import merge_outer_and_split

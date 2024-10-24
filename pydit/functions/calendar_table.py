@@ -5,8 +5,8 @@ import pandas as pd
 from datetime import datetime, date, timedelta
 
 
-def fom_eom(d, return_datetime=True):
-    """Function to return the first and last day of a month
+def _first_and_end_of_month(d, return_datetime=True):
+    """Internal verson of function to return the first and last day of a month
 
     Parameters
     ----------
@@ -56,6 +56,7 @@ def fom_eom(d, return_datetime=True):
         start = date(start.year, start.month, start.day)
         end = date(end.year, end.month, end.day)
     return (start, end)
+
 
 
 def create_calendar(start="1975-01-01", end="2050-12-31"):
@@ -158,8 +159,8 @@ def create_calendar(start="1975-01-01", end="2050-12-31"):
             return (d.year * 100) + d.week
 
     df["yyyyww"] = df.apply(lambda r: _calculate_week_number(r["date"]), axis=1)
-    df["bom"] = df["date"].apply(lambda x: fom_eom(x)[0])
-    df["eom"] = df["date"].apply(lambda x: fom_eom(x)[1])
+    df["bom"] = df["date"].apply(lambda x: _first_and_end_of_month(x)[0])
+    df["eom"] = df["date"].apply(lambda x: _first_and_end_of_month(x)[1])
     df["date_date"] = df["date"].dt.date
     df["date_dt"] = pd.to_datetime(df["date_date"])
     df["is_bof"] = df["date_date"] == df["bom"].dt.date

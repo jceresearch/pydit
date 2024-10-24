@@ -3,9 +3,6 @@
 import logging
 from datetime import datetime, timedelta
 import pandas as pd
-
-pd.set_option("display.max_columns", None)
-pd.set_option("display.expand_frame_repr", False)
 # pylint: disable=unused-variable
 
 logger = logging.getLogger(__name__)
@@ -107,46 +104,13 @@ def check_for_split_transactions(
         highest_limit_hit_just_below = (
             max(limits_hit_just_below) if limits_hit_just_below else None
         )
-        highest_limit_hit_above = max(limits_hit_above) if limits_hit_above else None
+        highest_limit_hit_above = max(limits_hit_above) if limits_hit_above  else None
         df1.loc[n, "highest_limit_hit_just_below"] = highest_limit_hit_just_below
         df1.loc[n, "highest_limit_hit_above"] = highest_limit_hit_above
         df1.loc[n, "running_total"] = running_total
         df1.loc[n, "running_total_counts"] = running_total_counts
         df1.loc[n, "split_transaction_hit_flag"] = any(
-            [highest_limit_hit_above, highest_limit_hit_just_below]
+            [(highest_limit_hit_above and running_total_counts>1), highest_limit_hit_just_below]
         )
 
     return df1
-
-
-if __name__ == "__main__":
-    # dataframe with several potential split transactions
-    data = {
-        "date": [
-            datetime(2024, 1, 1),
-            datetime(2024, 1, 2),
-            datetime(2024, 1, 3),
-            datetime(2024, 1, 4),
-            datetime(2024, 1, 5),
-            datetime(2024, 6, 6),
-            datetime(2024, 1, 7),
-            datetime(2024, 1, 8),
-            datetime(2024, 1, 9),
-            datetime(2024, 1, 10),
-        ],
-        "amount": [4999, 2000, 3000, 4000, 5000, 800, 7000, 8000, 9000, 60000],
-        "supplier": ["A", "B", "B", "C", "C", "C", "D", "D", "D", "E"],
-    }
-    thresholds = [5000, 10000, 25000, 50000]
-    dfinput = pd.DataFrame(data)
-    dfoutput = check_for_split_transactions(
-        dfinput,
-        limits=thresholds,
-        days_horizon=30,
-        tolerance_perc=0.01,
-        tolerance_abs=1000,
-        amount_col="amount",
-        categ_col="supplier",
-        date_col="date",
-    )
-    print(dfoutput)

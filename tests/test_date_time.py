@@ -2,7 +2,7 @@
 
 import os
 import sys
-from datetime import datetime
+from datetime import datetime, date, timedelta
 import pandas as pd
 
 
@@ -10,9 +10,23 @@ import pandas as pd
 # from datetime import datetime, date, timedelta
 # pylint: disable=import-error disable=wrong-import-position
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from pydit import start_logging_info, business_calendar
+from pydit import start_logging_info, business_calendar, first_and_end_of_month
 
 logger = start_logging_info()
+
+
+def test_fom_eom():
+    """test the function for getting start and end of month"""
+    assert first_and_end_of_month(date(2024, 2, 2), return_datetime=False)[1] == date(2024, 2, 29)
+    assert first_and_end_of_month(date(2024, 8, 10))[0] == datetime(2024, 8, 1, 0, 0, 0)
+    assert first_and_end_of_month(date(2024, 8, 10))[1] == datetime(2024, 8, 31, 23, 59, 59)
+    assert first_and_end_of_month(date(2024, 8, 10), return_datetime=False)[0] == date(2024, 8, 1)
+    assert first_and_end_of_month(date(2024, 8, 10), return_datetime=False)[1] == date(2024, 8, 31)
+
+    # example testing one more second after the end of the month
+    assert first_and_end_of_month(date(2024, 8, 10))[1] + timedelta(seconds=1) == datetime(
+        2024, 9, 1, 0, 0, 0
+    )
 
 
 def test_basic_calculation():
