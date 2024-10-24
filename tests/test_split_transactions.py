@@ -18,9 +18,8 @@ from pydit import check_for_split_transactions, setup_logging
 logger = setup_logging()
 
 
-
 def test_split_transactions():
-    """ test of split transactions """
+    """test of split transactions"""
     # dataframe with several potential split transactions
     data = {
         "date": [
@@ -50,8 +49,16 @@ def test_split_transactions():
         categ_col="supplier",
         date_col="date",
     )
-    assert list(dfoutput["split_transaction_hit_flag"]) == [1,0,1,1,1,0,0,1,1,0]
+    assert list(dfoutput["split_transaction_hit_flag"]) == [
+        1,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        1,
+        1,
+        0,
+    ]
     print(dfoutput)
-
-
-    

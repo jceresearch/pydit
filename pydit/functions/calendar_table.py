@@ -58,7 +58,6 @@ def _first_and_end_of_month(d, return_datetime=True):
     return (start, end)
 
 
-
 def create_calendar(start="1975-01-01", end="2050-12-31"):
     """Function to create a calendar DataFrame to be used as a lookup table
 

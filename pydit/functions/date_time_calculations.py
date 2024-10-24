@@ -175,7 +175,6 @@ def calculate_business_hours_fast(
     return df
 
 
-
 def first_and_end_of_month(d, return_datetime=True):
     """Function to return the first and last day of a month
 
@@ -227,9 +226,6 @@ def first_and_end_of_month(d, return_datetime=True):
         start = date(start.year, start.month, start.day)
         end = date(end.year, end.month, end.day)
     return (start, end)
-
-
-
 
 
 if __name__ == "__main__":

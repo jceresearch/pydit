@@ -1,6 +1,15 @@
 # Changelog
 
-## V0.1.08/09
+## V0.1.10
+
+### Bug fixes
+ - Added a test on split_transactions and fixed a bug (flagging a transaction when 
+ it went over the limits even if it is the first one for that vendor/horizon)
+ - Refactored code in calendar and date time functions
+
+
+
+## V0.1.09
 
 ### Tweaks
 
