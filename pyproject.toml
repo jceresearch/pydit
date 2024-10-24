@@ -17,7 +17,7 @@ license = "MIT"
 documentation="https://pydit.readthedocs.io/en/latest/"
 
 [tool.poetry.dependencies]
-python="3.12"
+python="^3.12.7"
 numpy="^1.25.2"
 openpyxl="^3.1.2"
 pandas="^2.0.3"
