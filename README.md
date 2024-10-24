@@ -17,31 +17,38 @@ The problem Pydit solves is that a big part of our audit tests have to do with b
 
 But to do those check I often end up pasting snippets from internet or reusing code from previous audits with no consistency or tests done.
 
-Libraries like pyjanitor do a great job, however:
+Libraries like pyjanitor do a great job, however:  
+
   a) require installation that often is not allowed in your environment  
-  b) tend to be very compact and non verbose (e.g. use method chaining), and  
+
+  b) tend to be very compact and non verbose (e.g. use method chaining), and 
+
   c) are difficult to review/verify.  
 
+
 What I really need is:
-  a) easy to review code, both code and execution (even for non-programmers)
-  b) portable, minimal dependencies, pure python, drop-in module ideally.
-  c) performance is ultimately secondary to readability and repeatability.
+  a) easy to review code, both code and execution (even for non-programmers)  
+
+  b) portable, minimal dependencies, pure python, drop-in module ideally.  
+
+  c) performance is ultimately secondary to readability and repeatability.  
+  
 
 Pydit follows these principles:
 
-1.Functions should be self-standing with minimal imports/dependencies.  
+1. Functions should be self-standing with minimal imports/dependencies.  
 
 The auditor should be able to import or copy paste only a specfic module into the project to perform a particular the audit test. That makes it easier to undertand, customise, review. Plus, it removes dependencies of future versions of pydit. Note that anyway, we need to file the actual code exactly as it was used during the audit.
 
-2.Functions should include verbose logging, short of debug level.  
+2. Functions should include verbose logging, short of debug level.  
 
-3.Focus on documentation, tests and simple code, less concerns on performance.
+3. Focus on documentation, tests and simple code, less concerns on performance.
 
-4.No method chaining, in interest of source code readability.
+4. No method chaining, in interest of source code readability.
 
 While Pyjanitor is great and its method chaining approach is elegant, I've found the good old "step by step" works better for documenting the test, and explaining to reviewers or newbies.  
 
-5.Returns a new transformed copy of the object, code does not mutate the input object(s). Any previous inplace=True parameter is deprecated and I will remove in future versions.
+5. Returns a new transformed copy of the object, code does not mutate the input object(s). Any previous inplace=True parameter is deprecated and I will remove in future versions.
 
 ## Quick start
 
@@ -83,7 +90,7 @@ df_deduped=check_duplicates(df_clean, columns=["customer_id","last_update_date"]
 
 ## Requires
 
-- python >=3.12 (Should work by and large in 3.10, but I test for 3.12)
+- python >=3.13 (Should work by and large in 3.10 onwards, but I test in 3.13)
 - pandas
 - numpy
 - openpyxl

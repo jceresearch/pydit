@@ -2,7 +2,6 @@
 """
 
 import pandas as pd
-from pandas.api.types import is_string_dtype, is_numeric_dtype
 import numpy as np
 
 import logging
@@ -16,6 +15,7 @@ def check_blanks(
     include_zeroes=False,
     include_nullstrings_and_spaces=False,
     totals_only=True,
+    silent=False,
     inplace=False,  # DEPRECATED
 ):
     """
@@ -44,6 +44,8 @@ def check_blanks(
         If True, checks for null strings and spaces as blanks
     totals_only : bool, optional, default False
         If True, only the total counts are returned
+    silent : bool, optional, default False
+        If True, no logging messages are shown
 
 
     Returns
@@ -57,6 +59,8 @@ def check_blanks(
     profile_dataframe() : Profile the dataframe, includes metrics on blanks
 
     """
+    if silent:
+        logger.setLevel(logging.CRITICAL)
 
     # We validate and standardise the input
     if not isinstance(obj, (pd.DataFrame, pd.Series)):

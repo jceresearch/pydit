@@ -1,10 +1,11 @@
 # Changelog
 
-## V0.1.08
+## V0.1.08/09
 
-### Features
+### Tweaks
 
-- TBC
+- Minor refactor on how we deal with silent option in blanks()
+- Run tests in Python 3.13 now
 
 ## V0.1.07
 
