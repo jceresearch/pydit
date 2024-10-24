@@ -17,21 +17,24 @@ from pydit.functions import create_calendar, fom_eom, setup_logging
 # from pandas import Timestamp
 
 logger = setup_logging()
+
+
 def test_calendar_ranges():
     """test the calendar creation function"""
-    res= create_calendar(start=date(2024,1,1), end=date(2024,12,31))
+    res = create_calendar(start=date(2024, 1, 1), end=date(2024, 12, 31))
     assert res.shape[0] == 366
-    #now with datetime
-    res= create_calendar(start=datetime(2024,1,1), end=datetime(2024,12,31))
+    # now with datetime
+    res = create_calendar(start=datetime(2024, 1, 1), end=datetime(2024, 12, 31))
     assert res.shape[0] == 366
-    #now with some extra hours and minutes
-    res= create_calendar(start=datetime(2024,1,1,12,30), end=datetime(2024,12,31,12,30))
+    # now with some extra hours and minutes
+    res = create_calendar(
+        start=datetime(2024, 1, 1, 12, 30), end=datetime(2024, 12, 31, 12, 30)
+    )
     assert res.shape[0] == 366
-    assert res["date"].iloc[0] == pd.Timestamp(2024,1,1)
-    assert res["date_dt"].iloc[0] == datetime(2024,1,1)
-    assert res["date_dt"].iloc[-1] == datetime(2024,12,31)
+    assert res["date"].iloc[0] == pd.Timestamp(2024, 1, 1)
+    assert res["date_dt"].iloc[0] == datetime(2024, 1, 1)
+    assert res["date_dt"].iloc[-1] == datetime(2024, 12, 31)
 
-    
 
 def test_calendar_values():
     """test the calendar creation function"""
