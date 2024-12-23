@@ -129,8 +129,8 @@ def cleanup_column_names(
 
     Parameters
     ----------
-    obj : pandas.DataFrame or list of strings
-        The dataframe or a list of strings to clean up.
+    obj : pandas.DataFrame or list of strings or string
+        The dataframe or a list of strings, or a string to clean up.
     max_field_name_len : int, optional, default 40
         The maximum length of the field name
 
@@ -141,12 +141,22 @@ def cleanup_column_names(
 
     list
         A copy of the list of strings with cleaned column names if the input was a list
+    
+    str
+        A cleaned string if the input was a sole string. Note that if you provided
+        a single element list it will still return a list of one element.
 
     """
     if isinstance(obj, list):
-        prev_cols = obj
+        prev_cols = obj.copy()
     elif isinstance(obj, pd.DataFrame):
         prev_cols = list(obj.columns)
+    elif isinstance(obj, str):
+        prev_cols = [obj]
+    else:
+        raise ValueError("obj must be a pandas DataFrame or a list of strings, or a string")
+
+    
 
     new_cols = []
     for e in prev_cols:
@@ -173,16 +183,18 @@ def cleanup_column_names(
     # names, just in case keeping this quite low, feel free to increase or remove
     new_cols = _deduplicate_list(new_cols)
 
-    obj = obj.copy()
-    if isinstance(obj, list):
-        for i, v in enumerate(obj):
-            obj[i] = new_cols[i]
-    else:
-        obj.columns = new_cols
+    if len(new_cols) != len(set(new_cols)):
+        raise ValueError(f"Duplicated column names!!! check: {new_cols}")
     if not silent:
         logger.debug("Previous names:%s", prev_cols)
         logger.info("New names:%s", list(new_cols))
-    if len(new_cols) != len(set(new_cols)):
-        raise ValueError("Duplicated column names remain!!! check what happened")
-    else:
+    if isinstance(obj, str):
+        return new_cols[0]
+    if isinstance(obj, list):
+        return new_cols
+    if isinstance(obj, pd.DataFrame):
+        obj= obj.copy()
+        obj.columns = new_cols
         return obj
+    
+ 
