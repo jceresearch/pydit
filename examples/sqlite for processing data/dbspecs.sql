@@ -1,0 +1,5 @@
+CREATE TABLE "test_category" ( "category_id" INTEGER NOT NULL, "category_name" TEXT NOT NULL ,PRIMARY KEY ("category_id") );
+CREATE TABLE "test" ( "test_id" INTEGER NOT NULL, "title" TEXT NOT NULL, "category_id" TEXT REFERENCES test_category ("category_id") ON UPDATE CASCADE ON DELETE SET NULL, PRIMARY KEY ("test_id") );
+CREATE TABLE "test_question" ( "question_id" INTEGER NOT NULL REFERENCES question ("question_id") ON UPDATE CASCADE ON DELETE CASCADE, "test_id" INTEGER REFERENCES "test" ("test_id") ON UPDATE CASCADE ON DELETE CASCADE);
+CREATE TABLE "question" ( "question_id" INTEGER NOT NULL, "question_text" TEXT NULL, "question_notes" TEXT, "require_sequence" BOOLEAN NULL, "require_random_sequence" BOOLEAN NULL , PRIMARY KEY ("question_id") );
+CREATE TABLE "answer" ( "answer_id" INTEGER NOT NULL, "default_sequence" SMALLINT NOT NULL, "question_id" INTEGER NOT NULL, "correct_flag" BOOLEAN NULL, "correct_sequence" SMALLINT NOT NULL,"answer_list_id" TEXT,"answer_text" TEXT NOT NULL,"answer_notes" TEXT NULL, PRIMARY KEY ("answer_id") , FOREIGN KEY("question_id") REFERENCES "question" ("question_id") ON DELETE SET NULL)
