@@ -2,7 +2,7 @@
 
 import os
 import sys
-
+import pytest
 import pandas as pd
 
 
@@ -121,3 +121,38 @@ def test_clean_column_names_list():
         "aaaaaaaaaabbbbbbbbbbccccccccccdddddddddd",
         "1",
     ]
+
+    l=["col 1"]
+    res = cleanup_column_names(l)
+    assert res == ["col_1"]
+
+
+def test_clean_column_names_str():
+    """testing the function for cleaning column names
+    Testing for string instead of a dataframe
+    """
+    s = "Col1!"
+    s = cleanup_column_names(s)
+    assert s == "col1"
+
+    s = "Col  1!"
+    res = cleanup_column_names(s)
+    assert res == "col_1"
+
+
+def test_clean_column_names_empty():
+    """testing the function for cleaning column names
+    Testing for empty input
+    """
+    s = ""
+    s = cleanup_column_names(s)
+    assert s == "column_1"
+
+    l = []
+    l = cleanup_column_names(l)
+    assert l == []
+
+    l= None
+    # assert value error
+    with pytest.raises(ValueError):
+        cleanup_column_names(l)
