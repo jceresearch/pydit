@@ -25,11 +25,15 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install poetry
+        pip install ruff 
         
     - name: Install dependencies
       run: |
         python -m poetry install
 
+    - name: Check formatting
+      run: |
+        ruff check ./pydit
     - name: Run tests
       run: |
         python -m poetry run python -m pytest -sxv

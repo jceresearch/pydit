@@ -31,7 +31,7 @@ class simulation:
                 lower_bound is None and upper_bound is None and probability is None
             ) or (lower_bound < upper_bound and probability > 0 and probability < 1.0)
         except AssertionError:
-            print("Ensure you provide either all LB+UB+Prob or provide Mean+Std_dev")
+            print("Ensure you provide either: a) lower_bound, upper_bound and probability,  or b) mean and std_dev")
         try:
             assert (mean is None and std_dev is None) or (mean != 0 and std_dev > 0)
         except AssertionError:
@@ -47,7 +47,7 @@ class simulation:
         self.random_series = None
 
     def generate(self, size=1, random_series=None):
-        """generate by default for normal distribution"""
+        """generate simulation, by default uses normal distribution"""
         alpha = 1 - self.probability
         z = norm.ppf(1 - alpha / 2)
         if self.mean is None:

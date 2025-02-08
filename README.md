@@ -27,6 +27,7 @@ Libraries like pyjanitor do a great job, however:
 
 
 What I really need is:
+
   a) easy to review code, both code and execution (even for non-programmers)  
 
   b) portable, minimal dependencies, pure python, drop-in module ideally.  
@@ -38,7 +39,7 @@ Pydit follows these principles:
 
 1. Functions should be self-standing with minimal imports/dependencies.  
 
-The auditor should be able to import or copy paste only a specfic module into the project to perform a particular the audit test. That makes it easier to undertand, customise, review. Plus, it removes dependencies of future versions of pydit. Note that anyway, we need to file the actual code exactly as it was used during the audit.
+The auditor should be able to import or copy paste only a specfic module into the project to perform a particular the audit test. That makes it easier to undertand, customise, review. Plus, it removes dependencies of future versions of pydit. Audits need to keep on file the actual code used to perform the test.
 
 2. Functions should include verbose logging, short of debug level.  
 
@@ -46,7 +47,7 @@ The auditor should be able to import or copy paste only a specfic module into th
 
 4. No method chaining, in interest of source code readability.
 
-While Pyjanitor is great and its method chaining approach is elegant, I've found the good old "step by step" works better for documenting the test, and explaining to reviewers or newbies.  
+While Pyjanitor is great and its method chaining approach is elegant, I've found the good old "step by step" works better for documenting the test, and explaining to reviewers or newbies. Plus, pyjanitor adds those methods directly to pandas objects which adds some complexity/coupling to the code.
 
 5. Returns a new transformed copy of the object, code does not mutate the input object(s). Any previous inplace=True parameter is deprecated and I will remove in future versions.
 
