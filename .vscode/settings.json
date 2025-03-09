@@ -16,5 +16,7 @@
     "editor.defaultFormatter": "ms-python.black-formatter",
     "editor.formatOnSave": true,
     "notebook.formatOnSave.enabled": true,
-    "amazonQ.telemetry": false
+    "amazonQ.telemetry": false,
+    "notebook.defaultFormatter": "mikoz.black-py",
+    "notebook.formatOnCellExecution": true
 }

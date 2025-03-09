@@ -14,6 +14,7 @@ from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
+
 def get_latest_modif_file_from_dir(folder_path, pattern="*"):
     """Returns the latest file from a folder, based on last modified date
 

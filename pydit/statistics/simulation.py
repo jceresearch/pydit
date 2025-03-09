@@ -31,7 +31,9 @@ class simulation:
                 lower_bound is None and upper_bound is None and probability is None
             ) or (lower_bound < upper_bound and probability > 0 and probability < 1.0)
         except AssertionError:
-            print("Ensure you provide either: a) lower_bound, upper_bound and probability,  or b) mean and std_dev")
+            print(
+                "Ensure you provide either: a) lower_bound, upper_bound and probability,  or b) mean and std_dev"
+            )
         try:
             assert (mean is None and std_dev is None) or (mean != 0 and std_dev > 0)
         except AssertionError:

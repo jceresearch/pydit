@@ -60,6 +60,7 @@ def check_blanks(
 
     """
     if silent:
+
         logger.setLevel(logging.CRITICAL)
 
     # We validate and standardise the input

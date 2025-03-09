@@ -122,7 +122,7 @@ def test_clean_column_names_list():
         "1",
     ]
 
-    l=["col 1"]
+    l = ["col 1"]
     res = cleanup_column_names(l)
     assert res == ["col_1"]
 
@@ -152,7 +152,7 @@ def test_clean_column_names_empty():
     l = cleanup_column_names(l)
     assert l == []
 
-    l= None
+    l = None
     # assert value error
     with pytest.raises(ValueError):
         cleanup_column_names(l)

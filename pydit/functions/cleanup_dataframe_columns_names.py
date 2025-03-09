@@ -141,7 +141,7 @@ def cleanup_column_names(
 
     list
         A copy of the list of strings with cleaned column names if the input was a list
-    
+
     str
         A cleaned string if the input was a sole string. Note that if you provided
         a single element list it will still return a list of one element.
@@ -154,9 +154,9 @@ def cleanup_column_names(
     elif isinstance(obj, str):
         prev_cols = [obj]
     else:
-        raise ValueError("obj must be a pandas DataFrame or a list of strings, or a string")
-
-    
+        raise ValueError(
+            "obj must be a pandas DataFrame or a list of strings, or a string"
+        )
 
     new_cols = []
     for e in prev_cols:
@@ -193,8 +193,6 @@ def cleanup_column_names(
     if isinstance(obj, list):
         return new_cols
     if isinstance(obj, pd.DataFrame):
-        obj= obj.copy()
+        obj = obj.copy()
         obj.columns = new_cols
         return obj
-    
- 

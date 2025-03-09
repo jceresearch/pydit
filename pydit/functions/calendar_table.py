@@ -149,8 +149,6 @@ def create_calendar(start="1975-01-01", end="2050-12-31"):
         (df.year.astype(str) + df.month.astype(str).str.zfill(2)).astype(int),
     )
 
-
-
     df.insert(3, "yyyyq", (df.year.astype(str) + df.quarter.astype(str)).astype(int))
 
     def _calculate_week_number(d):
@@ -168,7 +166,6 @@ def create_calendar(start="1975-01-01", end="2050-12-31"):
     df["date_dt"] = pd.to_datetime(df["date_date"])
     df["is_bof"] = df["date_date"] == df["bom"].dt.date
     df["is_eom"] = df["date_date"] == df["eom"].dt.date
-
 
     return df
 
