@@ -1,6 +1,5 @@
 coverage
 numpy
-openpyxl
 pandas
 matplotlib
 poetry

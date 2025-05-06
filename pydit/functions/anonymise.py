@@ -45,7 +45,11 @@ def anonymise_key(
     """
 
     def _anonymise(df_list, key_list, map_dict=None, hash_list=None):
-        """Internal function to perform the actual anonymisation"""
+        """Internal function to perform the actual anonymisation
+        
+        
+        
+        """
         master_list = []
         for i, df in enumerate(df_list):
             keys = df[key_list[i]]
