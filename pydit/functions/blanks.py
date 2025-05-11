@@ -16,7 +16,6 @@ def check_blanks(
     include_nullstrings_and_spaces=False,
     totals_only=True,
     silent=False,
-    inplace=False,  # DEPRECATED
 ):
     """
     Returns by default a summary dictionary with column names as key and
@@ -45,7 +44,10 @@ def check_blanks(
     totals_only : bool, optional, default False
         If True, only the total counts are returned
     silent : bool, optional, default False
-        If True, no logging messages are shown
+        If True, logging level set to critical, ie no info messages shown
+
+    Note: inplace is no longer supported, make sure you fix any code to account for it.
+    Apparently it is not pythonic
 
 
     Returns
@@ -60,7 +62,6 @@ def check_blanks(
 
     """
     if silent:
-
         logger.setLevel(logging.CRITICAL)
 
     # We validate and standardise the input
@@ -82,7 +83,7 @@ def check_blanks(
         cols = [columns]
     else:
         cols = df.columns
-        logger.debug("Using all columns")
+        logger.debug("No columns provided, checking all columns")
     if not set(cols).issubset(set(df.columns)):
         raise ValueError("Column(s) provided not found in the dataframe")
 

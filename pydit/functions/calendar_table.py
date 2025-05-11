@@ -6,7 +6,8 @@ from datetime import datetime, date, timedelta
 
 
 def _first_and_end_of_month(d, return_datetime=True):
-    """Internal version of function to return the first and last day of a month
+    """Utility function to return the first and last day of a month
+    for internal use
 
     Parameters
     ----------
