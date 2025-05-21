@@ -1,6 +1,13 @@
 """Module for anonymising a key/identifier column
 
 It applies a randomly generated translation table of integers to the column.
+
+This is a very simple anonymisation method and should be used with caution.
+It can be useful for relatively small datasets for one off anonymisation, for
+example for sharing with third party auditors or for testing purposes.
+It is not suitable for production use or for large datasets.
+
+
 """
 
 import random

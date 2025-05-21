@@ -118,7 +118,6 @@ def create_fuzzy_key(
     df,
     input_col,
     output_col="fuzzy_key",
-    inplace=False,  # DEPRECATED treated as False
     token_sort=None,
 ):
     """

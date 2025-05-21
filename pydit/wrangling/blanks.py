@@ -46,10 +46,6 @@ def check_blanks(
     silent : bool, optional, default False
         If True, logging level set to critical, ie no info messages shown
 
-    Note: inplace is no longer supported, make sure you fix any code to account for it.
-    Apparently it is not pythonic
-
-
     Returns
     -------
     pandas.DataFrame

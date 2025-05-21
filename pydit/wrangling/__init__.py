@@ -4,7 +4,8 @@ Sub-package (./functions) containing the core functionality.
 The modules are also self standing, you should be able to copy any .py file
 and import it in your script to use it with no dependencies on other modules.
 
-There are currently no exceptions to this design principle.
+There may be some exceptions to this principle in the logging module, but
+you should be able to create your own logger object and run with it. 
 
 """
 

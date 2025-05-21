@@ -49,7 +49,7 @@ The auditor should be able to import or copy paste only a specfic module into th
 
 While Pyjanitor is great and its method chaining approach is elegant, I've found the good old "step by step" works better for documenting the test, and explaining to reviewers or newbies. Plus, pyjanitor adds those methods directly to pandas objects which adds some complexity/coupling to the code.
 
-5. Returns a new transformed copy of the object, code does not mutate the input object(s). Any previous inplace=True parameter is deprecated and I will remove in future versions.
+5. Returns a new transformed copy of the object, code does not mutate the input object(s).
 
 ## Quick start
 

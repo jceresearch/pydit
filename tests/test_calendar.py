@@ -9,7 +9,7 @@ import pandas as pd
 
 # pylint: disable=import-error disable=wrong-import-position
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from pydit.functions import create_calendar, setup_logging
+from pydit.wrangling import create_calendar, setup_logging
 
 
 # import numpy as np

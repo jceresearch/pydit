@@ -27,7 +27,6 @@ def check_duplicates(
     add_indicator_column=False,
     also_return_non_duplicates=False,
     dropna=True,
-    inplace=False,  # DEPRECATED treated as False
     silent=False,
 ):
     """Check for duplicates in a dataframe.

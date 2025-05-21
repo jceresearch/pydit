@@ -19,7 +19,6 @@ def fillna_smart(
     text_fillna="",
     include_empty_string=False,
     include_spaces=False,
-    inplace=False,  # DEPRECATED treated as False
     silent=False,
 ):
     """Cleanup the values of the dataframe with opinionated nulls handling.

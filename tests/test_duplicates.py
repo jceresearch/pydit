@@ -12,7 +12,7 @@ import pytest
 # from datetime import datetime, date, timedelta
 # pylint: disable=import-error disable=wrong-import-position
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from pydit import check_duplicates, start_logging_info
+from pydit import check_duplicates
 
 
 """Base DataFrame fixture"""

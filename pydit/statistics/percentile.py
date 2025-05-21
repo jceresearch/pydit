@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 
 def add_percentile(
-    df, col, col_group=None, inplace=False  # DEPRECATED treated as False)
+    df, col, col_group=None
 ):
     """
     Adds columns for percentile for a chosen column in a DataFrame

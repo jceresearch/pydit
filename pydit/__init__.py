@@ -2,7 +2,7 @@
 
 """
 
-from .functions import *  # noqa: F403, F401
+from .wrangling import *  # noqa: F403, F401
 from .statistics import *  # noqa: F403, F401
 from .logger import setup_logging
 from .logger import start_logging_info

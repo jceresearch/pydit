@@ -113,7 +113,6 @@ def _deduplicate_list(
 def cleanup_column_names(
     obj,
     max_field_name_len=40,
-    inplace=False,  # DEPRECATED treated as False
     silent=False,
 ):
     """Cleanup the column names of a Pandas dataframe.
