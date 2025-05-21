@@ -75,7 +75,7 @@ def count_values_in_col(
         raise TypeError("Expecting a string or list/tuple of strings")
     for c in cols_list:
         if c not in df.columns:
-            raise ValueError("Column not found in dataframe")
+            raise ValueError("Column %s not in DataFrame" % c)
     if isinstance(column_name, str) and not flag_auto_name:
         column_name = [column_name]
     if isinstance(column_name, list) and len(column_name) != len(cols_list):

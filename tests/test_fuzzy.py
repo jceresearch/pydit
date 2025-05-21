@@ -11,7 +11,7 @@ import pytest
 # pylint: disable=import-error
 # pylint: disable=wrong-import-position
 
-# pyright: reportUndefinedVariable=false, reportMissingImports=false,
+# pyright: reportUndefinedVariable=false, reportMissingImports=false
 # pyright: reportOptionalSubscript=false, reportInvalidStringEscapeSequence=false
 # pyright: reportGeneralTypeIssues=false, reportUnknownMemberType=false
 
