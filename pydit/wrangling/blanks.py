@@ -1,5 +1,4 @@
-""" Checks for various types of nulls/blanks in a dataframe and returns counts.
-"""
+"""Checks for various types of nulls/blanks in a dataframe and returns counts."""
 
 import pandas as pd
 import numpy as np

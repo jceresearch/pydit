@@ -1,4 +1,4 @@
-"""Module to merge dataframes with prefixes or suffixes for all fields 
+"""Module to merge dataframes with prefixes or suffixes for all fields
 not just those that have colissions.
 This is useful when you want to keep all the columns from both dataframes
 and avoid name clashes.
@@ -45,7 +45,7 @@ def merge_smart(df1, df2, rename_merge_key=False, **kwargs):
     if not (left_on and right_on):
         raise ValueError("Missing: on, left_on or right_on")
 
-    left_on = [*left_on]   # unpack the iterable to ensure it is a list
+    left_on = [*left_on]  # unpack the iterable to ensure it is a list
     right_on = [*right_on]
 
     if suff := merge_args.pop("suffixes", None):

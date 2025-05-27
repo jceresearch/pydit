@@ -1,5 +1,4 @@
-""" Function to create a calendar DataFrame to be used as a lookup table
-"""
+"""Function to create a calendar DataFrame to be used as a lookup table"""
 
 import pandas as pd
 from datetime import datetime, date, timedelta
@@ -97,6 +96,7 @@ def create_calendar(start="1975-01-01", end="2050-12-31"):
             - date_date (date as datetime.date)
             - is_bof (True/False), bool
             - is_eom (True/False), bool
+            - isoformat
 
     """
     try:
@@ -167,6 +167,7 @@ def create_calendar(start="1975-01-01", end="2050-12-31"):
     df["date_dt"] = pd.to_datetime(df["date_date"])
     df["is_bof"] = df["date_date"] == df["bom"].dt.date
     df["is_eom"] = df["date_date"] == df["eom"].dt.date
+    df["date_iso"] = df["date]"].dt.strftime("%Y-%m-%dT%H:%M:%S")
 
     return df
 

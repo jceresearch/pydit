@@ -1,4 +1,4 @@
-""" Module with utility functions for fuzzy matching"""
+"""Module with utility functions for fuzzy matching"""
 
 import unicodedata
 import re

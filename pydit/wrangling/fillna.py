@@ -1,6 +1,4 @@
-"""Improving on fillna() with options for various data types and opinionated defaults.
-
-"""
+"""Improving on fillna() with options for various data types and opinionated defaults."""
 
 import logging
 from datetime import datetime, date

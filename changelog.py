@@ -1,6 +1,4 @@
-""" Utility to generate a proposed changelog from git commit messages. 
-
-"""
+"""Utility to generate a proposed changelog from git commit messages."""
 
 import subprocess
 from datetime import datetime, timedelta

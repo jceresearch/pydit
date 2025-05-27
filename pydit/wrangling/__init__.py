@@ -1,11 +1,11 @@
-""" 
-Sub-package (./functions) containing the core functionality.
+"""
+Sub-package (./wrangling) containing the core data wrangling functionality.
 
 The modules are also self standing, you should be able to copy any .py file
 and import it in your script to use it with no dependencies on other modules.
 
 There may be some exceptions to this principle in the logging module, but
-you should be able to create your own logger object and run with it. 
+you should be able to create your own logger object and run with it.
 
 """
 

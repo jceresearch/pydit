@@ -1,5 +1,4 @@
-""" Calculate basic dataframe metrics on data completion/quality/uniqueness
-"""
+"""Calculate basic dataframe metrics on data completion/quality/uniqueness"""
 
 import logging
 

@@ -1,6 +1,6 @@
 """Module to compute the Benford's Law frequencies for a column in a dataframe
 
-This is an common audit test to find indications (non conclusive) of fraud or 
+This is an common audit test to find indications (non conclusive) of fraud or
 errors in the population
 The Benford's Law is an expected distribution for the "first n digits" of a magnitude.
 

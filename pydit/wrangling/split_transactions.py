@@ -1,4 +1,4 @@
-""" Utility functions to do analysis/detection of split purchases/expenses """
+"""Utility functions to do analysis/detection of split purchases/expenses"""
 
 import logging
 from datetime import datetime, timedelta

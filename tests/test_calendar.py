@@ -1,4 +1,4 @@
-""" test of calendar functions"""
+"""test of calendar functions"""
 
 import os
 import sys

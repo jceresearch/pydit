@@ -1,4 +1,4 @@
-""" Test module for add_percentile.py """
+"""Test module for add_percentile.py"""
 
 import os
 import sys
@@ -59,4 +59,3 @@ def test_add_percentile_categories():
     res_list = list(res["percentile_in_col2_col3"])
     assert res_list[4] == 50.0
     assert res_list[98] == 100.0
-

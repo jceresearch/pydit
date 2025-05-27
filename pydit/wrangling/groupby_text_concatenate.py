@@ -1,5 +1,4 @@
-"""Groupby text column into concatenated text
-"""
+"""Groupby text column into concatenated text"""
 
 import logging
 

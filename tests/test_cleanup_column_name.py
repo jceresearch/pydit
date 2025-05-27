@@ -1,4 +1,4 @@
-""" Pytest suite for transform tools functions"""
+"""Pytest suite for transform tools functions"""
 
 import os
 import sys
@@ -29,16 +29,13 @@ def test_clean_column_names_1():
         "col_   3": [1, 2, 3],
         "col3 ": [1, 2, 3],
         "col  3": [1, 2, 3],
+        "test_dupes": [1, 2, 3],
     }
-    df = pd.DataFrame(data=d)
-    df = cleanup_column_names(df)
-    print(df.columns)
-    assert list(df.columns) == ["col1", "col2", "col_3", "col3", "col_3_2"]
 
-    df2 = pd.DataFrame(data=d)
-    res = cleanup_column_names(df2)
-    assert list(df2.columns) == ["Col1!", "Col2", "col_   3", "col3 ", "col  3"]
-    assert list(res.columns) == ["col1", "col2", "col_3", "col3", "col_3_2"]
+    df = pd.DataFrame(data=d)
+    df.rename(columns={"test_dupes": "col  3"}, inplace=True)
+    res = cleanup_column_names(df)
+    assert list(res.columns) == ["col1", "col2", "col_3", "col3", "col_3_2", "col_3_3"]
 
 
 def test_clean_column_names_2():

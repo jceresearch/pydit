@@ -1,11 +1,11 @@
-""" This module provides a class to generate
-    parametrised distributions for simulation purposes
-    
-    It is still in experimental stage and may not be fully functional
-    or tested. Use at your own risk.
-    
-    
-    """
+"""This module provides a class to generate
+parametrised distributions for simulation purposes
+
+It is still in experimental stage and may not be fully functional
+or tested. Use at your own risk.
+
+
+"""
 
 import math
 import numpy as np
@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 from scipy.stats import lognorm, norm, uniform, triang
 
 
-class simulation:
+class Simulation:
     """convenience class to generate parametrised distributions"""
 
     def __init__(
@@ -137,7 +137,7 @@ class simulation:
         }
 
 
-class simulation_lognormal(simulation):
+class SimulationLognormal(Simulation):
     """Generates lognormal distribution with the lower and upper bound provided"""
 
     def __init__(
@@ -201,7 +201,7 @@ class simulation_lognormal(simulation):
         self.size = size
 
 
-class simulation_uniform(simulation):
+class SimulationUniform(Simulation):
     """Generates uniform distribution with the lower and upper bound provided"""
 
     def __init__(self, lower_bound=None, upper_bound=None, probability=None, seed=None):
@@ -238,7 +238,7 @@ class simulation_uniform(simulation):
         self.size = size
 
 
-class simulation_triangular(simulation):
+class SimulationTriangular(Simulation):
     """Generates triangular distribution with the lower and upper bound provided"""
 
     def __init__(

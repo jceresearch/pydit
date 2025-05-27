@@ -1,4 +1,4 @@
-"""Adds a percentile column to a DataFrame, optionally based on a column """
+"""Adds a percentile column to a DataFrame, optionally based on a column"""
 
 import logging
 
@@ -7,9 +7,7 @@ import pandas as pd
 logger = logging.getLogger(__name__)
 
 
-def add_percentile(
-    df, col, col_group=None
-):
+def add_percentile(df, col, col_group=None):
     """
     Adds columns for percentile for a chosen column in a DataFrame
 

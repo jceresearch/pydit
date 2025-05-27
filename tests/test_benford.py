@@ -1,4 +1,4 @@
-""" Test of the benford checker"""
+"""Test of the benford checker"""
 
 import os
 import sys

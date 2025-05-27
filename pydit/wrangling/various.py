@@ -1,7 +1,7 @@
 """Utility functions, they are not used directly in the core functions.
 
 The functions below can be used directly.
-However, when needed for a specific core function, instead of importing them, 
+However, when needed for a specific core function, instead of importing them,
 we would create a copy of the function and rename it with an _ prefix.
 This is to ensure that a core function's module is self-standing, ie can be
 used/imported with no other dependencies.

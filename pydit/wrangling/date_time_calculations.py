@@ -1,5 +1,6 @@
-""" Module with functions for date and time calculations.
-IMPORTANT: adapted to England and Wales only, edit the calendar class to regional specs. """
+"""Module with functions for date and time calculations.
+IMPORTANT: adapted to England and Wales only, edit the calendar class to regional specs.
+"""
 
 # pylint: disable=unexpected-keyword-arg
 # pylint: disable=bare-except

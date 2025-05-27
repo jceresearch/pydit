@@ -1,4 +1,4 @@
-""" Test for Lookup Values """
+"""Test for Lookup Values"""
 
 import os
 import sys

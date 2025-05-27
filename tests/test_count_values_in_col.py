@@ -1,4 +1,4 @@
-""" pytest module for count_values_in_col function"""
+"""pytest module for count_values_in_col function"""
 
 import os
 import sys
@@ -12,7 +12,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from pydit import count_values_in_col
 
 
-#fixture
+# fixture
 @pytest.fixture(name="df")
 def df():
     df = pd.DataFrame(
@@ -39,8 +39,6 @@ def test_count_values_in_col_invalid(df):
         res = count_values_in_col(df, ["class", "max_speed"], "wrong_count")
     with pytest.raises(ValueError):
         res = count_values_in_col(df, ["class", "max_speed"], column_name="wrong_count")
-
-
 
 
 def test_count_values_in_col(df):

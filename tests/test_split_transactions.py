@@ -1,4 +1,4 @@
-""" Test of split transactions """
+"""Test of split transactions"""
 
 import os
 import sys

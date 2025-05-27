@@ -1,13 +1,10 @@
-""" Module for cleaning up column names of a DataFrame
-
-"""
+"""Module for cleaning up column names of a DataFrame"""
 
 import logging
 import string
 import re
 import random
 import unicodedata
-
 import pandas as pd
 
 
@@ -28,7 +25,7 @@ def _strip_accents(text: str) -> str:
 
 
 def _deduplicate_list(
-    list_to_deduplicate, default_field_name="column", force_lower_case=True
+    list_to_deduplicate, default_field_name="column", case_insensitive=True
 ):
     """Internal function for deduplicating a list.
 
@@ -66,7 +63,7 @@ def _deduplicate_list(
     if not list_to_deduplicate:
         return []
     try:
-        if force_lower_case:
+        if case_insensitive:
             list_clean = [
                 (
                     str.lower(str.strip(str(x)))
@@ -155,6 +152,13 @@ def cleanup_column_names(
     else:
         raise ValueError(
             "obj must be a pandas DataFrame or a list of strings, or a string"
+        )
+
+    if len(prev_cols) != len(set(prev_cols)):
+        logger.warning(
+            "Input list has duplicates, the result will be deduplicated but "
+            "check if that was expected: %s",
+            prev_cols,
         )
 
     new_cols = []

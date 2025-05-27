@@ -1,4 +1,4 @@
-""" Testing check_duplicates using pytest """
+"""Testing check_duplicates using pytest"""
 
 import os
 import sys

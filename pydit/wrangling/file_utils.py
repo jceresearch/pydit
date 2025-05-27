@@ -1,8 +1,4 @@
-""" File utilities for saving and loading files
-
-
-
-"""
+"""File utilities for saving and loading files"""
 
 import logging
 from datetime import datetime

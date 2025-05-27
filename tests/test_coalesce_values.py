@@ -1,4 +1,4 @@
-""" Test module for coalesce_values"""
+"""Test module for coalesce_values"""
 
 import os
 import sys

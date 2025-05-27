@@ -1,4 +1,4 @@
-"""Creates a new column with the top N most frequent values and the rest are replaced by Other """
+"""Creates a new column with the top N most frequent values and the rest are replaced by Other"""
 
 import logging
 
