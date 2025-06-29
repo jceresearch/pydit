@@ -1,4 +1,4 @@
-""" pytest module for count_cumulative_unique function"""
+"""pytest module for count_cumulative_unique function"""
 
 import os
 import sys

@@ -1,4 +1,4 @@
-""" Test module for add_percentile.py """
+"""Test module for add_percentile.py"""
 
 import os
 import sys
@@ -59,27 +59,3 @@ def test_add_percentile_categories():
     res_list = list(res["percentile_in_col2_col3"])
     assert res_list[4] == 50.0
     assert res_list[98] == 100.0
-
-
-if __name__ == "__main__":
-    test_add_percentile_categories()
-
-    # import scipy.stats
-
-    # # execute only if run as a script
-    # # from https://stackoverflow.com/questions/50804120/how-do-i-get-the-percentile-for-a-row-in-a-pandas-dataframe
-
-    # temp = pd.DataFrame([78, 38, 42, 48, 31, 89, 94, 102, 122, 122], columns=["INCOME"])
-    # temp["PCNT_RANK"] = temp["INCOME"].rank(method="max", pct=True)
-    # temp["POF"] = temp["INCOME"].apply(
-    #     lambda x: scipy.stats.percentileofscore(temp["INCOME"], x, kind="weak")
-    # )
-    # temp["QUANTILE_VALUE"] = temp["PCNT_RANK"].apply(
-    #     lambda x: temp["INCOME"].quantile(x, "lower")
-    # )
-    # temp["RANK"] = temp["INCOME"].rank(method="max")
-    # sz = temp["RANK"].size - 1
-    # temp["PCNT_LIN"] = temp["RANK"].apply(lambda x: (x - 1) / sz)
-    # temp["CHK"] = temp["PCNT_LIN"].apply(lambda x: temp["INCOME"].quantile(x))
-    # result = add_percentile(temp, "INCOME")
-    # print(result.sort_values("INCOME"))

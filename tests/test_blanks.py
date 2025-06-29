@@ -1,4 +1,4 @@
-""" Test check_blanks.py"""
+"""Test check_blanks.py"""
 
 import os
 import sys

@@ -1,4 +1,4 @@
-""" Test module for groupby_text.py """
+"""Test module for groupby_text.py"""
 
 import os
 import sys

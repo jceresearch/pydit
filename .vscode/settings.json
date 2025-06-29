@@ -1,6 +1,8 @@
 {
     "python.testing.pytestArgs": [
         "tests",
+        "--doctest-modules",
+        "pydit",
         "-s"
     ],
     "python.testing.unittestEnabled": false,
@@ -15,5 +17,7 @@
     ],
     "editor.defaultFormatter": "ms-python.black-formatter",
     "editor.formatOnSave": true,
-    "notebook.formatOnSave.enabled": true
+    "notebook.formatOnSave.enabled": true,
+    "amazonQ.telemetry": false,
+    "notebook.formatOnCellExecution": true
 }

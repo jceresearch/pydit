@@ -27,7 +27,6 @@ def count_values_in_col(
     combined=True,
     percentage=False,
     detailed=False,
-    inplace=False,  # DEPRECATED treated as False
 ):
     """Generates a column counting occurrence of values in a given column.
 
@@ -76,7 +75,7 @@ def count_values_in_col(
         raise TypeError("Expecting a string or list/tuple of strings")
     for c in cols_list:
         if c not in df.columns:
-            raise ValueError("Column not found in dataframe")
+            raise ValueError("Column %s not in DataFrame" % c)
     if isinstance(column_name, str) and not flag_auto_name:
         column_name = [column_name]
     if isinstance(column_name, list) and len(column_name) != len(cols_list):
@@ -119,7 +118,6 @@ def count_related_key(
     left_on="",
     right_on="",
     on="",
-    inplace=False,  # DEPRECATED treated as False
 ):
     """Adds column in each df counting occurences of each key in the other dataframe
 
@@ -226,7 +224,6 @@ def count_cumulative_unique(
     column_name,
     dest_column_name,
     case_sensitive=True,
-    inplace=False,  # DEPRECATED treated as False
 ):
     """Generates a running total of cumulative unique values in a given column.
 

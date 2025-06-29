@@ -1,4 +1,4 @@
-""" Test module for fuzzy.py """
+"""Test module for fuzzy.py"""
 
 import os
 import sys
@@ -11,7 +11,7 @@ import pytest
 # pylint: disable=import-error
 # pylint: disable=wrong-import-position
 
-# pyright: reportUndefinedVariable=false, reportMissingImports=false,
+# pyright: reportUndefinedVariable=false, reportMissingImports=false
 # pyright: reportOptionalSubscript=false, reportInvalidStringEscapeSequence=false
 # pyright: reportGeneralTypeIssues=false, reportUnknownMemberType=false
 
@@ -32,8 +32,8 @@ def df_fixture():
         ["Mr. Ryan     O'Neill", "oneill ryan"],
         ["Miss Ana-María", "ana maria"],
         ["John Smith 2nd", "2nd john smith"],
-        ["Peter\uFF3FDrücker", "drucker peter"],
-        ["Emma\u005FWatson", "emma watson"],
+        ["Peter\uff3fDrücker", "drucker peter"],
+        ["Emma\u005fWatson", "emma watson"],
         ["Jeff Bezos", "bezos jeff"],
         ["  jeff   . Bezos  ", "bezos jeff"],
         ["Amazon Ltd.", "amazon"],

@@ -1,4 +1,4 @@
-""" pytest version of tests"""
+"""pytest version of tests"""
 
 import os
 import sys

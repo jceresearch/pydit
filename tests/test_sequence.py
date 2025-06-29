@@ -1,4 +1,4 @@
-""" pytest version of tests - WIP"""
+"""Test of sequence checker"""
 
 import os
 import sys

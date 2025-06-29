@@ -1,0 +1,22 @@
+[
+    {
+        "name": "test_category",
+        "sql": "CREATE TABLE \"test_category\" ( \"category_id\" TEXT NOT NULL, PRIMARY KEY (\"category_id\") )"
+    },
+    {
+        "name": "test",
+        "sql": "CREATE TABLE \"test\" ( \"test_id\" INTEGER NOT NULL, \"title\" TEXT NOT NULL, \"category_id\" TEXT REFERENCES test_category (\"category_id\") ON UPDATE CASCADE ON DELETE SET NULL, PRIMARY KEY (\"test_id\") )"
+    },
+    {
+        "name": "test_question",
+        "sql": "CREATE TABLE \"test_question\" ( \"question_id\" TEXT NOT NULL REFERENCES question (\"question_id\") ON UPDATE CASCADE ON DELETE CASCADE, \"test_id\" INTEGER REFERENCES \"test\" (\"test_id\") ON UPDATE CASCADE ON DELETE CASCADE)"
+    },
+    {
+        "name": "question",
+        "sql": "CREATE TABLE \"question\" ( \"question_id\" TEXT NOT NULL, \"question_text\" TEXT NULL, \"question_notes\" TEXT, PRIMARY KEY (\"question_id\") )"
+    },
+    {
+        "name": "answer",
+        "sql": "CREATE TABLE \"answer\" ( \"answer_id\" INTEGER NOT NULL, \"answer_index\" SMALLINT NOT NULL, \"flag_correct\" BOOLEAN NULL, PRIMARY KEY (\"answer_id\") )"
+    }
+]

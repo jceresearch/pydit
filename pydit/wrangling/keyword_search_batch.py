@@ -1,6 +1,4 @@
-"""Functions to sweep a dataframe for keywords and return a matrix of matches.
-
-"""
+"""Functions to sweep a dataframe for keywords and return a matrix of matches."""
 
 import logging
 import re

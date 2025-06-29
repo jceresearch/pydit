@@ -1,5 +1,4 @@
-""" Module to check for numerical sequence of DataFrame column or Series
-"""
+"""Module to check for numerical sequence of DataFrame column or Series"""
 
 # pylint disable=import-error, bare-except, unu
 

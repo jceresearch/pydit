@@ -1,14 +1,15 @@
-""" 
-Sub-package (./functions) containing the core functionality.
+"""
+Sub-package (./wrangling) containing the core data wrangling functionality.
 
 The modules are also self standing, you should be able to copy any .py file
 and import it in your script to use it with no dependencies on other modules.
 
-There are currently no exceptions to this design principle.
+There may be some exceptions to this principle in the logging module, but
+you should be able to create your own logger object and run with it.
 
 """
 
-from .calendar_table import create_calendar, fom_eom
+from .calendar_table import create_calendar
 from .duplicates import check_duplicates
 from .sequence import check_sequence
 from .sequence import group_gaps
@@ -32,6 +33,7 @@ from .counts import has_different_values
 from .date_time_calculations import business_calendar
 from .date_time_calculations import calculate_business_hours_fast
 from .date_time_calculations import calculate_business_hours
+from .date_time_calculations import first_and_end_of_month
 from .map_common_values import map_values
 from .fuzzy_matching import create_fuzzy_key, clean_string
 from .merge import merge_outer_and_split
@@ -44,7 +46,7 @@ from .various import deduplicate_list
 from .various import dataframe_to_code
 from .various import create_test_dataframe
 from ..logger import setup_logging, start_logging_debug, start_logging_info
-
+from .file_utils import get_latest_modif_file_from_dir
 
 # Here we import each of the functions in the functions/ directory to have them
 # available in the functions namespace.

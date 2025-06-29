@@ -1,4 +1,4 @@
-"""Adds a percentile column to a DataFrame, optionally based on a column """
+"""Adds a percentile column to a DataFrame, optionally based on a column"""
 
 import logging
 
@@ -7,9 +7,7 @@ import pandas as pd
 logger = logging.getLogger(__name__)
 
 
-def add_percentile(
-    df, col, col_group=None, inplace=False  # DEPRECATED treated as False)
-):
+def add_percentile(df, col, col_group=None):
     """
     Adds columns for percentile for a chosen column in a DataFrame
 
@@ -40,7 +38,7 @@ def add_percentile(
 
     df["CHK"] = df["PCNT_LIN"].apply(lambda x: df[col].quantile(x))
 
-    You can check these methods in acdtion in the test suite
+    You can check these methods in action in the test suite
 
     Returns
     -------
@@ -66,14 +64,14 @@ def add_percentile(
 
     df = df.copy(deep=True)
 
-    logger.info("Adding percentile column based on column %s", col)
+    logger.debug("Adding percentile column based on column %s", col)
     if col_group:
         col_group_joined = "_".join(col_group)
         df["percentile_in_" + col_group_joined] = (
             df.groupby(col_group)[col].rank(pct=True).mul(100)
         )
-        # TODO: #31 research why we use here a different formula when grouping vs full population below
-        logger.info("and grouping by column percentile_in_%s", col_group_joined)
+        # TODO: #31 investigate why we use here a different formula when grouping vs full population below
+        logger.debug("and grouping by column percentile_in_%s", col_group_joined)
 
     else:
         df["RANKTMP"] = df[col].rank(method="max")

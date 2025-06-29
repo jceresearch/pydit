@@ -1,4 +1,4 @@
-""" test the collapse_levels function brought from pyjanitor"""
+"""test the collapse_levels function brought from pyjanitor"""
 
 import os
 import sys

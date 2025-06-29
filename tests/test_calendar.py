@@ -1,15 +1,15 @@
-""" test of calendar functions"""
+"""test of calendar functions"""
 
 import os
 import sys
-from datetime import date, datetime, timedelta
+from datetime import date, datetime
 import numpy as np
 import pandas as pd
 
 
 # pylint: disable=import-error disable=wrong-import-position
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from pydit.functions import create_calendar, fom_eom, setup_logging
+from pydit.wrangling import create_calendar, setup_logging
 
 
 # import numpy as np
@@ -31,7 +31,7 @@ def test_calendar_ranges():
         start=datetime(2024, 1, 1, 12, 30), end=datetime(2024, 12, 31, 12, 30)
     )
     assert res.shape[0] == 366
-    assert res["date"].iloc[0] == pd.Timestamp(2024, 1, 1)
+    assert res["date_dt"].iloc[0] == pd.Timestamp(2024, 1, 1)
     assert res["date_dt"].iloc[0] == datetime(2024, 1, 1)
     assert res["date_dt"].iloc[-1] == datetime(2024, 12, 31)
 
@@ -47,20 +47,6 @@ def test_calendar_values():
     assert (
         res[res["date"] == "2022-01-01"]["yyyyww"].squeeze() == 202152
     )  # ATTENTION THIS WILL WORK FOR SORTING WEEKS ON AXIS BUT NOT WEEK
-
-
-def test_fom_eom():
-    """test the function for getting start and end of month"""
-    assert fom_eom(date(2024, 2, 2), return_datetime=False)[1] == date(2024, 2, 29)
-    assert fom_eom(date(2024, 8, 10))[0] == datetime(2024, 8, 1, 0, 0, 0)
-    assert fom_eom(date(2024, 8, 10))[1] == datetime(2024, 8, 31, 23, 59, 59)
-    assert fom_eom(date(2024, 8, 10), return_datetime=False)[0] == date(2024, 8, 1)
-    assert fom_eom(date(2024, 8, 10), return_datetime=False)[1] == date(2024, 8, 31)
-
-    # example testing one more second after the end of the month
-    assert fom_eom(date(2024, 8, 10))[1] + timedelta(seconds=1) == datetime(
-        2024, 9, 1, 0, 0, 0
-    )
 
 
 if __name__ == "__main__":

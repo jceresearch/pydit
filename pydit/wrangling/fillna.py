@@ -1,6 +1,4 @@
-"""Improving on fillna() with options for various data types and opinionated defaults.
-
-"""
+"""Improving on fillna() with options for various data types and opinionated defaults."""
 
 import logging
 from datetime import datetime, date
@@ -19,7 +17,6 @@ def fillna_smart(
     text_fillna="",
     include_empty_string=False,
     include_spaces=False,
-    inplace=False,  # DEPRECATED treated as False
     silent=False,
 ):
     """Cleanup the values of the dataframe with opinionated nulls handling.

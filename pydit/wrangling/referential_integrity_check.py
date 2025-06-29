@@ -3,7 +3,7 @@
 The purpose of these tools is to quickly ascertain what kind of relationship exists
 between two dataframe, e.g. many to many, one to many, one to one, etc.
 This is useful in an audit scenario as oftentimes the data is not clean and we
-may have missing detail records or blanks or duplicates. 
+may have missing detail records or blanks or duplicates.
 
 Currently this module only supports providing a list or series of keys to check.
 

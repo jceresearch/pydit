@@ -1,11 +1,11 @@
-""" This module provides a class to generate
-    parametrised distributions for simulation purposes
-    
-    It is still in experimental stage and may not be fully functional
-    or tested. Use at your own risk.
-    
-    
-    """
+"""This module provides a class to generate
+parametrised distributions for simulation purposes
+
+It is still in experimental stage and may not be fully functional
+or tested. Use at your own risk.
+
+
+"""
 
 import math
 import numpy as np
@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 from scipy.stats import lognorm, norm, uniform, triang
 
 
-class simulation:
+class Simulation:
     """convenience class to generate parametrised distributions"""
 
     def __init__(
@@ -31,7 +31,9 @@ class simulation:
                 lower_bound is None and upper_bound is None and probability is None
             ) or (lower_bound < upper_bound and probability > 0 and probability < 1.0)
         except AssertionError:
-            print("Ensure you provide either all LB+UB+Prob or provide Mean+Std_dev")
+            print(
+                "Ensure you provide either: a) lower_bound, upper_bound and probability,  or b) mean and std_dev"
+            )
         try:
             assert (mean is None and std_dev is None) or (mean != 0 and std_dev > 0)
         except AssertionError:
@@ -47,7 +49,7 @@ class simulation:
         self.random_series = None
 
     def generate(self, size=1, random_series=None):
-        """generate by default for normal distribution"""
+        """generate simulation, by default uses normal distribution"""
         alpha = 1 - self.probability
         z = norm.ppf(1 - alpha / 2)
         if self.mean is None:
@@ -135,7 +137,7 @@ class simulation:
         }
 
 
-class simulation_lognormal(simulation):
+class SimulationLognormal(Simulation):
     """Generates lognormal distribution with the lower and upper bound provided"""
 
     def __init__(
@@ -199,7 +201,7 @@ class simulation_lognormal(simulation):
         self.size = size
 
 
-class simulation_uniform(simulation):
+class SimulationUniform(Simulation):
     """Generates uniform distribution with the lower and upper bound provided"""
 
     def __init__(self, lower_bound=None, upper_bound=None, probability=None, seed=None):
@@ -236,7 +238,7 @@ class simulation_uniform(simulation):
         self.size = size
 
 
-class simulation_triangular(simulation):
+class SimulationTriangular(Simulation):
     """Generates triangular distribution with the lower and upper bound provided"""
 
     def __init__(

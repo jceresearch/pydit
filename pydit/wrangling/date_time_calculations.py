@@ -1,10 +1,11 @@
-""" Module with functions for date and time calculations.
-IMPORTANT: adapted to England and Wales only, edit the calendar class to regional specs. """
+"""Module with functions for date and time calculations.
+IMPORTANT: adapted to England and Wales only, edit the calendar class to regional specs.
+"""
 
 # pylint: disable=unexpected-keyword-arg
 # pylint: disable=bare-except
 import logging
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 
 import pandas as pd
 from pandas.tseries.offsets import CDay
@@ -173,6 +174,59 @@ def calculate_business_hours_fast(
         axis=1,
     )
     return df
+
+
+def first_and_end_of_month(d, return_datetime=True):
+    """Function to return the first and last day of a month
+
+    Parameters
+    ----------
+    d : datetime.date or datetime.datetime or str
+        The date to use as reference.
+
+    return_datetime : bool, optional, default: True
+        If True, returns datetime.datetime objects, else datetime.date objects
+
+    Returns
+    -------
+    tuple
+        A tuple with the first and last day of the month
+
+        Note that when returning datetimes, the last day will have the time set to 23:59:59
+        if you need something else as the last time, you can adjust it after calling this function.
+        e.g. fom_eom(date(2024, 8, 10))[1].replace(hour=0, minute=0, second=1) to be the very
+        first second of the day
+        of if we want it to be the first second of the following month:
+        fom_eom(date(2024, 8, 10))[1] + timedelta(seconds=1)
+
+    """
+
+    if isinstance(d, str):
+        try:
+            d = datetime.strptime(d, "%Y-%m-%d")
+        except ValueError:
+            try:
+                d = datetime.strptime(d, "%Y-%m-%d %H:%M:%S")
+            except ValueError as e:
+                raise ValueError(
+                    "Invalid date format, expecting YYYY-MM-DD or YYYY-MM-DD HH:MM:SS"
+                ) from e
+
+    if isinstance(d, date):
+        d = datetime(d.year, d.month, d.day)
+
+    start = d.replace(day=1)
+    next_month = d.replace(day=28) + timedelta(days=4)
+    end = (
+        next_month
+        - timedelta(days=next_month.day)
+        + timedelta(hours=23, minutes=59, seconds=59)
+    )
+
+    if return_datetime is False:
+        start = date(start.year, start.month, start.day)
+        end = date(end.year, end.month, end.day)
+    return (start, end)
 
 
 if __name__ == "__main__":

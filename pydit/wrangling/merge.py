@@ -1,4 +1,7 @@
-"""Module to merge dataframes with prefixes or suffixes for all fields not just collissions.
+"""Module to merge dataframes with prefixes or suffixes for all fields
+not just those that have colissions.
+This is useful when you want to keep all the columns from both dataframes
+and avoid name clashes.
 
 """
 
@@ -20,7 +23,7 @@ def merge_smart(df1, df2, rename_merge_key=False, **kwargs):
         The right dataframe
     rename_merge_key : bool, optional, default False
         If True, the key columns will be renamed with the suffixes or prefixes
-    kwargs : the keyword arguments to pass to pandas.DataFrame.merge()
+    kwargs : the keyword arguments you can pass to pandas.DataFrame.merge()
         See https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.merge.html
 
     Returns
@@ -42,7 +45,7 @@ def merge_smart(df1, df2, rename_merge_key=False, **kwargs):
     if not (left_on and right_on):
         raise ValueError("Missing: on, left_on or right_on")
 
-    left_on = [*left_on]
+    left_on = [*left_on]  # unpack the iterable to ensure it is a list
     right_on = [*right_on]
 
     if suff := merge_args.pop("suffixes", None):
@@ -102,8 +105,8 @@ def merge_outer_and_split(
     suffixes=(None, None),
     excel_output=None,
 ):
-    """Merge two dataframes, and keep the joinable 1:1 or 1:n and the nan or
-    unmatched are returned in separate dataframes or Excel sheets.
+    """Merge two dataframes, and keep the joinable 1:1 or 1:n
+    the nan or unmatched are returned in separate dataframes or Excel sheets.
     Under the bonnet it will
     - filter nulls from the key columns (and store in a separate dataframe
     to return those exceptions
@@ -112,7 +115,7 @@ def merge_outer_and_split(
     - will write the results to an Excel file if specified
 
     It will also check for duplicates in the key columns and exit if found in
-    the right dataframe (presumed to be a dimension/master file ) or warn
+    the right dataframe (presumed to be a dimension/ file ) or warn
     if they are in the left dataframe (presumably the transaction/fact file).
 
 

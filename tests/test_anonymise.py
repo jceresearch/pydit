@@ -1,4 +1,4 @@
-""" test module for anonymise functions"""
+"""test module for anonymise functions"""
 
 import sys
 import os

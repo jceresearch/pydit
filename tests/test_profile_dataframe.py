@@ -1,4 +1,4 @@
-""" pytest test suite for profiling tools module"""
+"""pytest test suite for profiling tools module"""
 
 import os
 import sys

@@ -1,8 +1,8 @@
-""" Pytest suite for transform tools functions"""
+"""Pytest suite for transform tools functions"""
 
 import os
 import sys
-
+import pytest
 import pandas as pd
 
 
@@ -29,16 +29,13 @@ def test_clean_column_names_1():
         "col_   3": [1, 2, 3],
         "col3 ": [1, 2, 3],
         "col  3": [1, 2, 3],
+        "test_dupes": [1, 2, 3],
     }
-    df = pd.DataFrame(data=d)
-    df = cleanup_column_names(df)
-    print(df.columns)
-    assert list(df.columns) == ["col1", "col2", "col_3", "col3", "col_3_2"]
 
-    df2 = pd.DataFrame(data=d)
-    res = cleanup_column_names(df2)
-    assert list(df2.columns) == ["Col1!", "Col2", "col_   3", "col3 ", "col  3"]
-    assert list(res.columns) == ["col1", "col2", "col_3", "col3", "col_3_2"]
+    df = pd.DataFrame(data=d)
+    df.rename(columns={"test_dupes": "col  3"}, inplace=True)
+    res = cleanup_column_names(df)
+    assert list(res.columns) == ["col1", "col2", "col_3", "col3", "col_3_2", "col_3_3"]
 
 
 def test_clean_column_names_2():
@@ -121,3 +118,38 @@ def test_clean_column_names_list():
         "aaaaaaaaaabbbbbbbbbbccccccccccdddddddddd",
         "1",
     ]
+
+    l = ["col 1"]
+    res = cleanup_column_names(l)
+    assert res == ["col_1"]
+
+
+def test_clean_column_names_str():
+    """testing the function for cleaning column names
+    Testing for string instead of a dataframe
+    """
+    s = "Col1!"
+    s = cleanup_column_names(s)
+    assert s == "col1"
+
+    s = "Col  1!"
+    res = cleanup_column_names(s)
+    assert res == "col_1"
+
+
+def test_clean_column_names_empty():
+    """testing the function for cleaning column names
+    Testing for empty input
+    """
+    s = ""
+    s = cleanup_column_names(s)
+    assert s == "column_1"
+
+    l = []
+    l = cleanup_column_names(l)
+    assert l == []
+
+    l = None
+    # assert value error
+    with pytest.raises(ValueError):
+        cleanup_column_names(l)

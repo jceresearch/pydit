@@ -1,12 +1,12 @@
-""" Function to create a calendar DataFrame to be used as a lookup table
-"""
+"""Function to create a calendar DataFrame to be used as a lookup table"""
 
 import pandas as pd
 from datetime import datetime, date, timedelta
 
 
-def fom_eom(d, return_datetime=True):
-    """Function to return the first and last day of a month
+def _first_and_end_of_month(d, return_datetime=True):
+    """Utility function to return the first and last day of a month
+    for internal use
 
     Parameters
     ----------
@@ -92,9 +92,11 @@ def create_calendar(start="1975-01-01", end="2050-12-31"):
             - yyyyq (quarter), int
             - bom (beginning of month), datetime
             - eom (end of month), datetime
+            - eod (end of day, ie 1 milisecond before midnight), datetime
             - date_date (date as datetime.date)
             - is_bof (True/False), bool
             - is_eom (True/False), bool
+            - isoformat
 
     """
     try:
@@ -158,12 +160,14 @@ def create_calendar(start="1975-01-01", end="2050-12-31"):
             return (d.year * 100) + d.week
 
     df["yyyyww"] = df.apply(lambda r: _calculate_week_number(r["date"]), axis=1)
-    df["bom"] = df["date"].apply(lambda x: fom_eom(x)[0])
-    df["eom"] = df["date"].apply(lambda x: fom_eom(x)[1])
+    df["bom"] = df["date"].apply(lambda x: _first_and_end_of_month(x)[0])
+    df["eom"] = df["date"].apply(lambda x: _first_and_end_of_month(x)[1])
+    df["eod"] = df.date + timedelta(hours=23, minutes=59, seconds=59, milliseconds=999)
     df["date_date"] = df["date"].dt.date
     df["date_dt"] = pd.to_datetime(df["date_date"])
     df["is_bof"] = df["date_date"] == df["bom"].dt.date
     df["is_eom"] = df["date_date"] == df["eom"].dt.date
+    df["date_iso"] = df["date_dt"].dt.strftime("%Y-%m-%dT%H:%M:%S")
 
     return df
 
