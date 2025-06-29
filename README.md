@@ -13,18 +13,9 @@ Check it out!
 
 ## Why a dedicated library for auditors?
 
-The problem Pydit solves is that a big part of our audit tests have to do with basic data quality checks (e.g. find duplicates or blanks) as they may flag potential fraud or systemic errors.
+The problem Pydit tries to solve is that a big part of our audit tests have to do with basic data quality checks (e.g. find duplicates or blanks) as they may flag potential fraud or systemic errors.
 
 But to do those check I often end up pasting snippets from internet or reusing code from previous audits with no consistency or tests done.
-
-Libraries like pyjanitor do a great job, however:  
-
-  a) require installation that often is not allowed in your environment  
-
-  b) tend to be very compact and non verbose (e.g. use method chaining), and 
-
-  c) are difficult to review/verify.  
-
 
 What I really need is:
 
@@ -39,7 +30,7 @@ Pydit follows these principles:
 
 1. Functions should be self-standing with minimal imports/dependencies.  
 
-The auditor should be able to import or copy paste only a specfic module into the project to perform a particular the audit test. That makes it easier to undertand, customise, review. Plus, it removes dependencies of future versions of pydit. Audits need to keep on file the actual code used to perform the test.
+The auditor should be able to import or copy->paste only a specfic module into the project to perform a particular the audit test. That makes it easier to undertand, customise, review. Plus, it removes dependencies of future versions of pydit. In any case, we need to keep on file the actual code used to perform the test.
 
 2. Functions should include verbose logging, short of debug level.  
 
@@ -47,7 +38,7 @@ The auditor should be able to import or copy paste only a specfic module into th
 
 4. No method chaining, in interest of source code readability.
 
-While Pyjanitor is great and its method chaining approach is elegant, I've found the good old "step by step" works better for documenting the test, and explaining to reviewers or newbies. Plus, pyjanitor adds those methods directly to pandas objects which adds some complexity/coupling to the code.
+While excellent libraries like Pyjanitor are great and its method chaining approach is elegant, my experience has been that the good old "step by step" approach works better for documenting the test and explaining it to reviewers. Plus, pyjanitor adds those methods directly to pandas objects which adds some complexity/coupling to the code, and has more library dependencies given than Pydit, given its quite extensive functionality. 
 
 5. Returns a new transformed copy of the object, code does not mutate the input object(s).
 
