@@ -31,7 +31,7 @@ def test_calendar_ranges():
         start=datetime(2024, 1, 1, 12, 30), end=datetime(2024, 12, 31, 12, 30)
     )
     assert res.shape[0] == 366
-    assert res["date"].iloc[0] == pd.Timestamp(2024, 1, 1)
+    assert res["date_dt"].iloc[0] == pd.Timestamp(2024, 1, 1)
     assert res["date_dt"].iloc[0] == datetime(2024, 1, 1)
     assert res["date_dt"].iloc[-1] == datetime(2024, 12, 31)
 

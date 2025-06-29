@@ -1,6 +1,8 @@
 {
     "python.testing.pytestArgs": [
         "tests",
+        "--doctest-modules",
+        "pydit",
         "-s"
     ],
     "python.testing.unittestEnabled": false,
@@ -17,6 +19,5 @@
     "editor.formatOnSave": true,
     "notebook.formatOnSave.enabled": true,
     "amazonQ.telemetry": false,
-    "notebook.defaultFormatter": "mikoz.black-py",
     "notebook.formatOnCellExecution": true
 }
