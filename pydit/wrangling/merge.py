@@ -6,11 +6,8 @@ and avoid name clashes.
 """
 
 import logging
-
 import pandas as pd
-
 logger = logging.getLogger(__name__)
-
 
 def merge_smart(df1, df2, rename_merge_key=False, **kwargs):
     """Merge two dataframes, with prefixes or suffixes for all fields not just collissions.
@@ -103,7 +100,6 @@ def merge_outer_and_split(
     left_on=None,
     right_on=None,
     suffixes=(None, None),
-    excel_output=None,
 ):
     """Merge two dataframes, and keep the joinable 1:1 or 1:n
     the nan or unmatched are returned in separate dataframes or Excel sheets.
@@ -131,9 +127,7 @@ def merge_outer_and_split(
         The list of key columns to join on in the right dataframe
     suffixes : tuple, optional
         The suffixes to use for the left and right dataframes, by default (None,None)
-    excel_output : str, optional
-        The path to an Excel file to write the results to, by default None
-
+ 
     Returns
     -------
     tuple
@@ -185,11 +179,4 @@ def merge_outer_and_split(
     dfboth = dfouter[dfouter["_merge"] == "both"].drop(columns=["_merge"])
     dfleft = dfouter[dfouter["_merge"] == "left_only"].drop(columns=["_merge"])
     dfright = dfouter[dfouter["_merge"] == "right_only"].drop(columns=["_merge"])
-    if excel_output:
-        with pd.ExcelWriter(excel_output) as writer:
-            dfboth.to_excel(writer, sheet_name="both", index=False)
-            dfleft.to_excel(writer, sheet_name="left_only", index=False)
-            dfright.to_excel(writer, sheet_name="right_only", index=False)
-            dffact_na.to_excel(writer, sheet_name="left_na", index=False)
-            dfdim_na.to_excel(writer, sheet_name="right_na", index=False)
     return dfboth, dfleft, dfright, dffact_na, dfdim_na

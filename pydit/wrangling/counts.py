@@ -12,13 +12,10 @@ Takes inspiration on the usual counta and countif functions in Excel
 """
 
 import logging
-
 import pandas as pd
 import numpy as np
 
-
 logger = logging.getLogger(__name__)
-
 
 def count_values_in_col(
     df,
