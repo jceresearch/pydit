@@ -14,8 +14,9 @@ def coalesce_values(
     top_n_values_to_keep=10,
     translation_dict=None,
     other_label="OTHER",
+    nan_label="N/A",
     case_insensitive=True,
-    dropna=True,
+    show_nan=True,
 ):
     """
     Creates a new column with the top N most frequent values and the rest are replaced by Other.
@@ -99,6 +100,7 @@ def coalesce_values(
     logger.info("Processing column %s", cols)
     logger.info("Will keep top %s values", top_n_values_to_keep)
     logger.info("Case insensitive: %s", case_insensitive)
+    logger.info("Show NaN values as N/A: %s", show_nan)
 
     if case_insensitive:
         try:
@@ -106,8 +108,9 @@ def coalesce_values(
         except Exception:
             pass
 
-    if not dropna:
-        df[col_output] = df[col_output].fillna("N/A")
+    if show_nan:
+        df[col_output] = df[col_output].fillna(nan_label)
+  
 
     if flag_str_label:
         df[col_output] = df[col_output].astype(str).str.strip().str.upper()

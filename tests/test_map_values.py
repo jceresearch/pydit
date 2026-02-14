@@ -16,9 +16,7 @@ import pytest
 # from datetime import datetime, date, timedelta
 # pylint: disable=import-error disable=wrong-import-position
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from pydit import map_values, setup_logging
-
-logger = setup_logging()
+from pydit import map_values
 
 
 def test_check_map_values_bad_inputs():

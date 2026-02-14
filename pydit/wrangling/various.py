@@ -11,12 +11,9 @@ used/imported with no other dependencies.
 import random
 import string
 import logging
-import re
 from datetime import datetime
-import unicodedata
 import pandas as pd
 import numpy as np
-import math
 
 # pylint: disable=W0702
 # pylint: disable=W0613

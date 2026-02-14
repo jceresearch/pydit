@@ -48,15 +48,12 @@ def truncate_datetime_dataframe(
 ) -> pd.DataFrame:
     """Truncate times down to a user-specified precision of
     year, month, day, hour, minute, or second.
-
     This method does not mutate the original DataFrame.
-
 
     :param df: The pandas DataFrame on which to truncate datetime.
     :param datepart: Truncation precision, YEAR, MONTH, DAY,
         HOUR, MINUTE, SECOND. (String is automagically
         capitalized)
-
     :raises ValueError: If an invalid `datepart` precision is passed in.
     :returns: A pandas DataFrame with all valid datetimes truncated down
         to the specified precision.
@@ -79,9 +76,7 @@ def truncate_datetime_dataframe(
         return df
 
     df = df.copy()
-    # NOTE: use **kwargs of `applymap` instead of lambda when we upgrade to
-    #   pandas >= 1.3.0
-    df[dt_cols] = df[dt_cols].applymap(
+    df[dt_cols] = df[dt_cols].map(
         lambda x: _truncate_datetime(x, datepart=datepart),
     )
 

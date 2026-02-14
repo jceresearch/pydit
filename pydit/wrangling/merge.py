@@ -7,7 +7,9 @@ and avoid name clashes.
 
 import logging
 import pandas as pd
+
 logger = logging.getLogger(__name__)
+
 
 def merge_smart(df1, df2, rename_merge_key=False, **kwargs):
     """Merge two dataframes, with prefixes or suffixes for all fields not just collissions.
@@ -127,7 +129,7 @@ def merge_outer_and_split(
         The list of key columns to join on in the right dataframe
     suffixes : tuple, optional
         The suffixes to use for the left and right dataframes, by default (None,None)
- 
+
     Returns
     -------
     tuple

@@ -2,7 +2,6 @@
     "python.testing.pytestArgs": [
         "tests",
         "--doctest-modules",
-        "pydit",
         "-s"
     ],
     "python.testing.unittestEnabled": false,

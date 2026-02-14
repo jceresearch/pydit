@@ -17,8 +17,9 @@ import numpy as np
 
 logger = logging.getLogger(__name__)
 
+
 def count_values_in_col(
-    df,
+    df_input,
     col,
     column_name=None,
     combined=True,
@@ -34,7 +35,7 @@ def count_values_in_col(
 
         Parameters
         ----------
-        df : pd.DataFrame
+        df_input : pd.DataFrame
             Dataframe to be analyzed
         col : str or list of str
             Name of the column containing values to tally
@@ -55,7 +56,7 @@ def count_values_in_col(
             New dataframe with a new column containing the count of values
 
     """
-    if not isinstance(df, pd.DataFrame):
+    if not isinstance(df_input, pd.DataFrame):
         raise TypeError("Expecting a dataframe")
     if not column_name or column_name == "" or column_name != column_name:
         column_name = ""
@@ -71,17 +72,20 @@ def count_values_in_col(
     else:
         raise TypeError("Expecting a string or list/tuple of strings")
     for c in cols_list:
-        if c not in df.columns:
+        if c not in df_input.columns:
             raise ValueError("Column %s not in DataFrame" % c)
     if isinstance(column_name, str) and not flag_auto_name:
         column_name = [column_name]
     if isinstance(column_name, list) and len(column_name) != len(cols_list):
         raise ValueError("column_name must be same length as col")
 
-    df = df.copy()
-
+    df = df_input.copy(deep=True)
+    
     if combined:
-        s1 = df[cols_list].astype("str").T.agg("_".join)
+        if len(cols_list) > 1:
+            s1 = df[cols_list].fillna("nan").astype("str").agg("_".join, axis=1)
+        else:
+            s1 = df[cols_list[0]].astype("str")
         df["combined_count_source"] = s1
         count_summary = s1.value_counts(dropna=False)
         count_list = [count_summary[val] for index, val in enumerate(s1)]
@@ -93,6 +97,7 @@ def count_values_in_col(
         if percentage:
             count_records = float(df.shape[0])
             df[cn] = df[cn] / count_records
+   
     if detailed:
         for i, c in enumerate(cols_list):
             # count_summary = df[c].value_counts(dropna=False)

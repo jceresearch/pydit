@@ -3,11 +3,9 @@
 import os
 import sys
 
-from datetime import datetime, date
+from datetime import datetime
 
-import pytest
 import pandas as pd
-import numpy as np
 
 
 # pylint: disable=import-error disable=wrong-import-position

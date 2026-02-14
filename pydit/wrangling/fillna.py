@@ -1,5 +1,6 @@
 """Improving on fillna() with options for various data types and opinionated defaults."""
 
+
 import logging
 from datetime import datetime, date
 import pandas as pd
@@ -10,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 def fillna_smart(
-    df,
+    df_input,
     cols=None,
     numeric_fillna=0,
     date_fillna="latest",
@@ -55,10 +56,10 @@ def fillna_smart(
         logger.setLevel(logging.CRITICAL)
     else:
         logger.setLevel(logging.INFO)
-    if not isinstance(df, pd.DataFrame):
+    if not isinstance(df_input, pd.DataFrame):
         raise TypeError("Expecting a dataframe")
 
-    df = df.copy(deep=True)
+    df = df_input.copy(deep=True)
 
     if cols is None:
         cols = df.columns
@@ -81,13 +82,14 @@ def fillna_smart(
         logger.info("%s has %s nulls", k, v)
 
     dtypes = df.dtypes.to_dict()
-    for col, typ in dtypes.items():
+    for col, col_type in dtypes.items():
         if col not in cols:
             # we skip this column
             continue
 
-        if ("int" in str(typ)) or ("float" in str(typ)):
+        logger.debug("Processing column %s of type %s", col, col_type)
 
+        if ("int" in str(col_type)) or ("float" in str(col_type)):
             df[col] = df[col].fillna(numeric_fillna)
             logger.info(
                 "Filling nulls in numeric column %s with %s", col, numeric_fillna
@@ -118,7 +120,7 @@ def fillna_smart(
             )
 
             df[col] = df[col].fillna(val)
-        elif typ == "object":
+        elif col_type == "object" or col_type == "string" or col_type == "str":
             if not isinstance(text_fillna, str):
                 raise ValueError(
                     f"Param text_fillna expects string, got: {text_fillna}"
@@ -131,10 +133,12 @@ def fillna_smart(
                     .apply(lambda x: x.strip() if isinstance(x, str) else x)
                     .replace("", np.nan)
                 )
-            logger.info(
+            logger.debug(
                 "Filling nulls in object/text type column %s with %s", col, text_fillna
             )
 
             df[col] = df[col].fillna(text_fillna)
     logger.setLevel(logging.INFO)
     return df
+
+

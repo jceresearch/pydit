@@ -1,7 +1,9 @@
 /tests/output/*
 /tests/temp
 /to delete/
+*.log
 audit.log*
+
 *.pyc
 .ipynb_checkpoints
 # Created by https://www.toptal.com/developers/gitignore/api/python
