@@ -1,6 +1,6 @@
 [project]
 name = "pydit"
-version = "0.1.11"
+version = "0.2.0"
 description = "Tools for data cleansing specifically for Internal Auditors"
 readme = "README.md"
 requires-python = ">=3.14"

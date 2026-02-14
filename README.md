@@ -82,7 +82,7 @@ df_deduped=check_duplicates(df_clean, columns=["customer_id","last_update_date"]
 
 ## Requires
 
-- python >=3.13 (Should work by and large in 3.10 onwards, but I test in 3.13)
+- python >=3.14
 - pandas
 - numpy
 - matplotlib (for the ocassional plot, e.g. Benford)

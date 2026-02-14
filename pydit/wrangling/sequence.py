@@ -2,7 +2,6 @@
 
 # pylint disable=import-error, bare-except, unu
 
-
 import logging
 from datetime import date
 import itertools
