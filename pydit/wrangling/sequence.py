@@ -49,7 +49,7 @@ def check_sequence(obj_in, col=None):
             raise ValueError(f"Column {col} not found in DataFrame")
         obj = obj_in[col].copy()
 
-    if  obj is None:
+    if obj is None:
         raise ValueError("No parsable data provided to check")
 
 
