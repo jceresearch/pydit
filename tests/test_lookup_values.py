@@ -3,16 +3,12 @@
 import os
 import sys
 
-import pytest
 import pandas as pd
 import numpy as np
 
 # pylint: disable=import-error disable=wrong-import-position
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from pydit import lookup_values, setup_logging
-
-
-logger = setup_logging()
+from pydit import lookup_values
 
 
 def test_lookup_values():

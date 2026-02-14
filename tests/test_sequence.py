@@ -15,7 +15,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from pydit import check_sequence, setup_logging
 
 
-logger = setup_logging()
+logger = setup_logging(level_screen="DEBUG", level_file="DEBUG")
 
 
 @pytest.fixture(name="df")
@@ -102,7 +102,7 @@ def test_check_sequence_basics(df):
         14,
     ]
     assert check_sequence(pd.Series([1, 2, 3, 5])) == [4]
-    with pytest.raises(TypeError):
+    with pytest.raises(ValueError):
         check_sequence("1 2 3 4 5")
 
 

@@ -6,14 +6,12 @@ import numpy as np
 
 # pylint: disable=import-error disable=wrong-import-position
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from pydit import deduplicate_list, setup_logging
+from pydit import deduplicate_list
 
 
 # import numpy as np
 # from datetime import datetime, date, timedelta
 # from pandas import Timestamp
-
-logger = setup_logging()
 
 
 def test_deduplicate_list():

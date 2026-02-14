@@ -106,8 +106,8 @@ class business_calendar:
         if len(d) == 0:
             return 0
         else:
-            first_day_start = d[0].replace(hour=self.bus_start_time, minute=0)
-            first_day_end = d[0].replace(hour=self.bus_end_time, minute=0)
+            first_day_start = d.iloc[0].replace(hour=self.bus_start_time, minute=0)
+            first_day_end = d.iloc[0].replace(hour=self.bus_end_time, minute=0)
             first_period_start = max(first_day_start, datetime_start)
             first_period_end = min(first_day_end, datetime_end)
             if first_period_end <= first_period_start:
@@ -119,10 +119,10 @@ class business_calendar:
                 return first_day_mins
             else:
                 # we calculate last day
-                last_period_start = d[-1].replace(
+                last_period_start = d.iloc[-1].replace(
                     hour=self.bus_start_time, minute=0
                 )  # we know it will always start in the bus_start_time
-                last_day_end = d[-1].replace(hour=self.bus_end_time, minute=0)
+                last_day_end = d.iloc[-1].replace(hour=self.bus_end_time, minute=0)
                 last_period_end = min(last_day_end, datetime_end)
                 if last_period_end <= last_period_start:
                     last_day_mins = 0
@@ -229,16 +229,69 @@ def first_and_end_of_month(d, return_datetime=True):
     return (start, end)
 
 
-if __name__ == "__main__":
-    calendar = business_calendar(
-        start_date=date(2020, 1, 1),
-        end_date=date(2022, 12, 31),
-        bus_start_time=9,
-        bus_end_time=17,
-    )
+def date_relative_in_words(
+    input_date, reference_datetime: datetime | None = None
+) -> str:
+    """Return a human description of how many months ago or in the future a date occurred/occurs.
 
-    res = calendar.business_hours(
-        datetime(year=2022, month=8, day=28, hour=9),
-        datetime(year=2022, month=8, day=29, hour=17),
-    )
-    print("Working hours:", res)
+    Parameters:
+    ----------
+
+    input_date : str or datetime
+        The date to compare to the reference date. Can be a string or a datetime object.
+
+
+    reference_datetime : datetime, optional
+        The date to compare the input_date to. If None, the current date and time will be used.
+
+
+
+    Returns:
+    --------
+
+    str
+        A human-readable string describing how long ago or in the future the input_date is relative to the reference_datetime. Possible outputs include "within a week ago", "in 3 days", "2 months ago", "in more than two years", etc.
+
+
+    """
+    if input_date is None or input_date == "":
+        return ""
+
+    if not isinstance(input_date, (str, datetime)):
+        return ""
+    
+    dt = pd.to_datetime(input_date, errors="coerce")
+    if pd.isna(dt):
+        return ""
+
+    dt = dt.to_pydatetime()
+    dt = dt.replace(tzinfo=None)
+    reference = reference_datetime or datetime.now()
+
+    months = (reference.year - dt.year) * 12 + (reference.month - dt.month)
+
+    days_diff = (reference - dt).days
+
+    if days_diff >= 0 and days_diff <= 7:
+        return "within a week ago"
+    elif days_diff < 0 and days_diff >= -7:
+        return "within a week from now"
+    elif days_diff > 7 and days_diff <= 30:
+        return f"{days_diff} day{'s' if days_diff > 1 else ''} ago"
+    elif days_diff < -7 and days_diff >= -30:
+        return f"in {-days_diff} day{'s' if days_diff < -1 else ''}"
+    elif months > 0 and months < 24:
+        return f"{months} month{'s' if months > 1 else ''} ago"
+    elif months >= 24:
+        return "more than two years ago"
+    elif months < 0 and months > -24:
+        return f"in {-months} month{'s' if months < -1 else ''}"
+    elif months <= -24:
+        return "in more than two years"
+
+
+
+
+if __name__ == "__main__":
+    pass
+    

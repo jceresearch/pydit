@@ -7,7 +7,6 @@ Coalesce means to merge multiple columns together, taking the first non null val
 import logging
 from typing import Optional, Union
 import pandas as pd
-import numpy as np
 
 logger = logging.getLogger(__name__)
 
