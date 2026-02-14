@@ -81,8 +81,8 @@ def count_values_in_col(
 
     df = df_input.copy(deep=True)
     
-    if combined :
-        if len(cols_list)> 1:
+    if combined:
+        if len(cols_list) > 1:
             s1 = df[cols_list].fillna("nan").astype("str").agg("_".join, axis=1)
         else:
             s1 = df[cols_list[0]].astype("str")
