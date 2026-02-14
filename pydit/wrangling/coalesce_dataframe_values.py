@@ -100,7 +100,7 @@ def coalesce_values(
     logger.info("Processing column %s", cols)
     logger.info("Will keep top %s values", top_n_values_to_keep)
     logger.info("Case insensitive: %s", case_insensitive)
-    logger.info("Show NaN values as N/A: %s", show_nan )
+    logger.info("Show NaN values as N/A: %s", show_nan)
 
     if case_insensitive:
         try:
