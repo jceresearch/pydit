@@ -1,6 +1,5 @@
 """Improving on fillna() with options for various data types and opinionated defaults."""
 
-
 import logging
 from datetime import datetime, date
 import pandas as pd
@@ -140,5 +139,3 @@ def fillna_smart(
             df[col] = df[col].fillna(text_fillna)
     logger.setLevel(logging.INFO)
     return df
-
-

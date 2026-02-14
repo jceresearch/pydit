@@ -44,23 +44,22 @@ def test_count_values_in_col_invalid(df):
 def test_count_values_in_col(df):
     """test count related basic functionality"""
 
-    res = count_values_in_col(df_input=df, col="class",  column_name="count")
+    res = count_values_in_col(df_input=df, col="class", column_name="count")
     exp = [3, 3, 3, 2, 2, 1]
     assert list(res["count"]) == exp
-    
-    res = count_values_in_col(df_input=df,  col="max_speed", column_name= "count_max_speed")
+
+    res = count_values_in_col(
+        df_input=df, col="max_speed", column_name="count_max_speed"
+    )
     exp = [2, 2, 2, 2, 2, 2]
     assert list(res["count_max_speed"]) == exp
-    
-    
-    res = count_values_in_col(df_input=df, col= "country", column_name="count")
+
+    res = count_values_in_col(df_input=df, col="country", column_name="count")
     exp = [1, 1, 2, 2, 2, 2]
-    
-    
+
     assert list(res["count"]) == exp
     res = count_values_in_col(df, "type", "count")
-    
-    
+
     exp = [1, 1, 1, 1, 1, 1]
     assert list(res["count"]) == exp
 

@@ -259,7 +259,7 @@ def date_relative_in_words(
 
     if not isinstance(input_date, (str, datetime)):
         return ""
-    
+
     dt = pd.to_datetime(input_date, errors="coerce")
     if pd.isna(dt):
         return ""
@@ -290,8 +290,5 @@ def date_relative_in_words(
         return "in more than two years"
 
 
-
-
 if __name__ == "__main__":
     pass
-    

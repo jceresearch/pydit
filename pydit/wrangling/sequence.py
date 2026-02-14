@@ -1,4 +1,3 @@
-
 """Module to check for numerical sequence of DataFrame column or Series"""
 
 # pylint disable=import-error, bare-except, unu
@@ -37,7 +36,7 @@ def check_sequence(obj_in, col=None):
     """
     logger.debug("Checking sequence for %s of type %s ", obj_in, type(obj_in))
 
-    obj=None
+    obj = None
     if isinstance(obj_in, Series):
         obj = obj_in.copy()
     elif isinstance(obj_in, list):
@@ -51,8 +50,6 @@ def check_sequence(obj_in, col=None):
 
     if obj is None:
         raise ValueError("No parsable data provided to check")
-
-
 
     if "int" in str(obj.dtype):
         logger.debug("Data is of type integers")
@@ -107,7 +104,11 @@ def check_sequence(obj_in, col=None):
             logger.info("Sequence provided is complete")
             return []
 
-    if "object" in str(obj.dtype) or "str" in str(obj.dtype) or "string" in str(obj.dtype):
+    if (
+        "object" in str(obj.dtype)
+        or "str" in str(obj.dtype)
+        or "string" in str(obj.dtype)
+    ):
         logger.debug("Strings object as if they were dates we already processed")
         numeric_chars = obj.fillna("").str.replace(r"[^0-9]", "", regex=True)
         numeric_chars_no_blank = numeric_chars[numeric_chars != ""]
@@ -160,4 +161,3 @@ def group_gaps(gap_list):
     except TypeError as exc:
         raise TypeError("Grouping only works for integers for now") from exc
     return df_grouped
-
