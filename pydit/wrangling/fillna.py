@@ -87,7 +87,7 @@ def fillna_smart(
             # we skip this column
             continue
 
-        print("Processing: ", col, col_type)
+        logger.debug("Processing column %s of type %s", col, col_type)
 
         if ("int" in str(col_type)) or ("float" in str(col_type)):
             df[col] = df[col].fillna(numeric_fillna)
