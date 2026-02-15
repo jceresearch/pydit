@@ -22,10 +22,10 @@ def check_blanks(
     list provided)
 
     If "total_only" is False it would return detailed information of the blanks
-     original/copied dataframe with
+     original/copied dataframe with:
+    
     a) one boolean column per input columns, True when there are blanks in that record
     b) a summary boolean column if any of the previous is true
-
 
     Check out https://github.com/ResidentMario/missingno library for
     a nice visualization (seems to come with Anaconda)

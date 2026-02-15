@@ -34,13 +34,13 @@ def map_values(
             - "red_amber_green"
             - "red_amber_yellow_green"
 
-            suffixing _r will do a reverse the order of numeric mapping
-            e.g. "high_medium_low_r" will map to 3, 2, 1
-            e.g. "red_yellow_green_r" will map to 3, 2, 1
+        Suffixing _r will do a reverse the order of numeric mapping.
+        e.g. "high_medium_low_r" will map to 3, 2, 1
+        e.g. "red_yellow_green_r" will map to 3, 2, 1
 
-            prefixing to_ will do a mapping to the value
-            e.g. "to_high_medium_low" will map 1, 2, 3 to "high", "medium", "low"
-            e.g. "to_high_medium_low_r" will map 1, 2, 3 to "low", "medium", "high"
+        Prefixing ``to_`` will do a mapping to the value.
+        e.g. "to_high_medium_low" will map 1, 2, 3 to "high", "medium", "low"
+        e.g. "to_high_medium_low_r" will map 1, 2, 3 to "low", "medium", "high"
 
     na_action: str, optional, default None
         Parameter to pass to the pandas map function. See pandas documentation

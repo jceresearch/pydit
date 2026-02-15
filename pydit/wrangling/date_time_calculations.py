@@ -235,24 +235,18 @@ def date_relative_in_words(
 ) -> str:
     """Return a human description of how many months ago or in the future a date occurred/occurs.
 
-    Parameters:
+    Parameters
     ----------
-
     input_date : str or datetime
         The date to compare to the reference date. Can be a string or a datetime object.
-
-
     reference_datetime : datetime, optional
         The date to compare the input_date to. If None, the current date and time will be used.
 
-
-
-    Returns:
-    --------
-
+    Returns
+    -------
     str
-        A human-readable string describing how long ago or in the future the input_date is relative to the reference_datetime. Possible outputs include "within a week ago", "in 3 days", "2 months ago", "in more than two years", etc.
-
+        A human-readable string describing how long ago or in the future the input_date is relative to the reference_datetime. 
+        Possible outputs include "within a week ago", "in 3 days", "2 months ago", "in more than two years", etc.
 
     """
     if input_date is None or input_date == "":
