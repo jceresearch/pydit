@@ -13,7 +13,12 @@ classifiers = [
   "Operating System :: OS Independent",
   "Development Status :: 3 - Alpha",
 ]
-dependencies = ["numpy", "pandas", "matplotlib"]
+dependencies = [
+    "numpy",
+    "pandas",
+    "matplotlib",
+    "scipy",
+]
 
 
 [project.urls]
