@@ -1,4 +1,3 @@
-
 """Module for anonymising a key/identifier column
 
 It applies a randomly generated translation table of integers to the column.

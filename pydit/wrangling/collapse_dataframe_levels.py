@@ -49,6 +49,7 @@ def collapse_levels(obj: pd.DataFrame, sep: str = "_") -> pd.DataFrame:
 
     df = obj.copy()
     df.columns = [
-        sep.join(str(el) for el in tup if str(el) != "") for tup in df  # noqa: PD011
+        sep.join(str(el) for el in tup if str(el) != "")
+        for tup in df  # noqa: PD011
     ]
     return df

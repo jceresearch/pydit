@@ -8,4 +8,4 @@ from .logger import start_logging_debug
 
 __version__ = "0.2.00"
 
-__all__ = [ "setup_logging", "start_logging_info", "start_logging_debug"] 
+__all__ = ["setup_logging", "start_logging_info", "start_logging_debug"]
