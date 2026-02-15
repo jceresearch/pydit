@@ -110,7 +110,6 @@ def coalesce_values(
 
     if show_nan:
         df[col_output] = df[col_output].fillna(nan_label)
-  
 
     if flag_str_label:
         df[col_output] = df[col_output].astype(str).str.strip().str.upper()

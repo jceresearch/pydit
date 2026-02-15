@@ -68,7 +68,7 @@ def check_for_split_transactions(
         raise ValueError("df should be a pandas DataFrame")
     if not all([c in df.columns for c in [amount_col, categ_col, date_col]]):
         raise ValueError("amount_col, categ_col, date_col should be columns in df")
-    if not all([isinstance(l, (int, float)) for l in limits]):
+    if not all([isinstance(limit, (int, float)) for limit in limits]):
         raise ValueError("limits should be a list of integers or floats")
 
     df1 = df.sort_values([categ_col, date_col]).copy()
@@ -95,13 +95,13 @@ def check_for_split_transactions(
 
         running_total += r[amount_col]
         running_total_counts += 1
-        for l in limits:
-            if (running_total >= l - l * tolerance_perc and running_total < l) or (
-                running_total >= l - tolerance_abs and running_total < l
+        for limit in limits:
+            if (running_total >= limit - limit * tolerance_perc and running_total < limit) or (
+                running_total >= limit - tolerance_abs and running_total < limit
             ):
-                limits_hit_just_below.append(l)
-            if running_total >= l:
-                limits_hit_above.append(l)
+                limits_hit_just_below.append(limit)
+            if running_total >= limit:
+                limits_hit_above.append(limit)
         highest_limit_hit_just_below = (
             max(limits_hit_just_below) if limits_hit_just_below else None
         )

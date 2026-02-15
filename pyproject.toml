@@ -1,9 +1,9 @@
 [project]
-name = "pydit"
-version = "0.1.11"
+name = "pydit-jceresearch"
+version = "0.2.00"
 description = "Tools for data cleansing specifically for Internal Auditors"
 readme = "README.md"
-requires-python = ">=3.14"
+requires-python = ">=3.13"
 license = { text = "MIT" }
 authors = [{ name = "jceresearch", email = "jceresearch@gmail.com" }]
 keywords = ["internal audit", "munging", "data cleansing", "pyjanitor", "pandas", "wrangling"]
@@ -44,6 +44,7 @@ dev = [
   "pydata-sphinx-theme",
   "sphinx-book-theme",
   "ruff",
+  "ipykernel",
 ]
 
 

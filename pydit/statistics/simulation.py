@@ -85,9 +85,6 @@ class Simulation:
         plt.title("Monte Carlo Simulation")
         plt.xlabel("Values")
         plt.ylabel("Frequency")
-        # Calculate the scaling factor
-        bin_width = bins[1] - bins[0]
-        scaling_factor = self.size * bin_width
         # count of observations within confidence interval
         num_within_interval = np.sum(
             (self.samples >= self.lower_bound) & (self.samples <= self.upper_bound)

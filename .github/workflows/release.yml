@@ -9,40 +9,39 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
-    - name: run black
-      uses: psf/black@stable
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
       with:
-        options: "--check --verbose"
-        jupyter: false
-        src: "./pydit"
-    - name: Set up Python 3.12.7
-      uses: actions/setup-python@v3
+        python-version: "3.14"
+    
+    - name: Install uv
+      uses: astral-sh/setup-uv@v4
       with:
-        python-version: "3.12.7"
-
-    - name: Install poetry and basic tools
-      run: |
-        python -m pip install --upgrade pip
-        pip install poetry
-        pip install ruff 
-        
+        enable-cache: true
+        cache-dependency-glob: "pyproject.toml"
+    
     - name: Install dependencies
       run: |
-        python -m poetry install
-
-    - name: Check formatting
+        uv sync --extra dev
+    
+    - name: Check formatting with ruff
       run: |
-        ruff check ./pydit
+        uv run ruff check ./pydit
+        uv run ruff format --check ./pydit
+    
     - name: Run tests
       run: |
-        python -m poetry run python -m pytest -sxv
+        uv run pytest -sxv
+    
     - name: Build docs
       run: |
-        python -m poetry run sphinx-build ./docs/source ./docs/build -a
+        uv run sphinx-build ./docs/source ./docs/build -a
+    
     - name: Build and publish
       env:
-        PYPI_TOKEN: ${{ secrets.PYPI_PASSWORD }}
+        UV_PUBLISH_TOKEN: ${{ secrets.PYPI_PASSWORD }}
       run: |
-        poetry config pypi-token.pypi $PYPI_TOKEN
-        poetry publish --build
+        uv build
+        uv publish

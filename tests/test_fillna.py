@@ -33,4 +33,3 @@ def test_fillna_smart():
     assert list(result["col5"]) == ["EMPTY", "EMPTY", "EMPTY", "EMPTY", "Value 5"]
 
     return df
-

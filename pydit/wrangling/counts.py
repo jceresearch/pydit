@@ -80,7 +80,7 @@ def count_values_in_col(
         raise ValueError("column_name must be same length as col")
 
     df = df_input.copy(deep=True)
-    
+
     if combined:
         if len(cols_list) > 1:
             s1 = df[cols_list].fillna("nan").astype("str").agg("_".join, axis=1)
@@ -97,7 +97,7 @@ def count_values_in_col(
         if percentage:
             count_records = float(df.shape[0])
             df[cn] = df[cn] / count_records
-   
+
     if detailed:
         for i, c in enumerate(cols_list):
             # count_summary = df[c].value_counts(dropna=False)

@@ -4,6 +4,7 @@ IMPORTANT: adapted to England and Wales only, edit the calendar class to regiona
 
 # pylint: disable=unexpected-keyword-arg
 # pylint: disable=bare-except
+# ruff: noqa: E722
 import logging
 from datetime import datetime, date, timedelta
 
@@ -259,7 +260,7 @@ def date_relative_in_words(
 
     if not isinstance(input_date, (str, datetime)):
         return ""
-    
+
     dt = pd.to_datetime(input_date, errors="coerce")
     if pd.isna(dt):
         return ""
@@ -290,8 +291,5 @@ def date_relative_in_words(
         return "in more than two years"
 
 
-
-
 if __name__ == "__main__":
     pass
-    

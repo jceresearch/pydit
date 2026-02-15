@@ -98,8 +98,6 @@ def test_coalesce_values_01():
     assert list(result["g_collapsed"]) == ["A", "A", "A", "B", "B", "OTHER", "OTHER"]
 
 
-
-
 def test_coalesce_values_02():
     """test the coalesce_values function against NAN values"""
     data = {
@@ -132,7 +130,7 @@ def test_coalesce_values_02():
         "N/A",
         "N/A",
         "N/A",
-    ] # All values are NaN, so they should all be treated as "N/A" and not coalesced into "OTHER"
+    ]  # All values are NaN, so they should all be treated as "N/A" and not coalesced into "OTHER"
 
     result = coalesce_values(df, "i", top_n_values_to_keep=2, show_nan=False)
     assert list(result["i_collapsed"]) == [
@@ -143,4 +141,4 @@ def test_coalesce_values_02():
         "B",
         "C",
         "OTHER",
-    ] 
+    ]

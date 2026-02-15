@@ -83,7 +83,6 @@ def check_duplicates(
         df = obj.to_frame()
 
     else:
-
         df = obj.copy()
 
     if isinstance(columns, str):
