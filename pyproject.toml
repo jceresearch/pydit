@@ -23,6 +23,7 @@ dependencies = [
 
 [project.urls]
 Homepage = "https://github.com/jceresearch/pydit"
+Documentation = "https://pydit.readthedocs.io/en/latest/"
 "Bug Tracker" = "https://github.com/jceresearch/pydit/issues"
 
 [project.optional-dependencies]
