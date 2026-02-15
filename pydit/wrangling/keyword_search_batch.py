@@ -250,7 +250,7 @@ def keyword_search(
                 label = labels[i]
             else:
                 label = kw
-            dftemp = df[df[hit_field] == True][[key_column]].copy()
+            dftemp = df[df[hit_field]][[key_column]].copy()
             dftemp["labels"] = label
             dftemp["keyword"] = kw
             list_hits.append(dftemp)
@@ -264,12 +264,12 @@ def keyword_search(
         else:
             # we are dealing with multiple labels to group
             dfresg = pd.DataFrame()
-            for l in set(labels):
+            for label in set(labels):
                 cols = []
                 for i, c in enumerate(dfres.columns):
-                    if l == labels[i]:
+                    if label == labels[i]:
                         cols.append(c)
-                dfresg[l] = np.logical_or.reduce(dfres[cols], axis=1)
+                dfresg[label] = np.logical_or.reduce(dfres[cols], axis=1)
             dfres = dfresg.copy()
 
     # we add the combined any() (ie. or) column to dfres after we processed the
@@ -279,7 +279,7 @@ def keyword_search(
     dfres["kw_match_count"] = dfres.apply(sum, axis=1)
     logger.info("Count of all hits: %s", dfres["kw_match_count"].sum())
     if "_hits" in return_data:
-        dfres = dfres[dfres["kw_match_all"] == True].copy()
+        dfres = dfres[dfres["kw_match_all"]].copy()
         logger.info("Returning just hit rows: %s", dfres.shape[0])
 
     if "full" in return_data:

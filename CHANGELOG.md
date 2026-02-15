@@ -1,6 +1,6 @@
 # Changelog
 
-## V0.2.0
+## V0.2.00
   Moving to uv for package management and ruff for linting and various refactoring.
   
 

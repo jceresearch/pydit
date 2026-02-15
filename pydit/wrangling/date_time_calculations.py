@@ -4,6 +4,7 @@ IMPORTANT: adapted to England and Wales only, edit the calendar class to regiona
 
 # pylint: disable=unexpected-keyword-arg
 # pylint: disable=bare-except
+# ruff: noqa: E722
 import logging
 from datetime import datetime, date, timedelta
 
