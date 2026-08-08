@@ -5,11 +5,9 @@ import sys
 
 import numpy as np
 
-
 # pylint: disable=import-error disable=wrong-import-position
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from pydit import setup_logging, clean_string
-
+from pydit import clean_string, setup_logging
 
 # import numpy as np
 # from datetime import datetime, date, timedelta

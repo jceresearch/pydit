@@ -1,23 +1,24 @@
 """Test of the benford checker"""
 
 import os
-import sys
 import pathlib
-import pytest
+import sys
+
 import numpy as np
 import pandas as pd
+import pytest
 
 # import numpy as np
 # from datetime import datetime, date, timedelta
 # pylint: disable=import-error disable=wrong-import-position
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from pydit import (
-    benford_to_dataframe,
-    setup_logging,
-    benford_to_plot,
     benford_list_anomalies,
-    benford_probability,
     benford_mad,
+    benford_probability,
+    benford_to_dataframe,
+    benford_to_plot,
+    setup_logging,
 )
 
 # create the output folder for the png if it does not exist

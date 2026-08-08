@@ -2,6 +2,7 @@
 
 import logging
 from datetime import timedelta
+
 import pandas as pd
 
 # pylint: disable=unused-variable

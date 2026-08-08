@@ -8,10 +8,9 @@ as we tend to have to do a lot of duplicate checks in intermediate files.
 
 import logging
 
-import pandas as pd
 import numpy as np
-from pandas.api.types import is_string_dtype
-from pandas.api.types import is_numeric_dtype
+import pandas as pd
+from pandas.api.types import is_numeric_dtype, is_string_dtype
 
 logger = logging.getLogger(__name__)
 

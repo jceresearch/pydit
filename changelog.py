@@ -2,6 +2,7 @@
 
 import subprocess
 from datetime import datetime, timedelta
+
 import pandas as pd
 
 # Run the git log command to get the commit messages
@@ -39,6 +40,5 @@ with open("CHANGELOG_AUTO.md", "w", encoding="utf-8") as f:
     f.write("# Changelog\n\n")  # Write the header
     for cd, msgs in dfgrouped.iterrows():
         f.write(f"## {cd.strftime('%Y-%m-%d')}\n\n")
-        for msg in msgs["msg"]:
-            f.write(f"- {msg}\n")
+        f.writelines(f"- {msg}\n" for msg in msgs["msg"])
         f.write("\n")

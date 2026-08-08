@@ -2,16 +2,16 @@
 
 import os
 import sys
-from datetime import datetime, date, timedelta
+from datetime import date, datetime, timedelta
+
 import pandas as pd
 import pytest
-
 
 # import numpy as np
 # from datetime import datetime, date, timedelta
 # pylint: disable=import-error disable=wrong-import-position
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from pydit import business_calendar, first_and_end_of_month, date_relative_in_words
+from pydit import business_calendar, date_relative_in_words, first_and_end_of_month
 
 
 def test_first_and_end_of_month_eom():

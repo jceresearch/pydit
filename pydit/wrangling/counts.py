@@ -12,8 +12,9 @@ Takes inspiration on the usual counta and countif functions in Excel
 """
 
 import logging
-import pandas as pd
+
 import numpy as np
+import pandas as pd
 
 logger = logging.getLogger(__name__)
 

@@ -5,12 +5,11 @@ import sys
 
 import pandas as pd
 
-
 # import numpy as np
 # from datetime import datetime, date, timedelta
 # pylint: disable=import-error disable=wrong-import-position
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from pydit import setup_logging, merge_smart
+from pydit import merge_smart, setup_logging
 
 logger = setup_logging()
 

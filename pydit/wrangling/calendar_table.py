@@ -1,7 +1,8 @@
 """Function to create a calendar DataFrame to be used as a lookup table"""
 
+from datetime import date, datetime, timedelta
+
 import pandas as pd
-from datetime import datetime, date, timedelta
 
 
 def _first_and_end_of_month(d, return_datetime=True):

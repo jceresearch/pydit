@@ -8,10 +8,10 @@ or tested. Use at your own risk.
 """
 
 import math
-import numpy as np
 
 import matplotlib.pyplot as plt
-from scipy.stats import lognorm, norm, uniform, triang
+import numpy as np
+from scipy.stats import lognorm, norm, triang, uniform
 
 
 class Simulation:

@@ -1,9 +1,9 @@
 """Module with utility functions for fuzzy matching"""
 
-import unicodedata
+import logging
 import re
 import string
-import logging
+import unicodedata
 
 # pylint disable=unused-variable
 

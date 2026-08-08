@@ -10,8 +10,8 @@ It is not suitable for production use or for large datasets.
 
 """
 
-import random
 import logging
+import random
 
 import pandas as pd
 

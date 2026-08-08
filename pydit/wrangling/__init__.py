@@ -9,91 +9,95 @@ you should be able to create your own logger object and run with it.
 
 """
 
-from .calendar_table import create_calendar
-from .duplicates import check_duplicates
-from .sequence import check_sequence
-from .sequence import group_gaps
-from .referential_integrity_check import check_referential_integrity
-from .fillna import fillna_smart
-from .blanks import check_blanks
-from .coalesce_dataframe_values import coalesce_values
-from .cleanup_dataframe_columns_names import cleanup_column_names
+from ..logger import setup_logging, start_logging_debug, start_logging_info
 from .anonymise import anonymise_key
+from .blanks import check_blanks
+from .calendar_table import create_calendar
+from .cleanup_dataframe_columns_names import cleanup_column_names
 from .coalesce_dataframe_columns import coalesce_columns
+from .coalesce_dataframe_values import coalesce_values
 from .collapse_dataframe_levels import collapse_levels
+from .counts import (
+    count_cumulative_unique,
+    count_isna,
+    count_notna,
+    count_related_key,
+    count_values_in_col,
+    has_different_values,
+)
+from .date_time_calculations import (
+    business_calendar,
+    calculate_business_hours,
+    calculate_business_hours_fast,
+    date_relative_in_words,
+    first_and_end_of_month,
+)
+from .duplicates import check_duplicates
+from .file_utils import get_latest_modif_file_from_dir
+from .fillna import fillna_smart
+from .fuzzy_matching import clean_string, create_fuzzy_key
 from .groupby_text_concatenate import groupby_text
 from .keyword_search_batch import keyword_search
-from .truncate_datetime import truncate_datetime_dataframe
-from .counts import count_cumulative_unique
-from .counts import count_related_key
-from .counts import count_values_in_col
-from .counts import count_isna
-from .counts import count_notna
-from .counts import has_different_values
-from .date_time_calculations import business_calendar
-from .date_time_calculations import calculate_business_hours_fast
-from .date_time_calculations import calculate_business_hours
-from .date_time_calculations import first_and_end_of_month
-from .date_time_calculations import date_relative_in_words
-from .map_common_values import map_values
-from .fuzzy_matching import create_fuzzy_key, clean_string
-from .merge import merge_outer_and_split
-from .merge import merge_smart
 from .lookup_values import lookup_values
+from .map_common_values import map_values
+from .merge import merge_outer_and_split, merge_smart
+from .referential_integrity_check import check_referential_integrity
+from .sequence import check_sequence, group_gaps
 from .split_transactions import check_for_split_transactions
-from .various import print_red
-from .various import print_green
-from .various import deduplicate_list
-from .various import dataframe_to_code
-from .various import create_test_dataframe
-from ..logger import setup_logging, start_logging_debug, start_logging_info
-from .file_utils import get_latest_modif_file_from_dir
+from .truncate_datetime import truncate_datetime_dataframe
+from .various import (
+    create_test_dataframe,
+    dataframe_to_code,
+    deduplicate_list,
+    print_green,
+    print_red,
+)
 
 # Here we import each of the functions in the functions/ directory to have them
 # available in the functions namespace.
 # In turn functions gets imported with * at root
 
 __all__ = [
-    "create_calendar",
-    "check_duplicates",
-    "check_sequence",
-    "group_gaps",
-    "check_referential_integrity",
-    "fillna_smart",
-    "check_blanks",
-    "coalesce_values",
-    "cleanup_column_names",
     "anonymise_key",
+    "business_calendar",
+    "calculate_business_hours",
+    "calculate_business_hours_fast",
+    "check_blanks",
+    "check_duplicates",
+    "check_for_split_transactions",
+    "check_referential_integrity",
+    "check_sequence",
+    "clean_string",
+    "cleanup_column_names",
     "coalesce_columns",
+    "coalesce_values",
     "collapse_levels",
-    "groupby_text",
-    "keyword_search",
-    "truncate_datetime_dataframe",
     "count_cumulative_unique",
-    "count_related_key",
-    "count_values_in_col",
     "count_isna",
     "count_notna",
-    "has_different_values",
-    "business_calendar",
-    "calculate_business_hours_fast",
-    "calculate_business_hours",
-    "first_and_end_of_month",
-    "date_relative_in_words",
-    "map_values",
+    "count_related_key",
+    "count_values_in_col",
+    "create_calendar",
     "create_fuzzy_key",
-    "clean_string",
+    "create_test_dataframe",
+    "dataframe_to_code",
+    "date_relative_in_words",
+    "deduplicate_list",
+    "fillna_smart",
+    "first_and_end_of_month",
+    "get_latest_modif_file_from_dir",
+    "group_gaps",
+    "groupby_text",
+    "has_different_values",
+    "keyword_search",
+    "lookup_values",
+    "map_values",
     "merge_outer_and_split",
     "merge_smart",
-    "lookup_values",
-    "check_for_split_transactions",
-    "print_red",
     "print_green",
-    "deduplicate_list",
-    "dataframe_to_code",
-    "create_test_dataframe",
+    "print_red",
     "setup_logging",
     "start_logging_debug",
     "start_logging_info",
-    "get_latest_modif_file_from_dir",
+    "truncate_datetime_dataframe",
 ]

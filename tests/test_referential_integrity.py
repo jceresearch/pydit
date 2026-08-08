@@ -10,7 +10,6 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from pydit import check_referential_integrity as check
 from pydit import setup_logging
 
-
 logger = setup_logging()
 
 

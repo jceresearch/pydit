@@ -6,20 +6,20 @@ IMPORTANT: adapted to England and Wales only, edit the calendar class to regiona
 # pylint: disable=bare-except
 # ruff: noqa: E722
 import logging
-from datetime import datetime, date, timedelta
+from datetime import date, datetime, timedelta
 
 import pandas as pd
-from pandas.tseries.offsets import CDay
 from pandas.tseries.holiday import (
+    MO,
     AbstractHolidayCalendar,
     DateOffset,
     EasterMonday,
     GoodFriday,
     Holiday,
-    MO,
     next_monday,
     next_monday_or_tuesday,
 )
+from pandas.tseries.offsets import CDay
 
 logger = logging.getLogger(__name__)
 

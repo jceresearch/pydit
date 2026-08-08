@@ -12,9 +12,8 @@ Currently this module only supports providing a list or series of keys to check.
 import logging
 from collections import Counter
 
-import pandas as pd
 import numpy as np
-
+import pandas as pd
 
 logger = logging.getLogger(__name__)
 

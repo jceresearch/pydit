@@ -2,18 +2,15 @@
 
 import os
 import sys
+from datetime import date, datetime
 
-from datetime import datetime, date
-
-import pytest
-import pandas as pd
 import numpy as np
-
+import pandas as pd
+import pytest
 
 # pylint: disable=import-error disable=wrong-import-position
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from pydit import check_sequence, setup_logging
-
 
 logger = setup_logging(level_screen="DEBUG", level_file="DEBUG")
 

@@ -1,9 +1,10 @@
 """Improving on fillna() with options for various data types and opinionated defaults."""
 
 import logging
-from datetime import datetime, date
-import pandas as pd
+from datetime import date, datetime
+
 import numpy as np
+import pandas as pd
 from pandas.api.types import is_datetime64_any_dtype as is_datetime
 
 logger = logging.getLogger(__name__)

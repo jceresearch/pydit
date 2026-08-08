@@ -2,9 +2,9 @@
 
 import os
 import sys
-import pytest
-import pandas as pd
 
+import pandas as pd
+import pytest
 
 # import numpy as np
 # from datetime import datetime, date, timedelta
@@ -13,7 +13,6 @@ import pandas as pd
 # pylint: disable=import-error disable=wrong-import-position
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from pydit import cleanup_column_names, setup_logging
-
 
 logger = setup_logging()
 

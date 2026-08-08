@@ -3,10 +3,10 @@
 import os
 import sys
 
-import pandas as pd
-from pandas import Timestamp
 import numpy as np
+import pandas as pd
 import pytest
+from pandas import Timestamp
 
 # pylint: disable=redefined-outer-name
 # pylint: disable=import-error disable=wrong-import-position
@@ -15,7 +15,6 @@ from pydit import (
     profile_dataframe,
     setup_logging,
 )
-
 
 logger = setup_logging()
 

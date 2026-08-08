@@ -1,8 +1,8 @@
 """Test for truncate datetime to a specific unit"""
 
-from datetime import datetime
 import os
 import sys
+from datetime import datetime
 
 import numpy as np
 import pandas as pd
@@ -11,7 +11,7 @@ from pandas.testing import assert_frame_equal
 
 # pylint: disable=import-error,wrong-import-position
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from pydit import truncate_datetime_dataframe, setup_logging
+from pydit import setup_logging, truncate_datetime_dataframe
 
 logger = setup_logging()
 

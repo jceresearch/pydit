@@ -3,4 +3,3 @@
 
 def pytest_configure():
     """pytest configuration"""
-    pass

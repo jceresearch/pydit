@@ -3,7 +3,6 @@
 import logging
 import sys
 from logging.handlers import TimedRotatingFileHandler
-from typing import Optional, Dict
 
 ##pylint: disable=unused-import
 ##pylint: disable=missing-function-docstring
@@ -33,7 +32,7 @@ def clear_line(mode=2):
     return CSI + str(mode) + "K"
 
 
-class AnsiCodes(object):
+class AnsiCodes:
     """object to contain ansi codes for the logger function to use"""
 
     def __init__(self):
@@ -46,7 +45,7 @@ class AnsiCodes(object):
                 setattr(self, name, code_to_chars(value))
 
 
-class AnsiCursor(object):
+class AnsiCursor:
     def UP(self, n=1):
         return CSI + str(n) + "A"
 
@@ -124,7 +123,7 @@ class ColoredFormatter(logging.Formatter):
     """Colored log formatter."""
 
     def __init__(
-        self, *args, colors: Optional[Dict[str, str]] = None, **kwargs
+        self, *args, colors: dict[str, str] | None = None, **kwargs
     ) -> None:
         """Initialize the formatter with specified format strings."""
 

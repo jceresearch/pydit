@@ -5,7 +5,7 @@ Coalesce means to merge multiple columns together, taking the first non null val
 """
 
 import logging
-from typing import Optional, Union
+
 import pandas as pd
 
 logger = logging.getLogger(__name__)
@@ -14,8 +14,8 @@ logger = logging.getLogger(__name__)
 def coalesce_columns(
     df: pd.DataFrame,
     *column_names,
-    target_column_name: Optional[str] = None,
-    default_value: Optional[Union[int, float, str]] = None,
+    target_column_name: str | None = None,
+    default_value: float | str | None = None,
     operation=None,
     separator=" ",
     silent: bool = False,

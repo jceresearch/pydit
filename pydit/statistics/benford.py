@@ -21,9 +21,9 @@ there is a tendency to see higher number of transactions with high first digits
 import logging
 import math
 
-import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 
 logger = logging.getLogger(__name__)
 
@@ -317,6 +317,6 @@ def benford_list_anomalies(
     ).fillna(False)
 
     if return_anomalies_only:
-        return dfmerged[dfmerged["flag_bf_anomaly"] == True]  # noqa: E712
+        return dfmerged[dfmerged["flag_bf_anomaly"] == True]
 
     return dfmerged

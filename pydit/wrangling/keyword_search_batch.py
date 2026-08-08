@@ -1,13 +1,12 @@
 """Functions to sweep a dataframe for keywords and return a matrix of matches."""
 
 import logging
-import re
 import math
+import re
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 from pandas import DataFrame
-
 
 logger = logging.getLogger(__name__)
 

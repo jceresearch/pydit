@@ -1,12 +1,12 @@
 """Module for cleaning up column names of a DataFrame"""
 
 import logging
-import string
-import re
 import random
+import re
+import string
 import unicodedata
-import pandas as pd
 
+import pandas as pd
 
 logger = logging.getLogger(__name__)
 
@@ -15,7 +15,7 @@ def _strip_accents(text: str) -> str:
     """Remove accents from an unicode text.
     Inspired from [StackOverflow][so].
     [so]: https://stackoverflow.com/questions/517923/what-is-the-best-way-to-remove-accents-in-a-python-unicode-strin
-    """  # noqa: E501
+    """
 
     return "".join(
         letter

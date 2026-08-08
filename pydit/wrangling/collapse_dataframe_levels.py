@@ -1,8 +1,8 @@
 """Implementation of the `collapse_levels` function."""
 
 import logging
-import pandas as pd
 
+import pandas as pd
 
 logger = logging.getLogger(__name__)
 
@@ -37,7 +37,6 @@ def collapse_levels(obj: pd.DataFrame, sep: str = "_") -> pd.DataFrame:
         A new pandas DataFrame with single-level column index
 
     """
-    # noqa: E501
     if not isinstance(obj, pd.DataFrame):
         raise TypeError("obj must be a pandas DataFrame")
     if not isinstance(sep, str):
@@ -50,6 +49,6 @@ def collapse_levels(obj: pd.DataFrame, sep: str = "_") -> pd.DataFrame:
     df = obj.copy()
     df.columns = [
         sep.join(str(el) for el in tup if str(el) != "")
-        for tup in df  # noqa: PD011
+        for tup in df
     ]
     return df

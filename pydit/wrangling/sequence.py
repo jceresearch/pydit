@@ -2,13 +2,13 @@
 
 # pylint disable=import-error, bare-except, unu
 
+import itertools
 import logging
 from datetime import date
-import itertools
 
 import pandas as pd
-from pandas.api.types import is_datetime64_any_dtype as is_datetime
 from pandas import Series
+from pandas.api.types import is_datetime64_any_dtype as is_datetime
 
 logger = logging.getLogger(__name__)
 

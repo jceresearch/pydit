@@ -1,10 +1,10 @@
 """test module for anonymise functions"""
 
-import sys
 import os
+import sys
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 
 # pylint: disable=import-error disable=wrong-import-position
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -53,7 +53,6 @@ def test_anonymise():
         else:
             assert r["mkey"] == exp
 
-    return
 
 
 def test_anonymise_2():
@@ -109,7 +108,6 @@ def test_anonymise_2():
         else:
             assert r["mkey"] == exp
 
-    return
 
 
 if __name__ == "__main__":

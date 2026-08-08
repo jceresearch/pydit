@@ -79,7 +79,7 @@ def map_values(
         "high_medium_low": {"high": 1, "medium": 2, "low": 3},
         "high_medium_low_r": {"high": 3, "medium": 2, "low": 1},
     }
-    if mapping not in MAPPINGS.keys():
+    if mapping not in MAPPINGS:
         raise ValueError(f"mapping must be one of {', '.join(MAPPINGS.keys())}")
     TARGET = MAPPINGS[mapping]
     if case != "lower" and mapping[0:3] != "to_":
