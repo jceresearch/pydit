@@ -96,9 +96,10 @@ def check_for_split_transactions(
         running_total += r[amount_col]
         running_total_counts += 1
         for limit in limits:
-            if (running_total >= limit - limit * tolerance_perc and running_total < limit) or (
-                running_total >= limit - tolerance_abs and running_total < limit
-            ):
+            if (
+                running_total >= limit - limit * tolerance_perc
+                and running_total < limit
+            ) or (running_total >= limit - tolerance_abs and running_total < limit):
                 limits_hit_just_below.append(limit)
             if running_total >= limit:
                 limits_hit_above.append(limit)

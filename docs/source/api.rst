@@ -1,3 +1,5 @@
+:orphan:
+
 ..
    DO NOT DELETE THIS FILE! It contains the all-important `.. autosummary::` directive with `:recursive:` option, without
    which API documentation wouldn't get extracted from docstrings by the `sphinx.ext.autosummary` engine. It is hidden 
