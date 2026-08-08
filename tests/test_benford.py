@@ -51,7 +51,6 @@ def test_benford_mad():
         8,
         9,
     ]  # they follow Benford distribution
-    df = benford_to_dataframe(data)
     mad = benford_mad(data)
     assert mad == pytest.approx(0.0, rel=1e-2)
 

@@ -31,15 +31,15 @@ def df():
 def test_count_values_in_col_invalid(df):
     """test invalid column name"""
     with pytest.raises(ValueError):
-        res = count_values_in_col(df, "wrong_col", "count")
+        count_values_in_col(df, "wrong_col", "count")
     with pytest.raises(ValueError):
-        res = count_values_in_col(df, ["wrong_col"], "count")
+        count_values_in_col(df, ["wrong_col"], "count")
     with pytest.raises(ValueError):
-        res = count_values_in_col(df, ["class", "wrong_col"], "count")
+        count_values_in_col(df, ["class", "wrong_col"], "count")
     with pytest.raises(ValueError):
-        res = count_values_in_col(df, ["class", "max_speed"], "wrong_count")
+        count_values_in_col(df, ["class", "max_speed"], "wrong_count")
     with pytest.raises(ValueError):
-        res = count_values_in_col(df, ["class", "max_speed"], column_name="wrong_count")
+        count_values_in_col(df, ["class", "max_speed"], column_name="wrong_count")
 
 
 def test_count_values_in_col(df):
@@ -73,7 +73,7 @@ def test_count_values_in_col_combined(df):
     assert list(res["count_combined"]) == exp
 
     with pytest.raises(ValueError):
-        res = count_values_in_col(
+        count_values_in_col(
             df, ["class", "type"], column_name="dummy", combined=True
         )
 

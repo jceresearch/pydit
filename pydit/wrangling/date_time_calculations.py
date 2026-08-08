@@ -7,6 +7,7 @@ IMPORTANT: adapted to England and Wales only, edit the calendar class to regiona
 # ruff: noqa: E722
 import logging
 from datetime import date, datetime, timedelta
+from typing import ClassVar
 
 import pandas as pd
 from pandas.tseries.holiday import (
@@ -27,7 +28,7 @@ logger = logging.getLogger(__name__)
 class EnglandAndWalesHolidayCalendar(AbstractHolidayCalendar):
     """Calendar class for England and Wales."""
 
-    rules = [
+    rules: ClassVar[list[object]] = [
         Holiday("New Years Day", month=1, day=1, observance=next_monday),
         GoodFriday,
         EasterMonday,
