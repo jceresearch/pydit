@@ -74,7 +74,7 @@ def coalesce_columns(
             raise ValueError("No columns provided are in the dataframe")
         column_names = matched_columns.copy()
     else:
-        raise ValueError("Please provide a list of columns")
+        raise TypeError("Please provide a list of columns")
 
     if target_column_name is None:
         target_column_name = column_names[0]

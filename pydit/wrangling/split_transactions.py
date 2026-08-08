@@ -64,13 +64,13 @@ def check_for_split_transactions(
     if isinstance(limits, int) or isinstance(limits, float):
         limits = [limits]
     if not isinstance(limits, list) and not isinstance(limits, tuple):
-        raise ValueError("limits should be a list or tuple")
+        raise TypeError("limits should be a list or tuple")
     if not isinstance(df, pd.DataFrame):
-        raise ValueError("df should be a pandas DataFrame")
+        raise TypeError("df should be a pandas DataFrame")
     if not all([c in df.columns for c in [amount_col, categ_col, date_col]]):
         raise ValueError("amount_col, categ_col, date_col should be columns in df")
     if not all([isinstance(limit, (int, float)) for limit in limits]):
-        raise ValueError("limits should be a list of integers or floats")
+        raise TypeError("limits should be a list of integers or floats")
 
     df1 = df.sort_values([categ_col, date_col]).copy()
     categ = ""
