@@ -32,28 +32,26 @@ def count_values_in_col(
     if combined is True, it will generate a column counting unique
     combinations of values in the columns.
 
+    Parameters
+    ----------
+    df_input : pd.DataFrame
+        Dataframe to be analyzed
+    col : str or list of str
+        Name of the column containing values to tally
+    column_name : str or list of str, optional, default None
+        Name of the columns to be created containing the count of values
+        If None, the column name will be "count_[col]".
+    combined : bool, optional, default True
+        Whether or not compute the counts combining all the columns provided
+    percentage: bool, optional, default False
+        Whether to return percentage over total count
+    detailed: bool, optional, default False
+        Whether to return only the combined count and drop the extra details
 
-        Parameters
-        ----------
-        df_input : pd.DataFrame
-            Dataframe to be analyzed
-        col : str or list of str
-            Name of the column containing values to tally
-        column_name : str or list of str, optional, default None
-            Name of the columns to be created containing the count of values
-            If None, the column name will be "count_[col]".
-        combined : bool, optional, default True
-            Whether or not compute the counts combining all the columns provided
-        percentage: bool, optional, default False
-            Whether to return percentage over total count
-        detailed: bool, optional, default False
-            Whether to return only the combined count and drop the extra details
-
-
-        Returns
-        -------
-        pd.DataFrame
-            New dataframe with a new column containing the count of values
+    Returns
+    -------
+    pd.DataFrame
+        New dataframe with a new column containing the count of values
 
     """
     if not isinstance(df_input, pd.DataFrame):
