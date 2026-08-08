@@ -77,7 +77,7 @@ def _deduplicate_list(
                 str.strip(str(x)) if isinstance(x, str) or isinstance(x, int) else ""
                 for x in list_to_deduplicate
             ]
-    except Exception as e:
+    except (TypeError, ValueError) as e:
         logger.error(e)
         return False
     new_list = []
@@ -150,7 +150,7 @@ def cleanup_column_names(
     elif isinstance(obj, str):
         prev_cols = [obj]
     else:
-        raise ValueError(
+        raise TypeError(
             "obj must be a pandas DataFrame or a list of strings, or a string"
         )
 
@@ -166,7 +166,7 @@ def cleanup_column_names(
         try:
             new = str(e)
         except Exception as e:
-            logger.exception(e)
+            logger.exception("Failed to convert column name to string")
             new = "unnamed"
             continue
         new = _strip_accents(new)

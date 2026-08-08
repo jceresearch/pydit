@@ -83,7 +83,7 @@ def coalesce_values(
         def concat_categories(r, cols):
             try:
                 v = "_".join([str(v) for v in r[cols].values])
-            except Exception:
+            except (TypeError, ValueError):
                 v = np.NAN
             return v
 
@@ -105,8 +105,8 @@ def coalesce_values(
     if case_insensitive:
         try:
             df[col_output] = df[col_output].str.upper()
-        except Exception:
-            pass
+        except AttributeError as exc:
+            logger.debug("Skipping upper-casing for non-string column %s: %s", col_output, exc)
 
     if show_nan:
         df[col_output] = df[col_output].fillna(nan_label)

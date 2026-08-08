@@ -58,5 +58,11 @@ dev = [
 requires = ["hatchling>=1.27.0"]
 build-backend = "hatchling.build"
 
+[tool.ruff.lint]
+ignore = ["DTZ", "SIM101", "SIM102", "SIM401", "C419", "C403", "C414"]
+
+[tool.ruff]
+extend-exclude = ["experimental/sqlite for processing data"]
+
 [tool.hatch.build.targets.wheel]
 packages = ["pydit"]

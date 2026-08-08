@@ -1,6 +1,7 @@
 """Module with utility functions for fuzzy matching"""
 
 import logging
+import math
 import re
 import string
 import unicodedata
@@ -63,12 +64,14 @@ def clean_string(
         Cleaned string
 
     """
-    if t != t or t is None:
+    if t is None:
+        return ""
+    if isinstance(t, float) and math.isnan(t):
         return ""
 
     try:
         t = str(t)
-    except Exception:
+    except (TypeError, ValueError):
         return ""
 
     # we are going to normalize using NFKD

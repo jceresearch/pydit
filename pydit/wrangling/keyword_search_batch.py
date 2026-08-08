@@ -51,7 +51,7 @@ def _keyword_search_re(keywords, df, case_sensitive):
     zeroes = max(math.ceil(math.log10(len(keywords))), 2)
     for p in re_compiled:
         logger.info("Searching for keyword: %s", p.pattern)
-        regmatch = np.vectorize(lambda x: bool(p.search(x)))
+        regmatch = np.vectorize(lambda x, pattern=p: bool(pattern.search(x)))
         res = regmatch(df["dummy_keyword_search"].values)
         logger.info("Found %d matches", sum(res))
 
@@ -156,7 +156,7 @@ def keyword_search(
 
     # Various input validation
     if not isinstance(keywords, (list, str)):
-        raise ValueError("keywords must be a list of strings or a string")
+        raise TypeError("keywords must be a list of strings or a string")
     if isinstance(keywords, str):
         keywords = [keywords]
     if isinstance(columns, str):
@@ -225,7 +225,7 @@ def keyword_search(
         if key_column is None:
             raise ValueError("Must provide a key column if return_details is True")
         if key_column not in dffull.columns:
-            raise ValueError("Key column %s not found in dataframe" % key_column)
+            raise ValueError(f"Key column {key_column} not found in dataframe")
     # Here the main part of the function starts
 
     df = df.fillna("")
