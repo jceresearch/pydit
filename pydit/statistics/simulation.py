@@ -81,7 +81,7 @@ class Simulation:
 
     def plot(self, bins=100):
         """plot the histogram of the samples"""
-        hist, bins, _ = plt.hist(self.samples, bins=bins, edgecolor="k", alpha=0.7)
+        _, _, _ = plt.hist(self.samples, bins=bins, edgecolor="k", alpha=0.7)
         plt.title("Monte Carlo Simulation")
         plt.xlabel("Values")
         plt.ylabel("Frequency")

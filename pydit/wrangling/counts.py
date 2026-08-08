@@ -57,7 +57,7 @@ def count_values_in_col(
     """
     if not isinstance(df_input, pd.DataFrame):
         raise TypeError("Expecting a dataframe")
-    if not column_name or column_name == "" or column_name != column_name:
+    if not column_name or column_name == "" or pd.isna(column_name):
         column_name = ""
         flag_auto_name = True
     else:
@@ -72,7 +72,7 @@ def count_values_in_col(
         raise TypeError("Expecting a string or list/tuple of strings")
     for c in cols_list:
         if c not in df_input.columns:
-            raise ValueError("Column %s not in DataFrame" % c)
+            raise ValueError(f"Column {c} not in DataFrame")
     if isinstance(column_name, str) and not flag_auto_name:
         column_name = [column_name]
     if isinstance(column_name, list) and len(column_name) != len(cols_list):

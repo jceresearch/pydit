@@ -28,8 +28,7 @@ def test_deduplicate_list():
         "column_6",
         "column_7",
     ]
-    assert deduplicate_list
-    ([1, "aloha ", "aloha", 2, 2, 2, 2, 2, 2, 2, 2]) == [
+    assert deduplicate_list([1, "aloha ", "aloha", 2, 2, 2, 2, 2, 2, 2, 2]) == [
         "1",
         "aloha",
         "aloha_2",
