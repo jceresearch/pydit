@@ -48,7 +48,6 @@ def test_anonymise():
             assert r["mkey"] == exp
 
 
-
 def test_anonymise_2():
     """general test that it completes, TBC specifics"""
     d1 = {"mkey": ["a", "b", "c", "d", np.nan], "mvalue": ["aa", "bb", "cc", "dd", ""]}
@@ -101,7 +100,6 @@ def test_anonymise_2():
             assert pd.isna(exp)
         else:
             assert r["mkey"] == exp
-
 
 
 if __name__ == "__main__":
