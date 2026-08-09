@@ -122,15 +122,18 @@ def test_coalesce_values_02():
     df = pd.DataFrame(data)
 
     result = coalesce_values(df, "h", top_n_values_to_keep=2, show_nan=True)
-    assert list(result["h_collapsed"]) == [
-        "N/A",
-        "N/A",
-        "N/A",
-        "N/A",
-        "N/A",
-        "N/A",
-        "N/A",
-    ]  # All values are NaN, so they should all be treated as "N/A" and not coalesced into "OTHER"
+    assert (
+        list(result["h_collapsed"])
+        == [
+            "N/A",
+            "N/A",
+            "N/A",
+            "N/A",
+            "N/A",
+            "N/A",
+            "N/A",
+        ]
+    )  # All values are NaN, so they should all be treated as "N/A" and not coalesced into "OTHER"
 
     result = coalesce_values(df, "i", top_n_values_to_keep=2, show_nan=False)
     assert list(result["i_collapsed"]) == [
