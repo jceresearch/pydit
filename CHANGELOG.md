@@ -1,5 +1,11 @@
 # Changelog
 
+
+## V0.2.01
+  Refactoring to use new Pipy permissions for release. A few fixes to pass Ruff, disabled some Ruff rules that are too strict for now, and some minor refactoring to improve code quality.
+
+  
+
 ## V0.2.00
   Moving to uv for package management and ruff for linting and various refactoring.
   
