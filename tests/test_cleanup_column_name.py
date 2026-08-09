@@ -149,6 +149,6 @@ def test_clean_column_names_empty():
     assert l == []
 
     l = None
-    # assert value error
-    with pytest.raises(ValueError):
+    # assert type error
+    with pytest.raises(TypeError):
         cleanup_column_names(l)

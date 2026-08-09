@@ -71,7 +71,7 @@ def deduplicate_list(
                 str.strip(str(x)) if isinstance(x, str) or isinstance(x, int) else ""
                 for x in list_to_deduplicate
             ]
-    except Exception as e:
+    except (TypeError, ValueError) as e:
         logger.error(e)
         return False
     new_list = []
