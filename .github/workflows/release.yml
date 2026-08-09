@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      id-token: write
     steps:
     - uses: actions/checkout@v4
     
@@ -42,8 +43,6 @@ jobs:
         uv run sphinx-build ./docs/source ./docs/build -a
     
     - name: Build and publish
-      env:
-        UV_PUBLISH_TOKEN: ${{ secrets.PYPI_PASSWORD }}
       run: |
         uv build
         uv publish
