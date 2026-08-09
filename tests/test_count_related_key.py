@@ -56,15 +56,18 @@ def test_count_related_key():
         1,
         1,
     ]  # There shouldnt be duplicates in df1 for the key
-    assert df2["count_mkey2"].to_list() == [
-        3,
-        3,
-        3,
-        1,
-        2,
-        2,
-        1,
-    ]  # df2 has several duplicates for the key2, this is equivalent of countif on the main key
+    assert (
+        df2["count_mkey2"].to_list()
+        == [
+            3,
+            3,
+            3,
+            1,
+            2,
+            2,
+            1,
+        ]
+    )  # df2 has several duplicates for the key2, this is equivalent of countif on the main key
 
 
 if __name__ == "__main__":

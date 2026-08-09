@@ -73,9 +73,7 @@ def test_count_values_in_col_combined(df):
     assert list(res["count_combined"]) == exp
 
     with pytest.raises(ValueError):
-        count_values_in_col(
-            df, ["class", "type"], column_name="dummy", combined=True
-        )
+        count_values_in_col(df, ["class", "type"], column_name="dummy", combined=True)
 
     res = count_values_in_col(df, ["class", "type_lower"], combined=True)
     exp = [2, 2, 1, 1, 1, 1]
