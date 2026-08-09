@@ -106,7 +106,9 @@ def coalesce_values(
         try:
             df[col_output] = df[col_output].str.upper()
         except AttributeError as exc:
-            logger.debug("Skipping upper-casing for non-string column %s: %s", col_output, exc)
+            logger.debug(
+                "Skipping upper-casing for non-string column %s: %s", col_output, exc
+            )
 
     if show_nan:
         df[col_output] = df[col_output].fillna(nan_label)

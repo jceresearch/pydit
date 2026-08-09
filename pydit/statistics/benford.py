@@ -295,9 +295,7 @@ def benford_list_anomalies(
             "bf_digit"
         ]
     )
-    dfres["flag_bf_anomaly"] = dfres.apply(
-        lambda r: r["bf_digit"] in anomalies, axis=1
-    )
+    dfres["flag_bf_anomaly"] = dfres.apply(lambda r: r["bf_digit"] in anomalies, axis=1)
 
     df["bf_digit"] = (
         df[column_name]
