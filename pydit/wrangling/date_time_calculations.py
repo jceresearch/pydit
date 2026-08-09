@@ -246,7 +246,7 @@ def date_relative_in_words(
     Returns
     -------
     str
-        A human-readable string describing how long ago or in the future the input_date is relative to the reference_datetime. 
+        A human-readable string describing how long ago or in the future the input_date is relative to the reference_datetime.
         Possible outputs include "within a week ago", "in 3 days", "2 months ago", "in more than two years", etc.
 
     """

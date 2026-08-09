@@ -47,8 +47,5 @@ def collapse_levels(obj: pd.DataFrame, sep: str = "_") -> pd.DataFrame:
     # otherwise, flatten the multi-level index
 
     df = obj.copy()
-    df.columns = [
-        sep.join(str(el) for el in tup if str(el) != "")
-        for tup in df
-    ]
+    df.columns = [sep.join(str(el) for el in tup if str(el) != "") for tup in df]
     return df

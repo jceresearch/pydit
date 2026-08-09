@@ -23,7 +23,7 @@ def check_blanks(
 
     If "total_only" is False it would return detailed information of the blanks
      original/copied dataframe with:
-    
+
     a) one boolean column per input columns, True when there are blanks in that record
     b) a summary boolean column if any of the previous is true
 
