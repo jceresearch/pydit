@@ -39,7 +39,7 @@ docs = [
   "sphinx-book-theme",
 ]
 lint = [
-  "ruff",
+  "ruff==0.16.2",
 ]
 dev = [
   "pytest",
@@ -49,7 +49,7 @@ dev = [
   "myst-parser",
   "pydata-sphinx-theme",
   "sphinx-book-theme",
-  "ruff",
+  "ruff==0.16.2",
   "ipykernel",
 ]
 
