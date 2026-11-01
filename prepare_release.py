@@ -2,12 +2,14 @@
 
 from __future__ import annotations
 
+import argparse
 import re
 import subprocess
 import tomllib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
+VERSION_PATTERN = re.compile(r"\d+\.\d+\.\d+")
 
 
 def read_assignment(contents: str, name: str) -> str:
@@ -37,15 +39,18 @@ def replace_assignment(contents: str, name: str, old: str, new: str) -> str:
     return updated
 
 
-def next_minor_version(version: str) -> str:
-    match = re.fullmatch(r"(\d+)\.(\d+)\.(\d+)", version)
-    if match is None:
+def validate_version(version: str) -> str:
+    if VERSION_PATTERN.fullmatch(version) is None:
         raise ValueError(
-            f"Expected a numeric major.minor.patch version, got {version!r}"
+            f"Expected version in numeric major.minor.patch format, got {version!r}"
         )
+    return version
 
-    major, minor, patch = match.groups()
-    return f"{major}.{int(minor) + 1}.{0:0{len(patch)}d}"
+
+def next_patch_version(version: str) -> str:
+    validate_version(version)
+    major, minor, patch = version.split(".")
+    return f"{major}.{minor}.{int(patch) + 1:0{len(patch)}d}"
 
 
 def replace_project_version(contents: str, old: str, new: str) -> str:
@@ -61,7 +66,24 @@ def replace_project_version(contents: str, old: str, new: str) -> str:
     return contents[: section.start()] + updated_section + contents[section.end() :]
 
 
+def run_ruff(*args: str) -> None:
+    subprocess.run(
+        ["uv", "run", "--link-mode", "copy", "--extra", "dev", "ruff", *args],
+        cwd=ROOT,
+        check=True,
+    )
+
+
 def main() -> None:
+    parser = argparse.ArgumentParser(
+        description="Format the package and prepare a release."
+    )
+    parser.add_argument(
+        "--version",
+        help="Set a specific release version instead of incrementing the patch version.",
+    )
+    args = parser.parse_args()
+
     pyproject_path = ROOT / "pyproject.toml"
     conf_path = ROOT / "docs/source/conf.py"
     init_path = ROOT / "pydit/__init__.py"
@@ -73,7 +95,11 @@ def main() -> None:
     changelog = changelog_path.read_text(encoding="utf-8")
 
     current_version = tomllib.loads(pyproject)["project"]["version"]
-    new_version = next_minor_version(current_version)
+    new_version = (
+        validate_version(args.version)
+        if args.version is not None
+        else next_patch_version(current_version)
+    )
     conf_version = read_assignment(conf, "release")
     init_version = read_assignment(init, "__version__")
     new_header = f"## V{new_version}"
@@ -84,11 +110,12 @@ def main() -> None:
     replace_assignment(conf, "release", conf_version, new_version)
     replace_assignment(init, "__version__", init_version, new_version)
 
-    subprocess.run(
-        ["uv", "run", "--extra", "dev", "ruff", "format", "pydit", "tests"],
-        cwd=ROOT,
-        check=True,
-    )
+    # Fix what can be fixed in the package and tests, then run the exact
+    # checks the release workflow runs so CI cannot fail on them.
+    run_ruff("check", "--fix", "pydit", "tests")
+    run_ruff("format", "pydit", "tests")
+    run_ruff("check", "./pydit")
+    run_ruff("format", "--check", "./pydit")
     subprocess.run(["uv", "lock", "--upgrade"], cwd=ROOT, check=True)
 
     pyproject_path.write_text(
